@@ -3,9 +3,9 @@ package com.fadlurahmanf.core_platform
 import dagger.Component
 import dagger.Subcomponent
 
-@Subcomponent()
+@Component(modules = [CorePlatformModule::class])
 interface CorePlatformComponent {
-    @Subcomponent.Factory
+    @Component.Factory
     interface Factory {
         fun create(): CorePlatformComponent
     }
