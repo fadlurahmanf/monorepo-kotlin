@@ -11,6 +11,8 @@ interface MappComponent {
 
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance context: Context): MappComponent
+        fun create(
+            @BindsInstance context: Context
+        ): MappComponent
     }
 }

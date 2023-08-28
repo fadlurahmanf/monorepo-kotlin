@@ -45,4 +45,5 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.47'
 
     implementation(project(":mapp_config"))
+    implementation(project(":core_platform"))
 }
