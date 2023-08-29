@@ -22,7 +22,7 @@ abstract class BaseExampleActivity : AppCompatActivity() {
         component = DaggerMappExampleComponent.factory()
             .create(
                 CoreInjectHelper.provideMappComponent(applicationContext),
-                DaggerCorePlatformComponent.factory().create()
+                CoreInjectHelper.provideCorePlatformComponent(applicationContext)
             )
     }
 

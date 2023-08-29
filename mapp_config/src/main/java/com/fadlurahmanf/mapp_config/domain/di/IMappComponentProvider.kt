@@ -1,7 +1,9 @@
 package com.fadlurahmanf.mapp_config.domain.di
 
-import com.fadlurahmanf.mapp_config.MappComponent
+import com.fadlurahmanf.core_platform.CorePlatformComponent
+import com.fadlurahmanf.mapp_config.MappConfigComponent
 
 interface IMappComponentProvider {
-    fun provideMappComponent():MappComponent
+    fun provideMappComponent(): MappConfigComponent
+    fun provideCorePlatformComponent(): CorePlatformComponent
 }

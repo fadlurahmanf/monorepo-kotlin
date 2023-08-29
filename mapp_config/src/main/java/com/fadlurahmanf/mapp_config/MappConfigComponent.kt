@@ -5,14 +5,12 @@ import com.fadlurahmanf.mapp_config.presentation.MappApplication
 import dagger.BindsInstance
 import dagger.Component
 
-@Component
-interface MappComponent {
-    fun inject(app: MappApplication)
 
+@Component
+interface MappConfigComponent {
+    fun inject(app:MappApplication)
     @Component.Factory
     interface Factory {
-        fun create(
-            @BindsInstance context: Context
-        ): MappComponent
+        fun create(@BindsInstance context: Context): MappConfigComponent
     }
 }

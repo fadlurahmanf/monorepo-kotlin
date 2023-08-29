@@ -12,7 +12,7 @@ class ExampleActivity : BaseExampleActivity() {
 
         // todo
         // get biometric here
-        println("MASUK TES ${biometricRepositoryImpl.isSupportedBiometric(this)}")
+//        println("MASUK TES ${biometricRepositoryImpl.isSupportedBiometric(this)}")
     }
 
     override fun injectActivity() {
