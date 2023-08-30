@@ -2,7 +2,8 @@ package com.fadlurahmanf.mapp_example
 
 import com.fadlurahmanf.core_platform.CorePlatformComponent
 import com.fadlurahmanf.mapp_config.MappConfigComponent
-import com.fadlurahmanf.mapp_example.presentation.ExampleActivity
+import com.fadlurahmanf.mapp_example.presentation.biometric.BiometricActivity
+import com.fadlurahmanf.mapp_example.presentation.example.ExampleActivity
 import dagger.Component
 
 @Component(
@@ -16,4 +17,5 @@ interface MappExampleComponent {
     }
 
     fun inject(activity: ExampleActivity)
+    fun inject(activity: BiometricActivity)
 }

@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MonorepoKotlin">
         <activity
-            android:name="com.fadlurahmanf.mapp_example.presentation.ExampleActivity"
+            android:name="com.fadlurahmanf.mapp_example.presentation.example.ExampleActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
