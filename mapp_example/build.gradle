@@ -48,6 +48,10 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.47'
     kapt 'com.google.dagger:dagger-compiler:2.47'
 
-    implementation(project(":mapp_config"))
+    implementation(project(":core_config"))
+    implementation(project(":core_notification"))
     implementation(project(":core_platform"))
+
+    implementation(project(":mapp_config"))
+    implementation(project(":mapp_notification"))
 }

@@ -2,8 +2,8 @@ package com.fadlurahmanf.mapp_example.presentation.example
 
 import android.content.Intent
 import com.fadlurahmanf.mapp_example.data.dto.model.MenuModel
-import com.fadlurahmanf.mapp_example.presentation.BaseExampleActivity
 import com.fadlurahmanf.mapp_example.databinding.ActivityExampleBinding
+import com.fadlurahmanf.mapp_example.presentation.BaseExampleActivity
 import com.fadlurahmanf.mapp_example.presentation.biometric.BiometricActivity
 
 class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
@@ -34,6 +34,7 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
     override fun injectActivity() {
         component.inject(this)
     }
+
     override fun onMenuClicked(menu: MenuModel) {
         if (menu.menuId == "BIOMETRIC") {
             val intent = Intent(this, BiometricActivity::class.java)

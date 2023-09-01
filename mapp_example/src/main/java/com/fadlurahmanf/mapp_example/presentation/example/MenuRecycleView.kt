@@ -25,8 +25,8 @@ class MenuRecycleView : RecyclerView.Adapter<MenuRecycleView.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.findViewById<TextView>(R.id.tv_title)
-        val subTitle: TextView = view.findViewById<TextView>(R.id.tv_sub_title)
-        val icon: ImageView = view.findViewById<ImageView>(R.id.iv_start)
+//        val subTitle: TextView = view.findViewById<TextView>(R.id.tv_sub_title)
+//        val icon: ImageView = view.findViewById<ImageView>(R.id.iv_start)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

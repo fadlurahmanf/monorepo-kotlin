@@ -3,6 +3,17 @@
 
     <application>
         <activity
+            android:name=".presentation.example.ExampleActivity"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.fadlurahmanf.mapp_example.EXAMPLE_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".presentation.notification.NotificationActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.biometric.BiometricActivity"
             android:exported="false" />
     </application>

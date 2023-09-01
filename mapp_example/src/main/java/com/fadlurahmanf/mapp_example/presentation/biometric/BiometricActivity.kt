@@ -1,13 +1,11 @@
 package com.fadlurahmanf.mapp_example.presentation.biometric
 
-import android.hardware.biometrics.BiometricPrompt
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.os.CancellationSignal
 import com.fadlurahmanf.core_platform.domain.BiometricRepository
-import com.fadlurahmanf.mapp_example.R
 import com.fadlurahmanf.mapp_example.databinding.ActivityBiometricBinding
+import com.fadlurahmanf.core_config.presentation.BaseActivity
+import com.fadlurahmanf.mapp_config.presentation.BaseMappActivity
 import com.fadlurahmanf.mapp_example.presentation.BaseExampleActivity
 import javax.inject.Inject
 
@@ -26,7 +24,8 @@ class BiometricActivity : BaseExampleActivity<ActivityBiometricBinding>(
         cancellationSignal.setOnCancelListener {
             println("MASUK CANCEL")
         }
-        binding.tvIsSupportedBiometric.text = "IS SUPPORTED BIOMETRIC: ${biometricRepository.isSupportedBiometric(this)}"
+        binding.tvIsSupportedBiometric.text =
+            "IS SUPPORTED BIOMETRIC: ${biometricRepository.isSupportedBiometric(this)}"
 
         binding.btnAuthenticateBiometric.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
