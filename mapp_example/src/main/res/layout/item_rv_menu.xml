@@ -3,12 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginHorizontal="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:id="@+id/iv_start"
-        android:background="@color/cardview_dark_background"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintBottom_toBottomOf="parent"/>
