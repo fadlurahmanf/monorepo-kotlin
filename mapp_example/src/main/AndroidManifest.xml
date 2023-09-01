@@ -3,11 +3,15 @@
 
     <application>
         <activity
+            android:name=".presentation.ui.CustomTextFieldActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.example.ExampleActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light">
             <intent-filter>
                 <action android:name="com.fadlurahmanf.mapp_example.EXAMPLE_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

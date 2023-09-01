@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/mapp_config" />
             <option value="$PROJECT_DIR$/mapp_example" />
             <option value="$PROJECT_DIR$/mapp_notification" />
+            <option value="$PROJECT_DIR$/mapp_ui" />
           </set>
         </option>
       </GradleProjectSettings>
