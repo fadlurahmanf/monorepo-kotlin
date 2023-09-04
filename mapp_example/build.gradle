@@ -48,11 +48,22 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.47'
     kapt 'com.google.dagger:dagger-compiler:2.47'
 
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
+
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
+    implementation("com.google.firebase:firebase-database-ktx")
+
+    implementation("org.webrtc:google-webrtc:1.0.32006")
+
+
     implementation(project(":core_config"))
     implementation(project(":core_notification"))
     implementation(project(":core_platform"))
 
+    implementation(project(":mapp_analytic"))
     implementation(project(":mapp_config"))
+    implementation(project(":mapp_firebase_database"))
     implementation(project(":mapp_notification"))
     implementation(project(":mapp_ui"))
 }

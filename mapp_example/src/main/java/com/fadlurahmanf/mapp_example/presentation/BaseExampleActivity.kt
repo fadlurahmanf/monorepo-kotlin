@@ -8,14 +8,15 @@ import com.fadlurahmanf.mapp_example.DaggerMappExampleComponent
 import com.fadlurahmanf.mapp_example.MappExampleComponent
 
 abstract class BaseExampleActivity<VB : ViewBinding>(
-    private val inflater: MappInflateActivity<VB>
+    inflater: MappInflateActivity<VB>
 ) : BaseMappActivity<VB>(inflater) {
     lateinit var component: MappExampleComponent
     override fun initComponent() {
         component = DaggerMappExampleComponent.factory()
             .create(
+                CoreInjectHelper.provideCorePlatformComponent(applicationContext),
                 CoreInjectHelper.provideMappComponent(applicationContext),
-                CoreInjectHelper.provideCorePlatformComponent(applicationContext)
+                CoreInjectHelper.provideMappFirebaseDatabaseComponent(applicationContext),
             )
     }
 

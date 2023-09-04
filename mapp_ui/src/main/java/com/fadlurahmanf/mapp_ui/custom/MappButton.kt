@@ -3,6 +3,7 @@ package com.fadlurahmanf.mapp_ui.custom
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
+import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
@@ -46,9 +47,9 @@ class MappButton(context: Context, attributeSet: AttributeSet) :
 
     private fun setText(text: String) {
         button.text = text
+    }
 
-        button.setOnClickListener {
-            println("TES TES")
-        }
+    fun onClicked(l: View.OnClickListener?) {
+        button.setOnClickListener(l)
     }
 }
