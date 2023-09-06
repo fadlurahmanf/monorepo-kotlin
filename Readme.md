@@ -1,4 +1,4 @@
-### BIOMETRIC
+# BIOMETRIC
 
 ## Authenticate through biometric
 ![alt text](https://github.com/fadlurahmanf/monorepo-kotlin/blob/feature/notification/mapp_example/src/main/res/drawable/proof_biometric.png?raw=true)
