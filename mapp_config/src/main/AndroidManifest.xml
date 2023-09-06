@@ -3,12 +3,11 @@
 
     <application>
         <activity
-            android:name=".presentation.splash.MappSplActivity"
+            android:name=".presentation.MappConfigActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light">
             <intent-filter>
-                <action android:name="com.fadlurahmanf.mapp_config.MappSplActivity" />
-
+                <action android:name="com.fadlurahmanf.mapp_config.MappConfigActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

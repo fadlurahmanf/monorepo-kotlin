@@ -73,4 +73,5 @@ dependencies {
 
     implementation(project(":mapp_config"))
     implementation(project(":mapp_example"))
+    implementation(project(":mapp_splash"))
 }

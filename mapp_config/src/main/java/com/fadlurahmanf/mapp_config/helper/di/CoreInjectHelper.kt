@@ -12,14 +12,14 @@ object CoreInjectHelper {
         if (applicationContext is IMappComponentProvider) {
             return (applicationContext as IMappComponentProvider).provideCorePlatformComponent()
         } else {
-            throw IllegalStateException("application context should be CorePlatformComponent")
+            throw IllegalStateException("application context should be IMappComponentProvider")
         }
     }
     fun provideMappComponent(applicationContext: Context): MappConfigComponent {
         if (applicationContext is IMappComponentProvider) {
             return (applicationContext as IMappComponentProvider).provideMappComponent()
         } else {
-            throw IllegalStateException("application context not contain MappConfigComponent")
+            throw IllegalStateException("application context not contain IMappComponentProvider")
         }
     }
 
@@ -27,7 +27,7 @@ object CoreInjectHelper {
         if (applicationContext is IMappComponentProvider) {
             return (applicationContext as IMappComponentProvider).provideMappFirebaseDatabaseComponent()
         } else {
-            throw IllegalStateException("application context should be CorePlatformComponent")
+            throw IllegalStateException("application context should be IMappComponentProvider")
         }
     }
 }
