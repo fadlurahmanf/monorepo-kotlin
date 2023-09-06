@@ -6,13 +6,11 @@ import com.fadlurahmanf.mapp_splash.presentation.SplashActivity
 import dagger.BindsInstance
 import dagger.Component
 
-@Component(
-    dependencies = [MappConfigComponent::class]
-)
+@Component
 interface MappSplashComponent {
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance context: Context, mapp: MappConfigComponent): MappSplashComponent
+        fun create(@BindsInstance context: Context): MappSplashComponent
     }
 
     fun inject(splashActivity: SplashActivity)

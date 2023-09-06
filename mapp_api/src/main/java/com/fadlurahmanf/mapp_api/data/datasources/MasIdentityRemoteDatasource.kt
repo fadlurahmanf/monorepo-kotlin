@@ -1,4 +1,4 @@
-package com.fadlurahmanf.mapp_api.data.datasources.remote
+package com.fadlurahmanf.mapp_api.data.datasources
 
 import android.content.Context
 import com.fadlurahmanf.mapp_api.data.api.MasIdentityApi

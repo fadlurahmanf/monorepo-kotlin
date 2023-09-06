@@ -50,7 +50,6 @@ dependencies {
 
     implementation(project(":core_platform"))
 
-    implementation(project(":mapp_api"))
     implementation(project(":mapp_firebase_database"))
     implementation(project(":mapp_shared"))
     implementation(project(":mapp_ui"))
