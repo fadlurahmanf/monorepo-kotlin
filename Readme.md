@@ -6,7 +6,7 @@
 ### BIOMETRIC
 
 ## Simple Notification
-![alt text](https://github.com/fadlurahmanf/monorepo-kotlin/blob/feature/notification/mapp_example/src/main/res/drawable/proof_notification.png?raw=true)
+![alt text](https://github.com/fadlurahmanf/monorepo-kotlin/blob/feature/notification/mapp_example/src/main/res/drawable/proof_notification_simple.png?raw=true)
 
 ## Image Notification
 ![alt text](https://github.com/fadlurahmanf/monorepo-kotlin/blob/feature/notification/mapp_example/src/main/res/drawable/proof_notification_image_1.png?raw=true)
