@@ -1,4 +1,4 @@
-package com.fadlurahmanf.mapp_notification.domain
+package com.fadlurahmanf.mapp_notification.domain.repository
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -6,12 +6,12 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.fadlurahmanf.mapp_notification.data.model.NotificationActionModel
 
 abstract class NotificationRepositoryImpl(
     private val context: Context
@@ -52,6 +52,7 @@ abstract class NotificationRepositoryImpl(
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentTitle(title)
             .setContentText(body)
+
     }
 
     override fun areNotificationEnabled(): Boolean {
@@ -60,13 +61,6 @@ abstract class NotificationRepositoryImpl(
         } else {
             TODO("VERSION.SDK_INT < N")
         }
-    }
-
-    override fun showNotification(id: Int, title: String, body: String) {
-        return notificationManager().notify(
-            id,
-            notificationBuilder(title, body).build()
-        )
     }
 
     override fun checkPostNotificationStatus(): Int {
@@ -80,7 +74,45 @@ abstract class NotificationRepositoryImpl(
         }
     }
 
-    override fun showImageNotification(id: Int, title: String, body: String, imageUrl: String) {
+    override fun showNotification(id: Int, title: String, body: String) {
+        return notificationManager().notify(
+            id,
+            notificationBuilder(title, body).build()
+        )
+    }
+
+    override fun showNotification(
+        id: Int,
+        title: String,
+        body: String,
+        actions: List<NotificationActionModel>
+    ) {
+        val builder = notificationBuilder(title, body)
+        actions.forEach {
+            builder.addAction(it.icon, it.title, it.pendingIntent)
+        }
+        notificationManager().notify(id, builder.build())
+    }
+
+    override fun showRawNotification(
+        id: Int,
+        title: String,
+        body: String,
+        actions: List<NotificationCompat.Action>
+    ) {
+        val builder = notificationBuilder(title, body)
+        actions.forEach {
+            builder.addAction(it)
+        }
+        notificationManager().notify(id, builder.build())
+    }
+
+    override fun showImageNotification(
+        id: Int,
+        title: String,
+        body: String,
+        imageUrl: String,
+    ) {
         val builder = notificationBuilder(title, body)
         Glide.with(context)
             .asBitmap()
@@ -99,5 +131,9 @@ abstract class NotificationRepositoryImpl(
                 override fun onLoadCleared(placeholder: Drawable?) {}
 
             })
+    }
+
+    override fun cancelNotification(id: Int) {
+        notificationManager().cancel(id)
     }
 }

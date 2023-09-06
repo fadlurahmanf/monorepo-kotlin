@@ -1,6 +1,7 @@
-package com.fadlurahmanf.mapp_notification.domain
+package com.fadlurahmanf.mapp_notification.domain.repository
 
 import androidx.core.app.NotificationCompat
+import com.fadlurahmanf.mapp_notification.data.model.NotificationActionModel
 
 interface NotificationRepository {
     fun createChannel()
@@ -23,10 +24,28 @@ interface NotificationRepository {
         body: String
     )
 
+    fun showNotification(
+        id: Int,
+        title: String,
+        body: String,
+        actions: List<NotificationActionModel>
+    )
+
+    fun showRawNotification(
+        id: Int,
+        title: String,
+        body: String,
+        actions: List<NotificationCompat.Action>
+    )
+
     fun showImageNotification(
         id: Int,
         title: String,
         body: String,
         imageUrl: String,
+    )
+
+    fun cancelNotification(
+        id: Int
     )
 }

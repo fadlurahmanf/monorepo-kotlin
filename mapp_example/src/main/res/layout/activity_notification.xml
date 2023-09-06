@@ -28,9 +28,33 @@
     <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:text="LONG NOTIFICATION"
+        android:layout_marginTop="10dp"
+        style="@style/Font.Semibold.Button"
+        android:id="@+id/btn_show_long_notification"/>
+
+    <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:text="IMAGE NOTIFICATION"
         android:layout_marginTop="10dp"
         style="@style/Font.Semibold.Button"
         android:id="@+id/btn_show_image_notification"/>
+
+    <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:text="ACTION NOTIFICATION"
+        android:layout_marginTop="10dp"
+        style="@style/Font.Semibold.Button"
+        android:id="@+id/btn_show_action_notification"/>
+
+    <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:text="REPLY NOTIFICATION"
+        android:layout_marginTop="10dp"
+        style="@style/Font.Semibold.Button"
+        android:id="@+id/btn_reply_action_notification"/>
 
 </LinearLayout>

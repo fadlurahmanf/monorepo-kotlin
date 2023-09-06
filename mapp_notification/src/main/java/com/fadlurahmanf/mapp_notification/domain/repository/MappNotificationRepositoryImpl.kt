@@ -1,4 +1,4 @@
-package com.fadlurahmanf.mapp_notification.domain
+package com.fadlurahmanf.mapp_notification.domain.repository
 
 import android.content.Context
 import androidx.core.app.NotificationCompat
