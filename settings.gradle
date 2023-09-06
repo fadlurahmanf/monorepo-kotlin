@@ -10,6 +10,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 rootProject.name = "Monorepo Kotlin"
@@ -18,3 +20,8 @@ include ':mapp'
 include ':core_platform'
 include ':mapp_example'
 include ':mapp_config'
+include ':core_notification'
+include ':mapp_notification'
+include ':mapp_ui'
+include ':mapp_firebase_database'
+include ':mapp_analytic'

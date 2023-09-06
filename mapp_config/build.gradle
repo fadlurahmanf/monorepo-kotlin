@@ -16,6 +16,10 @@ android {
         consumerProguardFiles "consumer-rules.pro"
     }
 
+    buildFeatures {
+        viewBinding true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -44,4 +48,7 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.47'
 
     implementation(project(":core_platform"))
+
+    implementation(project(":mapp_firebase_database"))
+    implementation(project(":mapp_ui"))
 }

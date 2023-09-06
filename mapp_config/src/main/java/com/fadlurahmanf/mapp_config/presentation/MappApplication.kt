@@ -6,10 +6,22 @@ import com.fadlurahmanf.core_platform.DaggerCorePlatformComponent
 import com.fadlurahmanf.mapp_config.DaggerMappConfigComponent
 import com.fadlurahmanf.mapp_config.MappConfigComponent
 import com.fadlurahmanf.mapp_config.domain.di.IMappComponentProvider
+import com.fadlurahmanf.mapp_firebase_database.DaggerMappFirebaseDatabaseComponent
+import com.fadlurahmanf.mapp_firebase_database.MappFirebaseDatabaseComponent
 
 class MappApplication : Application(), IMappComponentProvider {
-    private lateinit var mappComponent: MappConfigComponent
     private lateinit var corePlatformComponent: CorePlatformComponent
+    private lateinit var mappComponent: MappConfigComponent
+    private lateinit var mappFirebaseDatabaseComponent: MappFirebaseDatabaseComponent
+
+    override fun provideCorePlatformComponent(): CorePlatformComponent {
+        return if (this::corePlatformComponent.isInitialized) {
+            corePlatformComponent
+        } else {
+            corePlatformComponent = DaggerCorePlatformComponent.factory().create()
+            corePlatformComponent
+        }
+    }
 
     override fun provideMappComponent(): MappConfigComponent {
         return if (this::mappComponent.isInitialized) {
@@ -21,12 +33,12 @@ class MappApplication : Application(), IMappComponentProvider {
         }
     }
 
-    override fun provideCorePlatformComponent(): CorePlatformComponent {
-        return if (this::corePlatformComponent.isInitialized) {
-            corePlatformComponent
+    override fun provideMappFirebaseDatabaseComponent(): MappFirebaseDatabaseComponent {
+        return if (this::mappFirebaseDatabaseComponent.isInitialized) {
+            mappFirebaseDatabaseComponent
         } else {
-            corePlatformComponent = DaggerCorePlatformComponent.factory().create()
-            corePlatformComponent
+            mappFirebaseDatabaseComponent = DaggerMappFirebaseDatabaseComponent.factory().create()
+            mappFirebaseDatabaseComponent
         }
     }
 }
