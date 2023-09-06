@@ -10,6 +10,7 @@ import com.fadlurahmanf.mapp_example.presentation.BaseExampleActivity
 import com.fadlurahmanf.mapp_example.presentation.biometric.BiometricActivity
 import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity
 import com.fadlurahmanf.mapp_example.presentation.rtc.ListRoomActivity
+import com.fadlurahmanf.mapp_example.presentation.shortcut.ShortcutActivity
 
 class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
     ActivityExampleBinding::inflate
@@ -27,6 +28,12 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                 menuId = "NOTIFICATION",
                 menuTitle = "Notification",
                 menuSubTitle = "Go To Notification",
+                icon = R.drawable.outline_featured_play_list_24
+            ),
+            MenuModel(
+                menuId = "SHORTCUT",
+                menuTitle = "Shortcut",
+                menuSubTitle = "Go To Shortcut",
                 icon = R.drawable.outline_featured_play_list_24
             ),
             MenuModel(
@@ -64,6 +71,7 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                 val intent = Intent(this, BiometricActivity::class.java)
                 startActivity(intent)
             }
+
             "NOTIFICATION" -> {
                 AnalyticHelper.logEvent(
                     AnalyticEvent.ex_notif_clicked,
@@ -72,6 +80,16 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                 val intent = Intent(this, NotificationActivity::class.java)
                 startActivity(intent)
             }
+
+            "SHORTCUT" -> {
+                AnalyticHelper.logEvent(
+                    AnalyticEvent.ex_shortcut_clicked,
+                    AnalyticEvent.defaultParamMap(this)
+                )
+                val intent = Intent(this, ShortcutActivity::class.java)
+                startActivity(intent)
+            }
+
             "LIST_ROOM_RTC" -> {
                 AnalyticHelper.logEvent(
                     AnalyticEvent.ex_list_room_rtc_clicked,
