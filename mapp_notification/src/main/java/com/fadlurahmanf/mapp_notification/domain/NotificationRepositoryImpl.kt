@@ -1,4 +1,4 @@
-package com.fadlurahmanf.core_notification.domain
+package com.fadlurahmanf.mapp_notification.domain
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -6,7 +6,7 @@ import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import javax.inject.Inject
+import androidx.core.content.ContextCompat
 
 abstract class NotificationRepositoryImpl(
     private val context: Context
@@ -49,9 +49,12 @@ abstract class NotificationRepositoryImpl(
             .setContentText(body)
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun areNotificationEnabled(): Boolean {
-        return notificationManager().areNotificationsEnabled()
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            notificationManager().areNotificationsEnabled()
+        } else {
+            TODO("VERSION.SDK_INT < N")
+        }
     }
 
     override fun showNotification(id: Int, title: String, body: String) {
@@ -59,5 +62,16 @@ abstract class NotificationRepositoryImpl(
             id,
             notificationBuilder(title, body).build()
         )
+    }
+
+    override fun checkPostNotificationStatus(): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ContextCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.POST_NOTIFICATIONS
+            )
+        } else {
+            TODO("VERSION.SDK_INT < TIRAMISU")
+        }
     }
 }

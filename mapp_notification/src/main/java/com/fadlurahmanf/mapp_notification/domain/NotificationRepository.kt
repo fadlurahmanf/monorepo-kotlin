@@ -1,4 +1,4 @@
-package com.fadlurahmanf.core_notification.domain
+package com.fadlurahmanf.mapp_notification.domain
 
 import androidx.core.app.NotificationCompat
 
@@ -14,6 +14,8 @@ interface NotificationRepository {
      * cek untuk android 12 kebawah
      * */
     fun areNotificationEnabled():Boolean
+
+    fun checkPostNotificationStatus():Int
 
     fun showNotification(
         id: Int,

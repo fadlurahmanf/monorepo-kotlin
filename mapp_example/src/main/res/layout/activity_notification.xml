@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.notification.NotificationActivity"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_gravity="center"
     android:paddingHorizontal="10dp"
     android:gravity="center">
@@ -14,6 +14,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:text="CHECK PERMISSION"
+        style="@style/Font.Semibold.Button"
         android:id="@+id/btn_notification_permission"/>
+
+    <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:text="SIMPLE NOTIFICATION"
+        android:layout_marginTop="10dp"
+        style="@style/Font.Semibold.Button"
+        android:id="@+id/btn_show_notification"/>
 
 </LinearLayout>
