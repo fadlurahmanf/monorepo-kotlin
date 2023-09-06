@@ -45,6 +45,10 @@ interface NotificationRepository {
         imageUrl: String,
     )
 
+    fun showMessagingSyleNotification(
+        id: Int, title: String, body: String
+    )
+
     fun cancelNotification(
         id: Int
     )

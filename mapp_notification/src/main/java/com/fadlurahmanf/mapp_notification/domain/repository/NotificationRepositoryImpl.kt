@@ -6,7 +6,9 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.os.Bundle
 import androidx.core.app.NotificationCompat
+import androidx.core.app.Person
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -131,6 +133,30 @@ abstract class NotificationRepositoryImpl(
                 override fun onLoadCleared(placeholder: Drawable?) {}
 
             })
+    }
+
+    override fun showMessagingSyleNotification(
+        id: Int, title: String, body: String
+    ) {
+        val builder = notificationBuilder(title, body)
+
+        val person = Person.fromBundle(Bundle().apply {
+            putString("name", "SEND NAME")
+            putString("uri", "https://raw.githubusercontent.com/TutorialsBuzz/cdn/main/android.jpg")
+        })
+
+        val mes = NotificationCompat.MessagingStyle.Message("TES", System.currentTimeMillis(), person)
+
+        builder.setStyle(
+            NotificationCompat.MessagingStyle("Me")
+                .setConversationTitle("CONVERSATION TITLE")
+                .addMessage("TEXT 1", System.currentTimeMillis(), "SENDER")
+                .addMessage("TEXT 2", System.currentTimeMillis(), "SENDER 2")
+
+        )
+        notificationManager().notify(
+            id, builder.build()
+        )
     }
 
     override fun cancelNotification(id: Int) {
