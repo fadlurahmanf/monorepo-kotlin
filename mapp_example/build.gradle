@@ -56,8 +56,6 @@ dependencies {
 
     implementation("org.webrtc:google-webrtc:1.0.32006")
 
-
-    implementation(project(":core_config"))
     implementation(project(":core_notification"))
     implementation(project(":core_platform"))
 

@@ -100,7 +100,6 @@ class CallViewModel {
         }
     }
 
-
     private val localVideoSource: VideoSource by lazy {
         getLocalVideoSources()
     }

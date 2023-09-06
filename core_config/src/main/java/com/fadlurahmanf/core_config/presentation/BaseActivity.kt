@@ -29,8 +29,4 @@ abstract class BaseActivity<VB : ViewBinding>(
     abstract fun injectActivity()
 
     abstract fun setup()
-
-    open fun tes(){
-
-    }
 }

@@ -83,6 +83,8 @@ class CallActivity : BaseExampleActivity<ActivityCallBinding>(
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) {
                 onSuccessCheckCamera()
+            }else{
+                showFailedBottomsheet()
             }
         }
 

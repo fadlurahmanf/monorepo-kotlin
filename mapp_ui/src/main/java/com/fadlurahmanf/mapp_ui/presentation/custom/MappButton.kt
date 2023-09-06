@@ -1,4 +1,4 @@
-package com.fadlurahmanf.mapp_ui.custom
+package com.fadlurahmanf.mapp_ui.presentation.custom
 
 import android.content.Context
 import android.content.res.TypedArray
@@ -15,7 +15,7 @@ class MappButton(context: Context, attributeSet: AttributeSet) :
     private var attributes: TypedArray
     private var button: Button
 
-    private var text: String
+    var text: String
     private var active: Boolean
 
     init {
@@ -31,7 +31,7 @@ class MappButton(context: Context, attributeSet: AttributeSet) :
     }
 
     private fun setup() {
-        setText(text)
+        setButtonText(text)
         setActive(active)
     }
 
@@ -45,7 +45,7 @@ class MappButton(context: Context, attributeSet: AttributeSet) :
         }
     }
 
-    private fun setText(text: String) {
+    fun setButtonText(text: String) {
         button.text = text
     }
 

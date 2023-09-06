@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_green_button_background"
         android:text=""
+        style="@style/Font.Semibold.Button"
         android:textAllCaps="false"
         android:textColor="@color/white" />
 </LinearLayout>

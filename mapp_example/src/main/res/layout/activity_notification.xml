@@ -10,11 +10,10 @@
     android:paddingHorizontal="10dp"
     android:gravity="center">
 
-    <com.fadlurahmanf.mapp_ui.custom.MappButton
+    <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:text="CHECK PERMISSION"
-        android:text="CHECK NOTIFICATION PERMISSION"
         android:id="@+id/btn_notification_permission"/>
 
 </LinearLayout>
