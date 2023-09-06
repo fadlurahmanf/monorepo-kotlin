@@ -40,7 +40,7 @@ class NotificationActivity :
         }
 
         binding.btnShowLongNotification.onClicked {
-            notificationRepository.showNotification(
+            notificationRepository.showLongNotification(
                 Random.nextInt(999),
                 title = "Title Notification",
                 body = "Body Notification Body Notification Body Notification Body Notification Body Notification Body Notification Body Notification Body Notification Body Notification Body Notification Body Notification Body Notification Body Notification Body Notification Body Notification Body Notification Body Notification Body Notification Body Notification Body Notification Body Notification Body Notification Body Notification"

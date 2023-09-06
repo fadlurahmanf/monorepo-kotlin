@@ -96,6 +96,15 @@ abstract class NotificationRepositoryImpl(
         notificationManager().notify(id, builder.build())
     }
 
+    override fun showLongNotification(id: Int, title: String, body: String) {
+        val builder = notificationBuilder(title, body)
+        builder.setStyle(
+            NotificationCompat.BigTextStyle()
+                .bigText(body)
+        )
+        notificationManager().notify(id, builder.build())
+    }
+
     override fun showRawNotification(
         id: Int,
         title: String,
@@ -145,7 +154,8 @@ abstract class NotificationRepositoryImpl(
             putString("uri", "https://raw.githubusercontent.com/TutorialsBuzz/cdn/main/android.jpg")
         })
 
-        val mes = NotificationCompat.MessagingStyle.Message("TES", System.currentTimeMillis(), person)
+        val mes =
+            NotificationCompat.MessagingStyle.Message("TES", System.currentTimeMillis(), person)
 
         builder.setStyle(
             NotificationCompat.MessagingStyle("Me")

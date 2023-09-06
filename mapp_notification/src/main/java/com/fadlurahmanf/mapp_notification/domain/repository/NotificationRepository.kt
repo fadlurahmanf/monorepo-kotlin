@@ -24,6 +24,12 @@ interface NotificationRepository {
         body: String
     )
 
+    fun showLongNotification(
+        id: Int,
+        title: String,
+        body: String
+    )
+
     fun showNotification(
         id: Int,
         title: String,
