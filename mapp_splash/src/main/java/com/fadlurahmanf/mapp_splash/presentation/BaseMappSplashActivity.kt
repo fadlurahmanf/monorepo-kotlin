@@ -14,6 +14,7 @@ abstract class BaseMappSplashActivity<VB : ViewBinding>(
     override fun initComponent() {
         component = DaggerMappSplashComponent.factory()
             .create(
+                applicationContext,
                 CoreInjectHelper.provideMappComponent(applicationContext),
             )
     }

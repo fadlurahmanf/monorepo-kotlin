@@ -50,7 +50,7 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.47'
     kapt 'com.google.dagger:dagger-compiler:2.47'
 
-//    implementation(project(":mapp_api"))
+    implementation(project(":mapp_api"))
     implementation(project(":mapp_config"))
     implementation(project(":mapp_ui"))
 }

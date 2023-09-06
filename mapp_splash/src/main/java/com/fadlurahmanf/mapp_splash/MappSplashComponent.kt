@@ -1,7 +1,9 @@
 package com.fadlurahmanf.mapp_splash
 
+import android.content.Context
 import com.fadlurahmanf.mapp_config.MappConfigComponent
 import com.fadlurahmanf.mapp_splash.presentation.SplashActivity
+import dagger.BindsInstance
 import dagger.Component
 
 @Component(
@@ -10,7 +12,7 @@ import dagger.Component
 interface MappSplashComponent {
     @Component.Factory
     interface Factory {
-        fun create(mapp: MappConfigComponent): MappSplashComponent
+        fun create(@BindsInstance context: Context, mapp: MappConfigComponent): MappSplashComponent
     }
 
     fun inject(splashActivity: SplashActivity)
