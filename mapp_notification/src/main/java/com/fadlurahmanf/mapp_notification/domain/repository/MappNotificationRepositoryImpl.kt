@@ -1,11 +1,11 @@
-package com.fadlurahmanf.mapp_notification
+package com.fadlurahmanf.mapp_notification.domain.repository
 
 import android.content.Context
 import androidx.core.app.NotificationCompat
-import com.fadlurahmanf.core_notification.domain.NotificationRepositoryImpl
+import com.fadlurahmanf.mapp_notification.R
 
 class MappNotificationRepositoryImpl(
-    private val context: Context
+    context: Context
 ) : NotificationRepositoryImpl(context) {
 
     override val channel: String
