@@ -20,3 +20,6 @@
 
 ## Messaging Notification
 ![alt text](https://github.com/fadlurahmanf/monorepo-kotlin/blob/feature/notification/mapp_example/src/main/res/drawable/proof_notification_messaging.png?raw=true)
+
+# NOTIFICATION
+![alt text](https://github.com/fadlurahmanf/monorepo-kotlin/blob/feature/notification/mapp_example/src/main/res/drawable/proof_shortcut.png?raw=true)
