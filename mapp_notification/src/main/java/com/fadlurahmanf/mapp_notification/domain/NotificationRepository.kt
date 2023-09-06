@@ -13,13 +13,20 @@ interface NotificationRepository {
     /**
      * cek untuk android 12 kebawah
      * */
-    fun areNotificationEnabled():Boolean
+    fun areNotificationEnabled(): Boolean
 
-    fun checkPostNotificationStatus():Int
+    fun checkPostNotificationStatus(): Int
 
     fun showNotification(
         id: Int,
         title: String,
         body: String
+    )
+
+    fun showImageNotification(
+        id: Int,
+        title: String,
+        body: String,
+        imageUrl: String,
     )
 }

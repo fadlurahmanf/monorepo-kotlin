@@ -33,5 +33,14 @@ class NotificationActivity :
                 body = "BODY NOTIFICATION"
             )
         }
+
+        binding.btnShowImageNotification.onClicked {
+            notificationRepository.showImageNotification(
+                Random.nextInt(999),
+                title = "Example Image Notification",
+                body = "Example Image Body Notification",
+                imageUrl = "https://raw.githubusercontent.com/TutorialsBuzz/cdn/main/android.jpg"
+            )
+        }
     }
 }

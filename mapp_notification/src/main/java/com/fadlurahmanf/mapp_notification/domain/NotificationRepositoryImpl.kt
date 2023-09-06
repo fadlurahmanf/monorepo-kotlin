@@ -3,10 +3,15 @@ package com.fadlurahmanf.mapp_notification.domain
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 
 abstract class NotificationRepositoryImpl(
     private val context: Context
@@ -73,5 +78,26 @@ abstract class NotificationRepositoryImpl(
         } else {
             TODO("VERSION.SDK_INT < TIRAMISU")
         }
+    }
+
+    override fun showImageNotification(id: Int, title: String, body: String, imageUrl: String) {
+        val builder = notificationBuilder(title, body)
+        Glide.with(context)
+            .asBitmap()
+            .load(imageUrl)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap>?
+                ) {
+                    builder.setLargeIcon(resource)
+                    builder.setStyle(NotificationCompat.BigPictureStyle().bigPicture(resource))
+                    notificationManager()
+                        .notify(id, builder.build())
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {}
+
+            })
     }
 }
