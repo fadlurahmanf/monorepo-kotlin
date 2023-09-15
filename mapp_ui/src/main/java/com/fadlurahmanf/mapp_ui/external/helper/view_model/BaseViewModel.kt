@@ -1,4 +1,4 @@
-package com.fadlurahmanf.mapp_ui.presentation.view_model
+package com.fadlurahmanf.mapp_ui.external.helper.view_model
 
 import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.disposables.CompositeDisposable
