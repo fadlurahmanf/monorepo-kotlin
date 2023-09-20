@@ -1,5 +1,6 @@
 package com.fadlurahmanf.mapp_example
 
+import com.fadlurahmanf.core_crypto.CoreCryptoComponent
 import com.fadlurahmanf.core_platform.CorePlatformComponent
 import com.fadlurahmanf.mapp_config.MappConfigComponent
 import com.fadlurahmanf.mapp_example.presentation.biometric.BiometricActivity
@@ -13,6 +14,7 @@ import dagger.Component
 
 @Component(
     dependencies = [
+        CoreCryptoComponent::class,
         CorePlatformComponent::class,
         MappConfigComponent::class,
         MappFirebaseDatabaseComponent::class
@@ -23,6 +25,7 @@ interface MappExampleComponent {
     @Component.Factory
     interface Factory {
         fun create(
+            coreCrypto: CoreCryptoComponent,
             corePlatform: CorePlatformComponent,
             mapp: MappConfigComponent,
             mappFirebaseDatabase: MappFirebaseDatabaseComponent

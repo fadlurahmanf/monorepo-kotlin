@@ -1,19 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.crypto.RsaActivity"
-    android:layout_gravity="center"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".presentation.crypto.RsaActivity">
 
-    <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:text="GENERATE KEY"
-        style="@style/Font.Semibold.Button"
-        android:id="@+id/btn_generate_key"/>
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp">
 
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_key"
+            android:text="KEY: ??"/>
+
+        <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="GENERATE KEY"
+            style="@style/Font.Semibold.Button"
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_generate_key"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_encrypted_text"
+            android:layout_marginTop="10dp"
+            android:text="ENCRYPTED TEXT: ??"/>
+
+        <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="ENCRYPT TEXT"
+            style="@style/Font.Semibold.Button"
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_encrypt"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_decrypted_text"
+            android:layout_marginTop="10dp"
+            android:text="DECRYPTED TEXT: ??"/>
+
+        <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="ENCRYPT TEXT"
+            style="@style/Font.Semibold.Button"
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_decrypt"/>
+    </LinearLayout>
+
+</ScrollView>

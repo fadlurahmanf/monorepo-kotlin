@@ -5,7 +5,7 @@ import com.fadlurahmanf.core_crypto.data.dto.model.CryptoKey
 import java.security.PrivateKey
 import java.security.PublicKey
 
-interface CryptoRepository {
+interface CryptoRSARepository {
     fun generateKey(): CryptoKey
     fun loadPublicKey(encodedPublicKey: String): PublicKey
     fun loadPrivateKey(encodedPrivateKey: String): PrivateKey

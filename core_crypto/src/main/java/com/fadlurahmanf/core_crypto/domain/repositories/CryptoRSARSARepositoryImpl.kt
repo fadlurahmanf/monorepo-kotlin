@@ -12,7 +12,7 @@ import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
 
-class CryptoRSARepositoryImpl : BaseCrypto(), CryptoRepository {
+class CryptoRSARSARepositoryImpl : BaseCrypto(), CryptoRSARepository {
     override fun generateKey(): CryptoKey {
         val keyGen = KeyPairGenerator.getInstance("RSA")
         keyGen.initialize(2048)

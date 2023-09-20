@@ -60,6 +60,7 @@ dependencies {
 
     implementation("org.webrtc:google-webrtc:1.0.32006")
 
+    implementation(project(":core_crypto"))
     implementation(project(":core_platform"))
 
     implementation(project(":mapp_analytic"))
