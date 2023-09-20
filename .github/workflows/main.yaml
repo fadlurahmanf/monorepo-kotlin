@@ -42,7 +42,7 @@ jobs:
         id: apk-info
         uses: hkusu/apk-info-action@v1
         with:
-          apk-path: app/build/outputs/apk/dev/release/mapp-dev-release.apk
+          apk-path: mapp/build/outputs/apk/dev/release/mapp-dev-release.apk
       - name: Print APK Info
         run: |
           echo '${{ steps.apk-info.outputs.version-name }}'
