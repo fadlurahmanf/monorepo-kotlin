@@ -3,13 +3,17 @@
 
     <application>
         <activity
-            android:name=".presentation.shortcut.ShortcutActivity"
+            android:name=".presentation.crypto.RsaActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light"/>
         <activity
+            android:name=".presentation.shortcut.ShortcutActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light" />
+        <activity
             android:name=".presentation.rtc.CallActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light"/>
+            android:theme="@style/Theme.AppCompat.Light" />
         <activity
             android:name=".presentation.rtc.ListRoomActivity"
             android:exported="false"
@@ -21,7 +25,7 @@
         <activity
             android:name=".presentation.example.ExampleActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light"/>
+            android:theme="@style/Theme.AppCompat.Light" />
         <activity
             android:name=".presentation.notification.NotificationActivity"
             android:exported="false" />

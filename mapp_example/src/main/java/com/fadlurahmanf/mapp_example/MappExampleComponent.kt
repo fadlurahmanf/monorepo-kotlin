@@ -3,6 +3,7 @@ package com.fadlurahmanf.mapp_example
 import com.fadlurahmanf.core_platform.CorePlatformComponent
 import com.fadlurahmanf.mapp_config.MappConfigComponent
 import com.fadlurahmanf.mapp_example.presentation.biometric.BiometricActivity
+import com.fadlurahmanf.mapp_example.presentation.crypto.RsaActivity
 import com.fadlurahmanf.mapp_example.presentation.example.ExampleActivity
 import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity
 import com.fadlurahmanf.mapp_example.presentation.rtc.CallActivity
@@ -33,4 +34,5 @@ interface MappExampleComponent {
     fun inject(activity: NotificationActivity)
     fun inject(activity: ListRoomActivity)
     fun inject(activity: CallActivity)
+    fun inject(activity: RsaActivity)
 }

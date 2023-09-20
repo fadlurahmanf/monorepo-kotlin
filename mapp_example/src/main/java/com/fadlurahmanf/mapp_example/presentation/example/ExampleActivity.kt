@@ -8,6 +8,7 @@ import com.fadlurahmanf.mapp_example.data.dto.model.MenuModel
 import com.fadlurahmanf.mapp_example.databinding.ActivityExampleBinding
 import com.fadlurahmanf.mapp_example.presentation.BaseExampleActivity
 import com.fadlurahmanf.mapp_example.presentation.biometric.BiometricActivity
+import com.fadlurahmanf.mapp_example.presentation.crypto.RsaActivity
 import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity
 import com.fadlurahmanf.mapp_example.presentation.rtc.ListRoomActivity
 import com.fadlurahmanf.mapp_example.presentation.shortcut.ShortcutActivity
@@ -35,6 +36,12 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                 menuTitle = "Shortcut",
                 menuSubTitle = "Go To Shortcut",
                 icon = R.drawable.outline_featured_play_list_24
+            ),
+            MenuModel(
+                menuId = "RSA",
+                menuTitle = "RSA",
+                menuSubTitle = "Go To RSA SCREEN",
+                icon = R.drawable.outline_lock_24
             ),
             MenuModel(
                 menuId = "LIST_ROOM_RTC",
@@ -87,6 +94,15 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                     AnalyticEvent.defaultParamMap(this)
                 )
                 val intent = Intent(this, ShortcutActivity::class.java)
+                startActivity(intent)
+            }
+
+            "RSA" -> {
+                AnalyticHelper.logEvent(
+                    AnalyticEvent.ex_rsa_clicked,
+                    AnalyticEvent.defaultParamMap(this)
+                )
+                val intent = Intent(this, RsaActivity::class.java)
                 startActivity(intent)
             }
 
