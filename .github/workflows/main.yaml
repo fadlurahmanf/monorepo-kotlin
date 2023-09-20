@@ -24,14 +24,13 @@ jobs:
           echo "release.keystore.keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> signing.properties
           echo "release.keystore.storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> signing.properties
           cat signing.properties
-      - name: Setup Gradle
+      - name: Clean & Build Dev Apk
         uses: gradle/gradle-build-action@v2
         with:
           gradle-version: 7.4
-      - name: Clean Mapp
-        run: ./gradlew :mapp:clean
-      - name: Build Dev Apk
-        run: ./gradlew :mapp:assembleDevRelease
+        run: |
+          ./gradlew :mapp:clean
+          ./gradlew :mapp:assembleDevRelease
       - name: Upload Apk Dev
         uses: actions/upload-artifact@v1
         with:
