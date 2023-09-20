@@ -1,6 +1,8 @@
 on:
   push:
-    branches: [ dev, feature/* ]
+    branches:
+      - dev
+      - feature/*
 name: "Deploy Dev APK"
 
 jobs:
