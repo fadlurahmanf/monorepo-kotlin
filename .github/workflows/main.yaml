@@ -27,7 +27,7 @@ jobs:
       - name: Setup Gradle
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: '19'
           distribution: 'temurin'
       - name: Clean Mapp
         run: ./gradlew :mapp:clean
