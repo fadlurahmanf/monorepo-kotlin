@@ -59,6 +59,7 @@ dependencies {
     implementation(project(":core_platform"))
 
     implementation(project(":mapp_analytic"))
+    implementation(project(":mapp_api"))
     implementation(project(":mapp_config"))
     implementation(project(":mapp_firebase_database"))
     implementation(project(":mapp_notification"))

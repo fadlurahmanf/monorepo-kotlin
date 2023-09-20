@@ -9,7 +9,12 @@ class MappActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mapp)
-        val intent = Intent("com.fadlurahmanf.mapp_example.EXAMPLE_ACTIVITY")
+        val flavor = BuildConfig.FLAVOR
+        val intent = Intent("com.fadlurahmanf.mapp_config.MappConfigActivity")
+        intent.apply {
+            putExtra("FLAVOR", flavor)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        }
         startActivity(intent)
     }
 }

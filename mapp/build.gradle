@@ -6,6 +6,12 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('signing.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     namespace 'com.fadlurahmanf.mapp'
     compileSdk 33
@@ -24,6 +30,21 @@ android {
         buildConfigField "String", "BASE_QURAN_URL", "\"TES\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs{
+        debug {
+
+        }
+
+        release {
+            if (keystoreProperties['release.keystore'] != null) {
+                storeFile file(keystoreProperties['release.keystore'])
+            }
+            keyAlias keystoreProperties['release.keystore.alias']
+            keyPassword keystoreProperties['release.keystore.keyPassword']
+            storePassword keystoreProperties['release.keystore.storePassword']
+        }
     }
 
     buildTypes {
@@ -71,6 +92,15 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
     implementation("com.google.firebase:firebase-analytics-ktx")
 
+    implementation(project(":core_platform"))
+
+    implementation(project(":mapp_analytic"))
+    implementation(project(":mapp_api"))
     implementation(project(":mapp_config"))
     implementation(project(":mapp_example"))
+    implementation(project(":mapp_firebase_database"))
+    implementation(project(":mapp_notification"))
+    implementation(project(":mapp_shared"))
+    implementation(project(":mapp_splash"))
+    implementation(project(":mapp_ui"))
 }
