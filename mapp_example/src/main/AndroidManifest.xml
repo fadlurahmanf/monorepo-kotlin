@@ -3,9 +3,13 @@
 
     <application>
         <activity
+            android:name=".presentation.crypto.ED25119Activity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light" />
+        <activity
             android:name=".presentation.crypto.AesActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light"/>
+            android:theme="@style/Theme.AppCompat.Light" />
         <activity
             android:name=".presentation.crypto.RsaActivity"
             android:exported="false"

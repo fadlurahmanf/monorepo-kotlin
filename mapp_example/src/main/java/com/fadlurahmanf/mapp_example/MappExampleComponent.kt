@@ -5,6 +5,7 @@ import com.fadlurahmanf.core_platform.CorePlatformComponent
 import com.fadlurahmanf.mapp_config.MappConfigComponent
 import com.fadlurahmanf.mapp_example.presentation.biometric.BiometricActivity
 import com.fadlurahmanf.mapp_example.presentation.crypto.AesActivity
+import com.fadlurahmanf.mapp_example.presentation.crypto.ED25119Activity
 import com.fadlurahmanf.mapp_example.presentation.crypto.RsaActivity
 import com.fadlurahmanf.mapp_example.presentation.example.ExampleActivity
 import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity
@@ -40,4 +41,5 @@ interface MappExampleComponent {
     fun inject(activity: CallActivity)
     fun inject(activity: RsaActivity)
     fun inject(activity: AesActivity)
+    fun inject(activity: ED25119Activity)
 }

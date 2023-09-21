@@ -47,4 +47,7 @@ dependencies {
 
     implementation 'com.google.dagger:dagger:2.47'
     kapt 'com.google.dagger:dagger-compiler:2.47'
+
+    // ed25519
+    implementation("org.bouncycastle:bcprov-jdk15on:1.70")
 }
