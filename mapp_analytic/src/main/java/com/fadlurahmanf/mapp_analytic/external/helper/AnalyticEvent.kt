@@ -9,6 +9,7 @@ object AnalyticEvent {
     const val ex_biometric_clicked = "ex_biometric_clicked"
     const val ex_shortcut_clicked = "ex_shortcut_clicked"
     const val ex_rsa_clicked = "ex_rsa_clicked"
+    const val ex_aes_clicked = "ex_aes_clicked"
     const val ex_list_room_rtc_clicked = "ex_list_room_rtc_clicked"
 
     fun defaultParamMap(context: Context): Map<String, Any> {

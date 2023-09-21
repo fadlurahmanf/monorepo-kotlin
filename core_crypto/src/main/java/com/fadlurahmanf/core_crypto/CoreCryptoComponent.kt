@@ -1,5 +1,6 @@
 package com.fadlurahmanf.core_crypto
 
+import com.fadlurahmanf.core_crypto.domain.repositories.CryptoAESRepository
 import com.fadlurahmanf.core_crypto.domain.repositories.CryptoRSARepository
 import dagger.Component
 
@@ -7,6 +8,7 @@ import dagger.Component
 interface CoreCryptoComponent {
 
     fun provideCryptoRSARepository():CryptoRSARepository
+    fun provideCryptoAESRepository():CryptoAESRepository
 
     @Component.Factory
     interface Factory {

@@ -1,5 +1,7 @@
 package com.fadlurahmanf.core_crypto
 
+import com.fadlurahmanf.core_crypto.domain.repositories.CryptoAESRepository
+import com.fadlurahmanf.core_crypto.domain.repositories.CryptoAESRepositoryImpl
 import com.fadlurahmanf.core_crypto.domain.repositories.CryptoRSARSARepositoryImpl
 import com.fadlurahmanf.core_crypto.domain.repositories.CryptoRSARepository
 import dagger.Module
@@ -11,5 +13,10 @@ class CoreCryptoModule {
     @Provides
     fun provideCryptoRSARepository(): CryptoRSARepository {
         return CryptoRSARSARepositoryImpl()
+    }
+
+    @Provides
+    fun provideCryptoAESRepository(): CryptoAESRepository {
+        return CryptoAESRepositoryImpl()
     }
 }

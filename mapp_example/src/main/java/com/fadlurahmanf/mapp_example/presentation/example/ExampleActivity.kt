@@ -8,6 +8,7 @@ import com.fadlurahmanf.mapp_example.data.dto.model.MenuModel
 import com.fadlurahmanf.mapp_example.databinding.ActivityExampleBinding
 import com.fadlurahmanf.mapp_example.presentation.BaseExampleActivity
 import com.fadlurahmanf.mapp_example.presentation.biometric.BiometricActivity
+import com.fadlurahmanf.mapp_example.presentation.crypto.AesActivity
 import com.fadlurahmanf.mapp_example.presentation.crypto.RsaActivity
 import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity
 import com.fadlurahmanf.mapp_example.presentation.rtc.ListRoomActivity
@@ -41,6 +42,12 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                 menuId = "RSA",
                 menuTitle = "RSA",
                 menuSubTitle = "Go To RSA SCREEN",
+                icon = R.drawable.outline_lock_24
+            ),
+            MenuModel(
+                menuId = "AES",
+                menuTitle = "AES",
+                menuSubTitle = "Go To AES SCREEN",
                 icon = R.drawable.outline_lock_24
             ),
             MenuModel(
@@ -103,6 +110,15 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                     AnalyticEvent.defaultParamMap(this)
                 )
                 val intent = Intent(this, RsaActivity::class.java)
+                startActivity(intent)
+            }
+
+            "AES" -> {
+                AnalyticHelper.logEvent(
+                    AnalyticEvent.ex_aes_clicked,
+                    AnalyticEvent.defaultParamMap(this)
+                )
+                val intent = Intent(this, AesActivity::class.java)
                 startActivity(intent)
             }
 
