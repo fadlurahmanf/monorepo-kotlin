@@ -1,5 +1,7 @@
 package com.fadlurahmanf.core_crypto.domain.repositories
 
+import android.R.attr
+import com.fadlurahmanf.core_crypto.data.dto.*
 import com.fadlurahmanf.core_crypto.data.dto.enum.PaddingScheme
 import com.fadlurahmanf.core_crypto.data.dto.exception.CryptoException
 import com.fadlurahmanf.core_crypto.data.dto.model.CryptoKey
@@ -8,9 +10,11 @@ import java.security.KeyFactory
 import java.security.KeyPairGenerator
 import java.security.PrivateKey
 import java.security.PublicKey
+import java.security.Signature
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
+
 
 class CryptoRSARSARepositoryImpl : BaseCrypto(), CryptoRSARepository {
     override fun generateKey(): CryptoKey {
@@ -83,5 +87,19 @@ class CryptoRSARSARepositoryImpl : BaseCrypto(), CryptoRSARepository {
         } catch (e: Throwable) {
             null
         }
+    }
+
+    override fun createSignature(encodedPrivateKey: String, text:String): String {
+        val instance = Signature.getInstance("MD5WithRSA")
+        instance.initSign(loadPrivateKey(encodedPrivateKey))
+        instance.update(text.toByteArray())
+        return encode(instance.sign())
+    }
+
+    override fun verifySignature(encodedPublicKey: String, text: String, signature:String): Boolean {
+        val instance = Signature.getInstance("MD5WithRSA")
+        instance.initVerify(loadPublicKey(encodedPublicKey))
+        instance.update(text.toByteArray())
+        return instance.verify(decode(signature))
     }
 }

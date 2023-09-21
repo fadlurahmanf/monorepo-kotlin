@@ -18,6 +18,7 @@ class RsaActivity : BaseExampleActivity<ActivityRsaBinding>(ActivityRsaBinding::
 
     private lateinit var cryptoKey: CryptoKey
     private lateinit var encryptedText: String
+    private lateinit var signatureText: String
 
     override fun setup() {
         binding.btnGenerateKey.onClicked {
@@ -34,6 +35,15 @@ class RsaActivity : BaseExampleActivity<ActivityRsaBinding>(ActivityRsaBinding::
         binding.btnDecrypt.onClicked {
             binding.tvDecryptedText.text =
                 "DECRYPTED TEXT: ${rsaRepository.decrypt(encryptedText, cryptoKey.privateKey)}"
+        }
+
+        binding.btnSignature.onClicked {
+            signatureText = rsaRepository.createSignature(cryptoKey.privateKey, "PLAIN_TEXT")
+            binding.tvSignatureText.text = "SIGNATURE: $signatureText"
+        }
+
+        binding.btnVerifySignature.onClicked {
+            binding.tvVerifySignature.text = "IS VERIFY: ${rsaRepository.verifySignature(cryptoKey.publicKey, "PLAIN_TEXT", signatureText)}"
         }
     }
 }

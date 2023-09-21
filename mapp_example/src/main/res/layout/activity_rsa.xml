@@ -53,10 +53,40 @@
         <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:text="ENCRYPT TEXT"
+            app:text="DECRYPT TEXT"
             style="@style/Font.Semibold.Button"
             android:layout_marginTop="10dp"
             android:id="@+id/btn_decrypt"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_signature_text"
+            android:layout_marginTop="10dp"
+            android:text="SIGNATURE TEXT: ??"/>
+
+        <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="CREATE SIGNATURE"
+            style="@style/Font.Semibold.Button"
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_signature"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_verify_signature"
+            android:layout_marginTop="10dp"
+            android:text="IS VERIFY : ??"/>
+
+        <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="VERIFY SIGNATURE"
+            style="@style/Font.Semibold.Button"
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_verify_signature"/>
     </LinearLayout>
 
 </ScrollView>
