@@ -57,6 +57,7 @@
             style="@style/Font.Semibold.Button"
             android:layout_marginTop="10dp"
             android:id="@+id/btn_verify_signature"/>
+
     </LinearLayout>
 
 </ScrollView>
