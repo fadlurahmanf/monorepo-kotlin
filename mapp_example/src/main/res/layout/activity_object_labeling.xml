@@ -11,9 +11,17 @@
         android:layout_height="match_parent"
         android:id="@+id/cameraView"/>
 
-    <com.fadlurahmanf.mapp_example.presentation.mlkit.SquareOverlayView
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black_opacity"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_result"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="RESULT: ??"
+        android:background="@color/white"
+        android:layout_marginBottom="100dp"
+        android:layout_marginHorizontal="20dp"
+        android:padding="10dp"
+        android:gravity="center"
+        android:textColor="@color/black"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

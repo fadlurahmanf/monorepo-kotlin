@@ -32,9 +32,18 @@ class ObjectLabelingActivity :
 
     private val listener = object : ImageLabelAnalyzer.Listener {
         override fun onSuccessGetLabels(labels: List<ImageLabel>, image: ImageProxy) {
+            var text: String? = null
+            var confidence: Float? = null
             Log.d("MappActivity", "MASUK ON SUCCESS GET LABELS: ${labels.size}")
             labels.forEach {
                 Log.d("MappActivity", "LABELS: ${it.text} & ${it.confidence}")
+                if (confidence == null || it.confidence >= (confidence ?: 0f)) {
+                    confidence = it.confidence
+                    text = it.text
+                }
+            }
+            if (text != null && confidence != null) {
+                binding.tvResult.text = "LABEL: ${text} & CONFIDENCE: ${confidence ?: 0 * 100}%"
             }
             this@ObjectLabelingActivity.image = image
             this@ObjectLabelingActivity.labels = labels
