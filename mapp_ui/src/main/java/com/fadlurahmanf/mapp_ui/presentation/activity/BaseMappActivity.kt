@@ -41,7 +41,7 @@ abstract class BaseMappActivity<VB : ViewBinding>(
         @DrawableRes drawableRes: Int = R.drawable.il_happy,
         title: String,
         desc: String,
-        buttonText: String = "Okay"
+        buttonText: String
     ) {
         if (_isShowInfoBottomsheet == true) {
             dismissInfoBottomsheet()
@@ -60,7 +60,10 @@ abstract class BaseMappActivity<VB : ViewBinding>(
 
     fun showFailedBottomsheet(
         isCancelable: Boolean = true,
-        @DrawableRes drawableRes: Int = R.drawable.il_sad
+        @DrawableRes drawableRes: Int = R.drawable.il_sad,
+        title: String,
+        desc: String,
+        buttonText: String
     ) {
         if (_isShowInfoBottomsheet == true) {
             dismissInfoBottomsheet()
@@ -69,6 +72,9 @@ abstract class BaseMappActivity<VB : ViewBinding>(
         _infoBottomsheet?.arguments = Bundle().apply {
             putBoolean(InfoBottomsheet.IS_DIALOG_CANCELABLE, isCancelable)
             putInt(InfoBottomsheet.DRAWABLE_RES, drawableRes)
+            putString(InfoBottomsheet.TITLE_TEXT, title)
+            putString(InfoBottomsheet.DESC_TEXT, desc)
+            putString(InfoBottomsheet.BUTTON_TEXT, buttonText)
         }
         _infoBottomsheet?.show(supportFragmentManager, InfoBottomsheet::class.java.simpleName)
         _isShowInfoBottomsheet = true

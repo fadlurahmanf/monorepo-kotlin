@@ -34,7 +34,8 @@ class BiometricActivity : BaseExampleActivity<ActivityBiometricBinding>(
                         override fun onAuthenticationSuccess(result: BiometricPrompt.AuthenticationResult?) {
                             showInfoBottomsheet(
                                 title = "Biometric",
-                                desc = "Biometric Success"
+                                desc = "Biometric Success",
+                                buttonText = "Okey"
                             )
                         }
 

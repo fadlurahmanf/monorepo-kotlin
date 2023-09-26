@@ -1,6 +1,7 @@
 package com.fadlurahmanf.mapp_api.domain.network
 
 import android.content.Context
+import com.fadlurahmanf.mapp_api.domain.interceptor.MappExceptionInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -17,8 +18,8 @@ abstract class BaseNetwork<T>(var context: Context) {
     }
 
     open fun okHttpClientBuilder(builder: OkHttpClient.Builder): OkHttpClient.Builder {
-        val p0 = builder.addNetworkInterceptor(bodyLoggingInterceptor())
-        return p0
+        return builder.addInterceptor(bodyLoggingInterceptor())
+            .addInterceptor(MappExceptionInterceptor(context))
     }
 
     private fun provideClient(timeOut: Long): OkHttpClient {

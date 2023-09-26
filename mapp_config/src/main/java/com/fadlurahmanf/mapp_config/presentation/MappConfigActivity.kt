@@ -17,7 +17,7 @@ class MappConfigActivity : AppCompatActivity() {
         MappShared.flavor = flavor ?: "dev"
         when (flavor) {
             "dev" -> {
-                MappShared.masGuestBaseUrl = "https://guest.bankmas.my.id/"
+                MappShared.masGuestBaseUrl = "https://merchant.bankmas.my.id/"
             }
         }
 

@@ -84,7 +84,7 @@ class CallActivity : BaseExampleActivity<ActivityCallBinding>(
             if (it) {
                 onSuccessCheckCamera()
             }else{
-                showFailedBottomsheet()
+//                showFailedBottomsheet()
             }
         }
 
