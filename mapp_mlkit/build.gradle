@@ -49,4 +49,5 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
 
     implementation 'com.google.mlkit:image-labeling:17.0.7'
+    implementation 'com.google.mlkit:face-detection:16.1.5'
 }

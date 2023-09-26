@@ -11,6 +11,7 @@ import com.fadlurahmanf.mapp_example.presentation.biometric.BiometricActivity
 import com.fadlurahmanf.mapp_example.presentation.crypto.AesActivity
 import com.fadlurahmanf.mapp_example.presentation.crypto.ED25119Activity
 import com.fadlurahmanf.mapp_example.presentation.crypto.RsaActivity
+import com.fadlurahmanf.mapp_example.presentation.mlkit.FaceDetectorActivity
 import com.fadlurahmanf.mapp_example.presentation.mlkit.ObjectLabelingActivity
 import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity
 import com.fadlurahmanf.mapp_example.presentation.rtc.ListRoomActivity
@@ -61,7 +62,13 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
             MenuModel(
                 menuId = "OBJECT_LABELING_MLKIT",
                 menuTitle = "OBJECT LABELING",
-                menuSubTitle = "Go To List Room",
+                menuSubTitle = "Go To Object Labeling MLKIT",
+                icon = R.drawable.outline_featured_play_list_24
+            ),
+            MenuModel(
+                menuId = "FACE_DETECTOR_MLKIT",
+                menuTitle = "FACE DETECTOR",
+                menuSubTitle = "Go To Face Detector",
                 icon = R.drawable.outline_featured_play_list_24
             ),
             MenuModel(
@@ -151,6 +158,15 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                     AnalyticEvent.defaultParamMap(this)
                 )
                 val intent = Intent(this, ObjectLabelingActivity::class.java)
+                startActivity(intent)
+            }
+
+            "FACE_DETECTOR_MLKIT" -> {
+                AnalyticHelper.logEvent(
+                    AnalyticEvent.ex_face_detector_mlkit_clicked,
+                    AnalyticEvent.defaultParamMap(this)
+                )
+                val intent = Intent(this, FaceDetectorActivity::class.java)
                 startActivity(intent)
             }
 
