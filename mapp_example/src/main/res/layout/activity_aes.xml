@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".presentation.crypto.AesActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_key"
+            android:text="KEY: ??"/>
+
+        <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="GENERATE KEY"
+            style="@style/Font.Semibold.Button"
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_generate_key"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_encrypted_text_ecb"
+            android:layout_marginTop="10dp"
+            android:text="ENCRYPTED TEXT: ??"/>
+
+        <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="ENCRYPT AES TEXT"
+            style="@style/Font.Semibold.Button"
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_encrypt_ecb"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_decrypted_text_ecb"
+            android:layout_marginTop="10dp"
+            android:text="DECRYPTED TEXT: ??"/>
+
+        <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="DECRYPT AES TEXT"
+            style="@style/Font.Semibold.Button"
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_decrypt_ecb"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/tv_encrypted_text_cbc"
+            android:layout_marginTop="10dp"
+            android:text="ENCRYPTED TEXT: ??"/>
+
+        <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="ENCRYPT CBC TEXT"
+            android:visibility="gone"
+            style="@style/Font.Semibold.Button"
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_encrypt_cbc"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_decrypted_text_cbc"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:text="DECRYPTED TEXT: ??"/>
+
+        <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="DECRYPT CBC TEXT"
+            android:visibility="gone"
+            style="@style/Font.Semibold.Button"
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_decrypt_cbc"/>
+    </LinearLayout>
+
+</ScrollView>

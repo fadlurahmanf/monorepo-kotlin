@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".presentation.crypto.ED25119Activity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_key"
+            android:text="KEY: ??"/>
+
+        <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="GENERATE KEY"
+            style="@style/Font.Semibold.Button"
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_generate_key"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_signature"
+            android:layout_marginTop="10dp"
+            android:text="SIGNATURE: ??"/>
+
+        <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="GENERATE SIGNATURE"
+            style="@style/Font.Semibold.Button"
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_generate_signature"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_verify_signature"
+            android:layout_marginTop="10dp"
+            android:text="IS VERIFY : ??"/>
+
+        <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="VERIFY SIGNATURE"
+            style="@style/Font.Semibold.Button"
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_verify_signature"/>
+
+    </LinearLayout>
+
+</ScrollView>

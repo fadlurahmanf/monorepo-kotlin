@@ -1,8 +1,12 @@
 package com.fadlurahmanf.mapp_example
 
+import com.fadlurahmanf.core_crypto.CoreCryptoComponent
 import com.fadlurahmanf.core_platform.CorePlatformComponent
 import com.fadlurahmanf.mapp_config.MappConfigComponent
 import com.fadlurahmanf.mapp_example.presentation.biometric.BiometricActivity
+import com.fadlurahmanf.mapp_example.presentation.crypto.AesActivity
+import com.fadlurahmanf.mapp_example.presentation.crypto.ED25119Activity
+import com.fadlurahmanf.mapp_example.presentation.crypto.RsaActivity
 import com.fadlurahmanf.mapp_example.presentation.example.ExampleActivity
 import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity
 import com.fadlurahmanf.mapp_example.presentation.rtc.CallActivity
@@ -12,6 +16,7 @@ import dagger.Component
 
 @Component(
     dependencies = [
+        CoreCryptoComponent::class,
         CorePlatformComponent::class,
         MappConfigComponent::class,
         MappFirebaseDatabaseComponent::class
@@ -22,6 +27,7 @@ interface MappExampleComponent {
     @Component.Factory
     interface Factory {
         fun create(
+            coreCrypto: CoreCryptoComponent,
             corePlatform: CorePlatformComponent,
             mapp: MappConfigComponent,
             mappFirebaseDatabase: MappFirebaseDatabaseComponent
@@ -33,4 +39,7 @@ interface MappExampleComponent {
     fun inject(activity: NotificationActivity)
     fun inject(activity: ListRoomActivity)
     fun inject(activity: CallActivity)
+    fun inject(activity: RsaActivity)
+    fun inject(activity: AesActivity)
+    fun inject(activity: ED25119Activity)
 }

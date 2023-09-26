@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mapp</string>
+    <string name="hello_world">Halo DUnia</string>
+    <string name="oops">Ups...</string>
+    <string name="ok">Oke</string>
+    <string name="socket_exception_desc">Sepertinya kamu tidak mempunyai jaringan internet.</string>
+</resources>

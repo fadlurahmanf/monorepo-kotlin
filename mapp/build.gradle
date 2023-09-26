@@ -33,10 +33,6 @@ android {
     }
 
     signingConfigs{
-        debug {
-
-        }
-
         release {
             if (keystoreProperties['release.keystore'] != null) {
                 storeFile file(keystoreProperties['release.keystore'])
@@ -51,6 +47,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
     flavorDimensions "app"
@@ -68,12 +65,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_19
+        targetCompatibility JavaVersion.VERSION_19
     }
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = '19'
     }
+}
+
+kotlin {
+    jvmToolchain(19)
 }
 
 dependencies {

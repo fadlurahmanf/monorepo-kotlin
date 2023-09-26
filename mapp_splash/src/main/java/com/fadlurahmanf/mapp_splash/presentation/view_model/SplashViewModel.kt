@@ -2,6 +2,7 @@ package com.fadlurahmanf.mapp_splash.presentation.view_model
 
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.mapp_api.data.dto.identity.CreateGuestTokenResponse
+import com.fadlurahmanf.mapp_api.data.exception.MappException
 import com.fadlurahmanf.mapp_api.external.helper.network_state.NetworkState
 import com.fadlurahmanf.mapp_splash.domain.repositories.SplashRepositoryImpl
 import com.fadlurahmanf.mapp_ui.external.helper.view_model.BaseViewModel
@@ -22,11 +23,7 @@ class SplashViewModel @Inject constructor(
         try {
             _guestToken.value = NetworkState.LOADING
             compositeDisposable().add(
-                repositoryImpl.generateGuestToken(
-                    CreateGuestTokenRequest(
-                        guestId = UUID.randomUUID().toString()
-                    )
-                )
+                repositoryImpl.generateGuestToken()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
@@ -34,7 +31,12 @@ class SplashViewModel @Inject constructor(
                             _guestToken.value = NetworkState.SUCCESS(it)
                         },
                         {
-                        _guestToken.value = NetworkState.FAILED(Exception())
+                            if (it is MappException) {
+                                _guestToken.value = NetworkState.FAILED(it)
+                            } else {
+                                _guestToken.value =
+                                    NetworkState.FAILED(MappException(rawMessage = it.message))
+                            }
                         },
                         {
 
@@ -42,7 +44,7 @@ class SplashViewModel @Inject constructor(
                     )
             )
         } catch (e: Exception) {
-
+            _guestToken.value = NetworkState.FAILED(MappException())
         }
     }
 }

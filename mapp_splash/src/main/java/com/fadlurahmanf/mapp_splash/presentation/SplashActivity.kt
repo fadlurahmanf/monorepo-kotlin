@@ -12,7 +12,8 @@ import com.fadlurahmanf.mapp_splash.databinding.ActivitySplashBinding
 import com.fadlurahmanf.mapp_splash.presentation.view_model.SplashViewModel
 import javax.inject.Inject
 
-class SplashActivity : BaseMappSplashActivity<ActivitySplashBinding>(ActivitySplashBinding::inflate) {
+class SplashActivity :
+    BaseMappSplashActivity<ActivitySplashBinding>(ActivitySplashBinding::inflate) {
     override fun injectActivity() {
         component.inject(this)
     }
@@ -22,10 +23,18 @@ class SplashActivity : BaseMappSplashActivity<ActivitySplashBinding>(ActivitySpl
 
     override fun setup() {
         viewModel.guestToken.observe(this) {
+            println("MASUK STATE: $it")
             when (it) {
                 is NetworkState.SUCCESS -> {
-                    val intent = Intent(this, Class.forName("com.fadlurahmanf.mapp_example.presentation.example.ExampleActivity"))
+                    val intent = Intent(
+                        this,
+                        Class.forName("com.fadlurahmanf.mapp_example.presentation.example.ExampleActivity")
+                    )
                     startActivity(intent)
+                }
+
+                is NetworkState.FAILED -> {
+                    showBaseSplashFailedBottomSheet(it.exception)
                 }
 
                 else -> {
