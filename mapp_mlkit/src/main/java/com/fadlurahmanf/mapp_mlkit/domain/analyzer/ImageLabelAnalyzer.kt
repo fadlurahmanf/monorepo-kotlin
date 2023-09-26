@@ -1,4 +1,4 @@
-package com.fadlurahmanf.mapp_example.presentation.mlkit
+package com.fadlurahmanf.mapp_mlkit.domain.analyzer
 
 import android.util.Log
 import androidx.camera.core.ExperimentalGetImage

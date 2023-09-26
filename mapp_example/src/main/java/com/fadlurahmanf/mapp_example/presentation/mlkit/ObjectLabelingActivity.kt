@@ -7,6 +7,7 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.core.content.ContextCompat
 import com.fadlurahmanf.mapp_example.databinding.ActivityObjectLabelingBinding
+import com.fadlurahmanf.mapp_mlkit.domain.analyzer.ImageLabelAnalyzer
 import com.google.mlkit.vision.label.ImageLabel
 import java.lang.Exception
 import java.util.concurrent.Executors
@@ -68,7 +69,9 @@ class ObjectLabelingActivity :
         analyzer = ImageAnalysis.Builder()
             .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
             .build().apply {
-                setAnalyzer(cameraExecutor, ImageLabelAnalyzer(listener))
+                setAnalyzer(cameraExecutor,
+                    ImageLabelAnalyzer(listener)
+                )
             }
         val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
         try {
