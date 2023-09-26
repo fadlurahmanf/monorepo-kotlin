@@ -27,7 +27,8 @@ class NotificationActivity :
             val rawStatus = notificationRepository.checkPostNotificationStatus()
             showInfoBottomsheet(
                 title = "NOTIFICATION",
-                desc = "STATUS: $rawStatus && IS GRANTED = ${PackageManager.PERMISSION_GRANTED == rawStatus}"
+                desc = "STATUS: $rawStatus && IS GRANTED = ${PackageManager.PERMISSION_GRANTED == rawStatus}",
+                buttonText = "Okey"
             )
         }
 

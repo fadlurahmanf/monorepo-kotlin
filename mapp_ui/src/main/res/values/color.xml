@@ -5,5 +5,8 @@
     <color name="green_opacity_90">#E6019267</color>
     <color name="grey">#FF6B6B6B</color>
     <color name="grey_opacity_90">#E66B6B6B</color>
+
+    <color name="black_opacity">#33000000</color>
+
     <color name="red">#FFFF0000</color>
 </resources>

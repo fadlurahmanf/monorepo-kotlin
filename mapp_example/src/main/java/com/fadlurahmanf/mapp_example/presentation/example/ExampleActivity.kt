@@ -11,6 +11,7 @@ import com.fadlurahmanf.mapp_example.presentation.biometric.BiometricActivity
 import com.fadlurahmanf.mapp_example.presentation.crypto.AesActivity
 import com.fadlurahmanf.mapp_example.presentation.crypto.ED25119Activity
 import com.fadlurahmanf.mapp_example.presentation.crypto.RsaActivity
+import com.fadlurahmanf.mapp_example.presentation.mlkit.ObjectLabelingActivity
 import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity
 import com.fadlurahmanf.mapp_example.presentation.rtc.ListRoomActivity
 import com.fadlurahmanf.mapp_example.presentation.shortcut.ShortcutActivity
@@ -56,6 +57,12 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                 menuTitle = "ED25119",
                 menuSubTitle = "Go To ED25119 SCREEN",
                 icon = R.drawable.outline_lock_24
+            ),
+            MenuModel(
+                menuId = "OBJECT_LABELING_MLKIT",
+                menuTitle = "OBJECT LABELING",
+                menuSubTitle = "Go To List Room",
+                icon = R.drawable.outline_featured_play_list_24
             ),
             MenuModel(
                 menuId = "LIST_ROOM_RTC",
@@ -135,6 +142,15 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                     AnalyticEvent.defaultParamMap(this)
                 )
                 val intent = Intent(this, ED25119Activity::class.java)
+                startActivity(intent)
+            }
+
+            "OBJECT_LABELING_MLKIT" -> {
+                AnalyticHelper.logEvent(
+                    AnalyticEvent.ex_object_labeling_mlkit_clicked,
+                    AnalyticEvent.defaultParamMap(this)
+                )
+                val intent = Intent(this, ObjectLabelingActivity::class.java)
                 startActivity(intent)
             }
 
