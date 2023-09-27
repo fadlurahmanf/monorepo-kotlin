@@ -100,5 +100,9 @@ class NotificationActivity :
         binding.btnMessagingNotification.onClicked {
             notificationRepository.showMessagingSyleNotification(0, "TITLE", "BODY")
         }
+
+        binding.btnIncomingCall.setOnClickListener {
+
+        }
     }
 }
