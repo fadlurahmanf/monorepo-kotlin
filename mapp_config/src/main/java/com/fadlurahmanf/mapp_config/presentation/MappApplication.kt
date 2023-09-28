@@ -8,13 +8,16 @@ import com.fadlurahmanf.core_platform.DaggerCorePlatformComponent
 import com.fadlurahmanf.mapp_config.DaggerMappConfigComponent
 import com.fadlurahmanf.mapp_config.MappConfigComponent
 import com.fadlurahmanf.mapp_config.domain.di.IMappComponentProvider
+import com.fadlurahmanf.mapp_fcm.DaggerMappFcmComponent
+import com.fadlurahmanf.mapp_fcm.MappFcmComponent
 import com.fadlurahmanf.mapp_firebase_database.DaggerMappFirebaseDatabaseComponent
 import com.fadlurahmanf.mapp_firebase_database.MappFirebaseDatabaseComponent
 
 class MappApplication : Application(), IMappComponentProvider {
     private lateinit var coreCryptoComponent: CoreCryptoComponent
     private lateinit var corePlatformComponent: CorePlatformComponent
-    private lateinit var mappComponent: MappConfigComponent
+    private lateinit var mappConfigComponent: MappConfigComponent
+    private lateinit var mappFcmComponent: MappFcmComponent
     private lateinit var mappFirebaseDatabaseComponent: MappFirebaseDatabaseComponent
 
     override fun provideCoreCryptoComponent(): CoreCryptoComponent {
@@ -35,13 +38,22 @@ class MappApplication : Application(), IMappComponentProvider {
         }
     }
 
-    override fun provideMappComponent(): MappConfigComponent {
-        return if (this::mappComponent.isInitialized) {
-            mappComponent
+    override fun provideMappConfigComponent(): MappConfigComponent {
+        return if (this::mappConfigComponent.isInitialized) {
+            mappConfigComponent
         } else {
-            mappComponent = DaggerMappConfigComponent.factory().create(this)
-            mappComponent.inject(this)
-            mappComponent
+            mappConfigComponent = DaggerMappConfigComponent.factory().create(this)
+            mappConfigComponent.inject(this)
+            mappConfigComponent
+        }
+    }
+
+    override fun provideMappFcmComponent(): MappFcmComponent {
+        return if (this::mappFcmComponent.isInitialized) {
+            mappFcmComponent
+        } else {
+            mappFcmComponent = DaggerMappFcmComponent.factory().create()
+            mappFcmComponent
         }
     }
 

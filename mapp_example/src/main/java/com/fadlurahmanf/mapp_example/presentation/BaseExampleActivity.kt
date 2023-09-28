@@ -16,7 +16,8 @@ abstract class BaseExampleActivity<VB : ViewBinding>(
             .create(
                 CoreInjectHelper.provideCoreCryptoComponent(applicationContext),
                 CoreInjectHelper.provideCorePlatformComponent(applicationContext),
-                CoreInjectHelper.provideMappComponent(applicationContext),
+                CoreInjectHelper.provideMappConfigComponent(applicationContext),
+                CoreInjectHelper.provideMappFcmComponent(applicationContext),
                 CoreInjectHelper.provideMappFirebaseDatabaseComponent(applicationContext),
             )
     }
