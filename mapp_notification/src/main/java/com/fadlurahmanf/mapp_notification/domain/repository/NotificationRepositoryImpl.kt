@@ -2,6 +2,7 @@ package com.fadlurahmanf.mapp_notification.domain.repository
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -19,25 +20,25 @@ abstract class NotificationRepositoryImpl(
     private val context: Context
 ) : NotificationRepository {
 
-    abstract val channelId: String
-    abstract val channel: String
-    abstract val description: String
+    abstract val CHANNEL_ID: String
+    abstract val CHANNEL_NAME: String
+    abstract val CHANNEL_DESCRIPTION: String
 
     init {
         createChannel()
     }
 
-    private fun notificationManager() =
+    fun notificationManager() =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     final override fun createChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                channelId,
-                channel,
+                CHANNEL_ID,
+                CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
-                this.description = this@NotificationRepositoryImpl.description
+                this.description = this@NotificationRepositoryImpl.CHANNEL_DESCRIPTION
                 setSound(null, null)
             }
             val nm =
@@ -50,10 +51,11 @@ abstract class NotificationRepositoryImpl(
         title: String,
         body: String
     ): NotificationCompat.Builder {
-        return NotificationCompat.Builder(context, channelId)
+        return NotificationCompat.Builder(context, CHANNEL_ID)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentTitle(title)
             .setContentText(body)
+            .setAutoCancel(true)
 
     }
 
@@ -76,10 +78,20 @@ abstract class NotificationRepositoryImpl(
         }
     }
 
-    override fun showNotification(id: Int, title: String, body: String) {
+
+    override fun showNotification(
+        id: Int,
+        title: String,
+        body: String,
+        onClickPendingIntent: PendingIntent?
+    ) {
+        val builder = notificationBuilder(title, body)
+        if (onClickPendingIntent != null) {
+            builder.setContentIntent(onClickPendingIntent)
+        }
         return notificationManager().notify(
             id,
-            notificationBuilder(title, body).build()
+            builder.build()
         )
     }
 

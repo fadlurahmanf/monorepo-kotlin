@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/mapp_api" />
             <option value="$PROJECT_DIR$/mapp_config" />
             <option value="$PROJECT_DIR$/mapp_example" />
+            <option value="$PROJECT_DIR$/mapp_fcm" />
             <option value="$PROJECT_DIR$/mapp_firebase_database" />
             <option value="$PROJECT_DIR$/mapp_mlkit" />
             <option value="$PROJECT_DIR$/mapp_notification" />

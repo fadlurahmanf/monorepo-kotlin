@@ -16,7 +16,7 @@ class ObjectLabelingActivity :
     BaseCameraActivity<ActivityObjectLabelingBinding>(ActivityObjectLabelingBinding::inflate) {
     override fun initCameraListener() {
         cameraProviderFuture().addListener({
-            Log.d("MappActivity", "MASUK INIT CAMERA LISTENER")
+            Log.d("MappLogger", "MASUK INIT CAMERA LISTENER")
             analyze()
         }, ContextCompat.getMainExecutor(this))
     }
@@ -35,9 +35,9 @@ class ObjectLabelingActivity :
         override fun onSuccessGetLabels(labels: List<ImageLabel>, image: ImageProxy) {
             var text: String? = null
             var confidence: Float? = null
-            Log.d("MappActivity", "MASUK ON SUCCESS GET LABELS: ${labels.size}")
+            Log.d("MappLogger", "MASUK ON SUCCESS GET LABELS: ${labels.size}")
             labels.forEach {
-                Log.d("MappActivity", "LABELS: ${it.text} & ${it.confidence}")
+                Log.d("MappLogger", "LABELS: ${it.text} & ${it.confidence}")
                 if (confidence == null || it.confidence >= (confidence ?: 0f)) {
                     confidence = it.confidence
                     text = it.text
@@ -53,14 +53,14 @@ class ObjectLabelingActivity :
         }
 
         override fun onFailedGetLabels(e: Exception) {
-            Log.d("MappActivity", "MASUK ON FAILED GET LABELS: ${e.message}")
+            Log.d("MappLogger", "MASUK ON FAILED GET LABELS: ${e.message}")
         }
     }
 
     private lateinit var analyzer: ImageAnalysis
 
     override fun analyze() {
-        Log.d("MappActivity", "MASUK ANALYZE")
+        Log.d("MappLogger", "MASUK ANALYZE")
         val cameraProvider = cameraProviderFuture().get()
         val preview = Preview.Builder().build().apply {
             setSurfaceProvider(binding.cameraView.surfaceProvider)
@@ -85,11 +85,11 @@ class ObjectLabelingActivity :
     }
 
     override fun injectActivity() {
-        Log.d("MappActivity", "MASUK INJECT")
+        Log.d("MappLogger", "MASUK INJECT")
     }
 
     override fun setup() {
-        Log.d("MappActivity", "MASUK SETUP")
+        Log.d("MappLogger", "MASUK SETUP")
         cameraExecutor = Executors.newSingleThreadExecutor()
         initCameraListener()
     }

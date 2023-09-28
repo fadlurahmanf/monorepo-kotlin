@@ -1,5 +1,6 @@
 package com.fadlurahmanf.mapp_notification.domain.repository
 
+import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import com.fadlurahmanf.mapp_notification.data.model.NotificationActionModel
 
@@ -21,13 +22,14 @@ interface NotificationRepository {
     fun showNotification(
         id: Int,
         title: String,
-        body: String
+        body: String,
+        onClickPendingIntent: PendingIntent?
     )
 
     fun showLongNotification(
         id: Int,
         title: String,
-        body: String
+        body: String,
     )
 
     fun showNotification(

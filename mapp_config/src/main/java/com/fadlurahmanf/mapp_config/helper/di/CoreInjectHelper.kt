@@ -5,6 +5,7 @@ import com.fadlurahmanf.core_crypto.CoreCryptoComponent
 import com.fadlurahmanf.core_platform.CorePlatformComponent
 import com.fadlurahmanf.mapp_config.MappConfigComponent
 import com.fadlurahmanf.mapp_config.domain.di.IMappComponentProvider
+import com.fadlurahmanf.mapp_fcm.MappFcmComponent
 import com.fadlurahmanf.mapp_firebase_database.MappFirebaseDatabaseComponent
 
 object CoreInjectHelper {
@@ -16,6 +17,7 @@ object CoreInjectHelper {
             throw IllegalStateException("application context should be IMappComponentProvider")
         }
     }
+
     fun provideCorePlatformComponent(applicationContext: Context): CorePlatformComponent {
         if (applicationContext is IMappComponentProvider) {
             return (applicationContext as IMappComponentProvider).provideCorePlatformComponent()
@@ -23,15 +25,24 @@ object CoreInjectHelper {
             throw IllegalStateException("application context should be IMappComponentProvider")
         }
     }
-    fun provideMappComponent(applicationContext: Context): MappConfigComponent {
+
+    fun provideMappConfigComponent(applicationContext: Context): MappConfigComponent {
         if (applicationContext is IMappComponentProvider) {
-            return (applicationContext as IMappComponentProvider).provideMappComponent()
+            return (applicationContext as IMappComponentProvider).provideMappConfigComponent()
         } else {
             throw IllegalStateException("application context not contain IMappComponentProvider")
         }
     }
 
-    fun provideMappFirebaseDatabaseComponent(applicationContext: Context):MappFirebaseDatabaseComponent {
+    fun provideMappFcmComponent(applicationContext: Context): MappFcmComponent {
+        if (applicationContext is IMappComponentProvider) {
+            return (applicationContext as IMappComponentProvider).provideMappFcmComponent()
+        } else {
+            throw IllegalStateException("application context not contain IMappComponentProvider")
+        }
+    }
+
+    fun provideMappFirebaseDatabaseComponent(applicationContext: Context): MappFirebaseDatabaseComponent {
         if (applicationContext is IMappComponentProvider) {
             return (applicationContext as IMappComponentProvider).provideMappFirebaseDatabaseComponent()
         } else {

@@ -11,6 +11,7 @@ import com.fadlurahmanf.mapp_example.presentation.example.ExampleActivity
 import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity
 import com.fadlurahmanf.mapp_example.presentation.rtc.CallActivity
 import com.fadlurahmanf.mapp_example.presentation.rtc.ListRoomActivity
+import com.fadlurahmanf.mapp_fcm.MappFcmComponent
 import com.fadlurahmanf.mapp_firebase_database.MappFirebaseDatabaseComponent
 import dagger.Component
 
@@ -19,6 +20,7 @@ import dagger.Component
         CoreCryptoComponent::class,
         CorePlatformComponent::class,
         MappConfigComponent::class,
+        MappFcmComponent::class,
         MappFirebaseDatabaseComponent::class
     ]
 )
@@ -29,7 +31,8 @@ interface MappExampleComponent {
         fun create(
             coreCrypto: CoreCryptoComponent,
             corePlatform: CorePlatformComponent,
-            mapp: MappConfigComponent,
+            mappConfig: MappConfigComponent,
+            mappFcm: MappFcmComponent,
             mappFirebaseDatabase: MappFirebaseDatabaseComponent
         ): MappExampleComponent
     }
