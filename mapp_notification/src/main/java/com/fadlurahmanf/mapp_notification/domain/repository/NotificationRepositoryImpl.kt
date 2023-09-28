@@ -2,6 +2,7 @@ package com.fadlurahmanf.mapp_notification.domain.repository
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -54,6 +55,7 @@ abstract class NotificationRepositoryImpl(
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentTitle(title)
             .setContentText(body)
+            .setAutoCancel(true)
 
     }
 
@@ -76,10 +78,20 @@ abstract class NotificationRepositoryImpl(
         }
     }
 
-    override fun showNotification(id: Int, title: String, body: String) {
+
+    override fun showNotification(
+        id: Int,
+        title: String,
+        body: String,
+        onClickPendingIntent: PendingIntent?
+    ) {
+        val builder = notificationBuilder(title, body)
+        if (onClickPendingIntent != null) {
+            builder.setContentIntent(onClickPendingIntent)
+        }
         return notificationManager().notify(
             id,
-            notificationBuilder(title, body).build()
+            builder.build()
         )
     }
 

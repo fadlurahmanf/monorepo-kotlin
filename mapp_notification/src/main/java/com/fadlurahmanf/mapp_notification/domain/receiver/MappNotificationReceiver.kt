@@ -28,6 +28,25 @@ class MappNotificationReceiver : BroadcastReceiver() {
             "com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_DELETE"
         const val ACTION_NOTIFICATION_INCOMING_CALL =
             "com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_INCOMING_CALL"
+        const val ACTION_NOTIFICATION_ON_CLICK_GENERAL =
+            "com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_ON_CLICK_GENERAL"
+
+        fun getOnClickGeneralPendingIntent(
+            context: Context,
+            notificationId: Int,
+        ): PendingIntent {
+            val intent = Intent(context, MappNotificationReceiver::class.java)
+            intent.apply {
+                action = ACTION_NOTIFICATION_ON_CLICK_GENERAL
+                putExtra("NOTIFICATION_ID", notificationId)
+            }
+            return PendingIntent.getBroadcast(
+                context,
+                notificationId,
+                intent,
+                getFlagPendingIntent()
+            )
+        }
 
         fun showIncomingCallNotification(context: Context) {
             val intent = Intent(context, MappNotificationReceiver::class.java)
@@ -138,6 +157,10 @@ class MappNotificationReceiver : BroadcastReceiver() {
             notificationRepository = MappNotificationRepositoryImpl(context)
         }
         when (intent?.action) {
+            ACTION_NOTIFICATION_ON_CLICK_GENERAL -> {
+                onGeneralNotificationClicked(context, intent.extras)
+            }
+
             ACTION_NOTIFICATION_SNOOZE -> {
                 onSnoozeClicked(context, intent.extras)
             }
@@ -148,6 +171,20 @@ class MappNotificationReceiver : BroadcastReceiver() {
         }
     }
 
+    private fun onGeneralNotificationClicked(context: Context?, data: Bundle?) {
+        Log.d("MappLogger", "onGeneralNotificationClicked")
+        val notificationId = data?.getInt("NOTIFICATION_ID")
+        if (notificationId != null) {
+            notificationRepository.cancelNotification(notificationId)
+        }
+        val intent = Intent(
+            context,
+            Class.forName("com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity")
+        )
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        context?.startActivity(intent)
+    }
+
     private fun onReplyClicked(context: Context?, intent: Intent?, data: Bundle?) {
         Log.d("MappLogger", "onReplyClicked")
         val inputText = RemoteInput.getResultsFromIntent(intent).getCharSequence("KEY_TEXT_REPLY")
@@ -156,7 +193,8 @@ class MappNotificationReceiver : BroadcastReceiver() {
             notificationRepository.showNotification(
                 notificationId,
                 "Reply Result",
-                "$inputText"
+                "$inputText",
+                null
             )
         }
     }

@@ -1,6 +1,7 @@
 package com.fadlurahmanf.mapp_example.presentation.example
 
 import android.content.Intent
+import android.util.Log
 import com.fadlurahmanf.mapp_analytic.external.helper.AnalyticEvent
 import com.fadlurahmanf.mapp_analytic.external.helper.AnalyticHelper
 import com.fadlurahmanf.mapp_example.R
@@ -16,6 +17,8 @@ import com.fadlurahmanf.mapp_example.presentation.mlkit.ObjectLabelingActivity
 import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity
 import com.fadlurahmanf.mapp_example.presentation.rtc.ListRoomActivity
 import com.fadlurahmanf.mapp_example.presentation.shortcut.ShortcutActivity
+import com.fadlurahmanf.mapp_fcm.domain.repositories.MappFcmRepository
+import javax.inject.Inject
 
 class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
     ActivityExampleBinding::inflate
@@ -33,6 +36,12 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                 menuId = "NOTIFICATION",
                 menuTitle = "Notification",
                 menuSubTitle = "Go To Notification",
+                icon = R.drawable.outline_featured_play_list_24
+            ),
+            MenuModel(
+                menuId = "FCM_TOKEN",
+                menuTitle = "FCM TOKEN",
+                menuSubTitle = "Get FCM Token",
                 icon = R.drawable.outline_featured_play_list_24
             ),
             MenuModel(
@@ -116,6 +125,12 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                 startActivity(intent)
             }
 
+            "FCM_TOKEN" -> {
+                mappFcmRepository.getFcmToken().addOnSuccessListener {
+                    Log.d("MappLogger", "FCM TOKEN: $it")
+                }
+            }
+
             "SHORTCUT" -> {
                 AnalyticHelper.logEvent(
                     AnalyticEvent.ex_shortcut_clicked,
@@ -180,4 +195,7 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
             }
         }
     }
+
+    @Inject
+    lateinit var mappFcmRepository: MappFcmRepository
 }

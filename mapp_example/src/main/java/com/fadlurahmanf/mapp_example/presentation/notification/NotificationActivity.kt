@@ -36,7 +36,8 @@ class NotificationActivity :
             notificationRepository.showNotification(
                 Random.nextInt(999),
                 title = "Title Notification",
-                body = "Body Notification"
+                body = "Body Notification",
+                null
             )
         }
 
