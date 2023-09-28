@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.mlkit.FaceDetectorActivity">
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/cameraView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.fadlurahmanf.mapp_mlkit.presentation.customview.CircleOverlayView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_result"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="RESULT: ??"
+        android:background="@color/grey_opacity_90"
+        android:layout_marginBottom="100dp"
+        android:layout_marginHorizontal="20dp"
+        android:padding="10dp"
+        android:gravity="center"
+        android:textColor="@color/black"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
