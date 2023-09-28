@@ -34,11 +34,11 @@ class FaceDetectorActivity :
     private val listener = object : FaceDetectorAnalyzer.Listener {
 
         override fun onSuccessGetFaces(faces: List<Face>, image: ImageProxy) {
-            Log.d("MappActivity", "MASUK ON SUCCESS GET FACES ${faces.size}")
+            Log.d("MappLogger", "MASUK ON SUCCESS GET FACES ${faces.size}")
             faces.forEach {
-                Log.d("MappActivity", "RIGHT EYE OPEN: ${it.rightEyeOpenProbability}")
-                Log.d("MappActivity", "LEFT EYE OPEN: ${it.leftEyeOpenProbability}")
-                Log.d("MappActivity", "SMILING: ${it.smilingProbability}")
+                Log.d("MappLogger", "RIGHT EYE OPEN: ${it.rightEyeOpenProbability}")
+                Log.d("MappLogger", "LEFT EYE OPEN: ${it.leftEyeOpenProbability}")
+                Log.d("MappLogger", "SMILING: ${it.smilingProbability}")
                 binding.tvResult.text =
                     "RIGHT EYE OPEN PROBABILITY: ${it.rightEyeOpenProbability}\nLEFT EYE OPEN PROBABILITY: ${it.leftEyeOpenProbability}\nSMILING PROBABILITY: ${it.smilingProbability}"
             }
@@ -49,13 +49,13 @@ class FaceDetectorActivity :
         }
 
         override fun onFailedGetFaces(e: java.lang.Exception) {
-            Log.d("MappActivity", "MASUK ON FAILED GET FACES: ${e.message}")
+            Log.d("MappLogger", "MASUK ON FAILED GET FACES: ${e.message}")
         }
 
     }
 
     override fun analyze() {
-        Log.d("MappActivity", "MASUK ANALYZE")
+        Log.d("MappLogger", "MASUK ANALYZE")
         val cameraProvider = cameraProviderFuture().get()
         val preview = Preview.Builder().build().apply {
             setSurfaceProvider(binding.cameraView.surfaceProvider)
@@ -74,7 +74,7 @@ class FaceDetectorActivity :
                 this, cameraSelector, preview, analyzer
             )
         } catch (e: Throwable) {
-            Log.d("MappActivity", "MASUK ERROR ANALYZE: ${e.message}")
+            Log.d("MappLogger", "MASUK ERROR ANALYZE: ${e.message}")
         }
     }
 
@@ -83,7 +83,7 @@ class FaceDetectorActivity :
     }
 
     override fun setup() {
-        Log.d("MappActivity", "MASUK SETUP")
+        Log.d("MappLogger", "MASUK SETUP")
         cameraExecutor = Executors.newSingleThreadExecutor()
         initCameraListener()
     }

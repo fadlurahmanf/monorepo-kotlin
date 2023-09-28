@@ -11,7 +11,7 @@ object AnalyticHelper {
 
     fun logEvent(event:String, map:Map<String, Any>){
         firebaseAnalytics.logEvent(event, mapToBundle(map))
-        Log.d(this::class.java.simpleName, "SUCCESS TRACK $event with $map")
+        Log.d("MappLogger", "SUCCESS TRACK $event with $map")
     }
 
     private fun mapToBundle(map:Map<String, Any>): Bundle {

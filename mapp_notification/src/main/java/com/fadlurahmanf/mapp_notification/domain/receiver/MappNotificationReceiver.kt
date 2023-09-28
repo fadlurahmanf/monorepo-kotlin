@@ -149,7 +149,7 @@ class MappNotificationReceiver : BroadcastReceiver() {
     }
 
     private fun onReplyClicked(context: Context?, intent: Intent?, data: Bundle?) {
-        Log.d("MappActivity", "onReplyClicked")
+        Log.d("MappLogger", "onReplyClicked")
         val inputText = RemoteInput.getResultsFromIntent(intent).getCharSequence("KEY_TEXT_REPLY")
         val notificationId = data?.getInt("NOTIFICATION_ID")
         if (notificationId != null) {
@@ -162,13 +162,13 @@ class MappNotificationReceiver : BroadcastReceiver() {
     }
 
     private fun onSnoozeClicked(context: Context?, data: Bundle?) {
-        Log.d("MappActivity", "onSnoozeClicked")
+        Log.d("MappLogger", "onSnoozeClicked")
         val snoozeData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             data?.getParcelable("DATA", SnoozeActionModel::class.java)
         } else {
             data?.getParcelable<SnoozeActionModel>("DATA")
         }
-        Log.d("MappActivity", "DATA onSnoozeClicked: $snoozeData")
+        Log.d("MappLogger", "DATA onSnoozeClicked: $snoozeData")
         val notificationId = data?.getInt("NOTIFICATION_ID")
         if (notificationId != null) {
             notificationRepository.cancelNotification(notificationId)
