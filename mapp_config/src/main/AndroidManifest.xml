@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <activity
+            android:name=".presentation.MappConfigActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light">
+            <intent-filter>
+                <action android:name="com.fadlurahmanf.mapp_config.MappConfigActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
+        <meta-data
+            android:name="android.app.shortcuts"
+            android:resource="@xml/shortcuts" />
+    </application>
+
+</manifest>

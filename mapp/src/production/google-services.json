@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "776093832713",
+    "firebase_url": "https://monorepo-5d7ea-default-rtdb.firebaseio.com",
+    "project_id": "monorepo-5d7ea",
+    "storage_bucket": "monorepo-5d7ea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:776093832713:android:a1cff7e5084411f0458ad8",
+        "android_client_info": {
+          "package_name": "com.fadlurahmanf.mapp.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "776093832713-erhtqnkuc9k52r5aqnb348kt7vsqq7fm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCI15He52Gj5k8y_GDxSS56kiwMMtz5B8g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "776093832713-erhtqnkuc9k52r5aqnb348kt7vsqq7fm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "776093832713-tuhqva1j1eck8cog4dh02c36ocafvn5h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fadlurahmanf.mapp.dev"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

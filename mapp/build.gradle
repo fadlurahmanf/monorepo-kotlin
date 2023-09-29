@@ -2,6 +2,14 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'com.google.gms.google-services'
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('signing.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
 android {
@@ -24,10 +32,22 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs{
+        release {
+            if (keystoreProperties['release.keystore'] != null) {
+                storeFile file(keystoreProperties['release.keystore'])
+            }
+            keyAlias keystoreProperties['release.keystore.alias']
+            keyPassword keystoreProperties['release.keystore.keyPassword']
+            storePassword keystoreProperties['release.keystore.storePassword']
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
     flavorDimensions "app"
@@ -45,12 +65,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_19
+        targetCompatibility JavaVersion.VERSION_19
     }
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = '19'
     }
+}
+
+kotlin {
+    jvmToolchain(19)
 }
 
 dependencies {
@@ -66,5 +90,19 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.47'
     kapt 'com.google.dagger:dagger-compiler:2.47'
 
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+
     implementation(project(":core_platform"))
+
+    implementation(project(":mapp_analytic"))
+    implementation(project(":mapp_api"))
+    implementation(project(":mapp_config"))
+    implementation(project(":mapp_example"))
+    implementation(project(":mapp_fcm"))
+    implementation(project(":mapp_firebase_database"))
+    implementation(project(":mapp_notification"))
+    implementation(project(":mapp_shared"))
+    implementation(project(":mapp_splash"))
+    implementation(project(":mapp_ui"))
 }
