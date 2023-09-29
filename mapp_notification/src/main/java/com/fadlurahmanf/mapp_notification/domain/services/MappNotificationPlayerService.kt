@@ -62,7 +62,7 @@ class MappNotificationPlayerService : Service() {
         when (intent?.action) {
             START_INCOMING_CALL_PLAYER -> {
                 releaseMediaPlayer()
-                startMediaPlayer()
+                startRinging()
                 listenRingerMode()
             }
 
@@ -75,10 +75,30 @@ class MappNotificationPlayerService : Service() {
 
     private val ringerModeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            Log.d("MappLogger", "onReceive")
             when(intent?.action){
                 AudioManager.RINGER_MODE_CHANGED_ACTION -> {
                     Log.d("MappLogger", "RINGER MODE: ${audioManager.ringerMode}")
+                    if (currentRingerMode == audioManager.ringerMode){
+                        Log.d("MappLogger", "PREVIOUS RINGER MODE = CURRENT RINGER MODE")
+                        return
+                    }
+                    when(audioManager.ringerMode){
+                        AudioManager.RINGER_MODE_NORMAL -> {
+                            releaseMediaPlayer()
+                            startRingingNormalMode()
+                            listenRingerMode()
+                        }
+                        AudioManager.RINGER_MODE_VIBRATE -> {
+                            releaseMediaPlayer()
+                            startRingingVibrateMode()
+                            listenRingerMode()
+                        }
+                        AudioManager.RINGER_MODE_SILENT -> {
+                            releaseMediaPlayer()
+                            startRingingSilentMode()
+                            listenRingerMode()
+                        }
+                    }
                 }
             }
         }
@@ -108,29 +128,64 @@ class MappNotificationPlayerService : Service() {
         ringerModeReceiverRegistered = false
     }
 
-    private fun startMediaPlayer() {
+    private var currentRingerMode:Int = AudioManager.RINGER_MODE_SILENT
+
+    private fun startRinging() {
         when (audioManager.ringerMode) {
             AudioManager.RINGER_MODE_NORMAL -> {
-                val notifUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
-                mediaPlayer = MediaPlayer()
-                mediaPlayer?.setDataSource(applicationContext, notifUri)
-                mediaPlayer?.prepare()
-                mediaPlayer?.isLooping = true
-                mediaPlayer?.start()
+                startRingingNormalMode()
 
-                // effect vibrate
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    vibrator.vibrate(
-                        VibrationEffect.createWaveform(
-                            longArrayOf(0L, 2000L, 2000L),
-                            0
-                        )
-                    )
-                } else {
-                    vibrator.vibrate(longArrayOf(0L, 2000L, 2000L), 0)
-                }
+            }
+            AudioManager.RINGER_MODE_VIBRATE -> {
+                startRingingVibrateMode()
+
+            }
+            AudioManager.RINGER_MODE_SILENT -> {
+                startRingingSilentMode()
             }
         }
+    }
+
+    private fun startRingingNormalMode() {
+        val notifUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+        mediaPlayer = MediaPlayer()
+        mediaPlayer?.setDataSource(applicationContext, notifUri)
+        mediaPlayer?.prepare()
+        mediaPlayer?.isLooping = true
+        mediaPlayer?.start()
+
+        // effect vibrate
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(
+                VibrationEffect.createWaveform(
+                    longArrayOf(0L, 2000L, 2000L),
+                    0
+                )
+            )
+        } else {
+            vibrator.vibrate(longArrayOf(0L, 2000L, 2000L), 0)
+        }
+
+        currentRingerMode = AudioManager.RINGER_MODE_NORMAL
+    }
+
+    private fun startRingingVibrateMode() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(
+                VibrationEffect.createWaveform(
+                    longArrayOf(0L, 2000L, 2000L),
+                    0
+                )
+            )
+        } else {
+            vibrator.vibrate(longArrayOf(0L, 2000L, 2000L), 0)
+        }
+
+        currentRingerMode = AudioManager.RINGER_MODE_VIBRATE
+    }
+
+    private fun startRingingSilentMode() {
+        currentRingerMode = AudioManager.RINGER_MODE_SILENT
     }
 
     override fun onDestroy() {
