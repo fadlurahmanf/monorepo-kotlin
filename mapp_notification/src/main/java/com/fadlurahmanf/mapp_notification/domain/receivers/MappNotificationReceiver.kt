@@ -22,8 +22,8 @@ class MappNotificationReceiver : BroadcastReceiver() {
             "com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_SNOOZE"
         const val ACTION_NOTIFICATION_REPLY =
             "com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_REPLY"
-        const val ACTION_NOTIFICATION_ACCEPT =
-            "com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_ACCEPT"
+        const val ACTION_NOTIFICATION_ACCEPT_INCOMING_CALL =
+            "com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_ACCEPT_INCOMING_CALL"
         const val ACTION_NOTIFICATION_DECLINED_INCOMING_CALL =
             "com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_DECLINED_INCOMING_CALL"
         const val ACTION_NOTIFICATION_DELETE_CALL =
@@ -59,7 +59,17 @@ class MappNotificationReceiver : BroadcastReceiver() {
             context.sendBroadcast(intent)
         }
 
-        fun sendBroadcastDecilnedIncomingCall(context: Context) {
+        fun sendBroadcastAcceptIncomingCall(context: Context, notificationId: Int) {
+            Log.d("MappLogger", "sendBroadcastAcceptIncomingCall")
+            val intent = Intent(context, MappNotificationReceiver::class.java)
+            intent.apply {
+                action = ACTION_NOTIFICATION_ACCEPT_INCOMING_CALL
+                putExtra("NOTIFICATION_ID", notificationId)
+            }
+            context.sendBroadcast(intent)
+        }
+
+        fun sendBroadcastDeclinedIncomingCall(context: Context) {
             Log.d("MappLogger", "sendBroadcastDecilnedIncomingCall")
             val intent = Intent(context, MappNotificationReceiver::class.java)
             intent.apply {
@@ -110,7 +120,7 @@ class MappNotificationReceiver : BroadcastReceiver() {
         ): PendingIntent {
             val intent = Intent(context, MappNotificationReceiver::class.java)
             intent.apply {
-                action = ACTION_NOTIFICATION_ACCEPT
+                action = ACTION_NOTIFICATION_ACCEPT_INCOMING_CALL
                 putExtra("NOTIFICATION_ID", notificationId)
             }
             return PendingIntent.getBroadcast(
@@ -194,13 +204,31 @@ class MappNotificationReceiver : BroadcastReceiver() {
             ACTION_NOTIFICATION_DECLINED_INCOMING_CALL -> {
                 onDeclinedIncomingCall(context, intent.extras)
             }
+
+            ACTION_NOTIFICATION_ACCEPT_INCOMING_CALL -> {
+                onAcceptIncomingCall(context, intent.extras)
+            }
         }
+    }
+
+    private fun onAcceptIncomingCall(context: Context, data: Bundle?) {
+        val notificationId = data?.getInt("NOTIFICATION_ID")
+        MappNotificationPlayerService.stopIncomingCallNotificationPlayer(context)
+        if (notificationId != null) {
+            notificationRepository.cancelNotification(notificationId)
+        }
+        val intent = Intent(
+            context,
+            Class.forName("com.fadlurahmanf.mapp_example.presentation.call.CallAcceptActivity")
+        )
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        context.startActivity(intent)
     }
 
     private fun onDeclinedIncomingCall(context: Context, data: Bundle?) {
         val notificationId = data?.getInt("NOTIFICATION_ID")
         MappNotificationPlayerService.stopIncomingCallNotificationPlayer(context)
-        if (notificationId != null){
+        if (notificationId != null) {
             notificationRepository.cancelNotification(notificationId)
         }
     }
@@ -208,7 +236,7 @@ class MappNotificationReceiver : BroadcastReceiver() {
     private fun onDeleteCall(context: Context, data: Bundle?) {
         val notificationId = data?.getInt("NOTIFICATION_ID")
         MappNotificationPlayerService.stopIncomingCallNotificationPlayer(context)
-        if (notificationId != null){
+        if (notificationId != null) {
             notificationRepository.cancelNotification(notificationId)
         }
     }

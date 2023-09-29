@@ -11,10 +11,13 @@ import com.fadlurahmanf.mapp_notification.domain.receivers.MappNotificationRecei
 
 class IncomingCallActivity : AppCompatActivity() {
     private lateinit var binding: ActivityIncomingCallBinding
+    private var notificationId: Int? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityIncomingCallBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        notificationId = intent.extras?.getInt("NOTIFICATION_ID")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
@@ -33,12 +36,15 @@ class IncomingCallActivity : AppCompatActivity() {
 
 
         binding.ivDecline.setOnClickListener {
-            MappNotificationReceiver.sendBroadcastDecilnedIncomingCall(this)
+            MappNotificationReceiver.sendBroadcastDeclinedIncomingCall(this)
             finishAndRemoveTask()
         }
 
         binding.ivAccept.setOnClickListener {
-
+            if (notificationId != null){
+                MappNotificationReceiver.sendBroadcastAcceptIncomingCall(this, notificationId!!)
+            }
+            finishAndRemoveTask()
         }
     }
 

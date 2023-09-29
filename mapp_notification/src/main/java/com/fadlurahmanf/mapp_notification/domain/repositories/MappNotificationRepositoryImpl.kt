@@ -119,11 +119,13 @@ class MappNotificationRepositoryImpl(
     }
 
     private fun getFullScreenIntent(notificationId: Int): PendingIntent {
-        val extraData = Bundle()
         val intent = Intent(
             context,
             IncomingCallActivity::class.java
         )
+        intent.apply {
+            putExtra("NOTIFICATION_ID", notificationId)
+        }
         val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         } else {
