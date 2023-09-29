@@ -1,9 +1,9 @@
 package com.fadlurahmanf.mapp_fcm.domain.services
 
 import android.util.Log
-import com.fadlurahmanf.mapp_notification.domain.receiver.MappNotificationReceiver
-import com.fadlurahmanf.mapp_notification.domain.repository.MappNotificationRepositoryImpl
-import com.fadlurahmanf.mapp_notification.domain.repository.NotificationRepository
+import com.fadlurahmanf.mapp_notification.domain.receivers.MappNotificationReceiver
+import com.fadlurahmanf.mapp_notification.domain.repositories.MappNotificationRepositoryImpl
+import com.fadlurahmanf.mapp_notification.domain.repositories.NotificationRepository
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlin.random.Random
@@ -47,7 +47,8 @@ class FcmService : FirebaseMessagingService() {
     }
 
     private fun showIncomingCall() {
-        Log.d("MappLogger", "showIncomingCall")
+        Log.d("MappLogger", "FcmService showIncomingCall")
+        MappNotificationReceiver.sendBroadcastShowIncomingCall(applicationContext)
     }
 
     private fun showUnknownNotification() {
