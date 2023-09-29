@@ -62,19 +62,17 @@ class MappNotificationRepositoryImpl(
     override fun showIncomingCallNotification(notificationId: Int) {
         createVoipChannel()
         val builder = NotificationCompat.Builder(context, VOIP_CHANNEL_ID)
+            .setSmallIcon(R.drawable.il_logo_bankmas)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setCategory(NotificationCompat.CATEGORY_CALL)
             .setAutoCancel(true)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOngoing(true)
-            .setSmallIcon(R.drawable.il_logo_bankmas)
             .setWhen(0)
             .setTimeoutAfter(60000L)
             .setOnlyAlertOnce(true)
 //            .setFullScreenIntent(getFullScreenIntent(notificationId), true)
-            .setDeleteIntent(getDeletePendingIntent(notificationId))
-
-        builder.priority = NotificationCompat.PRIORITY_MAX
+            .setDeleteIntent(getDeleteCallPendingIntent(notificationId))
 
         val notificationView =
             RemoteViews(context.packageName, R.layout.layout_incoming_call_notification)
@@ -113,7 +111,7 @@ class MappNotificationRepositoryImpl(
             .setCustomBigContentView(notificationView)
 
         val notification = builder.build()
-        notification.flags = Notification.FLAG_INSISTENT
+        notification.flags = Notification.FLAG_ONGOING_EVENT
 
         notificationManager().notify(notificationId, notification)
     }
@@ -130,8 +128,8 @@ class MappNotificationRepositoryImpl(
         return MappNotificationReceiver.getDeclinedCallPendingIntent(context, notificationId)
     }
 
-    private fun getDeletePendingIntent(notificationId: Int): PendingIntent {
+    private fun getDeleteCallPendingIntent(notificationId: Int): PendingIntent {
         val extraData = Bundle()
-        return MappNotificationReceiver.getDeletePendingIntent(context, notificationId)
+        return MappNotificationReceiver.getDeleteCallPendingIntent(context, notificationId)
     }
 }

@@ -26,8 +26,8 @@ class MappNotificationReceiver : BroadcastReceiver() {
             "com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_ACCEPT"
         const val ACTION_NOTIFICATION_DECLINED_INCOMING_CALL =
             "com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_DECLINED_INCOMING_CALL"
-        const val ACTION_NOTIFICATION_DELETE =
-            "com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_DELETE"
+        const val ACTION_NOTIFICATION_DELETE_CALL =
+            "com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_DELETE_CALL"
         const val ACTION_NOTIFICATION_SHOW_INCOMING_CALL =
             "com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_SHOW_INCOMING_CALL"
         const val ACTION_NOTIFICATION_ON_CLICK_GENERAL =
@@ -129,13 +129,13 @@ class MappNotificationReceiver : BroadcastReceiver() {
             )
         }
 
-        fun getDeletePendingIntent(
+        fun getDeleteCallPendingIntent(
             context: Context,
             notificationId: Int
         ): PendingIntent {
             val intent = Intent(context, MappNotificationReceiver::class.java)
             intent.apply {
-                action = ACTION_NOTIFICATION_DELETE
+                action = ACTION_NOTIFICATION_DELETE_CALL
                 putExtra("NOTIFICATION_ID", notificationId)
             }
             return PendingIntent.getBroadcast(
@@ -156,7 +156,7 @@ class MappNotificationReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        Log.d("MappLogger", "onReceive MappNotificationReceiver.kt")
+        Log.d("MappLogger", "onReceive ${intent?.action}")
         if (!this::notificationRepository.isInitialized && context != null) {
             notificationRepository = MappNotificationRepositoryImpl(context)
         }
@@ -176,6 +176,16 @@ class MappNotificationReceiver : BroadcastReceiver() {
             ACTION_NOTIFICATION_SHOW_INCOMING_CALL -> {
                 onIncomingCall(context, intent.extras)
             }
+
+            ACTION_NOTIFICATION_DELETE_CALL -> {
+                onDeleteCall(context)
+            }
+        }
+    }
+
+    private fun onDeleteCall(context: Context?) {
+        if (context != null) {
+            MappNotificationPlayerService.stopIncomingCallNotificationPlayer(context)
         }
     }
 
@@ -184,7 +194,7 @@ class MappNotificationReceiver : BroadcastReceiver() {
         if (context != null) {
             val notificationId = Random.nextInt(9999)
             notificationRepository.showIncomingCallNotification(notificationId)
-//            MappNotificationPlayerService.startIncomingCallNotificationPlayer(context)
+            MappNotificationPlayerService.startIncomingCallNotificationPlayer(context)
         }
     }
 
