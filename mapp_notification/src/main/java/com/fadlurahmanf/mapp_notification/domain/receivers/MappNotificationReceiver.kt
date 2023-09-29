@@ -1,4 +1,4 @@
-package com.fadlurahmanf.mapp_notification.domain.receiver
+package com.fadlurahmanf.mapp_notification.domain.receivers
 
 import android.app.PendingIntent
 import android.app.RemoteInput
@@ -9,8 +9,10 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import com.fadlurahmanf.mapp_notification.data.model.SnoozeActionModel
-import com.fadlurahmanf.mapp_notification.domain.repository.MappNotificationRepositoryImpl
-import com.fadlurahmanf.mapp_notification.domain.repository.NotificationRepository
+import com.fadlurahmanf.mapp_notification.domain.repositories.MappNotificationRepositoryImpl
+import com.fadlurahmanf.mapp_notification.domain.repositories.NotificationRepository
+import com.fadlurahmanf.mapp_notification.domain.services.MappNotificationPlayerService
+import kotlin.random.Random
 
 class MappNotificationReceiver : BroadcastReceiver() {
     private lateinit var notificationRepository: NotificationRepository
@@ -26,8 +28,8 @@ class MappNotificationReceiver : BroadcastReceiver() {
             "com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_DECLINED_INCOMING_CALL"
         const val ACTION_NOTIFICATION_DELETE =
             "com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_DELETE"
-        const val ACTION_NOTIFICATION_INCOMING_CALL =
-            "com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_INCOMING_CALL"
+        const val ACTION_NOTIFICATION_SHOW_INCOMING_CALL =
+            "com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_SHOW_INCOMING_CALL"
         const val ACTION_NOTIFICATION_ON_CLICK_GENERAL =
             "com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_ON_CLICK_GENERAL"
 
@@ -49,9 +51,10 @@ class MappNotificationReceiver : BroadcastReceiver() {
         }
 
         fun showIncomingCallNotification(context: Context) {
+            Log.d("MappLogger", "showIncomingCallNotification")
             val intent = Intent(context, MappNotificationReceiver::class.java)
             intent.apply {
-                action = ACTION_NOTIFICATION_INCOMING_CALL
+                action = ACTION_NOTIFICATION_SHOW_INCOMING_CALL
             }
             context.sendBroadcast(intent)
         }
@@ -153,6 +156,7 @@ class MappNotificationReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
+        Log.d("MappLogger", "onReceive MappNotificationReceiver.kt")
         if (!this::notificationRepository.isInitialized && context != null) {
             notificationRepository = MappNotificationRepositoryImpl(context)
         }
@@ -168,6 +172,19 @@ class MappNotificationReceiver : BroadcastReceiver() {
             ACTION_NOTIFICATION_REPLY -> {
                 onReplyClicked(context, intent, intent.extras)
             }
+
+            ACTION_NOTIFICATION_SHOW_INCOMING_CALL -> {
+                onIncomingCall(context, intent.extras)
+            }
+        }
+    }
+
+    private fun onIncomingCall(context: Context?, data: Bundle?) {
+        Log.d("MappLogger", "onIncomingCall")
+        if (context != null) {
+            val notificationId = Random.nextInt(9999)
+            notificationRepository.showIncomingCallNotification(notificationId)
+//            MappNotificationPlayerService.startIncomingCallNotificationPlayer(context)
         }
     }
 

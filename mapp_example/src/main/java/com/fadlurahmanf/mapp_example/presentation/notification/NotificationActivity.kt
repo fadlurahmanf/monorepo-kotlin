@@ -1,15 +1,16 @@
 package com.fadlurahmanf.mapp_example.presentation.notification
 
 import android.content.pm.PackageManager
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.RemoteInput
 import com.fadlurahmanf.mapp_example.R
-import com.fadlurahmanf.mapp_notification.domain.repository.NotificationRepository
+import com.fadlurahmanf.mapp_notification.domain.repositories.NotificationRepository
 import com.fadlurahmanf.mapp_example.databinding.ActivityNotificationBinding
 import com.fadlurahmanf.mapp_example.presentation.BaseExampleActivity
 import com.fadlurahmanf.mapp_notification.data.model.NotificationActionModel
-import com.fadlurahmanf.mapp_notification.domain.receiver.MappNotificationReceiver
-import com.fadlurahmanf.mapp_notification.domain.repository.MappNotificationRepositoryImpl
+import com.fadlurahmanf.mapp_notification.domain.receivers.MappNotificationReceiver
+import com.fadlurahmanf.mapp_notification.domain.repositories.MappNotificationRepositoryImpl
 import kotlin.random.Random
 
 class NotificationActivity :
@@ -102,8 +103,8 @@ class NotificationActivity :
             notificationRepository.showMessagingSyleNotification(0, "TITLE", "BODY")
         }
 
-        binding.btnIncomingCall.setOnClickListener {
-
+        binding.btnIncomingCall.onClicked {
+            MappNotificationReceiver.showIncomingCallNotification(this)
         }
     }
 }

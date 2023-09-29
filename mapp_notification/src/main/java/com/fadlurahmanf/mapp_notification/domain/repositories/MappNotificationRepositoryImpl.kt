@@ -1,14 +1,17 @@
-package com.fadlurahmanf.mapp_notification.domain.repository
+package com.fadlurahmanf.mapp_notification.domain.repositories
 
 import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.fadlurahmanf.mapp_notification.R
-import com.fadlurahmanf.mapp_notification.domain.receiver.MappNotificationReceiver
+import com.fadlurahmanf.mapp_notification.domain.receivers.MappNotificationReceiver
 
 class MappNotificationRepositoryImpl(
     val context: Context
@@ -16,6 +19,8 @@ class MappNotificationRepositoryImpl(
 
     companion object {
         const val VOIP_CHANNEL_ID = "VOIP_CHANNEL"
+        const val VOIP_CHANNEL_NAME = "VOIP"
+        const val VOIP_CHANNEL_DESCRIPTION = "VOIP Description"
     }
 
     override val CHANNEL_NAME: String
@@ -27,24 +32,49 @@ class MappNotificationRepositoryImpl(
     override val CHANNEL_DESCRIPTION: String
         get() = "Mapp Notifikasi"
 
+    private fun createVoipChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val currentChannel = notificationManager().notificationChannels.firstOrNull { channel ->
+                channel.id == VOIP_CHANNEL_ID
+            }
+            if (currentChannel != null) {
+                Log.d("MappLogger", "Channel $VOIP_CHANNEL_ID EXIST")
+                return
+            }
+            val channel = NotificationChannel(
+                VOIP_CHANNEL_ID,
+                VOIP_CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                this.description = VOIP_CHANNEL_DESCRIPTION
+                setSound(null, null)
+            }
+            notificationManager().createNotificationChannel(channel)
+        }
+    }
+
     override fun notificationBuilder(title: String, body: String): NotificationCompat.Builder {
         return super.notificationBuilder(title, body)
             .setSmallIcon(R.drawable.il_logo_bankmas)
     }
 
 
-    fun showIncomingCall(notificationId: Int) {
+    override fun showIncomingCallNotification(notificationId: Int) {
+        createVoipChannel()
         val builder = NotificationCompat.Builder(context, VOIP_CHANNEL_ID)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setCategory(NotificationCompat.CATEGORY_CALL)
             .setAutoCancel(true)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOngoing(true)
+            .setSmallIcon(R.drawable.il_logo_bankmas)
             .setWhen(0)
             .setTimeoutAfter(60000L)
             .setOnlyAlertOnce(true)
 //            .setFullScreenIntent(getFullScreenIntent(notificationId), true)
             .setDeleteIntent(getDeletePendingIntent(notificationId))
+
+        builder.priority = NotificationCompat.PRIORITY_MAX
 
         val notificationView =
             RemoteViews(context.packageName, R.layout.layout_incoming_call_notification)

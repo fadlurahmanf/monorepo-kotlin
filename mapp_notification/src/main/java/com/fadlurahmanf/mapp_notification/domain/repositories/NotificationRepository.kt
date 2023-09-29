@@ -1,11 +1,10 @@
-package com.fadlurahmanf.mapp_notification.domain.repository
+package com.fadlurahmanf.mapp_notification.domain.repositories
 
 import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import com.fadlurahmanf.mapp_notification.data.model.NotificationActionModel
 
 interface NotificationRepository {
-    fun createChannel()
 
     fun notificationBuilder(
         title: String,
@@ -60,4 +59,6 @@ interface NotificationRepository {
     fun cancelNotification(
         id: Int
     )
+
+    fun showIncomingCallNotification(notificationId: Int)
 }

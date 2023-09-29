@@ -1,4 +1,4 @@
-package com.fadlurahmanf.mapp_notification.domain.repository
+package com.fadlurahmanf.mapp_notification.domain.repositories
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
 import androidx.core.content.ContextCompat
@@ -24,15 +25,18 @@ abstract class NotificationRepositoryImpl(
     abstract val CHANNEL_NAME: String
     abstract val CHANNEL_DESCRIPTION: String
 
-    init {
-        createChannel()
-    }
-
     fun notificationManager() =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-    final override fun createChannel() {
+    private fun createGeneralChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val currentChannel = notificationManager().notificationChannels.firstOrNull { channel ->
+                channel.id == CHANNEL_ID
+            }
+            if (currentChannel != null) {
+                Log.d("MappLogger", "Channel $CHANNEL_ID EXIST")
+                return
+            }
             val channel = NotificationChannel(
                 CHANNEL_ID,
                 CHANNEL_NAME,
@@ -41,9 +45,7 @@ abstract class NotificationRepositoryImpl(
                 this.description = this@NotificationRepositoryImpl.CHANNEL_DESCRIPTION
                 setSound(null, null)
             }
-            val nm =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            nm.createNotificationChannel(channel)
+            notificationManager().createNotificationChannel(channel)
         }
     }
 
@@ -85,6 +87,7 @@ abstract class NotificationRepositoryImpl(
         body: String,
         onClickPendingIntent: PendingIntent?
     ) {
+        createGeneralChannel()
         val builder = notificationBuilder(title, body)
         if (onClickPendingIntent != null) {
             builder.setContentIntent(onClickPendingIntent)
@@ -101,6 +104,7 @@ abstract class NotificationRepositoryImpl(
         body: String,
         actions: List<NotificationActionModel>
     ) {
+        createGeneralChannel()
         val builder = notificationBuilder(title, body)
         actions.forEach {
             builder.addAction(it.icon, it.title, it.pendingIntent)
@@ -109,6 +113,7 @@ abstract class NotificationRepositoryImpl(
     }
 
     override fun showLongNotification(id: Int, title: String, body: String) {
+        createGeneralChannel()
         val builder = notificationBuilder(title, body)
         builder.setStyle(
             NotificationCompat.BigTextStyle()
@@ -123,6 +128,7 @@ abstract class NotificationRepositoryImpl(
         body: String,
         actions: List<NotificationCompat.Action>
     ) {
+        createGeneralChannel()
         val builder = notificationBuilder(title, body)
         actions.forEach {
             builder.addAction(it)
@@ -136,6 +142,7 @@ abstract class NotificationRepositoryImpl(
         body: String,
         imageUrl: String,
     ) {
+        createGeneralChannel()
         val builder = notificationBuilder(title, body)
         Glide.with(context)
             .asBitmap()
@@ -159,6 +166,8 @@ abstract class NotificationRepositoryImpl(
     override fun showMessagingSyleNotification(
         id: Int, title: String, body: String
     ) {
+        createGeneralChannel()
+
         val builder = notificationBuilder(title, body)
 
         val person = Person.fromBundle(Bundle().apply {
