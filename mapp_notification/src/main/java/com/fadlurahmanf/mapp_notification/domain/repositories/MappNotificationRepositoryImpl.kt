@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -71,7 +72,7 @@ class MappNotificationRepositoryImpl(
             .setWhen(0)
             .setTimeoutAfter(60000L)
             .setOnlyAlertOnce(true)
-//            .setFullScreenIntent(getFullScreenIntent(notificationId), true)
+            .setFullScreenIntent(getFullScreenIntent(notificationId), true)
             .setDeleteIntent(getDeleteCallPendingIntent(notificationId))
 
         val notificationView =
@@ -116,7 +117,19 @@ class MappNotificationRepositoryImpl(
         notificationManager().notify(notificationId, notification)
     }
 
-    private fun getFullScreenIntent() {}
+    private fun getFullScreenIntent(notificationId: Int): PendingIntent {
+        val extraData = Bundle()
+        val intent = Intent(
+            context,
+            Class.forName("com.fadlurahmanf.mapp_notification.presentation.call.IncomingCallActivity")
+        )
+        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
+        return PendingIntent.getActivity(context, notificationId, intent, flag)
+    }
 
     private fun getAcceptCallPendingIntent(notificationId: Int): PendingIntent {
         val extraData = Bundle()
