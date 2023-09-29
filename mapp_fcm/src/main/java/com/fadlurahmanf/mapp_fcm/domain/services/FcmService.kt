@@ -47,7 +47,8 @@ class FcmService : FirebaseMessagingService() {
     }
 
     private fun showIncomingCall() {
-        Log.d("MappLogger", "showIncomingCall")
+        Log.d("MappLogger", "FcmService showIncomingCall")
+        MappNotificationReceiver.showIncomingCallNotification(applicationContext)
     }
 
     private fun showUnknownNotification() {

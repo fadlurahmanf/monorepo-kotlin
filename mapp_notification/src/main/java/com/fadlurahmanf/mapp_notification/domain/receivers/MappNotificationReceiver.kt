@@ -160,6 +160,7 @@ class MappNotificationReceiver : BroadcastReceiver() {
         if (!this::notificationRepository.isInitialized && context != null) {
             notificationRepository = MappNotificationRepositoryImpl(context)
         }
+        if (context == null) return
         when (intent?.action) {
             ACTION_NOTIFICATION_ON_CLICK_GENERAL -> {
                 onGeneralNotificationClicked(context, intent.extras)
@@ -178,27 +179,39 @@ class MappNotificationReceiver : BroadcastReceiver() {
             }
 
             ACTION_NOTIFICATION_DELETE_CALL -> {
-                onDeleteCall(context)
+                onDeleteCall(context, intent.extras)
+            }
+
+            ACTION_NOTIFICATION_DECLINED_INCOMING_CALL -> {
+                onDeclinedIncomingCall(context, intent.extras)
             }
         }
     }
 
-    private fun onDeleteCall(context: Context?) {
-        if (context != null) {
-            MappNotificationPlayerService.stopIncomingCallNotificationPlayer(context)
+    private fun onDeclinedIncomingCall(context: Context, data: Bundle?) {
+        val notificationId = data?.getInt("NOTIFICATION_ID")
+        MappNotificationPlayerService.stopIncomingCallNotificationPlayer(context)
+        if (notificationId != null){
+            notificationRepository.cancelNotification(notificationId)
         }
     }
 
-    private fun onIncomingCall(context: Context?, data: Bundle?) {
+    private fun onDeleteCall(context: Context, data: Bundle?) {
+        val notificationId = data?.getInt("NOTIFICATION_ID")
+        MappNotificationPlayerService.stopIncomingCallNotificationPlayer(context)
+        if (notificationId != null){
+            notificationRepository.cancelNotification(notificationId)
+        }
+    }
+
+    private fun onIncomingCall(context: Context, data: Bundle?) {
         Log.d("MappLogger", "onIncomingCall")
-        if (context != null) {
-            val notificationId = Random.nextInt(9999)
-            notificationRepository.showIncomingCallNotification(notificationId)
-            MappNotificationPlayerService.startIncomingCallNotificationPlayer(context)
-        }
+        val notificationId = Random.nextInt(9999)
+        notificationRepository.showIncomingCallNotification(notificationId)
+        MappNotificationPlayerService.startIncomingCallNotificationPlayer(context)
     }
 
-    private fun onGeneralNotificationClicked(context: Context?, data: Bundle?) {
+    private fun onGeneralNotificationClicked(context: Context, data: Bundle?) {
         Log.d("MappLogger", "onGeneralNotificationClicked")
         val notificationId = data?.getInt("NOTIFICATION_ID")
         if (notificationId != null) {
@@ -209,10 +222,10 @@ class MappNotificationReceiver : BroadcastReceiver() {
             Class.forName("com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity")
         )
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        context?.startActivity(intent)
+        context.startActivity(intent)
     }
 
-    private fun onReplyClicked(context: Context?, intent: Intent?, data: Bundle?) {
+    private fun onReplyClicked(context: Context, intent: Intent?, data: Bundle?) {
         Log.d("MappLogger", "onReplyClicked")
         val inputText = RemoteInput.getResultsFromIntent(intent).getCharSequence("KEY_TEXT_REPLY")
         val notificationId = data?.getInt("NOTIFICATION_ID")
@@ -226,7 +239,7 @@ class MappNotificationReceiver : BroadcastReceiver() {
         }
     }
 
-    private fun onSnoozeClicked(context: Context?, data: Bundle?) {
+    private fun onSnoozeClicked(context: Context, data: Bundle?) {
         Log.d("MappLogger", "onSnoozeClicked")
         val snoozeData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             data?.getParcelable("DATA", SnoozeActionModel::class.java)
