@@ -1,8 +1,10 @@
 package com.fadlurahmanf.mapp_notification.domain.services
 
 import android.app.Service
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.RingtoneManager
@@ -12,8 +14,6 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.util.Log
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 
 class MappNotificationPlayerService : Service() {
     private lateinit var audioManager: AudioManager
@@ -73,6 +73,25 @@ class MappNotificationPlayerService : Service() {
         return START_STICKY
     }
 
+    private val ringerModeReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            Log.d("MappLogger", "onReceive")
+            when(intent?.action){
+                AudioManager.RINGER_MODE_CHANGED_ACTION -> {
+                    Log.d("MappLogger", "RINGER MODE: ${audioManager.ringerMode}")
+                }
+            }
+        }
+    }
+    private var ringerModeReceiverRegistered:Boolean = false
+
+    private fun listenRingerMode() {
+        if (!ringerModeReceiverRegistered){
+            registerReceiver(ringerModeReceiver, IntentFilter(AudioManager.RINGER_MODE_CHANGED_ACTION))
+        }
+        ringerModeReceiverRegistered = true
+    }
+
     private var mediaPlayer: MediaPlayer? = null
     private fun releaseMediaPlayer() {
         removeListenerRingerMode()
@@ -80,6 +99,13 @@ class MappNotificationPlayerService : Service() {
         mediaPlayer?.release()
         mediaPlayer = null
         vibrator.cancel()
+    }
+
+    private fun removeListenerRingerMode() {
+        if (ringerModeReceiverRegistered){
+            unregisterReceiver(ringerModeReceiver)
+        }
+        ringerModeReceiverRegistered = false
     }
 
     private fun startMediaPlayer() {
@@ -105,30 +131,6 @@ class MappNotificationPlayerService : Service() {
                 }
             }
         }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.S)
-    private var ringerModeListener: AudioManager.OnModeChangedListener =
-        (AudioManager.OnModeChangedListener {
-            Log.d("MappLogger", "RINGER MODE -> $it")
-        })
-    private var isListenRingerMode: Boolean = false
-
-    private fun listenRingerMode() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !isListenRingerMode) {
-            audioManager.addOnModeChangedListener(
-                ContextCompat.getMainExecutor(applicationContext),
-                ringerModeListener
-            )
-            isListenRingerMode = true
-        }
-    }
-
-    private fun removeListenerRingerMode() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && isListenRingerMode) {
-            audioManager.removeOnModeChangedListener(ringerModeListener)
-        }
-        isListenRingerMode = false
     }
 
     override fun onDestroy() {
