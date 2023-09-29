@@ -1,7 +1,6 @@
 package com.fadlurahmanf.mapp_example.presentation.notification
 
 import android.content.pm.PackageManager
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.RemoteInput
 import com.fadlurahmanf.mapp_example.R
@@ -104,7 +103,7 @@ class NotificationActivity :
         }
 
         binding.btnIncomingCall.onClicked {
-            MappNotificationReceiver.showIncomingCallNotification(this)
+            MappNotificationReceiver.sendBroadcastShowIncomingCall(this)
         }
     }
 }

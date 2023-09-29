@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
     <application>
         <activity
@@ -15,6 +16,7 @@
             <intent-filter>
                 <action android:name="com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_SNOOZE" />
                 <action android:name="com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_REPLY" />
+                <action android:name="com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_SHOW_INCOMING_CALL" />
             </intent-filter>
         </receiver>
     </application>

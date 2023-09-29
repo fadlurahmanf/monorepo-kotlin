@@ -50,11 +50,20 @@ class MappNotificationReceiver : BroadcastReceiver() {
             )
         }
 
-        fun showIncomingCallNotification(context: Context) {
-            Log.d("MappLogger", "showIncomingCallNotification")
+        fun sendBroadcastShowIncomingCall(context: Context) {
+            Log.d("MappLogger", "sendBroadcastShowIncomingCall")
             val intent = Intent(context, MappNotificationReceiver::class.java)
             intent.apply {
                 action = ACTION_NOTIFICATION_SHOW_INCOMING_CALL
+            }
+            context.sendBroadcast(intent)
+        }
+
+        fun sendBroadcastDecilnedIncomingCall(context: Context) {
+            Log.d("MappLogger", "sendBroadcastDecilnedIncomingCall")
+            val intent = Intent(context, MappNotificationReceiver::class.java)
+            intent.apply {
+                action = ACTION_NOTIFICATION_DECLINED_INCOMING_CALL
             }
             context.sendBroadcast(intent)
         }

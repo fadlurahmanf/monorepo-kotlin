@@ -13,6 +13,7 @@ import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.fadlurahmanf.mapp_notification.R
 import com.fadlurahmanf.mapp_notification.domain.receivers.MappNotificationReceiver
+import com.fadlurahmanf.mapp_notification.presentation.call.IncomingCallActivity
 
 class MappNotificationRepositoryImpl(
     val context: Context
@@ -121,7 +122,7 @@ class MappNotificationRepositoryImpl(
         val extraData = Bundle()
         val intent = Intent(
             context,
-            Class.forName("com.fadlurahmanf.mapp_notification.presentation.call.IncomingCallActivity")
+            IncomingCallActivity::class.java
         )
         val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
