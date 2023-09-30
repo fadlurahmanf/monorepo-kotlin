@@ -14,9 +14,7 @@ import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActiv
 
 class ShortcutActivity :
     BaseExampleActivity<ActivityShortcutBinding>(ActivityShortcutBinding::inflate) {
-    override fun injectActivity() {
-
-    }
+    override fun injectActivity() {}
 
     override fun setup() {
         val shortcut = ShortcutInfoCompat.Builder(this, "notification")

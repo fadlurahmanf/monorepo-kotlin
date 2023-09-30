@@ -17,6 +17,7 @@ import com.fadlurahmanf.mapp_example.presentation.mlkit.ObjectLabelingActivity
 import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity
 import com.fadlurahmanf.mapp_example.presentation.rtc.ListRoomActivity
 import com.fadlurahmanf.mapp_example.presentation.shortcut.ShortcutActivity
+import com.fadlurahmanf.mapp_example.presentation.vplayer.VPlayerActivity
 import com.fadlurahmanf.mapp_fcm.domain.repositories.MappFcmRepository
 import javax.inject.Inject
 
@@ -69,16 +70,22 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                 icon = R.drawable.outline_lock_24
             ),
             MenuModel(
+                menuId = "HLS_VIDEO_PLAYER",
+                menuTitle = "HLS VIDEO PLAYER",
+                menuSubTitle = "HLS Video Player",
+                icon = R.drawable.outline_ondemand_video_24
+            ),
+            MenuModel(
                 menuId = "OBJECT_LABELING_MLKIT",
                 menuTitle = "OBJECT LABELING",
                 menuSubTitle = "Go To Object Labeling MLKIT",
-                icon = R.drawable.outline_featured_play_list_24
+                icon = R.drawable.outline_camera_alt_24
             ),
             MenuModel(
                 menuId = "FACE_DETECTOR_MLKIT",
                 menuTitle = "FACE DETECTOR",
                 menuSubTitle = "Go To Face Detector",
-                icon = R.drawable.outline_featured_play_list_24
+                icon = R.drawable.outline_camera_alt_24
             ),
             MenuModel(
                 menuId = "LIST_ROOM_RTC",
@@ -164,6 +171,15 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                     AnalyticEvent.defaultParamMap(this)
                 )
                 val intent = Intent(this, ED25119Activity::class.java)
+                startActivity(intent)
+            }
+
+            "HLS_VIDEO_PLAYER" -> {
+                AnalyticHelper.logEvent(
+                    AnalyticEvent.ex_hls_vplayer_clicked,
+                    AnalyticEvent.defaultParamMap(this)
+                )
+                val intent = Intent(this, VPlayerActivity::class.java)
                 startActivity(intent)
             }
 

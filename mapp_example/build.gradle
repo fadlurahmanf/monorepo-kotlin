@@ -71,8 +71,15 @@ dependencies {
     implementation 'com.google.mlkit:image-labeling:17.0.7'
     implementation 'com.google.mlkit:face-detection:16.1.5'
 
+    def exoplayer_version = "2.19.1"
+    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
+    implementation "com.google.android.exoplayer:exoplayer-dash:$exoplayer_version"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
+    implementation "com.google.android.exoplayer:exoplayer:$exoplayer_version"
+
     implementation(project(":core_crypto"))
     implementation(project(":core_platform"))
+    implementation(project(":core_vplayer"))
 
     implementation(project(":mapp_analytic"))
     implementation(project(":mapp_api"))
