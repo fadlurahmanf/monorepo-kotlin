@@ -38,7 +38,7 @@ class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer(context) {
 
     private val runnable = object : Runnable {
         override fun run() {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 checkAudioOutputAboveM()
             }
             checkAudioPosition()
@@ -110,48 +110,18 @@ class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer(context) {
             }
         }
 
-    private var deviceType: Int? = null
-
-    @RequiresApi(Build.VERSION_CODES.S)
-    private val communicationDevicesListener = AudioManager.OnCommunicationDeviceChangedListener {
-        if (deviceType != it?.type) {
-            Log.d("MappLogger", "CommunicationDevices: ${it?.type}")
-            Log.d("MappLogger", "CommunicationDevices: ${it?.productName}")
-            deviceType = it?.type
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun checkAudioOutputAboveM() {
-        Log.d(
-            "MappLogger",
-            "isBluetoothScoAvailableOffCall: ${audioManager.isBluetoothScoAvailableOffCall}"
-        )
-        Log.d("MappLogger", "isBluetoothScoOn: ${audioManager.isBluetoothScoOn}")
-        Log.d("MappLogger", "isBluetoothA2dpOn: ${audioManager.isBluetoothA2dpOn}")
-        val devices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
-        if (devices.isNotEmpty()) {
-            val device = devices.first()
-            if (deviceType != device?.type) {
-                Log.d("MappLogger", "checkAudioOutputAboveM: ${device?.type}")
-                Log.d("MappLogger", "checkAudioOutputAboveM: ${device?.productName}")
-                deviceType = device?.type
-            }
-        }
-    }
-
     fun playHlsRemoteAudio(url: String) {
         exoPlayer.setMediaSource(mediaSourceFromHLS(url))
         exoPlayer.setVideoFrameMetadataListener(videoFrameMetadataListener)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            audioManager.addOnCommunicationDeviceChangedListener(
-                ContextCompat.getMainExecutor(
-                    context
-                ), communicationDevicesListener
-            )
-        }
         exoPlayer.prepare()
         handler.postDelayed(runnable, 1000)
+    }
+
+    override fun coreVPlayerOnAudioDeviceChange(
+        audioDeviceInfo: AudioDeviceInfo,
+        isBluetoothActive: Boolean
+    ) {
+        callback.onAudioOutputChange(audioDeviceInfo, isBluetoothActive)
     }
 
     private fun convertFormatToVideoQuality(format: Format): QualityVideoModel? {
@@ -172,9 +142,6 @@ class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer(context) {
     fun destroy() {
         handler.removeCallbacks(runnable)
         exoPlayer.clearVideoFrameMetadataListener(videoFrameMetadataListener)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            audioManager.removeOnCommunicationDeviceChangedListener(communicationDevicesListener)
-        }
         exoPlayer.stop()
         exoPlayer.release()
     }

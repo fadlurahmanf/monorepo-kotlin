@@ -1,8 +1,12 @@
 package com.fadlurahmanf.mapp_example.presentation.vplayer
 
+import android.media.AudioDeviceInfo
+import android.os.Build
 import android.util.Log
+import androidx.core.content.ContextCompat
 import com.fadlurahmanf.core_vplayer.data.model.QualityVideoModel
 import com.fadlurahmanf.core_vplayer.domain.utilities.HlsVideoPlayer
+import com.fadlurahmanf.mapp_example.R
 import com.fadlurahmanf.mapp_example.databinding.ActivityVplayerBinding
 import com.fadlurahmanf.mapp_example.presentation.BaseExampleActivity
 
@@ -31,6 +35,20 @@ class VPlayerActivity :
 
     override fun onVideoQualityChange(quality: QualityVideoModel) {
         Log.d("MappLogger", "onVideoQualityChange: $quality")
+        binding.tvFormatType.text = "Auto(${quality.formatName})"
+    }
+
+    override fun onAudioOutputChange(audioDeviceInfo: AudioDeviceInfo, isBluetoothActive: Boolean) {
+        if (isBluetoothActive) {
+            binding.ivSpeakerType.background =
+                ContextCompat.getDrawable(this, R.drawable.round_bluetooth_24)
+        } else {
+            binding.ivSpeakerType.background =
+                ContextCompat.getDrawable(this, R.drawable.round_headset_24)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            binding.tvSpeakerType.text = audioDeviceInfo.productName.toString()
+        }
     }
 
     override fun onDurationChange(duration: Long) {
