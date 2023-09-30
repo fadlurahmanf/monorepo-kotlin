@@ -1,6 +1,7 @@
 package com.fadlurahmanf.core_vplayer.domain.utilities
 
 import android.content.Context
+import android.media.AudioDeviceInfo
 import android.media.AudioManager
 import android.net.Uri
 import android.os.Build
@@ -37,7 +38,7 @@ class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer(context) {
 
     private val runnable = object : Runnable {
         override fun run() {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
                 checkAudioOutputAboveM()
             }
             checkAudioPosition()
@@ -95,25 +96,47 @@ class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer(context) {
         callback.onGetVideoQualities(qualities)
     }
 
+    private var currentQuality: QualityVideoModel? = null
     private val videoFrameMetadataListener =
         VideoFrameMetadataListener { _, _, format, _ ->
             if (format.id != null) {
                 val quality = convertFormatToVideoQuality(format)
-                if (quality != null) callback.onVideoQualityChange(quality)
+                if (quality != null) {
+                    if (currentQuality?.id != quality.id) {
+                        callback.onVideoQualityChange(quality)
+                        currentQuality = quality
+                    }
+                }
             }
         }
 
+    private var deviceType: Int? = null
+
     @RequiresApi(Build.VERSION_CODES.S)
     private val communicationDevicesListener = AudioManager.OnCommunicationDeviceChangedListener {
-        Log.d("MappLogger", "CommunicationDevices: ${it?.type}")
+        if (deviceType != it?.type) {
+            Log.d("MappLogger", "CommunicationDevices: ${it?.type}")
+            Log.d("MappLogger", "CommunicationDevices: ${it?.productName}")
+            deviceType = it?.type
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun checkAudioOutputAboveM() {
+        Log.d(
+            "MappLogger",
+            "isBluetoothScoAvailableOffCall: ${audioManager.isBluetoothScoAvailableOffCall}"
+        )
+        Log.d("MappLogger", "isBluetoothScoOn: ${audioManager.isBluetoothScoOn}")
+        Log.d("MappLogger", "isBluetoothA2dpOn: ${audioManager.isBluetoothA2dpOn}")
         val devices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
         if (devices.isNotEmpty()) {
             val device = devices.first()
-            Log.d("MappLogger", "checkAudioOutputAboveM: ${device?.type}")
+            if (deviceType != device?.type) {
+                Log.d("MappLogger", "checkAudioOutputAboveM: ${device?.type}")
+                Log.d("MappLogger", "checkAudioOutputAboveM: ${device?.productName}")
+                deviceType = device?.type
+            }
         }
     }
 
@@ -146,7 +169,7 @@ class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer(context) {
         fun onVideoQualityChange(quality: QualityVideoModel)
     }
 
-    fun destroyInstance() {
+    fun destroy() {
         handler.removeCallbacks(runnable)
         exoPlayer.clearVideoFrameMetadataListener(videoFrameMetadataListener)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

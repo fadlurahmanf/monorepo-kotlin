@@ -34,10 +34,15 @@ class VPlayerActivity :
     }
 
     override fun onDurationChange(duration: Long) {
-        Log.d("MappLogger", "onDurationChange: $duration")
+//        Log.d("MappLogger", "onDurationChange: $duration")
     }
 
     override fun onPositionChange(position: Long) {
-        Log.d("MappLogger", "onPositionChange: $position")
+//        Log.d("MappLogger", "onPositionChange: $position")
+    }
+
+    override fun onDestroy() {
+        videoPlayer.destroy()
+        super.onDestroy()
     }
 }
