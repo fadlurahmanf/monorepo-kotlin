@@ -3,9 +3,13 @@
 
     <application>
         <activity
+            android:name=".presentation.vplayer.VPlayerActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light" />
+        <activity
             android:name=".presentation.call.CallAcceptActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light"/>
+            android:theme="@style/Theme.AppCompat.Light" />
         <activity
             android:name=".presentation.mlkit.FaceDetectorActivity"
             android:exported="false"
