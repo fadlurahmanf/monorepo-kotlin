@@ -6,7 +6,7 @@
             android:name=".presentation.vplayer.VPlayerActivity"
             android:exported="false"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.AppCompat.Light" />
+            android:theme="@style/Theme.MaterialComponents.NoActionBar" />
         <activity
             android:name=".presentation.call.CallAcceptActivity"
             android:exported="true"
