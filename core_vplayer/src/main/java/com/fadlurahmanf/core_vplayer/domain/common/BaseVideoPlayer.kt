@@ -8,18 +8,20 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.TrackSelector
+import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.trackselection.AdaptiveTrackSelection
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
+import androidx.media3.exoplayer.trackselection.TrackSelector
 
+@UnstableApi
 abstract class BaseVideoPlayer(context: Context) {
 
     var audioManager: AudioManager
     var handler: Handler
     var exoPlayer: ExoPlayer
-    private var trackSelector: TrackSelector =
+    val trackSelector: TrackSelector =
         DefaultTrackSelector(context, AdaptiveTrackSelection.Factory())
 
     var currentState = Player.STATE_IDLE

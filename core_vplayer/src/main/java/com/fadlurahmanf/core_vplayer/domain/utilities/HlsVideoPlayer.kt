@@ -2,23 +2,22 @@ package com.fadlurahmanf.core_vplayer.domain.utilities
 
 import android.content.Context
 import android.media.AudioDeviceInfo
-import android.media.AudioManager
 import android.net.Uri
 import android.os.Build
-import android.util.Log
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
+import androidx.media3.common.C
+import androidx.media3.common.Format
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.hls.HlsMediaSource
+import androidx.media3.exoplayer.video.VideoFrameMetadataListener
 import com.fadlurahmanf.core_vplayer.data.model.QualityVideoModel
 import com.fadlurahmanf.core_vplayer.domain.common.BaseVideoPlayer
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.Format
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import com.google.android.exoplayer2.video.VideoFrameMetadataListener
 import kotlin.math.max
 
+@UnstableApi
 class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer(context) {
 
     private lateinit var callback: HlsVPlayerCallback
@@ -38,6 +37,7 @@ class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer(context) {
 
     private val runnable = object : Runnable {
         override fun run() {
+            println("MASUK SINI ${exoPlayer.playbackState}")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 checkAudioOutputAboveM()
             }
@@ -111,8 +111,12 @@ class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer(context) {
         }
 
     fun playHlsRemoteAudio(url: String) {
+        exoPlayer = ExoPlayer.Builder(context)
+            .setTrackSelector(trackSelector)
+            .build()
         exoPlayer.setMediaSource(mediaSourceFromHLS(url))
         exoPlayer.setVideoFrameMetadataListener(videoFrameMetadataListener)
+        exoPlayer.playWhenReady = true
         exoPlayer.prepare()
         handler.postDelayed(runnable, 1000)
     }
