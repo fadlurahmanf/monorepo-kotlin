@@ -37,7 +37,6 @@ class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer(context) {
 
     private val runnable = object : Runnable {
         override fun run() {
-            println("MASUK SINI ${exoPlayer.playbackState}")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 checkAudioOutputAboveM()
             }
@@ -111,12 +110,8 @@ class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer(context) {
         }
 
     fun playHlsRemoteAudio(url: String) {
-        exoPlayer = ExoPlayer.Builder(context)
-            .setTrackSelector(trackSelector)
-            .build()
         exoPlayer.setMediaSource(mediaSourceFromHLS(url))
         exoPlayer.setVideoFrameMetadataListener(videoFrameMetadataListener)
-        exoPlayer.playWhenReady = true
         exoPlayer.prepare()
         handler.postDelayed(runnable, 1000)
     }
@@ -146,6 +141,7 @@ class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer(context) {
     fun destroy() {
         handler.removeCallbacks(runnable)
         exoPlayer.clearVideoFrameMetadataListener(videoFrameMetadataListener)
+        exoPlayer.removeListener(exoPlayerListener)
         exoPlayer.stop()
         exoPlayer.release()
     }

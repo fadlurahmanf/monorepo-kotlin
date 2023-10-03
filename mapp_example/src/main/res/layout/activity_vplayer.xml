@@ -4,22 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/black"
     tools:context=".presentation.vplayer.VPlayerActivity">
 
     <androidx.media3.ui.PlayerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
-        android:background="@color/red"
         android:id="@+id/exo_player"/>
 
     <LinearLayout
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:background="@color/red"
+        android:background="@color/black_opacity"
         android:padding="25dp"
-        android:visibility="visible"
         android:id="@+id/ll1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/ll2"
@@ -49,7 +46,6 @@
         android:layout_height="150dp"
         android:background="@color/black_opacity"
         android:padding="25dp"
-        android:visibility="gone"
         android:id="@+id/ll2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ll1"

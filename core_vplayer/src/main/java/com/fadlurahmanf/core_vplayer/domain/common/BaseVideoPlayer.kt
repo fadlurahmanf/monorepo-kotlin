@@ -18,18 +18,25 @@ import androidx.media3.exoplayer.trackselection.TrackSelector
 @UnstableApi
 abstract class BaseVideoPlayer(context: Context) {
 
-    var audioManager: AudioManager
+    private var audioManager: AudioManager
     var handler: Handler
-    var exoPlayer: ExoPlayer
-    val trackSelector: TrackSelector =
+    lateinit var exoPlayer: ExoPlayer
+    private val trackSelector: TrackSelector =
         DefaultTrackSelector(context, AdaptiveTrackSelection.Factory())
 
     var currentState = Player.STATE_IDLE
 
-    private val exoPlayerListener = object : Player.Listener {
+    val exoPlayerListener = object : Player.Listener {
         override fun onPlaybackStateChanged(playbackState: Int) {
             super.onPlaybackStateChanged(playbackState)
             coreVPlayerOnPlaybackStateChanged(playbackState)
+
+            Log.d("MappLogger", "MASUK ERROR 1: ${exoPlayer.playerError?.message}")
+            Log.d("MappLogger", "MASUK ERROR 2: ${exoPlayer.playerError?.localizedMessage}")
+            Log.d("MappLogger", "MASUK ERROR 3: ${exoPlayer.playerError?.cause?.message}")
+            Log.d("MappLogger", "MASUK ERROR 4: ${exoPlayer.playerError?.cause?.localizedMessage}")
+            Log.d("MappLogger", "MASUK ERROR 5: ${exoPlayer.playerError?.errorCodeName}")
+            Log.d("MappLogger", "MASUK ERROR 6: ${exoPlayer.playerError?.errorCode}")
         }
     }
 
@@ -54,13 +61,8 @@ abstract class BaseVideoPlayer(context: Context) {
     @RequiresApi(Build.VERSION_CODES.M)
     fun checkAudioOutputAboveM() {
         val devices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
-        Log.d("MappLogger", "devicesLength ${devices.size}")
-        for (i in devices.indices){
+        for (i in devices.indices) {
             val device = devices[i]
-            Log.d("MappLogger", "deviceType $i ${device.type}")
-            Log.d("MappLogger", "productName $i ${device.productName}")
-            Log.d("MappLogger", "isBluetoothA2dpOn $i ${audioManager.isBluetoothA2dpOn}")
-            Log.d("MappLogger", "isBluetoothScoOn $i ${audioManager.isBluetoothScoOn}")
             audioDeviceInfo = device
             coreVPlayerOnAudioDeviceChange(
                 audioDeviceInfo!!,
