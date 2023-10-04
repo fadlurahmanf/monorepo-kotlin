@@ -6,36 +6,109 @@ import android.media.AudioManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.annotation.RequiresApi
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.TrackSelector
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.DefaultDataSource
+import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.datasource.FileDataSource
+import androidx.media3.datasource.cache.CacheDataSink
+import androidx.media3.datasource.cache.CacheDataSource
+import androidx.media3.exoplayer.ExoPlaybackException
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.trackselection.AdaptiveTrackSelection
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
+import androidx.media3.exoplayer.trackselection.TrackSelector
+import com.fadlurahmanf.core_vplayer.domain.utilities.CacheUtilities
 
-abstract class BaseVideoPlayer(context: Context) {
+@UnstableApi
+abstract class BaseVideoPlayer2(private val context: Context) {
+    private var audioManager: AudioManager =
+        context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    val handler = Handler(Looper.getMainLooper())
+    lateinit var exoPlayer: ExoPlayer
 
-    var audioManager: AudioManager
-    var handler: Handler
-    var exoPlayer: ExoPlayer
-    private var trackSelector: TrackSelector =
-        DefaultTrackSelector(context, AdaptiveTrackSelection.Factory())
+    open fun getExoPlayerBuilder(): ExoPlayer.Builder {
+        return ExoPlayer.Builder(context)
+    }
 
-    var currentState = Player.STATE_IDLE
+    open fun initExoPlayer() {
+        exoPlayer = getExoPlayerBuilder().build()
+        exoPlayer.playWhenReady = true
+    }
 
-    private val exoPlayerListener = object : Player.Listener {
-        override fun onPlaybackStateChanged(playbackState: Int) {
-            super.onPlaybackStateChanged(playbackState)
-            coreVPlayerOnPlaybackStateChanged(playbackState)
+
+    private var currentDuration: Long? = null
+    private var currentPosition: Long? = null
+    open fun fetchAudioDurationAndPosition(callback: CVPlayerCallback) {
+        if (currentDuration == null || (currentDuration
+                ?: 0L) <= 0L || exoPlayer.duration != currentDuration
+        ) {
+            currentDuration = exoPlayer.duration
+            callback.onDurationChanged(currentDuration!!)
+        }
+
+        if (currentPosition == null || exoPlayer.currentPosition != currentPosition) {
+            currentPosition = exoPlayer.currentPosition
+            callback.onPositionChanged(currentPosition!!)
         }
     }
 
-    abstract fun coreVPlayerOnPlaybackStateChanged(playbackState: Int)
-    abstract fun coreVPlayerOnAudioDeviceChange(
-        audioDeviceInfo: AudioDeviceInfo,
-        isBluetoothActive: Boolean
-    )
+    open fun createCacheDataSinkFactory(): CacheDataSink.Factory {
+        return CacheDataSink.Factory()
+            .setCache(CacheUtilities.getSimpleCache(context))
+    }
+
+    open fun createHttpDataSource(): DefaultDataSource.Factory {
+        val dataSource = DefaultHttpDataSource.Factory()
+        return DefaultDataSource.Factory(context, dataSource)
+    }
+
+    open fun createCacheDataSource(): CacheDataSource.Factory {
+        return CacheDataSource.Factory()
+            .setCache(CacheUtilities.getSimpleCache(context))
+            .setCacheWriteDataSinkFactory(createCacheDataSinkFactory())
+            .setCacheReadDataSourceFactory(FileDataSource.Factory())
+            .setUpstreamDataSourceFactory(createHttpDataSource())
+            .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
+    }
+
+    private var currentAudioDeviceInfo: AudioDeviceInfo? = null
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun checkAudioOutputAboveM(callback: CVPlayerCallback) {
+        val devices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
+
+
+        if (currentAudioDeviceInfo == null || (devices.isNotEmpty() && currentAudioDeviceInfo?.id != devices.last().id)) {
+            currentAudioDeviceInfo = devices.last()
+            callback.onAudioOutputChanged(currentAudioDeviceInfo!!)
+        }
+    }
+
+    interface CVPlayerCallback {
+        fun onPlaybackStateChanged(playbackState: Int)
+        fun onDurationChanged(duration: Long)
+        fun onPositionChanged(position: Long)
+
+        fun onAudioOutputChanged(audioDeviceInfo: AudioDeviceInfo)
+        fun onErrorHappened(exception: ExoPlaybackException)
+    }
+}
+
+@UnstableApi
+abstract class BaseVideoPlayer(private val context: Context) {
+
+    private var audioManager: AudioManager
+    var handler: Handler
+    lateinit var exoPlayer: ExoPlayer
+    private val trackSelector: TrackSelector =
+        DefaultTrackSelector(context, AdaptiveTrackSelection.Factory())
+
+//    abstract fun coreVPlayerOnPlaybackStateChanged(playbackState: Int)
+//    abstract fun coreVPlayerOnAudioDeviceChange(
+//        audioDeviceInfo: AudioDeviceInfo,
+//        isBluetoothActive: Boolean
+//    )
 
     init {
         audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -44,7 +117,6 @@ abstract class BaseVideoPlayer(context: Context) {
             .setTrackSelector(trackSelector)
             .build()
         exoPlayer.playWhenReady = true
-        exoPlayer.addListener(exoPlayerListener)
     }
 
     private var audioDeviceInfo: AudioDeviceInfo? = null
@@ -52,18 +124,9 @@ abstract class BaseVideoPlayer(context: Context) {
     @RequiresApi(Build.VERSION_CODES.M)
     fun checkAudioOutputAboveM() {
         val devices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
-        Log.d("MappLogger", "devicesLength ${devices.size}")
-        for (i in devices.indices){
+        for (i in devices.indices) {
             val device = devices[i]
-            Log.d("MappLogger", "deviceType $i ${device.type}")
-            Log.d("MappLogger", "productName $i ${device.productName}")
-            Log.d("MappLogger", "isBluetoothA2dpOn $i ${audioManager.isBluetoothA2dpOn}")
-            Log.d("MappLogger", "isBluetoothScoOn $i ${audioManager.isBluetoothScoOn}")
             audioDeviceInfo = device
-            coreVPlayerOnAudioDeviceChange(
-                audioDeviceInfo!!,
-                audioManager.isBluetoothA2dpOn || audioManager.isBluetoothScoOn
-            )
         }
     }
 
@@ -72,5 +135,6 @@ abstract class BaseVideoPlayer(context: Context) {
         fun onPositionChange(position: Long)
 
         fun onAudioOutputChange(audioDeviceInfo: AudioDeviceInfo, isBluetoothActive: Boolean)
+        fun onErrorHappened(exception: ExoPlaybackException)
     }
 }

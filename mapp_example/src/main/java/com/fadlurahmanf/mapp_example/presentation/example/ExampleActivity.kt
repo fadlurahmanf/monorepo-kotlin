@@ -17,7 +17,8 @@ import com.fadlurahmanf.mapp_example.presentation.mlkit.ObjectLabelingActivity
 import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity
 import com.fadlurahmanf.mapp_example.presentation.rtc.ListRoomActivity
 import com.fadlurahmanf.mapp_example.presentation.shortcut.ShortcutActivity
-import com.fadlurahmanf.mapp_example.presentation.vplayer.VPlayerActivity
+import com.fadlurahmanf.mapp_example.presentation.vplayer.HLSPlayerActivity
+import com.fadlurahmanf.mapp_example.presentation.vplayer.Mp4PlayerPlayerActivity
 import com.fadlurahmanf.mapp_fcm.domain.repositories.MappFcmRepository
 import javax.inject.Inject
 
@@ -72,7 +73,13 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
             MenuModel(
                 menuId = "HLS_VIDEO_PLAYER",
                 menuTitle = "HLS VIDEO PLAYER",
-                menuSubTitle = "HLS Video Player",
+                menuSubTitle = "Play HLS Remote Video",
+                icon = R.drawable.outline_ondemand_video_24
+            ),
+            MenuModel(
+                menuId = "MP4_VIDEO_PLAYER",
+                menuTitle = "MP4 VIDEO PLAYER",
+                menuSubTitle = "Play MP4 Remote Video",
                 icon = R.drawable.outline_ondemand_video_24
             ),
             MenuModel(
@@ -179,7 +186,16 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                     AnalyticEvent.ex_hls_vplayer_clicked,
                     AnalyticEvent.defaultParamMap(this)
                 )
-                val intent = Intent(this, VPlayerActivity::class.java)
+                val intent = Intent(this, HLSPlayerActivity::class.java)
+                startActivity(intent)
+            }
+
+            "MP4_VIDEO_PLAYER" -> {
+                AnalyticHelper.logEvent(
+                    AnalyticEvent.ex_mp4_vplayer_clicked,
+                    AnalyticEvent.defaultParamMap(this)
+                )
+                val intent = Intent(this, Mp4PlayerPlayerActivity::class.java)
                 startActivity(intent)
             }
 
