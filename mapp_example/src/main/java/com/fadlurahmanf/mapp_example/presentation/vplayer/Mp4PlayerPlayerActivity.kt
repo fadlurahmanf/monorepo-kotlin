@@ -9,9 +9,9 @@ import com.fadlurahmanf.mapp_example.databinding.ActivityMp4PlayerBinding
 import com.fadlurahmanf.mapp_example.presentation.BaseExampleActivity
 
 @UnstableApi
-class Mp4PlayerActivity :
+class Mp4PlayerPlayerActivity :
     BaseExampleActivity<ActivityMp4PlayerBinding>(ActivityMp4PlayerBinding::inflate),
-    Mp4VideoPlayer.Mp4Callback {
+    Mp4VideoPlayer.Mp4PlayerCallback {
 
     override fun injectActivity() {
 

@@ -17,25 +17,6 @@ import com.fadlurahmanf.core_vplayer.domain.common.BaseVideoPlayer2
 @UnstableApi
 class Mp4VideoPlayer(private val context: Context) : BaseVideoPlayer2(context) {
 
-    private fun createCacheDataSinkFactory(): CacheDataSink.Factory {
-        return CacheDataSink.Factory()
-            .setCache(CacheUtilities.getSimpleCache(context))
-    }
-
-    private fun createHttpDataSource(): DefaultDataSource.Factory {
-        val dataSource = DefaultHttpDataSource.Factory()
-        return DefaultDataSource.Factory(context, dataSource)
-    }
-
-    private fun createCacheDataSource(): CacheDataSource.Factory {
-        return CacheDataSource.Factory()
-            .setCache(CacheUtilities.getSimpleCache(context))
-            .setCacheWriteDataSinkFactory(createCacheDataSinkFactory())
-            .setCacheReadDataSourceFactory(FileDataSource.Factory())
-            .setUpstreamDataSourceFactory(createHttpDataSource())
-            .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
-    }
-
     private fun createMediaSource(uriString: String): ProgressiveMediaSource {
         val mediaItem =
             MediaItem.fromUri(Uri.parse(uriString))
@@ -43,27 +24,27 @@ class Mp4VideoPlayer(private val context: Context) : BaseVideoPlayer2(context) {
             .createMediaSource(mediaItem)
     }
 
-    private var mp4Callback: Mp4Callback? = null
-    fun setCallback(mp4Callback: Mp4Callback) {
-        this.mp4Callback = mp4Callback
+    private var mp4PlayerCallback: Mp4PlayerCallback? = null
+    fun setCallback(mp4PlayerCallback: Mp4PlayerCallback) {
+        this.mp4PlayerCallback = mp4PlayerCallback
     }
 
     private val listener = object : Player.Listener {
         override fun onPlaybackStateChanged(playbackState: Int) {
             super.onPlaybackStateChanged(playbackState)
 
-            mp4Callback?.onPlaybackStateChanged(playbackState)
+            mp4PlayerCallback?.onPlaybackStateChanged(playbackState)
 
             if (exoPlayer.playerError != null) {
-                mp4Callback?.onErrorHappened(exoPlayer.playerError!!)
+                mp4PlayerCallback?.onErrorHappened(exoPlayer.playerError!!)
             }
         }
     }
 
     private val runnable = object : Runnable {
         override fun run() {
-            if (mp4Callback != null) {
-                fetchAudioDurationAndPosition(mp4Callback!!)
+            if (mp4PlayerCallback != null) {
+                fetchAudioDurationAndPosition(mp4PlayerCallback!!)
             }
             handler.postDelayed(this, 1000)
         }
@@ -84,8 +65,7 @@ class Mp4VideoPlayer(private val context: Context) : BaseVideoPlayer2(context) {
         exoPlayer.release()
     }
 
-    interface Mp4Callback : BaseVideoPlayer2.CVPlayerCallback {
-        fun onPlaybackStateChanged(playbackState: Int)
+    interface Mp4PlayerCallback : BaseVideoPlayer2.CVPlayerCallback {
     }
 
 }

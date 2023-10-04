@@ -18,7 +18,7 @@ import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActiv
 import com.fadlurahmanf.mapp_example.presentation.rtc.ListRoomActivity
 import com.fadlurahmanf.mapp_example.presentation.shortcut.ShortcutActivity
 import com.fadlurahmanf.mapp_example.presentation.vplayer.HLSPlayerActivity
-import com.fadlurahmanf.mapp_example.presentation.vplayer.Mp4PlayerActivity
+import com.fadlurahmanf.mapp_example.presentation.vplayer.Mp4PlayerPlayerActivity
 import com.fadlurahmanf.mapp_fcm.domain.repositories.MappFcmRepository
 import javax.inject.Inject
 
@@ -195,7 +195,7 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                     AnalyticEvent.ex_mp4_vplayer_clicked,
                     AnalyticEvent.defaultParamMap(this)
                 )
-                val intent = Intent(this, Mp4PlayerActivity::class.java)
+                val intent = Intent(this, Mp4PlayerPlayerActivity::class.java)
                 startActivity(intent)
             }
 
