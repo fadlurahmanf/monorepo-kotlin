@@ -16,6 +16,7 @@ class Mp4PlayerActivity :
     override fun injectActivity() {
 
     }
+
     override fun setup() {
         initExoPlayer()
     }
@@ -26,8 +27,8 @@ class Mp4PlayerActivity :
 
     private lateinit var mp4VideoPlayer: Mp4VideoPlayer
     private fun initExoPlayer() {
-        mp4VideoPlayer = Mp4VideoPlayer()
-        mp4VideoPlayer.initExoPlayer(this)
+        mp4VideoPlayer = Mp4VideoPlayer(this)
+        mp4VideoPlayer.initExoPlayer()
         mp4VideoPlayer.setCallback(this)
 
         binding.playerView.player = mp4VideoPlayer.exoPlayer

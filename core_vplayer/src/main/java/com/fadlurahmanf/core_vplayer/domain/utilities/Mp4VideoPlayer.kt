@@ -8,12 +8,11 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
-import com.fadlurahmanf.core_vplayer.domain.common.BaseVideoPlayer
+import com.fadlurahmanf.core_vplayer.domain.common.BaseVideoPlayer2
 
 @UnstableApi
-class Mp4VideoPlayer {
+class Mp4VideoPlayer(private val context: Context) : BaseVideoPlayer2(context) {
     lateinit var exoPlayer: ExoPlayer
-
 
     private fun createMediaSource(uriString: String): ProgressiveMediaSource {
         val dataSource = DefaultHttpDataSource.Factory()
@@ -22,7 +21,7 @@ class Mp4VideoPlayer {
         return ProgressiveMediaSource.Factory(dataSource).createMediaSource(mediaItem)
     }
 
-    fun initExoPlayer(context: Context) {
+    fun initExoPlayer() {
         exoPlayer = ExoPlayer.Builder(context).build()
         exoPlayer.playWhenReady = true
     }
@@ -56,7 +55,7 @@ class Mp4VideoPlayer {
         exoPlayer.release()
     }
 
-    interface Mp4Callback : BaseVideoPlayer.CVPlayerCallback {
+    interface Mp4Callback : BaseVideoPlayer2.CVPlayerCallback {
         fun onPlaybackStateChanged(playbackState: Int)
     }
 
