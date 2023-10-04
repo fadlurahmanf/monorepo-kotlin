@@ -5,17 +5,46 @@ import android.net.Uri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.database.StandaloneDatabaseProvider
+import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.datasource.FileDataSource
+import androidx.media3.datasource.cache.CacheDataSink
+import androidx.media3.datasource.cache.CacheDataSource
+import androidx.media3.datasource.cache.NoOpCacheEvictor
+import androidx.media3.datasource.cache.SimpleCache
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
+import androidx.media3.exoplayer.util.EventLogger
 import com.fadlurahmanf.core_vplayer.domain.common.BaseVideoPlayer2
+import java.io.File
 
 @UnstableApi
-class Mp4VideoPlayer(context: Context) : BaseVideoPlayer2(context) {
-    private fun createMediaSource(uriString: String): ProgressiveMediaSource {
+class Mp4VideoPlayer(private val context: Context) : BaseVideoPlayer2(context) {
+
+    private fun createCacheDataSinkFactory(): CacheDataSink.Factory {
+        return CacheDataSink.Factory()
+            .setCache(CacheUtilities.getSimpleCache(context))
+    }
+
+    private fun createHttpDataSource(): DefaultDataSource.Factory {
         val dataSource = DefaultHttpDataSource.Factory()
+        return DefaultDataSource.Factory(context, dataSource)
+    }
+
+    private fun createCacheDataSource(): CacheDataSource.Factory {
+        return CacheDataSource.Factory()
+            .setCache(CacheUtilities.getSimpleCache(context))
+            .setCacheWriteDataSinkFactory(createCacheDataSinkFactory())
+            .setCacheReadDataSourceFactory(FileDataSource.Factory())
+            .setUpstreamDataSourceFactory(createHttpDataSource())
+            .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
+    }
+
+    private fun createMediaSource(uriString: String): ProgressiveMediaSource {
         val mediaItem =
             MediaItem.fromUri(Uri.parse(uriString))
-        return ProgressiveMediaSource.Factory(dataSource).createMediaSource(mediaItem)
+        return ProgressiveMediaSource.Factory(createCacheDataSource())
+            .createMediaSource(mediaItem)
     }
 
     private var mp4Callback: Mp4Callback? = null
@@ -46,6 +75,7 @@ class Mp4VideoPlayer(context: Context) : BaseVideoPlayer2(context) {
 
     fun playRemoteVideo(uriString: String) {
         exoPlayer.addListener(listener)
+        exoPlayer.addAnalyticsListener(EventLogger())
         exoPlayer.setMediaSource(createMediaSource(uriString))
         exoPlayer.prepare()
         handler.post(runnable)
