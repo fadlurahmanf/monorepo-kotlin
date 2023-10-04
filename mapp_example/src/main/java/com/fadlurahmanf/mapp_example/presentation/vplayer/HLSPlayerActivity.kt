@@ -1,6 +1,7 @@
 package com.fadlurahmanf.mapp_example.presentation.vplayer
 
 import android.app.AlertDialog
+import android.app.PictureInPictureParams
 import android.media.AudioDeviceInfo
 import android.os.Build
 import androidx.media3.common.util.Log
@@ -109,6 +110,17 @@ class HLSPlayerActivity :
         Log.e("MappLogger", "onErrorHappened 4: ${exception.cause?.localizedMessage}")
         Log.e("MappLogger", "onErrorHappened 5: ${exception.errorCode}")
         Log.e("MappLogger", "onErrorHappened 6: ${exception.errorCodeName}")
+    }
+
+    override fun onUserLeaveHint() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            enterPictureInPictureMode(
+                PictureInPictureParams.Builder()
+                .build())
+        }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            enterPictureInPictureMode()
+        }
+        super.onUserLeaveHint()
     }
 
     override fun onDestroy() {
