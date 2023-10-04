@@ -1,5 +1,6 @@
 package com.fadlurahmanf.mapp_example.presentation.vplayer
 
+import android.app.AlertDialog
 import android.media.AudioDeviceInfo
 import android.os.Build
 import androidx.media3.common.util.Log
@@ -27,18 +28,51 @@ class HLSPlayerActivity :
         binding.exoPlayer.useController = false
 
         hlsVideoPlayer.playRemoteVideo("https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8")
+
+
+        binding.ll1.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            val array = arrayOfNulls<String>(qualities.size)
+            var checkedItem: Int = 0
+            for (i in qualities.indices) {
+                if (qualities[i].id == currentQuality?.id) {
+                    checkedItem = i
+                }
+                array[i] = qualities[i].formatName ?: "-"
+            }
+            builder.setNegativeButton("CANCEL") { dialog, _ ->
+                dialog.dismiss()
+            }
+            builder.setPositiveButton("APPLY") { dialog, _ ->
+                hlsVideoPlayer.selectQualityOfVideo(qualities[checkedItem].id)
+                dialog.dismiss()
+            }
+            builder.setSingleChoiceItems(
+                array, checkedItem
+            ) { _, which ->
+                checkedItem = which
+            }
+
+            builder.create().show()
+        }
     }
 
+    private val qualities: ArrayList<QualityVideoModel> = arrayListOf()
     override fun onGetVideoQualities(list: List<QualityVideoModel>) {
         list.forEach {
             Log.d("MappLogger", "onGetVideoQuality: $it")
         }
+
+        qualities.clear()
+        qualities.addAll(list)
     }
 
-    override fun onVideoQualityChanged(quality: QualityVideoModel) {
+    private var currentQuality: QualityVideoModel? = null
+    override fun onVideoQualityChanged(quality: QualityVideoModel, isAutoQuality: Boolean) {
         Log.d("MappLogger", "onVideoQualityChanged: $quality")
+        currentQuality = quality
         runOnUiThread {
-            binding.tvFormatType.text = "Auto(${quality.formatName})"
+            binding.tvFormatType.text = if (isAutoQuality) "Auto(${quality.formatName})" else "${quality.formatName}"
         }
     }
 

@@ -19,6 +19,7 @@ class Mp4PlayerPlayerActivity :
 
     override fun setup() {
         initExoPlayer()
+
     }
 
     private fun playMp4RemoteVideo() {

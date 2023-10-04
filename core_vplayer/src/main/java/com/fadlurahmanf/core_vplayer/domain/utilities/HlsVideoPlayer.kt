@@ -51,13 +51,14 @@ class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer2(context) {
                 val quality = convertFormatToVideoQuality(format)
                 if (quality != null) {
                     if (currentQuality?.id != quality.id) {
-                        hlsVPlayerCallback?.onVideoQualityChanged(quality)
+                        hlsVPlayerCallback?.onVideoQualityChanged(quality, isAutoQuality)
                         currentQuality = quality
                     }
                 }
             }
         }
 
+    private var isAutoQuality: Boolean = true
     fun selectQualityOfVideo(formatId: String) {
         var index: Int? = null
         for (i in 0 until mediaTrackGroup.length) {
@@ -68,6 +69,7 @@ class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer2(context) {
             }
         }
         if (index != null) {
+            isAutoQuality = false
             trackSelector.parameters = trackSelector.parameters.buildUpon()
                 .addOverride(TrackSelectionOverride(mediaTrackGroup, index))
                 .build()
@@ -157,6 +159,6 @@ class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer2(context) {
 
     interface HlsVPlayerCallback : CVPlayerCallback {
         fun onGetVideoQualities(list: List<QualityVideoModel>)
-        fun onVideoQualityChanged(quality: QualityVideoModel)
+        fun onVideoQualityChanged(quality: QualityVideoModel, isAutoQuality: Boolean)
     }
 }
