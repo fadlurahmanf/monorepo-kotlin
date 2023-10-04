@@ -16,9 +16,36 @@ import androidx.media3.exoplayer.trackselection.TrackSelector
 
 @UnstableApi
 abstract class BaseVideoPlayer2(private val context: Context) {
+    val handler = Handler(Looper.getMainLooper())
+    lateinit var exoPlayer: ExoPlayer
+
+    open fun getExoPlayerBuilder(): ExoPlayer.Builder {
+        return ExoPlayer.Builder(context)
+    }
+
+    open fun initExoPlayer() {
+        exoPlayer = getExoPlayerBuilder().build()
+        exoPlayer.playWhenReady = true
+    }
+
+
+    private var currentDuration: Long? = null
+    private var currentPosition: Long? = null
+    open fun fetchAudioDurationAndPosition(callback: CVPlayerCallback) {
+        if (currentDuration == null || exoPlayer.duration != currentDuration) {
+            currentDuration = exoPlayer.duration
+            callback.onDurationChanged(currentDuration!!)
+        }
+
+        if (currentPosition == null || exoPlayer.currentPosition != currentPosition) {
+            currentPosition = exoPlayer.currentPosition
+            callback.onPositionChanged(currentPosition!!)
+        }
+    }
+
     interface CVPlayerCallback {
-        fun onDurationChange(duration: Long)
-        fun onPositionChange(position: Long)
+        fun onDurationChanged(duration: Long)
+        fun onPositionChanged(position: Long)
 
         fun onAudioOutputChange(audioDeviceInfo: AudioDeviceInfo, isBluetoothActive: Boolean)
         fun onErrorHappened(exception: ExoPlaybackException)

@@ -46,12 +46,12 @@ class Mp4PlayerActivity :
         Log.d("MappLogger", "onPlaybackStateChanged: $playbackState")
     }
 
-    override fun onDurationChange(duration: Long) {
-
+    override fun onDurationChanged(duration: Long) {
+        Log.d("MappLogger", "onDurationChanged: $duration")
     }
 
-    override fun onPositionChange(position: Long) {
-
+    override fun onPositionChanged(position: Long) {
+        Log.d("MappLogger", "onPositionChanged: $position")
     }
 
     override fun onAudioOutputChange(audioDeviceInfo: AudioDeviceInfo, isBluetoothActive: Boolean) {
