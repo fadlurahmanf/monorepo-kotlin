@@ -1,18 +1,17 @@
 package com.fadlurahmanf.mapp_example.presentation.vplayer
 
-import android.net.Uri
-import androidx.media3.common.MediaItem
+import android.media.AudioDeviceInfo
+import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.datasource.DefaultHttpDataSource
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.exoplayer.source.ProgressiveMediaSource
+import androidx.media3.exoplayer.ExoPlaybackException
 import com.fadlurahmanf.core_vplayer.domain.utilities.Mp4VideoPlayer
 import com.fadlurahmanf.mapp_example.databinding.ActivityMp4PlayerBinding
 import com.fadlurahmanf.mapp_example.presentation.BaseExampleActivity
 
 @UnstableApi
 class Mp4PlayerActivity :
-    BaseExampleActivity<ActivityMp4PlayerBinding>(ActivityMp4PlayerBinding::inflate) {
+    BaseExampleActivity<ActivityMp4PlayerBinding>(ActivityMp4PlayerBinding::inflate),
+    Mp4VideoPlayer.Mp4Callback {
 
     override fun injectActivity() {
 
@@ -29,6 +28,7 @@ class Mp4PlayerActivity :
     private fun initExoPlayer() {
         mp4VideoPlayer = Mp4VideoPlayer()
         mp4VideoPlayer.initExoPlayer(this)
+        mp4VideoPlayer.setCallback(this)
 
         binding.playerView.player = mp4VideoPlayer.exoPlayer
         binding.playerView.useController = false
@@ -39,5 +39,30 @@ class Mp4PlayerActivity :
     override fun onDestroy() {
         mp4VideoPlayer.destroyMp4Player()
         super.onDestroy()
+    }
+
+    override fun onPlaybackStateChanged(playbackState: Int) {
+        Log.d("MappLogger", "onPlaybackStateChanged: $playbackState")
+    }
+
+    override fun onDurationChange(duration: Long) {
+
+    }
+
+    override fun onPositionChange(position: Long) {
+
+    }
+
+    override fun onAudioOutputChange(audioDeviceInfo: AudioDeviceInfo, isBluetoothActive: Boolean) {
+
+    }
+
+    override fun onErrorHappened(exception: ExoPlaybackException) {
+        Log.e("MappLogger", "onErrorHappened 1: ${exception.message}")
+        Log.e("MappLogger", "onErrorHappened 2: ${exception.localizedMessage}")
+        Log.e("MappLogger", "onErrorHappened 3: ${exception.cause?.message}")
+        Log.e("MappLogger", "onErrorHappened 4: ${exception.cause?.localizedMessage}")
+        Log.e("MappLogger", "onErrorHappened 5: ${exception.errorCode}")
+        Log.e("MappLogger", "onErrorHappened 6: ${exception.errorCodeName}")
     }
 }
