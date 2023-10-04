@@ -1,6 +1,7 @@
 package com.fadlurahmanf.mapp_example.presentation.vplayer
 
 import android.media.AudioDeviceInfo
+import android.os.Build
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlaybackException
@@ -29,11 +30,16 @@ class HLSPlayerActivity :
     }
 
     override fun onGetVideoQualities(list: List<QualityVideoModel>) {
-
+        list.forEach {
+            Log.d("MappLogger", "onGetVideoQuality: $it")
+        }
     }
 
     override fun onVideoQualityChanged(quality: QualityVideoModel) {
-
+        Log.d("MappLogger", "onVideoQualityChanged: $quality")
+        runOnUiThread {
+            binding.tvFormatType.text = "Auto(${quality.formatName})"
+        }
     }
 
     override fun onPlaybackStateChanged(playbackState: Int) {
@@ -48,8 +54,18 @@ class HLSPlayerActivity :
         Log.d("MappLogger", "onPositionChanged: $position")
     }
 
-    override fun onAudioOutputChange(audioDeviceInfo: AudioDeviceInfo, isBluetoothActive: Boolean) {
-
+    override fun onAudioOutputChanged(audioDeviceInfo: AudioDeviceInfo) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Log.d("MappLogger", "onAudioOutputChange: audioDeviceId: ${audioDeviceInfo.id}")
+            Log.d(
+                "MappLogger",
+                "onAudioOutputChange: audioDeviceName: ${audioDeviceInfo.productName}"
+            )
+            Log.d("MappLogger", "onAudioOutputChange: audioDeviceType: ${audioDeviceInfo.type}")
+            runOnUiThread {
+                binding.tvSpeakerType.text = audioDeviceInfo.productName
+            }
+        }
     }
 
     override fun onErrorHappened(exception: ExoPlaybackException) {
@@ -59,5 +75,10 @@ class HLSPlayerActivity :
         Log.e("MappLogger", "onErrorHappened 4: ${exception.cause?.localizedMessage}")
         Log.e("MappLogger", "onErrorHappened 5: ${exception.errorCode}")
         Log.e("MappLogger", "onErrorHappened 6: ${exception.errorCodeName}")
+    }
+
+    override fun onDestroy() {
+        hlsVideoPlayer.destroyHlsPlayer()
+        super.onDestroy()
     }
 }

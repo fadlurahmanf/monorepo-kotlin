@@ -22,6 +22,8 @@ import com.fadlurahmanf.core_vplayer.domain.utilities.CacheUtilities
 
 @UnstableApi
 abstract class BaseVideoPlayer2(private val context: Context) {
+    private var audioManager: AudioManager =
+        context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     val handler = Handler(Looper.getMainLooper())
     lateinit var exoPlayer: ExoPlayer
 
@@ -70,12 +72,25 @@ abstract class BaseVideoPlayer2(private val context: Context) {
             .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
     }
 
+    private var currentAudioDeviceInfo: AudioDeviceInfo? = null
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun checkAudioOutputAboveM(callback: CVPlayerCallback) {
+        val devices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
+
+
+        if (currentAudioDeviceInfo == null || (devices.isNotEmpty() && currentAudioDeviceInfo?.id != devices.last().id)) {
+            currentAudioDeviceInfo = devices.last()
+            callback.onAudioOutputChanged(currentAudioDeviceInfo!!)
+        }
+    }
+
     interface CVPlayerCallback {
         fun onPlaybackStateChanged(playbackState: Int)
         fun onDurationChanged(duration: Long)
         fun onPositionChanged(position: Long)
 
-        fun onAudioOutputChange(audioDeviceInfo: AudioDeviceInfo, isBluetoothActive: Boolean)
+        fun onAudioOutputChanged(audioDeviceInfo: AudioDeviceInfo)
         fun onErrorHappened(exception: ExoPlaybackException)
     }
 }

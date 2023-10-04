@@ -54,7 +54,7 @@ class Mp4PlayerPlayerActivity :
         Log.d("MappLogger", "onPositionChanged: $position")
     }
 
-    override fun onAudioOutputChange(audioDeviceInfo: AudioDeviceInfo, isBluetoothActive: Boolean) {
+    override fun onAudioOutputChanged(audioDeviceInfo: AudioDeviceInfo) {
 
     }
 
