@@ -12,6 +12,7 @@ object AnalyticEvent {
     const val ex_aes_clicked = "ex_aes_clicked"
     const val ex_ed25119_clicked = "ex_ed25119_clicked"
     const val ex_hls_vplayer_clicked = "ex_hls_vplayer_clicked"
+    const val ex_mp4_vplayer_clicked = "ex_mp4_vplayer_clicked"
     const val ex_object_labeling_mlkit_clicked = "ex_object_labeling_mlkit_clicked"
     const val ex_face_detector_mlkit_clicked = "ex_face_detector_mlkit_clicked"
     const val ex_list_room_rtc_clicked = "ex_list_room_rtc_clicked"

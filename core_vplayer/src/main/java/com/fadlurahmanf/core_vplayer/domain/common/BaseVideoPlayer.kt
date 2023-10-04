@@ -6,17 +6,16 @@ import android.media.AudioManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.ExoPlaybackException
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.AdaptiveTrackSelection
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.trackselection.TrackSelector
 
 @UnstableApi
-abstract class BaseVideoPlayer(context: Context) {
+abstract class BaseVideoPlayer(private val context: Context) {
 
     private var audioManager: AudioManager
     var handler: Handler
@@ -24,27 +23,11 @@ abstract class BaseVideoPlayer(context: Context) {
     private val trackSelector: TrackSelector =
         DefaultTrackSelector(context, AdaptiveTrackSelection.Factory())
 
-    var currentState = Player.STATE_IDLE
-
-    val exoPlayerListener = object : Player.Listener {
-        override fun onPlaybackStateChanged(playbackState: Int) {
-            super.onPlaybackStateChanged(playbackState)
-            coreVPlayerOnPlaybackStateChanged(playbackState)
-
-            Log.d("MappLogger", "MASUK ERROR 1: ${exoPlayer.playerError?.message}")
-            Log.d("MappLogger", "MASUK ERROR 2: ${exoPlayer.playerError?.localizedMessage}")
-            Log.d("MappLogger", "MASUK ERROR 3: ${exoPlayer.playerError?.cause?.message}")
-            Log.d("MappLogger", "MASUK ERROR 4: ${exoPlayer.playerError?.cause?.localizedMessage}")
-            Log.d("MappLogger", "MASUK ERROR 5: ${exoPlayer.playerError?.errorCodeName}")
-            Log.d("MappLogger", "MASUK ERROR 6: ${exoPlayer.playerError?.errorCode}")
-        }
-    }
-
-    abstract fun coreVPlayerOnPlaybackStateChanged(playbackState: Int)
-    abstract fun coreVPlayerOnAudioDeviceChange(
-        audioDeviceInfo: AudioDeviceInfo,
-        isBluetoothActive: Boolean
-    )
+//    abstract fun coreVPlayerOnPlaybackStateChanged(playbackState: Int)
+//    abstract fun coreVPlayerOnAudioDeviceChange(
+//        audioDeviceInfo: AudioDeviceInfo,
+//        isBluetoothActive: Boolean
+//    )
 
     init {
         audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -53,7 +36,6 @@ abstract class BaseVideoPlayer(context: Context) {
             .setTrackSelector(trackSelector)
             .build()
         exoPlayer.playWhenReady = true
-        exoPlayer.addListener(exoPlayerListener)
     }
 
     private var audioDeviceInfo: AudioDeviceInfo? = null
@@ -64,10 +46,6 @@ abstract class BaseVideoPlayer(context: Context) {
         for (i in devices.indices) {
             val device = devices[i]
             audioDeviceInfo = device
-            coreVPlayerOnAudioDeviceChange(
-                audioDeviceInfo!!,
-                audioManager.isBluetoothA2dpOn || audioManager.isBluetoothScoOn
-            )
         }
     }
 
@@ -76,5 +54,6 @@ abstract class BaseVideoPlayer(context: Context) {
         fun onPositionChange(position: Long)
 
         fun onAudioOutputChange(audioDeviceInfo: AudioDeviceInfo, isBluetoothActive: Boolean)
+        fun onErrorHappened(exception: ExoPlaybackException)
     }
 }

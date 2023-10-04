@@ -3,7 +3,12 @@
 
     <application>
         <activity
-            android:name=".presentation.vplayer.VPlayerActivity"
+            android:name=".presentation.vplayer.Mp4PlayerActivity"
+            android:exported="false"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.MaterialComponents.NoActionBar"/>
+        <activity
+            android:name=".presentation.vplayer.HLSPlayerActivity"
             android:exported="false"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.MaterialComponents.NoActionBar" />

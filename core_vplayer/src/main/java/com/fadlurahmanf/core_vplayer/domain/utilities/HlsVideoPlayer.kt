@@ -1,16 +1,15 @@
 package com.fadlurahmanf.core_vplayer.domain.utilities
 
 import android.content.Context
-import android.media.AudioDeviceInfo
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.media3.common.C
 import androidx.media3.common.Format
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultHttpDataSource
-import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.hls.HlsMediaSource
 import androidx.media3.exoplayer.video.VideoFrameMetadataListener
 import com.fadlurahmanf.core_vplayer.data.model.QualityVideoModel
@@ -20,10 +19,10 @@ import kotlin.math.max
 @UnstableApi
 class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer(context) {
 
-    private lateinit var callback: HlsVPlayerCallback
+    private lateinit var listener: HlsVPlayerListener
 
-    fun setCallback(callback: HlsVPlayerCallback) {
-        this.callback = callback
+    fun setListener(callback: HlsVPlayerListener) {
+        this.listener = callback
     }
 
     /**
@@ -48,25 +47,14 @@ class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer(context) {
     private var duration: Long? = null
     private var position: Long? = null
     private fun checkAudioPosition() {
-        duration = exoPlayer.duration
-        position = exoPlayer.currentPosition
-
-        if (duration != null) {
-            callback.onDurationChange(duration!!)
+        if (duration == null || exoPlayer.duration != duration) {
+            duration = exoPlayer.duration
+            listener.onDurationChange(duration!!)
         }
 
-        if (position != null) {
-            callback.onPositionChange(position!!)
-        }
-    }
-
-    private var isAlreadyInitialized: Boolean = false
-    override fun coreVPlayerOnPlaybackStateChanged(playbackState: Int) {
-        currentState = playbackState
-
-        if (playbackState == Player.STATE_READY && !isAlreadyInitialized) {
-            getVideoQualities()
-            isAlreadyInitialized = true
+        if (position == null || exoPlayer.currentPosition != position) {
+            position = exoPlayer.currentPosition
+            listener.onPositionChange(position!!)
         }
     }
 
@@ -92,7 +80,7 @@ class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer(context) {
             }
         }
 
-        callback.onGetVideoQualities(qualities)
+        listener.onGetVideoQualities(qualities)
     }
 
     private var currentQuality: QualityVideoModel? = null
@@ -102,25 +90,45 @@ class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer(context) {
                 val quality = convertFormatToVideoQuality(format)
                 if (quality != null) {
                     if (currentQuality?.id != quality.id) {
-                        callback.onVideoQualityChange(quality)
+                        listener.onVideoQualityChange(quality)
                         currentQuality = quality
                     }
                 }
             }
         }
 
+    private var latestErrorPlayerErrorCode: Int? = null
+
+    private var isAlreadyFetchVideoQuality: Boolean = false
+    private val exoPlayerListener = object : Player.Listener {
+        override fun onPlaybackStateChanged(playbackState: Int) {
+            super.onPlaybackStateChanged(playbackState)
+
+            if (!isAlreadyFetchVideoQuality && playbackState == Player.STATE_READY) {
+                getVideoQualities()
+                isAlreadyFetchVideoQuality = true
+            }
+
+            if (exoPlayer.playerError != null && exoPlayer.playerError?.errorCode != latestErrorPlayerErrorCode) {
+                latestErrorPlayerErrorCode = exoPlayer.playerError?.errorCode
+                listener.onErrorHappened(exoPlayer.playerError!!)
+            }
+
+            Log.d("MappLogger", "MASUK ERROR 1: ${exoPlayer.playerError?.message}")
+            Log.d("MappLogger", "MASUK ERROR 2: ${exoPlayer.playerError?.localizedMessage}")
+            Log.d("MappLogger", "MASUK ERROR 3: ${exoPlayer.playerError?.cause?.message}")
+            Log.d("MappLogger", "MASUK ERROR 4: ${exoPlayer.playerError?.cause?.localizedMessage}")
+            Log.d("MappLogger", "MASUK ERROR 5: ${exoPlayer.playerError?.errorCodeName}")
+            Log.d("MappLogger", "MASUK ERROR 6: ${exoPlayer.playerError?.errorCode}")
+        }
+    }
+
     fun playHlsRemoteAudio(url: String) {
         exoPlayer.setMediaSource(mediaSourceFromHLS(url))
         exoPlayer.setVideoFrameMetadataListener(videoFrameMetadataListener)
+        exoPlayer.addListener(exoPlayerListener)
         exoPlayer.prepare()
         handler.postDelayed(runnable, 1000)
-    }
-
-    override fun coreVPlayerOnAudioDeviceChange(
-        audioDeviceInfo: AudioDeviceInfo,
-        isBluetoothActive: Boolean
-    ) {
-        callback.onAudioOutputChange(audioDeviceInfo, isBluetoothActive)
     }
 
     private fun convertFormatToVideoQuality(format: Format): QualityVideoModel? {
@@ -133,7 +141,7 @@ class HlsVideoPlayer(private val context: Context) : BaseVideoPlayer(context) {
         )
     }
 
-    interface HlsVPlayerCallback : CVPlayerCallback {
+    interface HlsVPlayerListener : CVPlayerCallback {
         fun onGetVideoQualities(list: List<QualityVideoModel>)
         fun onVideoQualityChange(quality: QualityVideoModel)
     }
