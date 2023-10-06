@@ -37,7 +37,7 @@ class ExampleRepositoryImpl @Inject constructor(
             }
 
             mappLocalDatasource.getAll().map { entities ->
-                if (entities.isNotEmpty()){
+                if (entities.isEmpty()){
                     throw MappException.generalRC("ENTITIES_EMPTY")
                 }
                 val entity = entities.first().copy(
