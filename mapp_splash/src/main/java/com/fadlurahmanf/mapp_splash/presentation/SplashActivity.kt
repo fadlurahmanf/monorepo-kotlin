@@ -23,8 +23,6 @@ class SplashActivity :
     lateinit var viewModel: SplashViewModel
 
     override fun setup() {
-        Log.d("MappLogger", "MASUK SETUP")
-
         viewModel.guestToken.observe(this) {
             Log.d("MappLogger", "MASUK STATE: $it")
             when (it) {

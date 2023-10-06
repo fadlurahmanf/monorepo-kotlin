@@ -8,7 +8,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface MasIdentityGuestTokenApi {
-    @POST("sales/auth/login")
+    @POST("auth/login")
     fun login(
         @Body body: LoginRequest
     ): Observable<BaseResponse<LoginResponse>>

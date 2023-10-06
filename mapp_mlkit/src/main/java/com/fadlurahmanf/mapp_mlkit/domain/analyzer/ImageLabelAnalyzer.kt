@@ -16,7 +16,6 @@ class ImageLabelAnalyzer(
 
     @ExperimentalGetImage
     override fun analyze(image: ImageProxy) {
-        Log.d("MappLogger", "MASUK ANALYZE IMAGE ImageLabelAnalyzer")
         val mediaImage = image.image
         if (mediaImage != null) {
             val labeler = ImageLabeling.getClient(ImageLabelerOptions.DEFAULT_OPTIONS)

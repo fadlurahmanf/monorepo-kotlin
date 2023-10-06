@@ -16,7 +16,6 @@ class ObjectLabelingActivity :
     BaseCameraActivity<ActivityObjectLabelingBinding>(ActivityObjectLabelingBinding::inflate) {
     override fun initCameraListener() {
         cameraProviderFuture().addListener({
-            Log.d("MappLogger", "MASUK INIT CAMERA LISTENER")
             analyze()
         }, ContextCompat.getMainExecutor(this))
     }
@@ -60,7 +59,6 @@ class ObjectLabelingActivity :
     private lateinit var analyzer: ImageAnalysis
 
     override fun analyze() {
-        Log.d("MappLogger", "MASUK ANALYZE")
         val cameraProvider = cameraProviderFuture().get()
         val preview = Preview.Builder().build().apply {
             setSurfaceProvider(binding.cameraView.surfaceProvider)
@@ -85,11 +83,9 @@ class ObjectLabelingActivity :
     }
 
     override fun injectActivity() {
-        Log.d("MappLogger", "MASUK INJECT")
     }
 
     override fun setup() {
-        Log.d("MappLogger", "MASUK SETUP")
         cameraExecutor = Executors.newSingleThreadExecutor()
         initCameraListener()
     }

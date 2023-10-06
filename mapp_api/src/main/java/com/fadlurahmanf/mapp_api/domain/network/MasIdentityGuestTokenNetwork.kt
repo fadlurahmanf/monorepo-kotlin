@@ -11,7 +11,7 @@ abstract class MasIdentityGuestTokenNetwork<T>(
     private val mappLocalDatasource: MappLocalDatasource
 ) : BaseNetwork<T>(context) {
     override fun getBaseUrl(): String {
-        return "${MappShared.masGuestBaseUrl}identity-service/"
+        return "${MappShared.retailGuestBaseUrl}identity-service/"
     }
 
     override fun okHttpClientBuilder(builder: OkHttpClient.Builder): OkHttpClient.Builder {

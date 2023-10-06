@@ -1,5 +1,6 @@
 package com.fadlurahmanf.mapp_example.domain.repositories
 
+import android.annotation.SuppressLint
 import com.fadlurahmanf.mapp_api.data.datasources.MasIdentityGuestTokenRemoteDatasource
 import com.fadlurahmanf.mapp_api.data.datasources.MasIdentityRemoteDatasource
 import com.fadlurahmanf.mapp_api.data.dto.general.BaseResponse
@@ -12,18 +13,41 @@ import javax.inject.Inject
 
 class ExampleRepositoryImpl @Inject constructor(
     private val masIdentityGuestTokenRemoteDatasource: MasIdentityGuestTokenRemoteDatasource,
-    private val mapLocalDatasource: MappLocalDatasource
+    private val mappLocalDatasource: MappLocalDatasource
 ) {
+    @SuppressLint("CheckResult")
     fun login(): Observable<BaseResponse<LoginResponse>> {
         val loginRequest = LoginRequest(
             nik = "3511222222222222",
             deviceId = "05242c96c62d2351",
+            deviceToken = "TES_TOKEN_PALSU",
             password = "ez1DcqL8iatoZequkUvP1A==",
             phoneNumber = "081283602320",
+            activationId = "f7db6aea-a197-46e3-8bac-4071cfd0e568",
             timestamp = System.currentTimeMillis().toString()
         )
-        return masIdentityGuestTokenRemoteDatasource.login(loginRequest).doOnNext {
+        return masIdentityGuestTokenRemoteDatasource.login(loginRequest).doOnNext { result ->
+            result.data?.expiresIn
+            if (result.data == null){
+                throw MappException.generalRC("DATA_EMPTY")
+            }
 
+            if (result.data?.accessToken?.isEmpty() == true || result.data?.refreshToken?.isEmpty() == true){
+                throw MappException.generalRC("TOKEN_MISSING")
+            }
+
+            mappLocalDatasource.getAll().map { entities ->
+                if (entities.isNotEmpty()){
+                    throw MappException.generalRC("ENTITIES_EMPTY")
+                }
+                val entity = entities.first().copy(
+                    accessToken = result.data?.accessToken,
+                    refreshToken = result.data?.refreshToken,
+                    expiresIn = result.data?.expiresIn,
+                    refreshExpiresIn = result.data?.refreshExpiresIn
+                )
+                mappLocalDatasource.update(entity)
+            }
         }
     }
 }
