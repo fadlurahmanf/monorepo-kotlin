@@ -14,6 +14,7 @@ abstract class BaseExampleActivity<VB : ViewBinding>(
     override fun initComponent() {
         component = DaggerMappExampleComponent.factory()
             .create(
+                applicationContext,
                 CoreInjectHelper.provideCoreCryptoComponent(applicationContext),
                 CoreInjectHelper.provideCorePlatformComponent(applicationContext),
                 CoreInjectHelper.provideMappConfigComponent(applicationContext),
@@ -21,6 +22,11 @@ abstract class BaseExampleActivity<VB : ViewBinding>(
                 CoreInjectHelper.provideMappFirebaseDatabaseComponent(applicationContext),
             )
     }
+}
+
+abstract class BaseAfterLoginExampleActivity<VB : ViewBinding>(
+    inflater: MappInflateActivity<VB>
+) : BaseExampleActivity<VB>(inflater) {
 
 }
 

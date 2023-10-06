@@ -1,5 +1,6 @@
 package com.fadlurahmanf.mapp_splash.presentation.view_model
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.mapp_api.data.dto.identity.CreateGuestTokenResponse
 import com.fadlurahmanf.mapp_api.data.exception.MappException
@@ -20,31 +21,27 @@ class SplashViewModel @Inject constructor(
     private val _guestToken = MutableLiveData<NetworkState<CreateGuestTokenResponse>>()
     val guestToken = _guestToken
     fun generateGuestToken() {
-        try {
-            _guestToken.value = NetworkState.LOADING
-            compositeDisposable().add(
-                repositoryImpl.generateGuestToken()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                        {
-                            _guestToken.value = NetworkState.SUCCESS(it)
-                        },
-                        {
-                            if (it is MappException) {
-                                _guestToken.value = NetworkState.FAILED(it)
-                            } else {
-                                _guestToken.value =
-                                    NetworkState.FAILED(MappException(rawMessage = it.message))
-                            }
-                        },
-                        {
+        _guestToken.value = NetworkState.LOADING
+        compositeDisposable().add(
+            repositoryImpl.generateGuestToken()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        _guestToken.value = NetworkState.SUCCESS(it)
+                    },
+                    {
+                        if (it is MappException) {
+                            _guestToken.value = NetworkState.FAILED(it)
+                        } else {
+                            _guestToken.value =
+                                NetworkState.FAILED(MappException(rawMessage = it.message))
+                        }
+                    },
+                    {
 
-                        },
-                    )
-            )
-        } catch (e: Exception) {
-            _guestToken.value = NetworkState.FAILED(MappException())
-        }
+                    },
+                )
+        )
     }
 }

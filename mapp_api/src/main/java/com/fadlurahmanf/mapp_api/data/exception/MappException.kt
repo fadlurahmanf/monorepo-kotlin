@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.annotation.StringRes
 import com.fadlurahmanf.mapp_api.R
 import java.io.IOException
+import java.lang.Exception
 
 class MappException(
     var httpStatusCode: Int? = null,
@@ -19,6 +20,31 @@ class MappException(
     @StringRes var idRawButtonText: Int? = R.string.socket_exception_desc,
     var buttonText: String? = null,
 ) : IOException(rawMessage) {
+
+    companion object {
+
+        fun generalRC(rc: String): MappException {
+            return MappException(
+                rawMessage = "RC_$rc"
+            )
+        }
+
+        fun fromThrowable(throwable: Throwable): MappException {
+            return if (throwable is MappException) {
+                throwable
+            } else {
+                MappException(rawMessage = throwable.message)
+            }
+        }
+
+        fun fromException(exception: Exception): MappException {
+            return if (exception is MappException) {
+                exception
+            } else {
+                MappException(rawMessage = exception.message)
+            }
+        }
+    }
 
     fun toProperTitle(context: Context): String {
         return getTitle(context, idRawTitle, rawTitle, title)

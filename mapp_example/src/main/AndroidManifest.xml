@@ -3,17 +3,23 @@
 
     <application>
         <activity
+            android:name=".presentation.session.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.session.AfterLoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.vplayer.Mp4PlayerPlayerActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:exported="false"
             android:screenOrientation="landscape"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:supportsPictureInPicture="true"
-            android:theme="@style/Theme.MaterialComponents.NoActionBar"/>
+            android:theme="@style/Theme.MaterialComponents.NoActionBar" />
         <activity
             android:name=".presentation.vplayer.HLSPlayerActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:exported="false"
             android:screenOrientation="landscape"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:supportsPictureInPicture="true"
             android:theme="@style/Theme.MaterialComponents.NoActionBar" />
         <activity

@@ -88,5 +88,6 @@ dependencies {
     implementation(project(":mapp_firebase_database"))
     implementation(project(":mapp_mlkit"))
     implementation(project(":mapp_notification"))
+    implementation(project(":mapp_storage"))
     implementation(project(":mapp_ui"))
 }

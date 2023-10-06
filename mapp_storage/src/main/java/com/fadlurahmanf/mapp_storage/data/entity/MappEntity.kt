@@ -8,5 +8,5 @@ import com.fadlurahmanf.mapp_storage.data.constant.MappDbConstant
 data class MappEntity(
     @PrimaryKey
     var deviceId: String,
-    var guestToken: String
+    var guestToken: String? = null
 )

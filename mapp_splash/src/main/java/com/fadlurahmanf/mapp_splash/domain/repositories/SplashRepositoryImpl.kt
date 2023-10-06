@@ -3,6 +3,7 @@ package com.fadlurahmanf.mapp_splash.domain.repositories
 import com.fadlurahmanf.mapp_api.data.datasources.MasIdentityRemoteDatasource
 import com.fadlurahmanf.mapp_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.mapp_api.data.dto.identity.CreateGuestTokenResponse
+import com.fadlurahmanf.mapp_api.data.exception.MappException
 import com.fadlurahmanf.mapp_splash.data.exception.SplashException
 import com.fadlurahmanf.mapp_storage.data.entity.MappEntity
 import com.fadlurahmanf.mapp_storage.domain.datasource.MappLocalDatasource
@@ -23,7 +24,7 @@ class SplashRepositoryImpl @Inject constructor(
         var entities: List<MappEntity> = listOf()
         return mappLocalDatasource.getAll().toObservable().doOnNext { localData ->
             entities = localData
-        }.flatMap {
+        }.flatMap { _ ->
             identityDatasource.generateGuestToken(guestTokenRequest).doOnNext { respToken ->
                 if (respToken.data != null) {
                     if (respToken.data?.accessToken != null) {
@@ -39,29 +40,14 @@ class SplashRepositoryImpl @Inject constructor(
                             mappLocalDatasource.insert(entity)
                         }
                     } else {
-                        throw SplashException(message = "TOKEN_MISSING")
+                        throw MappException.generalRC("TOKEN_MISSING")
                     }
                 } else {
-                    throw SplashException(message = "DATA_MISSING")
+                    throw MappException.generalRC("DATA_MISSING")
                 }
             }.map {
                 it.data!!
             }
         }
-    }
-
-    fun fetchGuestToken(request: CreateGuestTokenRequest): Observable<CreateGuestTokenResponse> {
-        return identityDatasource.generateGuestToken(request).map {
-            if (it.data != null) {
-
-            } else {
-                throw SplashException(message = "DATA IS MISSING")
-            }
-            it.data!!
-        }
-    }
-
-    fun getExistingMappData(): Observable<List<MappEntity>> {
-        return mappLocalDatasource.getAll().toObservable()
     }
 }

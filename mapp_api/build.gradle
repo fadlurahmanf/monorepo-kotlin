@@ -55,4 +55,5 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava3:${retrofit_version}"
 
     implementation(project(":mapp_shared"))
+    implementation(project(":mapp_storage"))
 }
