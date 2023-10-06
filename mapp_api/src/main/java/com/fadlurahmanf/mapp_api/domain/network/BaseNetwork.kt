@@ -1,6 +1,7 @@
 package com.fadlurahmanf.mapp_api.domain.network
 
 import android.content.Context
+import com.fadlurahmanf.mapp_api.domain.interceptor.CustomLoggingInterceptor
 import com.fadlurahmanf.mapp_api.domain.interceptor.MappExceptionInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -13,8 +14,8 @@ abstract class BaseNetwork<T>(var context: Context) {
 
     var service: T? = null
 
-    private fun bodyLoggingInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    private fun bodyLoggingInterceptor(): CustomLoggingInterceptor {
+        return CustomLoggingInterceptor("MappLogger").setLevel(CustomLoggingInterceptor.Level.BODY)
     }
 
     open fun okHttpClientBuilder(builder: OkHttpClient.Builder): OkHttpClient.Builder {
