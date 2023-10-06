@@ -3,6 +3,8 @@ package com.fadlurahmanf.mapp_api.data.exception
 import android.content.Context
 import androidx.annotation.StringRes
 import com.fadlurahmanf.mapp_api.R
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import java.io.IOException
 import java.lang.Exception
 
@@ -147,5 +149,21 @@ class MappException(
         }
 
         return "-"
+    }
+
+    fun toJson(): String? {
+        val json = JsonObject()
+        json.addProperty("httpStatusCode", httpStatusCode)
+        json.addProperty("statusCode", statusCode)
+        json.addProperty("idRawTitle", idRawTitle)
+        json.addProperty("rawTitle", rawTitle)
+        json.addProperty("title", title)
+        json.addProperty("idRawMessage", idRawMessage)
+        json.addProperty("rawMessage", rawMessage)
+        json.addProperty("message", message)
+        json.addProperty("defaultMessage", defaultMessage)
+        json.addProperty("idRawButtonText", idRawButtonText)
+        json.addProperty("buttonText", buttonText)
+        return Gson().toJson(json)
     }
 }
