@@ -24,7 +24,7 @@ class LoginActivity : BaseExampleActivity<ActivityLoginBinding>(ActivityLoginBin
         viewModel.loginState.observe(this) { state ->
             when (state) {
                 is NetworkState.LOADING -> {
-                    showLoadingDialog()
+                    showLottieLoadingDialog()
                 }
 
                 is NetworkState.SUCCESS -> {
