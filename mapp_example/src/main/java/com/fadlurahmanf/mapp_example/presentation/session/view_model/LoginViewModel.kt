@@ -1,7 +1,7 @@
 package com.fadlurahmanf.mapp_example.presentation.session.view_model
 
 import androidx.lifecycle.MutableLiveData
-import com.fadlurahmanf.mapp_api.data.dto.identity.LoginResponse
+import com.fadlurahmanf.mapp_api.data.dto.identity.AuthResponse
 import com.fadlurahmanf.mapp_api.data.exception.MappException
 import com.fadlurahmanf.mapp_api.external.helper.network_state.NetworkState
 import com.fadlurahmanf.mapp_example.domain.repositories.ExampleRepositoryImpl
@@ -14,7 +14,7 @@ class LoginViewModel @Inject constructor(
     private val exampleRepository: ExampleRepositoryImpl
 ) : BaseViewModel() {
 
-    private val _loginState = MutableLiveData<NetworkState<LoginResponse>>()
+    private val _loginState = MutableLiveData<NetworkState<AuthResponse>>()
     val loginState = _loginState
 
     fun login() {

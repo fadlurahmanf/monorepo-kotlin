@@ -4,6 +4,7 @@ import android.content.Context
 import com.fadlurahmanf.mapp_api.data.api.MasIdentityApi
 import com.fadlurahmanf.mapp_api.data.api.MasIdentityGuestTokenApi
 import com.fadlurahmanf.mapp_api.data.dto.identity.LoginRequest
+import com.fadlurahmanf.mapp_api.data.dto.identity.RefreshUserTokenRequest
 import com.fadlurahmanf.mapp_api.domain.network.MasIdentityGuestTokenNetwork
 import com.fadlurahmanf.mapp_api.domain.network.MasIdentityNetwork
 import com.fadlurahmanf.mapp_storage.domain.datasource.MappLocalDatasource
@@ -19,4 +20,7 @@ class MasIdentityGuestTokenRemoteDatasource @Inject constructor(
 
     fun login(request: LoginRequest) =
         networkService(30).login(request)
+
+    fun refreshToken(request: RefreshUserTokenRequest) =
+        networkService(30).refreshUserToken(request)
 }
