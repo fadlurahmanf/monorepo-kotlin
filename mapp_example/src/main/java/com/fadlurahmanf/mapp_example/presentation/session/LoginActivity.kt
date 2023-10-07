@@ -1,5 +1,6 @@
 package com.fadlurahmanf.mapp_example.presentation.session
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -21,17 +22,24 @@ class LoginActivity : BaseExampleActivity<ActivityLoginBinding>(ActivityLoginBin
 
     override fun setup() {
         viewModel.loginState.observe(this) { state ->
-            when(state){
+            when (state) {
                 is NetworkState.LOADING -> {
-                    Log.d("MappLogger", "MASUK LOADING")
+                    showLoadingDialog()
                 }
 
                 is NetworkState.SUCCESS -> {
-                    Log.d("MappLogger", "MASUK SUCCESS")
+                    dismissLoadingDialog()
+                    val intent = Intent(this, AfterLoginActivity::class.java)
+                    startActivity(intent)
                 }
 
                 is NetworkState.FAILED -> {
-                    Log.d("MappLogger", "MASUK FAILED: ${state.exception.toJson()}")
+                    dismissLoadingDialog()
+                    showFailedBottomsheet(
+                        title = state.exception.toProperTitle(this),
+                        desc = state.exception.toProperMessage(this),
+                        buttonText = state.exception.toProperButtonText(this)
+                    )
                 }
 
                 else -> {

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.fadlurahmanf.mapp_ui.R
 import com.fadlurahmanf.mapp_ui.presentation.bottomsheet.InfoBottomsheet
+import com.fadlurahmanf.mapp_ui.presentation.dialog.LoadingDialog
 
 typealias MappInflateActivity<VB> = (LayoutInflater) -> VB
 
@@ -83,5 +84,21 @@ abstract class BaseMappActivity<VB : ViewBinding>(
     private fun dismissInfoBottomsheet() {
         _infoBottomsheet?.dismiss()
         _isShowInfoBottomsheet = false
+    }
+
+    private var loadingDialog: LoadingDialog? = null
+    fun showLoadingDialog(isCancelable: Boolean = false) {
+        dismissLoadingDialog()
+        if (loadingDialog == null) {
+            loadingDialog = LoadingDialog()
+            loadingDialog?.show(supportFragmentManager, LoadingDialog::class.java.simpleName)
+        }
+    }
+
+    fun dismissLoadingDialog() {
+        if (loadingDialog != null) {
+            loadingDialog?.dismiss()
+            loadingDialog = null
+        }
     }
 }
