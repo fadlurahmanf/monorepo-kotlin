@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+
     <application>
+        <activity
+            android:name=".presentation.call.IncomingCallActivity"
+            android:exported="true"
+            android:showOnLockScreen="true"/>
+
         <receiver
-            android:name=".domain.receiver.MappNotificationReceiver"
+            android:name=".domain.receivers.MappNotificationReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_SNOOZE" />
                 <action android:name="com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_REPLY" />
+                <action android:name="com.fadlurahmanf.mapp_notification.ACTION_NOTIFICATION_SHOW_INCOMING_CALL" />
             </intent-filter>
         </receiver>
     </application>
+
 </manifest>

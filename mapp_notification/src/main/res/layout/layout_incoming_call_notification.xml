@@ -5,14 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingHorizontal="20dp"
-    android:paddingVertical="20dp">
-
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/material_dynamic_tertiary60"/>
+    android:padding="10dp">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -23,31 +16,31 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MAPP CALLER NAME"
+            android:text="MAPP Caller"
             android:maxLines="1"
             android:ellipsize="end"
             android:id="@+id/tv_caller_name"
             android:textStyle="bold"
-            android:textSize="14sp"/>
+            android:textSize="12sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:id="@+id/tv_phone_caller"
             android:text="081283602320"/>
     </LinearLayout>
 
     <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:id="@+id/iv_decline"
-        android:src="@drawable/round_remove_circle_24"
-        android:layout_marginRight="20dp"
-        app:tint="@color/red"/>
+        android:background="@drawable/round_remove_circle_24"
+        android:layout_marginRight="10dp"
+        android:backgroundTint="@color/red"/>
 
     <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:id="@+id/iv_accept"
         android:background="@drawable/round_check_circle_24"
         android:backgroundTint="@color/green"/>

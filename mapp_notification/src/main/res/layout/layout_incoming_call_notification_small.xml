@@ -5,31 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="5dp">
+    android:padding="10dp">
 
     <TextView
-        android:layout_width="0dp"
-        android:layout_weight="1"
         android:id="@+id/tv_caller_name"
-        android:layout_gravity="center_vertical"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Caller Name"
-        android:textStyle="bold"
-        android:textSize="16sp"/>
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:text="MAPP Caller"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
         android:id="@+id/iv_decline"
-        android:src="@drawable/round_remove_circle_24"
-        android:layout_marginRight="10dp"
-        app:tint="@color/red"/>
-
-    <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/round_remove_circle_24"
+        android:backgroundTint="@color/red" />
+
+    <ImageView
         android:id="@+id/iv_accept"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:background="@drawable/round_check_circle_24"
-        android:backgroundTint="@color/green"/>
+        android:backgroundTint="@color/green" />
 
 </LinearLayout>

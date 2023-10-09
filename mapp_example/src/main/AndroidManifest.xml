@@ -3,9 +3,27 @@
 
     <application>
         <activity
+            android:name=".presentation.vplayer.Mp4PlayerPlayerActivity"
+            android:exported="false"
+            android:screenOrientation="landscape"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:supportsPictureInPicture="true"
+            android:theme="@style/Theme.MaterialComponents.NoActionBar"/>
+        <activity
+            android:name=".presentation.vplayer.HLSPlayerActivity"
+            android:exported="false"
+            android:screenOrientation="landscape"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:supportsPictureInPicture="true"
+            android:theme="@style/Theme.MaterialComponents.NoActionBar" />
+        <activity
+            android:name=".presentation.call.CallAcceptActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light" />
+        <activity
             android:name=".presentation.mlkit.FaceDetectorActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light"/>
+            android:theme="@style/Theme.AppCompat.Light" />
         <activity
             android:name=".presentation.mlkit.ObjectLabelingActivity"
             android:exported="false"
