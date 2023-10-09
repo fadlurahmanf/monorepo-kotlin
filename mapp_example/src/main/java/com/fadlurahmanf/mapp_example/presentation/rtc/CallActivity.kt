@@ -125,6 +125,5 @@ class CallActivity : BaseExampleActivity<ActivityCallBinding>(
     }
 
     private fun onSuccessCheckAudio() {
-        println("MASUK SUCCESS CHECK AUDIO")
     }
 }

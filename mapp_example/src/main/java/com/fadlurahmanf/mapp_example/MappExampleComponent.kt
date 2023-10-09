@@ -1,5 +1,6 @@
 package com.fadlurahmanf.mapp_example
 
+import android.content.Context
 import com.fadlurahmanf.core_crypto.CoreCryptoComponent
 import com.fadlurahmanf.core_platform.CorePlatformComponent
 import com.fadlurahmanf.mapp_config.MappConfigComponent
@@ -11,8 +12,11 @@ import com.fadlurahmanf.mapp_example.presentation.example.ExampleActivity
 import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity
 import com.fadlurahmanf.mapp_example.presentation.rtc.CallActivity
 import com.fadlurahmanf.mapp_example.presentation.rtc.ListRoomActivity
+import com.fadlurahmanf.mapp_example.presentation.session.ActivityAfterLogin
+import com.fadlurahmanf.mapp_example.presentation.session.LoginActivity
 import com.fadlurahmanf.mapp_fcm.MappFcmComponent
 import com.fadlurahmanf.mapp_firebase_database.MappFirebaseDatabaseComponent
+import dagger.BindsInstance
 import dagger.Component
 
 @Component(
@@ -29,6 +33,7 @@ interface MappExampleComponent {
     @Component.Factory
     interface Factory {
         fun create(
+            @BindsInstance context: Context,
             coreCrypto: CoreCryptoComponent,
             corePlatform: CorePlatformComponent,
             mappConfig: MappConfigComponent,
@@ -45,4 +50,6 @@ interface MappExampleComponent {
     fun inject(activity: RsaActivity)
     fun inject(activity: AesActivity)
     fun inject(activity: ED25119Activity)
+    fun inject(activity: LoginActivity)
+    fun inject(activity: ActivityAfterLogin)
 }

@@ -3,6 +3,7 @@ package com.fadlurahmanf.mapp_splash.presentation
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.fadlurahmanf.mapp_api.external.helper.network_state.NetworkState
 import com.fadlurahmanf.mapp_config.helper.di.CoreInjectHelper
 import com.fadlurahmanf.mapp_splash.DaggerMappSplashComponent
@@ -23,7 +24,7 @@ class SplashActivity :
 
     override fun setup() {
         viewModel.guestToken.observe(this) {
-            println("MASUK STATE: $it")
+            Log.d("MappLogger", "MASUK STATE: $it")
             when (it) {
                 is NetworkState.SUCCESS -> {
                     val intent = Intent(
@@ -35,6 +36,7 @@ class SplashActivity :
                 }
 
                 is NetworkState.FAILED -> {
+                    Log.d("MappLogger", "MASUK STATE: ${it.exception.message}")
                     showBaseSplashFailedBottomSheet(it.exception)
                 }
 

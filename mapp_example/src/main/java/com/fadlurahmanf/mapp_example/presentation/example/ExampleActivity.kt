@@ -16,6 +16,7 @@ import com.fadlurahmanf.mapp_example.presentation.mlkit.FaceDetectorActivity
 import com.fadlurahmanf.mapp_example.presentation.mlkit.ObjectLabelingActivity
 import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity
 import com.fadlurahmanf.mapp_example.presentation.rtc.ListRoomActivity
+import com.fadlurahmanf.mapp_example.presentation.session.LoginActivity
 import com.fadlurahmanf.mapp_example.presentation.shortcut.ShortcutActivity
 import com.fadlurahmanf.mapp_example.presentation.vplayer.HLSPlayerActivity
 import com.fadlurahmanf.mapp_example.presentation.vplayer.Mp4PlayerPlayerActivity
@@ -93,6 +94,12 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                 menuTitle = "FACE DETECTOR",
                 menuSubTitle = "Go To Face Detector",
                 icon = R.drawable.outline_camera_alt_24
+            ),
+            MenuModel(
+                menuId = "LOGIN",
+                menuTitle = "Login",
+                menuSubTitle = "Go To Login",
+                icon = R.drawable.outline_featured_play_list_24
             ),
             MenuModel(
                 menuId = "LIST_ROOM_RTC",
@@ -214,6 +221,11 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                     AnalyticEvent.defaultParamMap(this)
                 )
                 val intent = Intent(this, FaceDetectorActivity::class.java)
+                startActivity(intent)
+            }
+
+            "LOGIN" -> {
+                val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             }
 

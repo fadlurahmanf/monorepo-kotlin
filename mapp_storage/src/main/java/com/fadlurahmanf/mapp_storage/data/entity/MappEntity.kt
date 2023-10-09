@@ -8,5 +8,9 @@ import com.fadlurahmanf.mapp_storage.data.constant.MappDbConstant
 data class MappEntity(
     @PrimaryKey
     var deviceId: String,
-    var guestToken: String
+    var guestToken: String? = null,
+    var accessToken: String? = null,
+    var refreshToken: String? = null,
+    var expiresAt: String? = null,
+    var refreshExpiresAt: String? = null,
 )

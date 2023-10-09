@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.fadlurahmanf.mapp_ui.R
 import com.fadlurahmanf.mapp_ui.presentation.bottomsheet.InfoBottomsheet
+import com.fadlurahmanf.mapp_ui.presentation.dialog.LoadingDialog
+import com.fadlurahmanf.mapp_ui.presentation.dialog.LottieLoadingDialog
 
 typealias MappInflateActivity<VB> = (LayoutInflater) -> VB
 
@@ -83,5 +85,35 @@ abstract class BaseMappActivity<VB : ViewBinding>(
     private fun dismissInfoBottomsheet() {
         _infoBottomsheet?.dismiss()
         _isShowInfoBottomsheet = false
+    }
+
+    private var loadingDialog: LoadingDialog? = null
+    private var lottieLoadingDialog: LottieLoadingDialog? = null
+    fun showLoadingDialog(isCancelable: Boolean = false) {
+        dismissLoadingDialog()
+        if (loadingDialog == null) {
+            loadingDialog = LoadingDialog()
+            loadingDialog?.show(supportFragmentManager, LoadingDialog::class.java.simpleName)
+        }
+    }
+
+    fun showLottieLoadingDialog(isCancelable: Boolean = false) {
+        dismissLoadingDialog()
+        if (lottieLoadingDialog == null) {
+            lottieLoadingDialog = LottieLoadingDialog()
+            lottieLoadingDialog?.show(supportFragmentManager, LottieLoadingDialog::class.java.simpleName)
+        }
+    }
+
+    fun dismissLoadingDialog() {
+        if (loadingDialog != null) {
+            loadingDialog?.dismiss()
+            loadingDialog = null
+        }
+
+        if (lottieLoadingDialog != null){
+            lottieLoadingDialog?.dismiss()
+            lottieLoadingDialog = null
+        }
     }
 }
