@@ -1,22 +1,23 @@
 package com.fadlurahmanf.mapp_example.domain.repositories
 
-import android.annotation.SuppressLint
+import android.util.Log
 import com.fadlurahmanf.mapp_api.data.datasources.MasIdentityGuestTokenRemoteDatasource
 import com.fadlurahmanf.mapp_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.mapp_api.data.dto.identity.LoginRequest
 import com.fadlurahmanf.mapp_api.data.dto.identity.AuthResponse
 import com.fadlurahmanf.mapp_api.data.dto.identity.RefreshUserTokenRequest
 import com.fadlurahmanf.mapp_api.data.exception.MappException
+import com.fadlurahmanf.mapp_shared.extension.*
 import com.fadlurahmanf.mapp_storage.domain.datasource.MappLocalDatasource
 import io.reactivex.rxjava3.core.Observable
+import java.util.Calendar
 import javax.inject.Inject
 
 class ExampleRepositoryImpl @Inject constructor(
     private val masIdentityGuestTokenRemoteDatasource: MasIdentityGuestTokenRemoteDatasource,
     private val mappLocalDatasource: MappLocalDatasource
 ) {
-    @SuppressLint("CheckResult")
-    fun login(): Observable<BaseResponse<AuthResponse>> {
+    fun login(): Observable<Boolean> {
         val loginRequest = LoginRequest(
             nik = "3511222222222222",
             deviceId = "05242c96c62d2351",
@@ -26,8 +27,7 @@ class ExampleRepositoryImpl @Inject constructor(
             activationId = "f7db6aea-a197-46e3-8bac-4071cfd0e568",
             timestamp = System.currentTimeMillis().toString()
         )
-        return masIdentityGuestTokenRemoteDatasource.login(loginRequest).doOnNext { result ->
-            result.data?.expiresIn
+        return masIdentityGuestTokenRemoteDatasource.login(loginRequest).flatMap { result ->
             if (result.data == null) {
                 throw MappException.generalRC("DATA_EMPTY")
             }
@@ -36,22 +36,29 @@ class ExampleRepositoryImpl @Inject constructor(
                 throw MappException.generalRC("TOKEN_MISSING")
             }
 
-            mappLocalDatasource.getAll().map { entities ->
+            mappLocalDatasource.getAll().toObservable().flatMap { entities ->
                 if (entities.isEmpty()) {
                     throw MappException.generalRC("ENTITIES_EMPTY")
                 }
+
+                val expiresAt = Calendar.getInstance()
+                expiresAt.add(Calendar.SECOND, 180)
+                val refreshExpiresAt = Calendar.getInstance()
+                refreshExpiresAt.add(Calendar.SECOND, 300)
+
                 val entity = entities.first().copy(
                     accessToken = result.data?.accessToken,
                     refreshToken = result.data?.refreshToken,
-                    expiresIn = result.data?.expiresIn,
-                    refreshExpiresIn = result.data?.refreshExpiresIn
+                    expiresAt = expiresAt.time.formatDate5(),
+                    refreshExpiresAt = refreshExpiresAt.time.formatDate5()
                 )
                 mappLocalDatasource.update(entity)
+                Observable.just(true)
             }
         }
     }
 
-    fun refreshUserToken(): Observable<BaseResponse<AuthResponse>> {
+    fun refreshUserToken(): Observable<Boolean> {
         return mappLocalDatasource.getAll().toObservable().flatMap { entities ->
             if (entities.isEmpty()) {
                 throw MappException.generalRC("ENTITY_EMPTY")
@@ -69,21 +76,28 @@ class ExampleRepositoryImpl @Inject constructor(
                 token = refreshToken
             )
 
-            masIdentityGuestTokenRemoteDatasource.refreshToken(request).doOnNext { result ->
+            masIdentityGuestTokenRemoteDatasource.refreshToken(request).flatMap { result ->
                 if (result.data == null) {
                     throw MappException.generalRC("DATA_MISSING")
                 }
 
                 val authResponse = result.data!!
 
+                val expiresAt = Calendar.getInstance()
+                expiresAt.add(Calendar.SECOND, 180)
+                val refreshExpiresAt = Calendar.getInstance()
+                refreshExpiresAt.add(Calendar.SECOND, 300)
+
                 mappLocalDatasource.update(
                     value = entity.copy(
                         accessToken = authResponse.accessToken,
                         refreshToken = authResponse.refreshToken,
-                        expiresIn = authResponse.expiresIn,
-                        refreshExpiresIn = authResponse.refreshExpiresIn
+                        expiresAt = expiresAt.time.formatDate5(),
+                        refreshExpiresAt = refreshExpiresAt.time.formatDate5()
                     )
                 )
+
+                Observable.just(true)
             }
         }
     }

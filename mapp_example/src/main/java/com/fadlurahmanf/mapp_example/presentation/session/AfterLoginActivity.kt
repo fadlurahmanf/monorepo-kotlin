@@ -13,10 +13,4 @@ class AfterLoginActivity : BaseAfterLoginExampleActivity<ActivityAfterLoginBindi
     override fun setup() {
 
     }
-
-
-    override fun onUserInteraction() {
-        super.onUserInteraction()
-        Log.d("MappLogger", "onUserInteraction")
-    }
 }

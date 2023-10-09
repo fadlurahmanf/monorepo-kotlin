@@ -52,4 +52,6 @@ dependencies {
 
     def lottie_version = "6.1.0"
     implementation "com.airbnb.android:lottie:$lottie_version"
+
+    implementation(project(":mapp_shared"))
 }

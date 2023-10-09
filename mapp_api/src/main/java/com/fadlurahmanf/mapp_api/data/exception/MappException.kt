@@ -19,7 +19,7 @@ class MappException(
     override var message: String? = null,
     var defaultMessage: String? = null,
     var additionalData: HashMap<String, Any>? = null,
-    @StringRes var idRawButtonText: Int? = R.string.socket_exception_desc,
+    @StringRes var idRawButtonText: Int? = R.string.ok,
     var buttonText: String? = null,
 ) : IOException(rawMessage) {
 
@@ -142,6 +142,13 @@ class MappException(
             if (identifierUppercase != 0) {
                 return context.getString(identifierUppercase)
             }
+
+            if (r.contains("RC_")){
+                val rc = r.split("RC_").last()
+                return context.getString(R.string.general_exception_desc, rc)
+            }
+
+            return context.getString(R.string.general_exception_desc, r)
         }
 
         default?.let {

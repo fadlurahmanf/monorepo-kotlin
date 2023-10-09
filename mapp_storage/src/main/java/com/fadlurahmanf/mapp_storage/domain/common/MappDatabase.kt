@@ -18,7 +18,7 @@ abstract class MappDatabase : RoomDatabase() {
     abstract fun mappDao(): MappDao
 
     companion object {
-        const val VERSION = 3
+        const val VERSION = 4
 
         @Volatile
         private var INSTANCE: MappDatabase? = null

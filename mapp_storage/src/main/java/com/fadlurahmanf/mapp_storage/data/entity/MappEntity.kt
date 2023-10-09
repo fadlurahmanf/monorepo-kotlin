@@ -11,6 +11,6 @@ data class MappEntity(
     var guestToken: String? = null,
     var accessToken: String? = null,
     var refreshToken: String? = null,
-    var expiresIn: Int? = null,
-    var refreshExpiresIn: Int? = null,
+    var expiresAt: String? = null,
+    var refreshExpiresAt: String? = null,
 )
