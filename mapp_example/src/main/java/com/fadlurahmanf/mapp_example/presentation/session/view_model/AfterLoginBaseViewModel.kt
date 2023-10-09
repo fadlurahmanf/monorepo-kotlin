@@ -31,6 +31,10 @@ abstract class AfterLoginBaseViewModel(
         ))
     }
 
+    private fun forceLogout() {
+
+    }
+
     private fun listenAction() {
         compositeDisposable().addAll(
             RxBus.listen(RxEvent.CheckUserTokenExpiresAt::class.java).subscribe {
@@ -46,6 +50,25 @@ abstract class AfterLoginBaseViewModel(
                     }
 
                     val entity = entities.first()
+
+                    val stringRefreshExpiresAt = entity.refreshExpiresAt
+
+                    val refreshExpiresAt =
+                        SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(stringRefreshExpiresAt)?.time
+
+                    if (refreshExpiresAt == null) {
+                        forceLogout()
+                        return@doOnNext
+                    }
+
+                    var now = System.currentTimeMillis()
+
+                    var dif = refreshExpiresAt - now
+
+                    if (dif <= 10) {
+                        forceLogout()
+                        return@doOnNext
+                    }
 
                     val stringExpiresAt = entity.expiresAt
 
@@ -64,12 +87,12 @@ abstract class AfterLoginBaseViewModel(
                         return@doOnNext
                     }
 
-                    val now = System.currentTimeMillis()
+                    now = System.currentTimeMillis()
 
                     Log.d("MappLogger", "expiresAt: $expiresAt")
                     Log.d("MappLogger", "now: $now")
 
-                    val dif = expiresAt - now
+                    dif = expiresAt - now
                     Log.d("MappLogger", "diff: $dif")
 
                     // in millisecond
@@ -77,8 +100,6 @@ abstract class AfterLoginBaseViewModel(
                         refreshUserToken()
                         return@doOnNext
                     }
-
-                    // cek refresh expires at ini
                 }
 
                 obs.subscribe()
