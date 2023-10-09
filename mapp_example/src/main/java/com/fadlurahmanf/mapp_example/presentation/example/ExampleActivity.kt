@@ -16,7 +16,6 @@ import com.fadlurahmanf.mapp_example.presentation.mlkit.FaceDetectorActivity
 import com.fadlurahmanf.mapp_example.presentation.mlkit.ObjectLabelingActivity
 import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity
 import com.fadlurahmanf.mapp_example.presentation.rtc.ListRoomActivity
-import com.fadlurahmanf.mapp_example.presentation.session.AfterLoginActivity
 import com.fadlurahmanf.mapp_example.presentation.session.LoginActivity
 import com.fadlurahmanf.mapp_example.presentation.shortcut.ShortcutActivity
 import com.fadlurahmanf.mapp_example.presentation.vplayer.HLSPlayerActivity

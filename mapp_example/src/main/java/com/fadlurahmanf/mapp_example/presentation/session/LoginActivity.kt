@@ -1,11 +1,7 @@
 package com.fadlurahmanf.mapp_example.presentation.session
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.util.Log
 import com.fadlurahmanf.mapp_api.external.helper.network_state.NetworkState
-import com.fadlurahmanf.mapp_example.R
 import com.fadlurahmanf.mapp_example.databinding.ActivityLoginBinding
 import com.fadlurahmanf.mapp_example.presentation.BaseExampleActivity
 import com.fadlurahmanf.mapp_example.presentation.session.view_model.LoginViewModel
@@ -29,7 +25,7 @@ class LoginActivity : BaseExampleActivity<ActivityLoginBinding>(ActivityLoginBin
 
                 is NetworkState.SUCCESS -> {
                     dismissLoadingDialog()
-                    val intent = Intent(this, AfterLoginActivity::class.java)
+                    val intent = Intent(this, ActivityAfterLogin::class.java)
                     startActivity(intent)
                 }
 

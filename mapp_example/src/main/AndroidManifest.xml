@@ -6,7 +6,7 @@
             android:name=".presentation.session.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.session.AfterLoginActivity"
+            android:name=".presentation.session.ActivityAfterLogin"
             android:exported="false" />
         <activity
             android:name=".presentation.vplayer.Mp4PlayerPlayerActivity"
