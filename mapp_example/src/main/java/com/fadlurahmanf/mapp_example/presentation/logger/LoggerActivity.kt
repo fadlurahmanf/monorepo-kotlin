@@ -1,5 +1,6 @@
 package com.fadlurahmanf.mapp_example.presentation.logger
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.fadlurahmanf.core_logger.domain.repositories.LoggerRepositoryImpl
@@ -19,7 +20,8 @@ class LoggerActivity : BaseExampleActivity<ActivityLoggerBinding>(ActivityLogger
 
     override fun setup() {
         binding.btnLogDebug.onClicked {
-            logger.d("EXAMPLE LOG DEBUG")
+            val intent = Intent(this, Class.forName("com.fadlurahmanf.core_logger.presentation.LogHistoryActivity"))
+            startActivity(intent)
         }
     }
 
