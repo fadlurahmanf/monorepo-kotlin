@@ -12,6 +12,7 @@ import com.fadlurahmanf.mapp_example.presentation.biometric.BiometricActivity
 import com.fadlurahmanf.mapp_example.presentation.crypto.AesActivity
 import com.fadlurahmanf.mapp_example.presentation.crypto.ED25119Activity
 import com.fadlurahmanf.mapp_example.presentation.crypto.RsaActivity
+import com.fadlurahmanf.mapp_example.presentation.logger.LoggerActivity
 import com.fadlurahmanf.mapp_example.presentation.mlkit.FaceDetectorActivity
 import com.fadlurahmanf.mapp_example.presentation.mlkit.ObjectLabelingActivity
 import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity
@@ -99,6 +100,12 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                 menuId = "LOGIN",
                 menuTitle = "Login",
                 menuSubTitle = "Go To Login",
+                icon = R.drawable.outline_featured_play_list_24
+            ),
+            MenuModel(
+                menuId = "LOGGER",
+                menuTitle = "LOGGER",
+                menuSubTitle = "Go To Logger Activity",
                 icon = R.drawable.outline_featured_play_list_24
             ),
             MenuModel(
@@ -226,6 +233,15 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
 
             "LOGIN" -> {
                 val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }
+
+            "LOGGER" -> {
+                AnalyticHelper.logEvent(
+                    AnalyticEvent.ex_logger_clicked,
+                    AnalyticEvent.defaultParamMap(this)
+                )
+                val intent = Intent(this, LoggerActivity::class.java)
                 startActivity(intent)
             }
 

@@ -25,6 +25,7 @@ class LoggerRepositoryImpl @Inject constructor(
         try {
             val entity = LoggerEntity(
                 tag = tag,
+                type = "DEBUG",
                 text = message,
                 date = System.currentTimeMillis()
             )
@@ -32,6 +33,51 @@ class LoggerRepositoryImpl @Inject constructor(
             Log.d(tag, message)
         } catch (e: Exception) {
             Log.e(DEFAULT_TAG, "d: $e")
+        }
+    }
+
+    fun d(message: String) {
+        try {
+            val entity = LoggerEntity(
+                tag = DEFAULT_TAG,
+                type = "DEBUG",
+                text = message,
+                date = System.currentTimeMillis()
+            )
+            insert(entity)
+            Log.d(DEFAULT_TAG, message)
+        } catch (e: Exception) {
+            Log.e(DEFAULT_TAG, "d: $e")
+        }
+    }
+
+    fun i(tag: String = DEFAULT_TAG, message: String) {
+        try {
+            val entity = LoggerEntity(
+                tag = tag,
+                type = "INFO",
+                text = message,
+                date = System.currentTimeMillis()
+            )
+            insert(entity)
+            Log.i(tag, message)
+        } catch (e: Exception) {
+            Log.e(DEFAULT_TAG, "i: $e")
+        }
+    }
+
+    fun i(message: String) {
+        try {
+            val entity = LoggerEntity(
+                tag = DEFAULT_TAG,
+                type = "INFO",
+                text = message,
+                date = System.currentTimeMillis()
+            )
+            insert(entity)
+            Log.i(DEFAULT_TAG, message)
+        } catch (e: Exception) {
+            Log.e(DEFAULT_TAG, "i: $e")
         }
     }
 }

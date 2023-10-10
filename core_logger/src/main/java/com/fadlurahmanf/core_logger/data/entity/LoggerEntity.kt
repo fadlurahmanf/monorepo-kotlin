@@ -9,6 +9,7 @@ import java.util.Date
 data class LoggerEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null,
+    var type: String,
     var tag: String,
     var date: Long,
     var text: String,
