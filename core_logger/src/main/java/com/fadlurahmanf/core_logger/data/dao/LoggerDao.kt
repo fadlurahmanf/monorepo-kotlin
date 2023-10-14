@@ -20,6 +20,9 @@ interface LoggerDao {
     @Query("SELECT * FROM ${LoggerDbConstant.tLogger}")
     fun getAll(): Single<List<LoggerEntity>>
 
+    @Query("SELECT * FROM ${LoggerDbConstant.tLogger} WHERE type = :type")
+    fun getTyped(type: String): Single<List<LoggerEntity>>
+
     @Query("DELETE FROM ${LoggerDbConstant.tLogger}")
     fun delete()
 }

@@ -23,4 +23,18 @@
         android:layout_marginTop="10dp"
         app:text="LOG DEBUG" />
 
+    <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+        android:id="@+id/btn_log_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:text="LOG ERROR" />
+
+    <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+        android:id="@+id/btn_log_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:text="LOG INFO" />
+
 </LinearLayout>

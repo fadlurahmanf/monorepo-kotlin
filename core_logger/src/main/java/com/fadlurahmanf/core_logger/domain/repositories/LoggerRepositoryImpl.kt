@@ -80,4 +80,34 @@ class LoggerRepositoryImpl @Inject constructor(
             Log.e(DEFAULT_TAG, "i: $e")
         }
     }
+
+    fun e(tag: String = DEFAULT_TAG, message: String) {
+        try {
+            val entity = LoggerEntity(
+                tag = tag,
+                type = "ERROR",
+                text = message,
+                date = System.currentTimeMillis()
+            )
+            insert(entity)
+            Log.e(tag, message)
+        } catch (e: Exception) {
+            Log.e(DEFAULT_TAG, "e: $e")
+        }
+    }
+
+    fun e(message: String) {
+        try {
+            val entity = LoggerEntity(
+                tag = DEFAULT_TAG,
+                type = "ERROR",
+                text = message,
+                date = System.currentTimeMillis()
+            )
+            insert(entity)
+            Log.e(DEFAULT_TAG, message)
+        } catch (e: Exception) {
+            Log.e(DEFAULT_TAG, "e: $e")
+        }
+    }
 }

@@ -56,7 +56,8 @@ class LogHistoryFragment : Fragment() {
             when (it) {
                 is CustomState.SUCCESS -> {
                     logs.clear()
-                    logs.addAll(it.data)
+                    logs.addAll(it.data.reversed())
+                    adapter.setLogs(logs)
                     adapter.notifyDataSetChanged()
                 }
 
@@ -64,7 +65,12 @@ class LogHistoryFragment : Fragment() {
             }
         }
 
-        viewModel.getAllLogger()
+        Log.d("MappLogger", "LOG TYPE: $logType")
+        if (logType == "INFO" || logType == "DEBUG" || logType == "ERROR") {
+            viewModel.getTypedLogger(logType!!)
+        } else {
+            viewModel.getAllLogger()
+        }
     }
 
     companion object {
