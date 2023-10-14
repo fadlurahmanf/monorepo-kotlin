@@ -11,7 +11,7 @@ class LogHistoryActivity : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager
 
-    private lateinit var adapter: LogHistoryAdapter
+    private lateinit var adapter: LogHistoryPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +25,7 @@ class LogHistoryActivity : AppCompatActivity() {
         tabLayout.addTab(tabLayout.newTab().setText("INFO"))
         tabLayout.addTab(tabLayout.newTab().setText("ERROR"))
 
-        adapter = LogHistoryAdapter(supportFragmentManager, tabLayout.tabCount)
+        adapter = LogHistoryPagerAdapter(supportFragmentManager, tabLayout.tabCount)
 
         viewPager.adapter = adapter
 

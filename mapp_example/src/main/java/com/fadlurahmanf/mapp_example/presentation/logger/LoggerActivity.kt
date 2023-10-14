@@ -19,9 +19,13 @@ class LoggerActivity : BaseExampleActivity<ActivityLoggerBinding>(ActivityLogger
     }
 
     override fun setup() {
-        binding.btnLogDebug.onClicked {
+        binding.btnLogHistory.onClicked {
             val intent = Intent(this, Class.forName("com.fadlurahmanf.core_logger.presentation.LogHistoryActivity"))
             startActivity(intent)
+        }
+
+        binding.btnLogDebug.onClicked {
+            logger.d("MappLogger", "TES TES TES")
         }
     }
 

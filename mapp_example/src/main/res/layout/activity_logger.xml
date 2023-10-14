@@ -7,12 +7,20 @@
     android:layout_gravity="center"
     android:gravity="center"
     android:orientation="vertical"
+    android:paddingHorizontal="20dp"
     tools:context=".presentation.logger.LoggerActivity">
+
+    <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+        android:id="@+id/btn_log_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:text="HISTORY LOG" />
 
     <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
         android:id="@+id/btn_log_debug"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         app:text="LOG DEBUG" />
 
 </LinearLayout>
