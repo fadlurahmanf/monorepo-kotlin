@@ -1,11 +1,10 @@
-package com.fadlurahmanf.core_logger.domain.repositories
+package com.fadlurahmanf.core_logger.presentation
 
 import android.util.Log
 import com.fadlurahmanf.core_logger.data.entity.LoggerEntity
 import com.fadlurahmanf.core_logger.domain.datasources.LoggerLocalDatasource
-import javax.inject.Inject
 
-class LoggerRepositoryImpl @Inject constructor(
+class LogConsole(
     private val loggerLocalDatasource: LoggerLocalDatasource
 ) {
 

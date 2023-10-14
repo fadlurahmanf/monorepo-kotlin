@@ -3,8 +3,8 @@ package com.fadlurahmanf.mapp_config.presentation
 import android.app.Application
 import com.fadlurahmanf.core_crypto.CoreCryptoComponent
 import com.fadlurahmanf.core_crypto.DaggerCoreCryptoComponent
-import com.fadlurahmanf.core_logger.CoreLoggerComponent
-import com.fadlurahmanf.core_logger.DaggerCoreLoggerComponent
+import com.fadlurahmanf.core_logger.domain.datasources.LoggerLocalDatasource
+import com.fadlurahmanf.core_logger.presentation.LogConsole
 import com.fadlurahmanf.core_platform.CorePlatformComponent
 import com.fadlurahmanf.core_platform.DaggerCorePlatformComponent
 import com.fadlurahmanf.mapp_config.DaggerMappConfigComponent
@@ -17,11 +17,26 @@ import com.fadlurahmanf.mapp_firebase_database.MappFirebaseDatabaseComponent
 
 class MappApplication : Application(), IMappComponentProvider {
     private lateinit var coreCryptoComponent: CoreCryptoComponent
-    private lateinit var coreLoggerComponent: CoreLoggerComponent
     private lateinit var corePlatformComponent: CorePlatformComponent
     private lateinit var mappConfigComponent: MappConfigComponent
     private lateinit var mappFcmComponent: MappFcmComponent
     private lateinit var mappFirebaseDatabaseComponent: MappFirebaseDatabaseComponent
+    lateinit var logConsole: LogConsole
+
+    override fun onCreate() {
+        super.onCreate()
+        initLogConsole()
+    }
+
+    private fun initLogConsole(): LogConsole {
+        return if (this::logConsole.isInitialized) {
+            logConsole
+        } else {
+            val loggerLocalDatasource = LoggerLocalDatasource(applicationContext)
+            logConsole = LogConsole(loggerLocalDatasource)
+            logConsole
+        }
+    }
 
     override fun provideCoreCryptoComponent(): CoreCryptoComponent {
         return if (this::coreCryptoComponent.isInitialized) {
@@ -29,15 +44,6 @@ class MappApplication : Application(), IMappComponentProvider {
         } else {
             coreCryptoComponent = DaggerCoreCryptoComponent.factory().create()
             coreCryptoComponent
-        }
-    }
-
-    override fun provideCoreLoggerComponent(): CoreLoggerComponent {
-        return if (this::coreLoggerComponent.isInitialized) {
-            coreLoggerComponent
-        } else {
-            coreLoggerComponent = DaggerCoreLoggerComponent.factory().create(this)
-            coreLoggerComponent
         }
     }
 
