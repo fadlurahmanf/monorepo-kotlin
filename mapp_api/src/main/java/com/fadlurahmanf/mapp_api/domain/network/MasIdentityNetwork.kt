@@ -8,8 +8,4 @@ abstract class MasIdentityNetwork<T>(context: Context) : BaseNetwork<T>(context)
     override fun getBaseUrl(): String {
         return "${MappShared.retailGuestBaseUrl}identity-service/"
     }
-
-    override fun okHttpClientBuilder(builder: OkHttpClient.Builder): OkHttpClient.Builder {
-        return super.okHttpClientBuilder(builder)
-    }
 }

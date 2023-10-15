@@ -1,6 +1,10 @@
 package com.fadlurahmanf.mapp_api.domain.network
 
 import android.content.Context
+import com.chuckerteam.chucker.api.Chucker
+import com.chuckerteam.chucker.api.ChuckerCollector
+import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.fadlurahmanf.core_logger.domain.interceptor.DebugNetworkInterceptor
 import com.fadlurahmanf.mapp_api.domain.interceptor.CustomLoggingInterceptor
 import com.fadlurahmanf.mapp_api.domain.interceptor.MappExceptionInterceptor
 import okhttp3.OkHttpClient
@@ -18,8 +22,20 @@ abstract class BaseNetwork<T>(var context: Context) {
         return CustomLoggingInterceptor("MappLogger").setLevel(CustomLoggingInterceptor.Level.BODY)
     }
 
+    private fun getChuckerInterceptor(): ChuckerInterceptor {
+        val collector = ChuckerCollector(
+            context = context,
+            showNotification = true
+        )
+        return ChuckerInterceptor.Builder(context).collector(collector)
+            .maxContentLength(Long.MAX_VALUE)
+            .alwaysReadResponseBody(true)
+            .build()
+    }
+
     open fun okHttpClientBuilder(builder: OkHttpClient.Builder): OkHttpClient.Builder {
         return builder.addInterceptor(bodyLoggingInterceptor())
+            .addInterceptor(DebugNetworkInterceptor())
             .addInterceptor(MappExceptionInterceptor(context))
     }
 

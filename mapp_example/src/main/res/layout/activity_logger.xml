@@ -11,6 +11,12 @@
     tools:context=".presentation.logger.LoggerActivity">
 
     <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
+        android:id="@+id/btn_chucker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:text="CHUCKER LOG" />
+
+    <com.fadlurahmanf.mapp_ui.presentation.custom.MappButton
         android:id="@+id/btn_log_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

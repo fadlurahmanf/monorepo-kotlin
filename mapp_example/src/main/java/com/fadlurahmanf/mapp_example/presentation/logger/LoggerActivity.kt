@@ -1,11 +1,8 @@
 package com.fadlurahmanf.mapp_example.presentation.logger
 
 import android.content.Intent
-import com.fadlurahmanf.core_logger.presentation.LogConsole
-import com.fadlurahmanf.mapp_config.presentation.MappApplication
 import com.fadlurahmanf.mapp_example.databinding.ActivityLoggerBinding
 import com.fadlurahmanf.mapp_example.presentation.BaseExampleActivity
-import javax.inject.Inject
 import kotlin.random.Random
 
 class LoggerActivity : BaseExampleActivity<ActivityLoggerBinding>(ActivityLoggerBinding::inflate) {
@@ -15,6 +12,10 @@ class LoggerActivity : BaseExampleActivity<ActivityLoggerBinding>(ActivityLogger
     }
 
     override fun setup() {
+        binding.btnChucker.onClicked {
+
+        }
+
         binding.btnLogHistory.onClicked {
             val intent = Intent(
                 this,
