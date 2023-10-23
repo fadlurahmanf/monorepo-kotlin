@@ -54,9 +54,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofit_version"
 
-    def chucker_version = "4.0.0"
-    debugImplementation "com.github.chuckerteam.chucker:library:$chucker_version"
-    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:$chucker_version"
+    implementation "com.github.chuckerteam.chucker:library:3.5.2"
 
     implementation(project(":core_logger"))
 

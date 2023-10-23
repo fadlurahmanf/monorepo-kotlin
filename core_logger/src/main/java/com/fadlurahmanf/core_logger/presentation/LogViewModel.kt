@@ -33,11 +33,9 @@ class LogViewModel(private val loggerLocalDatasource: LoggerLocalDatasource) : V
         _logs.value = CustomState.LOADING
         compositeDisposable().add(loggerLocalDatasource.getTyped(type).toObservable().subscribe(
             {
-                Log.d("MappLogger", "SUCCESS ${it.size}")
                 _logs.value = CustomState.SUCCESS(ArrayList(it))
             },
             {
-                Log.e("MappLogger", "ERROR: ${it.message}")
                 _logs.value = CustomState.FAILED(Exception(it.message))
             },
             {}

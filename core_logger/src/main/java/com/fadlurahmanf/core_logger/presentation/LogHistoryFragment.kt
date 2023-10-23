@@ -52,7 +52,6 @@ class LogHistoryFragment : Fragment() {
         recyclerView.adapter = adapter
 
         viewModel.logs.observe(requireActivity()) {
-            Log.d("MappLogger", "STATE: $it")
             when (it) {
                 is CustomState.SUCCESS -> {
                     logs.clear()
@@ -65,7 +64,6 @@ class LogHistoryFragment : Fragment() {
             }
         }
 
-        Log.d("MappLogger", "LOG TYPE: $logType")
         if (logType == "INFO" || logType == "DEBUG" || logType == "ERROR") {
             viewModel.getTypedLogger(logType!!)
         } else {

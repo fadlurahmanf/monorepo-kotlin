@@ -1,6 +1,7 @@
 package com.fadlurahmanf.mapp_example.presentation.logger
 
 import android.content.Intent
+import com.chuckerteam.chucker.api.Chucker
 import com.fadlurahmanf.mapp_example.databinding.ActivityLoggerBinding
 import com.fadlurahmanf.mapp_example.presentation.BaseExampleActivity
 import kotlin.random.Random
@@ -13,7 +14,8 @@ class LoggerActivity : BaseExampleActivity<ActivityLoggerBinding>(ActivityLogger
 
     override fun setup() {
         binding.btnChucker.onClicked {
-
+            val intent = Chucker.getLaunchIntent(applicationContext)
+            startActivity(intent)
         }
 
         binding.btnLogHistory.onClicked {
