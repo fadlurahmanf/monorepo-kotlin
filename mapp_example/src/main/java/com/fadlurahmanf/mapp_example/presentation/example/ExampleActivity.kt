@@ -12,6 +12,7 @@ import com.fadlurahmanf.mapp_example.presentation.biometric.BiometricActivity
 import com.fadlurahmanf.mapp_example.presentation.crypto.AesActivity
 import com.fadlurahmanf.mapp_example.presentation.crypto.ED25119Activity
 import com.fadlurahmanf.mapp_example.presentation.crypto.RsaActivity
+import com.fadlurahmanf.mapp_example.presentation.keyword.HighlightKeywordActivity
 import com.fadlurahmanf.mapp_example.presentation.logger.LoggerActivity
 import com.fadlurahmanf.mapp_example.presentation.mlkit.FaceDetectorActivity
 import com.fadlurahmanf.mapp_example.presentation.mlkit.ObjectLabelingActivity
@@ -112,6 +113,12 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                 menuId = "LIST_ROOM_RTC",
                 menuTitle = "RTC",
                 menuSubTitle = "Go To List Room",
+                icon = R.drawable.outline_featured_play_list_24
+            ),
+            MenuModel(
+                menuId = "KEYWORD_SEARCH",
+                menuTitle = "SEARCH BY KEYWORD",
+                menuSubTitle = "Highlight Keyword Text in Recycler View",
                 icon = R.drawable.outline_featured_play_list_24
             ),
         )
@@ -251,6 +258,11 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                     AnalyticEvent.defaultParamMap(this)
                 )
                 val intent = Intent(this, ListRoomActivity::class.java)
+                startActivity(intent)
+            }
+
+            "KEYWORD_SEARCH" -> {
+                val intent = Intent(this, HighlightKeywordActivity::class.java)
                 startActivity(intent)
             }
         }

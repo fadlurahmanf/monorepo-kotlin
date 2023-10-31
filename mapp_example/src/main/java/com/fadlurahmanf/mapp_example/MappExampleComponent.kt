@@ -9,6 +9,7 @@ import com.fadlurahmanf.mapp_example.presentation.crypto.AesActivity
 import com.fadlurahmanf.mapp_example.presentation.crypto.ED25119Activity
 import com.fadlurahmanf.mapp_example.presentation.crypto.RsaActivity
 import com.fadlurahmanf.mapp_example.presentation.example.ExampleActivity
+import com.fadlurahmanf.mapp_example.presentation.keyword.HighlightKeywordActivity
 import com.fadlurahmanf.mapp_example.presentation.logger.LoggerActivity
 import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity
 import com.fadlurahmanf.mapp_example.presentation.rtc.CallActivity
@@ -54,4 +55,5 @@ interface MappExampleComponent {
     fun inject(activity: LoginActivity)
     fun inject(activity: ActivityAfterLogin)
     fun inject(activity: LoggerActivity)
+    fun inject(activity: HighlightKeywordActivity)
 }
