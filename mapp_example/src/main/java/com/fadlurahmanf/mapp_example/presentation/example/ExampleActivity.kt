@@ -17,6 +17,7 @@ import com.fadlurahmanf.mapp_example.presentation.logger.LoggerActivity
 import com.fadlurahmanf.mapp_example.presentation.mlkit.FaceDetectorActivity
 import com.fadlurahmanf.mapp_example.presentation.mlkit.ObjectLabelingActivity
 import com.fadlurahmanf.mapp_example.presentation.notification.NotificationActivity
+import com.fadlurahmanf.mapp_example.presentation.otp.OtpActivity
 import com.fadlurahmanf.mapp_example.presentation.rtc.ListRoomActivity
 import com.fadlurahmanf.mapp_example.presentation.session.LoginActivity
 import com.fadlurahmanf.mapp_example.presentation.shortcut.ShortcutActivity
@@ -119,6 +120,12 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
                 menuId = "KEYWORD_SEARCH",
                 menuTitle = "SEARCH BY KEYWORD",
                 menuSubTitle = "Highlight Keyword Text in Recycler View",
+                icon = R.drawable.outline_featured_play_list_24
+            ),
+            MenuModel(
+                menuId = "OTP",
+                menuTitle = "OTP",
+                menuSubTitle = "OTP Textfield",
                 icon = R.drawable.outline_featured_play_list_24
             ),
         )
@@ -263,6 +270,15 @@ class ExampleActivity : BaseExampleActivity<ActivityExampleBinding>(
 
             "KEYWORD_SEARCH" -> {
                 val intent = Intent(this, HighlightKeywordActivity::class.java)
+                startActivity(intent)
+            }
+
+            "OTP" -> {
+                AnalyticHelper.logEvent(
+                    AnalyticEvent.ex_otp_clicked,
+                    AnalyticEvent.defaultParamMap(this)
+                )
+                val intent = Intent(this, OtpActivity::class.java)
                 startActivity(intent)
             }
         }

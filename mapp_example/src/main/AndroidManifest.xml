@@ -3,6 +3,10 @@
 
     <application>
         <activity
+            android:name=".presentation.otp.OtpActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light" />
+        <activity
             android:name=".presentation.keyword.HighlightKeywordActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light" />
