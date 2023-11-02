@@ -67,6 +67,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
+    implementation(project(":bebas_api"))
     implementation(project(":bebas_config"))
     implementation(project(":bebas_onboarding"))
     implementation(project(":bebas_shared"))

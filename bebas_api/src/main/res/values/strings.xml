@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Mapp</string>
+    <string name="hello_world">Hello World</string>
+    <string name="oops">Oops...</string>
+    <string name="ok">Okey</string>
+    <string name="general_exception_desc">We can\'t afford your request (%1$s)</string>
+    <string name="socket_exception_desc">Look like you don\'t have any connection</string>
+</resources>
