@@ -4,11 +4,28 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.fadlurahmanf.bebas_config.R
+import com.fadlurahmanf.bebas_shared.BebasShared
 
 class BebasConfigActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bebas_config)
+
+        val flavor = intent.extras?.getString("FLAVOR")
+
+        when (flavor) {
+            "dev" -> {
+                BebasShared.bebasUrl = "https://api.bankmas.my.id/"
+            }
+
+            "staging" -> {
+                BebasShared.bebasUrl = "https://api.bankmas.link/"
+            }
+
+            "prod" -> {
+                BebasShared.bebasUrl = "https://api.bankmas.net/"
+            }
+        }
 
         val intent = Intent(
             this,
