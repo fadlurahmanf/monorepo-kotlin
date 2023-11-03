@@ -3,7 +3,7 @@ package com.fadlurahmanf.mapp_example.presentation.biometric
 import android.hardware.biometrics.BiometricPrompt
 import android.os.Build
 import android.os.CancellationSignal
-import com.fadlurahmanf.core_platform.domain.BiometricRepository
+import com.fadlurahmanf.core_platform.domain.repositories.DeviceRepository
 import com.fadlurahmanf.core_platform.external.helper.CoreBiometric
 import com.fadlurahmanf.mapp_example.databinding.ActivityBiometricBinding
 import com.fadlurahmanf.mapp_example.presentation.BaseExampleActivity
@@ -21,11 +21,11 @@ class BiometricActivity : BaseExampleActivity<ActivityBiometricBinding>(
 
     override fun setup() {
         binding.tvIsSupportedBiometric.text =
-            "IS SUPPORTED BIOMETRIC: ${biometricRepository.isSupportedBiometric(this)}"
+            "IS SUPPORTED BIOMETRIC: ${deviceRepository.isSupportedBiometric(this)}"
 
         binding.btnAuthenticateBiometric.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                biometricRepository.authenticateP(
+                deviceRepository.authenticateP(
                     this,
                     "TITLE BIOMETRIC",
                     "DESC BIOMETRIC",
@@ -55,5 +55,5 @@ class BiometricActivity : BaseExampleActivity<ActivityBiometricBinding>(
     }
 
     @Inject
-    lateinit var biometricRepository: BiometricRepository
+    lateinit var deviceRepository: DeviceRepository
 }

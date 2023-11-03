@@ -1,14 +1,14 @@
-package com.fadlurahmanf.core_platform.domain
+package com.fadlurahmanf.core_platform.domain.repositories
 
 import android.content.Context
-import android.hardware.biometrics.BiometricPrompt
 import android.os.Build
-import android.os.CancellationSignal
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.fadlurahmanf.core_platform.external.helper.CoreBiometric
 
-interface BiometricRepository {
+interface DeviceRepository {
+    fun randomUUID(): String
+    fun deviceID(context: Context): String
     fun isSupportedBiometric(context: Context): Boolean
 
     fun authenticateX(

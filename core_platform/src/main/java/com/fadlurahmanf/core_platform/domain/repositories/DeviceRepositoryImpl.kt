@@ -1,4 +1,4 @@
-package com.fadlurahmanf.core_platform.domain
+package com.fadlurahmanf.core_platform.domain.repositories
 
 import android.content.Context
 import android.hardware.biometrics.BiometricManager
@@ -7,14 +7,23 @@ import android.hardware.biometrics.BiometricPrompt
 import android.hardware.fingerprint.FingerprintManager
 import android.os.Build
 import android.os.CancellationSignal
+import android.provider.Settings.Secure
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.biometric.BiometricPrompt as XBiometricPrompt
 import com.fadlurahmanf.core_platform.external.helper.CoreBiometric
+import java.util.UUID
 
-class BiometricRepositoryImpl : BiometricRepository {
+class DeviceRepositoryImpl : DeviceRepository {
+
+    override fun randomUUID(): String {
+        return UUID.randomUUID().toString()
+    }
+    override fun deviceID(context: Context): String {
+        return Secure.getString(context.contentResolver, Secure.ANDROID_ID)
+    }
 
     override fun isSupportedBiometric(
         context: Context
