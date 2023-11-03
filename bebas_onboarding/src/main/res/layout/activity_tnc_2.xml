@@ -18,8 +18,8 @@
             android:background="@color/white"
             app:collapsedTitleTextAppearance="@style/Font.AppBarTitle"
             app:contentScrim="@color/white"
-            app:expandedTitleMarginStart="20dp"
             app:expandedTitleMarginBottom="15dp"
+            app:expandedTitleMarginStart="20dp"
             app:expandedTitleTextAppearance="@style/Font.HeaderTitle"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@id/toolbar">
@@ -73,5 +73,35 @@
                 android:paddingHorizontal="30dp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/top_side_rounded"
+        android:elevation="5dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                style="@style/Font.Text12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Saya telah membaca dan menyetujui syarat dan ketentuan di atas" />
+        </LinearLayout>
+
+        <com.fadlurahmanf.bebas_ui.presentation.presentation.button.BebasRoundedButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="Lanjut" />
+
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
