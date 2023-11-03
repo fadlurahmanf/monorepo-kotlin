@@ -14,7 +14,7 @@ class BebasActivity : AppCompatActivity() {
             Class.forName("com.fadlurahmanf.bebas_config.presentation.BebasConfigActivity")
         )
         intent.apply {
-            putExtra("FLAVOR", "DEV")
+            putExtra("FLAVOR", BuildConfig.FLAVOR)
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         startActivity(intent)

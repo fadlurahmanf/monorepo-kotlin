@@ -5,6 +5,6 @@ import com.fadlurahmanf.bebas_shared.BebasShared
 
 abstract class MasIdentityNetwork<T>(context: Context) : BaseNetwork<T>(context) {
     override fun getBaseUrl(): String {
-        return "${BebasShared.bebasUrl}identity-service/"
+        return "${BebasShared.getBebasUrl()}identity-service/"
     }
 }

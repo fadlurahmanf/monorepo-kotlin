@@ -5,22 +5,19 @@ import com.fadlurahmanf.core_logger.data.entity.LoggerEntity
 import com.fadlurahmanf.core_logger.domain.datasources.LoggerLocalDatasource
 
 class LogConsole(
-    private val loggerLocalDatasource: LoggerLocalDatasource
+    private val loggerLocalDatasource: LoggerLocalDatasource,
+    private var defaultTag: String = "CoreLogger"
 ) {
-
-    companion object {
-        const val DEFAULT_TAG = "CoreLogger"
-    }
 
     private fun insert(entity: LoggerEntity) {
         try {
             loggerLocalDatasource.insert(entity)
         } catch (e: Throwable) {
-            Log.e(DEFAULT_TAG, "insert: ${e.message}")
+            Log.e(defaultTag, "insert: ${e.message}")
         }
     }
 
-    fun d(tag: String = DEFAULT_TAG, message: String) {
+    fun d(tag: String = defaultTag, message: String) {
         try {
             val entity = LoggerEntity(
                 tag = tag,
@@ -31,26 +28,26 @@ class LogConsole(
             insert(entity)
             Log.d(tag, message)
         } catch (e: Exception) {
-            Log.e(DEFAULT_TAG, "d: $e")
+            Log.e(defaultTag, "d: $e")
         }
     }
 
     fun d(message: String) {
         try {
             val entity = LoggerEntity(
-                tag = DEFAULT_TAG,
+                tag = defaultTag,
                 type = "DEBUG",
                 text = message,
                 date = System.currentTimeMillis()
             )
             insert(entity)
-            Log.d(DEFAULT_TAG, message)
+            Log.d(defaultTag, message)
         } catch (e: Exception) {
-            Log.e(DEFAULT_TAG, "d: $e")
+            Log.e(defaultTag, "d: $e")
         }
     }
 
-    fun i(tag: String = DEFAULT_TAG, message: String) {
+    fun i(tag: String = defaultTag, message: String) {
         try {
             val entity = LoggerEntity(
                 tag = tag,
@@ -61,26 +58,26 @@ class LogConsole(
             insert(entity)
             Log.i(tag, message)
         } catch (e: Exception) {
-            Log.e(DEFAULT_TAG, "i: $e")
+            Log.e(defaultTag, "i: $e")
         }
     }
 
     fun i(message: String) {
         try {
             val entity = LoggerEntity(
-                tag = DEFAULT_TAG,
+                tag = defaultTag,
                 type = "INFO",
                 text = message,
                 date = System.currentTimeMillis()
             )
             insert(entity)
-            Log.i(DEFAULT_TAG, message)
+            Log.i(defaultTag, message)
         } catch (e: Exception) {
-            Log.e(DEFAULT_TAG, "i: $e")
+            Log.e(defaultTag, "i: $e")
         }
     }
 
-    fun e(tag: String = DEFAULT_TAG, message: String) {
+    fun e(tag: String = defaultTag, message: String) {
         try {
             val entity = LoggerEntity(
                 tag = tag,
@@ -91,22 +88,22 @@ class LogConsole(
             insert(entity)
             Log.e(tag, message)
         } catch (e: Exception) {
-            Log.e(DEFAULT_TAG, "e: $e")
+            Log.e(defaultTag, "e: $e")
         }
     }
 
     fun e(message: String) {
         try {
             val entity = LoggerEntity(
-                tag = DEFAULT_TAG,
+                tag = defaultTag,
                 type = "ERROR",
                 text = message,
                 date = System.currentTimeMillis()
             )
             insert(entity)
-            Log.e(DEFAULT_TAG, message)
+            Log.e(defaultTag, message)
         } catch (e: Exception) {
-            Log.e(DEFAULT_TAG, "e: $e")
+            Log.e(defaultTag, "e: $e")
         }
     }
 }

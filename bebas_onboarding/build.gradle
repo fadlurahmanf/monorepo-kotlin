@@ -56,9 +56,11 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxjava:3.1.5"
 
     implementation(project(":core_crypto"))
+    implementation(project(":core_logger"))
     implementation(project(":core_platform"))
 
     implementation(project(":bebas_api"))
+    implementation(project(":bebas_config"))
     implementation(project(":bebas_shared"))
     implementation(project(":bebas_storage"))
     implementation(project(":bebas_ui"))

@@ -1,7 +1,7 @@
 package com.fadlurahmanf.bebas_onboarding.presentation
 
-import android.view.View
 import androidx.viewbinding.ViewBinding
+import com.fadlurahmanf.bebas_config.presentation.BebasApplication
 import com.fadlurahmanf.bebas_onboarding.domain.di.BebasOnboardingComponent
 import com.fadlurahmanf.bebas_onboarding.domain.di.DaggerBebasOnboardingComponent
 import com.fadlurahmanf.bebas_storage.DaggerBebasStorageComponent
@@ -18,10 +18,12 @@ abstract class BaseOnboardingActivity<VB : ViewBinding>(inflate: BebasInflateAct
         val cryptoComponent = DaggerCoreCryptoComponent.factory().create()
         component = DaggerBebasOnboardingComponent.factory()
             .create(
-                this,
+                applicationContext,
                 cryptoComponent,
                 DaggerCorePlatformComponent.factory().create(),
-                DaggerBebasStorageComponent.factory().create(this, cryptoComponent)
+                DaggerBebasStorageComponent.factory().create(applicationContext, cryptoComponent)
             )
     }
+
+    fun logConsole() = (applicationContext as BebasApplication).logConsole
 }
