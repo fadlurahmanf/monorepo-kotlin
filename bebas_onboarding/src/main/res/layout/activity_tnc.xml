@@ -6,35 +6,88 @@
     android:layout_height="match_parent"
     tools:context=".presentation.welcome.TncActivity">
 
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="15dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/circle_outlined"
+            android:padding="5dp"
+            android:src="@drawable/round_arrow_back_ios_new_24" />
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottom_layout"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="10dp">
 
             <TextView
+                style="@style/Font.HeaderTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Syarat &amp; Ketentuan"
-                style="@style/Font.HeaderTitle"/>
+                android:text="Syarat &amp; Ketentuan" />
 
             <TextView
+                style="@style/Font.HeaderSubTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Mohon membaca informasi ini dengan seksama"
-                style="@style/Font.HeaderSubTitle"/>
+                android:text="Mohon membaca informasi ini dengan seksama" />
 
             <TextView
                 android:id="@+id/tv_text"
+                style="@style/Font.TncText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Font.TncText"/>
+                android:layout_marginTop="20dp"
+                android:paddingHorizontal="20dp" />
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/top_side_rounded"
+        android:elevation="5dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="20dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                style="@style/Font.Text12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Saya telah membaca dan menyetujui syarat dan ketentuan di atas" />
+        </LinearLayout>
+
+        <android.widget.Button
+            style="@style/Font.Text12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lanjut"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
