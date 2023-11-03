@@ -20,6 +20,9 @@ interface BebasDao {
     @Query("SELECT * FROM ${BebasDbConstant.tMapp}")
     fun getAll(): Single<List<BebasEntity>>
 
+    @Query("SELECT encodedPublicKey FROM ${BebasDbConstant.tMapp}")
+    fun getPublicKey(): Single<List<String>>
+
     @Query("DELETE FROM ${BebasDbConstant.tMapp}")
     fun delete()
 }

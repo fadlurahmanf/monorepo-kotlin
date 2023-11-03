@@ -6,6 +6,7 @@ import com.fadlurahmanf.bebas_api.data.datasources.MasIdentityRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.identity.CreateGuestTokenResponse
 import com.fadlurahmanf.bebas_api.data.dto.identity.GenerateGuestTokenRequest
+import com.fadlurahmanf.bebas_api.data.exception.BebasException
 import com.fadlurahmanf.bebas_config.presentation.BebasApplication
 import com.fadlurahmanf.bebas_shared.BebasShared
 import com.fadlurahmanf.bebas_storage.data.entity.BebasEntity
@@ -61,6 +62,14 @@ class OnboardingRepositoryImpl @Inject constructor(
             guestId = guestId
         )
         return identityRemoteDatasource.generateGuestToken(request).map {
+            if (it.data?.accessToken == null) {
+                throw BebasException.generalRC("GUEST_TOKEN_DATA_MISSING")
+            }
+
+            val guestToken = it.data?.accessToken ?: ""
+            BebasShared.setGuestToken(guestToken)
+            bebasLocalDatasource.updateGuestToken(guestToken)
+
             it.data!!
         }
     }

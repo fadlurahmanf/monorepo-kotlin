@@ -3,6 +3,9 @@
 
     <application>
         <activity
+            android:name=".presentation.welcome.TncActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.welcome.WelcomeOnboardingActivity"
             android:exported="false" />
         <activity

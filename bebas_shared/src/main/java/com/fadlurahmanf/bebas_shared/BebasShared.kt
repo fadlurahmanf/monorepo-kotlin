@@ -25,4 +25,14 @@ object BebasShared {
             this.encodedPublicKey = encodedPublicKey
         }
     }
+
+    private lateinit var guestToken: String
+
+    fun setGuestToken(guestToken: String) {
+        this.guestToken = guestToken
+    }
+
+    fun getGuestToken(): String {
+        return guestToken
+    }
 }

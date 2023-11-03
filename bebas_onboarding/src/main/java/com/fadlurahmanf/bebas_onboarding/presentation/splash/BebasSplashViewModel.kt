@@ -1,8 +1,8 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.splash
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.fadlurahmanf.bebas_api.data.exception.BebasException
 import com.fadlurahmanf.bebas_onboarding.domain.repositories.OnboardingRepositoryImpl
 import com.fadlurahmanf.bebas_ui.presentation.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -19,17 +19,28 @@ class BebasSplashViewModel @Inject constructor(
     fun generateGuestToken() {
         _state.value = SplashState.LOADING
 
+        var errorGenerateCryptoKeyOrFetchTheExisting: Throwable? = null
+        var isErrorGenerateCryptoKeyOrFetchTheExisting: Boolean? = null
+
         compositeDisposable().add(
             onboardingRepositoryImpl
                 .generateCryptoKeyOrFetchTheExisting().subscribe(
                     {
-                        Log.d("BebasLoggerDev", "RESULT: $it")
+                        isErrorGenerateCryptoKeyOrFetchTheExisting = false
                     },
                     {
-                        Log.d("BebasLoggerDev", "THROW: $it")
+                        errorGenerateCryptoKeyOrFetchTheExisting = it
+                        isErrorGenerateCryptoKeyOrFetchTheExisting = true
                     },
                 )
         )
+
+        if (isErrorGenerateCryptoKeyOrFetchTheExisting == true && errorGenerateCryptoKeyOrFetchTheExisting != null) {
+            _state.value = SplashState.FAILED(
+                exception = BebasException.fromThrowable(errorGenerateCryptoKeyOrFetchTheExisting!!)
+            )
+            return
+        }
 
         compositeDisposable().add(onboardingRepositoryImpl
                                       .generateGuestToken()
@@ -40,7 +51,9 @@ class BebasSplashViewModel @Inject constructor(
                                               _state.value = SplashState.SUCCESS
                                           },
                                           {
-                                              _state.value = SplashState.FAILED
+                                              _state.value = SplashState.FAILED(
+                                                  exception = BebasException.fromThrowable(it)
+                                              )
                                           },
                                           {}
                                       ))

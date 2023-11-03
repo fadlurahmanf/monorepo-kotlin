@@ -5,11 +5,12 @@ import com.fadlurahmanf.bebas_storage.data.entity.BebasEntity
 import com.fadlurahmanf.bebas_storage.domain.common.BebasDatabase
 import com.fadlurahmanf.core_crypto.domain.repositories.CryptoRSARepository
 import io.reactivex.rxjava3.core.Single
+import java.lang.Exception
 import javax.inject.Inject
 
 class BebasLocalDatasource @Inject constructor(
     context: Context,
-    coreRSARepository: CryptoRSARepository
+    private val coreRSARepository: CryptoRSARepository
 ) {
     private var dao = BebasDatabase.getDatabase(context).bebasDao()
 
@@ -21,7 +22,29 @@ class BebasLocalDatasource @Inject constructor(
         dao.insert(value)
     }
 
-    fun update(value: BebasEntity) = dao.update(value)
+    private fun getEntity(): Single<BebasEntity> {
+        return dao.getAll().map {
+            if (it.isEmpty()) {
+                throw Exception()
+            }
+
+            val entity = it.first()
+            entity
+        }
+    }
+
+    fun updateGuestToken(guestToken: String) {
+        val entitySubscriber = getEntity().map { entity ->
+            if (entity.encodedPublicKey == null) {
+                throw Exception()
+            }
+            val encryptedGuestToken =
+                coreRSARepository.encrypt(guestToken, entity.encodedPublicKey ?: "")
+            dao.update(entity.copy(encryptedGuestToken = encryptedGuestToken))
+        }
+        entitySubscriber.subscribe()
+    }
+
     fun getAll() = dao.getAll()
     fun isDataExist(): Single<Boolean> {
         return dao.getAll().map {
