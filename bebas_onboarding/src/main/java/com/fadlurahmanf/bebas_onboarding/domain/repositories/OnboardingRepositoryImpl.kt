@@ -12,11 +12,13 @@ class OnboardingRepositoryImpl @Inject constructor(
     private val identityRemoteDatasource: MasIdentityRemoteDatasource,
     private val deviceRepository: DeviceRepository
 ) {
-    fun generateGuestToken(): Observable<BaseResponse<CreateGuestTokenResponse>> {
+    fun generateGuestToken(): Observable<CreateGuestTokenResponse> {
         val guestId = deviceRepository.randomUUID()
         val request = GenerateGuestTokenRequest(
             guestId = guestId
         )
-        return identityRemoteDatasource.generateGuestToken(request)
+        return identityRemoteDatasource.generateGuestToken(request).map {
+            it.data!!
+        }
     }
 }
