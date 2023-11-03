@@ -1,9 +1,8 @@
 package com.fadlurahmanf.bebas_onboarding.domain.repositories
 
 import android.content.Context
-import android.util.Log
-import com.fadlurahmanf.bebas_api.data.datasources.MasIdentityRemoteDatasource
-import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
+import com.fadlurahmanf.bebas_api.data.datasources.ContentManagementGuestRemoteDatasource
+import com.fadlurahmanf.bebas_api.data.datasources.IdentityRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.identity.CreateGuestTokenResponse
 import com.fadlurahmanf.bebas_api.data.dto.identity.GenerateGuestTokenRequest
 import com.fadlurahmanf.bebas_api.data.exception.BebasException
@@ -19,7 +18,8 @@ import javax.inject.Inject
 
 class OnboardingRepositoryImpl @Inject constructor(
     private val context: Context,
-    private val identityRemoteDatasource: MasIdentityRemoteDatasource,
+    private val identityRemoteDatasource: IdentityRemoteDatasource,
+    private val contentManagementGuestRemoteDatasource: ContentManagementGuestRemoteDatasource,
     private val bebasLocalDatasource: BebasLocalDatasource,
     private val cryptoRSARepository: CryptoRSARepository,
     private val deviceRepository: DeviceRepository,
@@ -72,5 +72,12 @@ class OnboardingRepositoryImpl @Inject constructor(
 
             it.data!!
         }
+    }
+
+    fun getTNC() = contentManagementGuestRemoteDatasource.getTNC().map {
+        if (it.data == null) {
+            throw BebasException.generalRC("TNC_MISSING")
+        }
+        it.data!!
     }
 }
