@@ -4,6 +4,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="20dp"
     tools:context=".presentation.welcome.WelcomeOnboardingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/blue"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingHorizontal="10dp"
+        android:id="@+id/ll_top">
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/il_logo_bebas_by_bank_mas"/>
+    </LinearLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintTop_toBottomOf="@id/ll_top"
+        app:layout_constraintBottom_toTopOf="@id/tv_welcome_to_mas_mobile" />
+
+    <TextView
+        android:id="@+id/tv_welcome_to_mas_mobile"
+        style="@style/Font.Text16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/lexend_deca_bold"
+        android:gravity="center"
+        android:text="Selamat datang di MAS Mobile!"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@id/btn_create_new_account" />
+
+    <com.fadlurahmanf.bebas_ui.presentation.presentation.button.BebasRoundedButton
+        android:id="@+id/btn_create_new_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:text="Welcome" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

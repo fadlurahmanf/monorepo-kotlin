@@ -74,6 +74,13 @@ class OnboardingRepositoryImpl @Inject constructor(
         }
     }
 
+    fun getWelcomeBanner() = contentManagementGuestRemoteDatasource.getWelcomeBanner().map {
+        if (it.data == null) {
+            throw BebasException.generalRC("BANNER_MISSING")
+        }
+        it.data!!
+    }
+
     fun getTNC() = contentManagementGuestRemoteDatasource.getTNC().map {
         if (it.data == null) {
             throw BebasException.generalRC("TNC_MISSING")

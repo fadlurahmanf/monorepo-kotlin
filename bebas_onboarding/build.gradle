@@ -55,6 +55,8 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxandroid:3.0.2"
     implementation "io.reactivex.rxjava3:rxjava:3.1.5"
 
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+
     implementation(project(":core_crypto"))
     implementation(project(":core_logger"))
     implementation(project(":core_platform"))

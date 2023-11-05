@@ -9,7 +9,7 @@
 
     <style name="Font.AppBarTitle">
         <item name="android:fontFamily">@font/lexend_deca_bold</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Font.HeaderTitle">
@@ -30,5 +30,10 @@
     <style name="Font.Text12">
         <item name="android:fontFamily">@font/lexend_deca_regular</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Font.Text16">
+        <item name="android:fontFamily">@font/lexend_deca_regular</item>
+        <item name="android:textSize">16sp</item>
     </style>
 </resources>

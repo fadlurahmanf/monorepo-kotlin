@@ -4,58 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".presentation.welcome.TncActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/red"
-        android:fitsSystemWindows="true">
+        android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            style="@style/Font.AppBarTitle"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapseToolbarLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:title="TES TES TITLE" />
+            android:layout_height="120dp"
+            android:background="@color/white"
+            app:collapsedTitleTextAppearance="@style/Font.AppBarTitle"
+            app:contentScrim="@color/white"
+            app:expandedTitleMarginBottom="15dp"
+            app:expandedTitleMarginStart="20dp"
+            app:expandedTitleTextAppearance="@style/Font.HeaderTitle"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:toolbarId="@id/toolbar">
 
-        <!--        <com.google.android.material.appbar.CollapsingToolbarLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:fitsSystemWindows="true"-->
-        <!--            app:layout_scrollFlags="scroll|exitUntilCollapsed">-->
-        <!---->
-        <!--            <LinearLayout-->
-        <!--                android:id="@+id/toolbar"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="100dp"-->
-        <!--                android:gravity="center"-->
-        <!--                android:orientation="horizontal"-->
-        <!--                android:paddingHorizontal="20dp"-->
-        <!--                app:layout_collapseMode="pin"-->
-        <!--                android:paddingVertical="15dp">-->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:title="Syarat &amp; Ketentuan">
 
-        <!--                <ImageView-->
-        <!--                    android:layout_width="25dp"-->
-        <!--                    android:layout_height="25dp"-->
-        <!--                    android:background="@drawable/circle_outlined"-->
-        <!--                    android:padding="5dp"-->
-        <!--                    app:layout_scrollFlags="scroll|enterAlways"-->
-        <!--                    android:src="@drawable/round_arrow_back_ios_new_24" />-->
-        <!---->
-        <!--                <TextView-->
-        <!--                    style="@style/Font.AppBarTitle"-->
-        <!--                    android:layout_width="match_parent"-->
-        <!--                    android:layout_height="wrap_content"-->
-        <!--                    android:layout_marginHorizontal="10dp"-->
-        <!--                    android:text="Syarat &amp; Ketentuan" />-->
-        <!--            </LinearLayout>-->
-        <!---->
-        <!--            -->
-        <!---->
-        <!--        </com.google.android.material.appbar.CollapsingToolbarLayout>-->
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/circle_outlined"
+                    android:padding="5dp"
+                    android:src="@drawable/round_arrow_back_ios_new_24" />
+            </androidx.appcompat.widget.Toolbar>
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -72,10 +58,10 @@
             android:paddingHorizontal="20dp">
 
             <TextView
+                android:id="@+id/tv_subtitle_header"
                 style="@style/Font.HeaderSubTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:text="Mohon membaca informasi ini dengan seksama" />
 
             <TextView
@@ -97,8 +83,7 @@
         android:elevation="5dp"
         android:orientation="vertical"
         android:paddingHorizontal="10dp"
-        android:paddingVertical="20dp"
-        android:visibility="gone">
+        android:paddingVertical="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -112,12 +97,10 @@
                 android:text="Saya telah membaca dan menyetujui syarat dan ketentuan di atas" />
         </LinearLayout>
 
-        <android.widget.Button
-            style="@style/Font.Text12"
+        <com.fadlurahmanf.bebas_ui.presentation.presentation.button.BebasRoundedButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Lanjut"
-            android:textAllCaps="false" />
+            app:text="Lanjut" />
 
     </LinearLayout>
 

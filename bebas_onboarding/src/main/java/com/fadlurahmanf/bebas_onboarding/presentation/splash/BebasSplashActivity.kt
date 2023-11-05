@@ -26,7 +26,7 @@ class BebasSplashActivity :
         viewModel.state.observe(this) {
             when (it) {
                 is SplashState.SUCCESS -> {
-                    val intent = Intent(this, TncActivity::class.java)
+                    val intent = Intent(this, WelcomeOnboardingActivity::class.java)
                     startActivity(intent)
                 }
 
