@@ -7,11 +7,10 @@
 
     <android.widget.Button
         android:id="@+id/btn"
-        style="@style/Font.RoundedButton"
+        style="@style/Font.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_primary_button_background"
+        android:background="@drawable/outlined_primary_button_background"
         android:text=""
-        android:textAllCaps="false"
-        android:textColor="@color/white" />
+        android:textAllCaps="false" />
 </LinearLayout>

@@ -10,5 +10,7 @@
     <color name="black_opacity">#33000000</color>
 
     <color name="color_primary">@color/red</color>
-    <color name="color_primary_opacity_90">@color/red</color>
+    <color name="color_primary_opacity_90">@color/red_opacity_90</color>
+
+    <color name="white_pressed_button">#FFCACACA</color>
 </resources>

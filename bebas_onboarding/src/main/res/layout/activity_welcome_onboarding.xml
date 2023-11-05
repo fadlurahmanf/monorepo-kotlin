@@ -8,17 +8,18 @@
     tools:context=".presentation.welcome.WelcomeOnboardingActivity">
 
     <LinearLayout
+        android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="horizontal"
-        android:background="@color/blue"
-        app:layout_constraintTop_toTopOf="parent"
         android:paddingHorizontal="10dp"
-        android:id="@+id/ll_top">
+        app:layout_constraintTop_toTopOf="parent">
+
         <ImageView
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/il_logo_bebas_by_bank_mas"/>
+            android:src="@drawable/il_logo_bebas_by_bank_mas" />
     </LinearLayout>
 
     <androidx.viewpager2.widget.ViewPager2
@@ -26,8 +27,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="10dp"
-        app:layout_constraintTop_toBottomOf="@id/ll_top"
-        app:layout_constraintBottom_toTopOf="@id/tv_welcome_to_mas_mobile" />
+        app:layout_constraintBottom_toTopOf="@id/tv_welcome_to_mas_mobile"
+        app:layout_constraintTop_toBottomOf="@id/ll_top" />
 
     <TextView
         android:id="@+id/tv_welcome_to_mas_mobile"
@@ -46,7 +47,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_login_diff_account"
+        app:text="Buka Rekening" />
+
+    <com.fadlurahmanf.bebas_ui.presentation.presentation.button.BebasOutlinedButton
+        android:id="@+id/btn_login_diff_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:text="Welcome" />
+        app:text="Sudah Punya Rekening" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
