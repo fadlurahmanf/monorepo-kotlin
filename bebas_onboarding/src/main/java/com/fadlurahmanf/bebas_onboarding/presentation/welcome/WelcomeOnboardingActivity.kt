@@ -3,6 +3,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation.welcome
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.buildSpannedString
@@ -29,9 +30,24 @@ class WelcomeOnboardingActivity :
 
     override fun setup() {
         initFooterText()
+        initAction()
         adapter = BannerAdapter()
         adapter.setList(banners)
         binding.vp.adapter = adapter
+
+        viewModel.lang.observe(this) {
+            when (it) {
+                "en-EN" -> {
+                    binding.tvLangEn.visibility = View.VISIBLE
+                    binding.tvLangId.visibility = View.INVISIBLE
+                }
+
+                else -> {
+                    binding.tvLangEn.visibility = View.INVISIBLE
+                    binding.tvLangId.visibility = View.VISIBLE
+                }
+            }
+        }
 
         viewModel.state.observe(this) {
             when (it) {
@@ -48,6 +64,20 @@ class WelcomeOnboardingActivity :
         }
 
         viewModel.getWelcomeBanner()
+    }
+
+    private fun initAction() {
+        binding.toggleSwitch.setOnClickListener {
+            viewModel.switchLanguage()
+        }
+
+        binding.btnCreateNewAccount.setOnClickListener {
+
+        }
+
+        binding.btnLoginDiffAccount.setOnClickListener {
+
+        }
     }
 
     private fun initFooterText() {

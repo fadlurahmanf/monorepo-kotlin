@@ -20,6 +20,48 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:src="@drawable/il_logo_bebas_by_bank_mas" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight="1" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toggle_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:background="@drawable/toggle_switch_background"
+            android:paddingHorizontal="5dp">
+
+            <TextView
+                android:id="@+id/tv_lang_id"
+                style="@style/Font.Text8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_primary_circle"
+                android:padding="5dp"
+                android:text="ID"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_lang_en"
+                style="@style/Font.Text8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/rounded_primary_circle"
+                android:padding="5dp"
+                android:text="EN"
+                android:textColor="@color/white"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
     <androidx.viewpager2.widget.ViewPager2
@@ -56,6 +98,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@id/tv_footer_bebas"
         app:text="Sudah Punya Rekening" />
 
@@ -64,10 +107,10 @@
         style="@style/Font.Text12"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="Klik disini untuk mengetahui Lokasi Cabang &amp; ATM
 klik Call Center untuk menghubungi kami."
         android:textAlignment="center"
-        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

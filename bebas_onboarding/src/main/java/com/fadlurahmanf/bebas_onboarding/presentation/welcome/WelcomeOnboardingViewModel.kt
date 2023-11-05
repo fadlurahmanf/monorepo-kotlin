@@ -15,6 +15,17 @@ class WelcomeOnboardingViewModel @Inject constructor(
     private val onboardingRepositoryImpl: OnboardingRepositoryImpl
 ) : BaseViewModel() {
 
+    private val _lang = MutableLiveData<String>("id-ID")
+    val lang: LiveData<String> = _lang
+
+    fun switchLanguage() {
+        if (_lang.value == "id-ID") {
+            _lang.value = "en-EN"
+        } else {
+            _lang.value = "id-ID"
+        }
+    }
+
     private val _state = MutableLiveData<NetworkState<List<WelcomeBannerResponse>>>()
     val state: LiveData<NetworkState<List<WelcomeBannerResponse>>> = _state
 

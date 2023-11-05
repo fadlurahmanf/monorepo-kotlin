@@ -36,7 +36,7 @@ class BebasOutlinedButton(context: Context, attributeSet: AttributeSet) :
         button.text = text
     }
 
-    fun onClicked(l: View.OnClickListener?) {
+    override fun setOnClickListener(l: OnClickListener?) {
         button.setOnClickListener(l)
     }
 }
