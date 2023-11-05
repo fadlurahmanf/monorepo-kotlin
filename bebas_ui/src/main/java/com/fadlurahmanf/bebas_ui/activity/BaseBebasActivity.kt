@@ -1,4 +1,4 @@
-package com.fadlurahmanf.bebas_ui.presentation.activity
+package com.fadlurahmanf.bebas_ui.activity
 
 import android.os.Bundle
 import android.view.LayoutInflater

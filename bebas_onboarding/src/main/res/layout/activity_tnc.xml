@@ -97,7 +97,7 @@
                 android:text="Saya telah membaca dan menyetujui syarat dan ketentuan di atas" />
         </LinearLayout>
 
-        <com.fadlurahmanf.bebas_ui.presentation.presentation.button.BebasRoundedButton
+        <com.fadlurahmanf.bebas_ui.button.BebasRoundedButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:text="Lanjut" />

@@ -5,8 +5,8 @@ import com.fadlurahmanf.bebas_config.presentation.BebasApplication
 import com.fadlurahmanf.bebas_onboarding.domain.di.BebasOnboardingComponent
 import com.fadlurahmanf.bebas_onboarding.domain.di.DaggerBebasOnboardingComponent
 import com.fadlurahmanf.bebas_storage.DaggerBebasStorageComponent
-import com.fadlurahmanf.bebas_ui.presentation.activity.BaseBebasActivity
-import com.fadlurahmanf.bebas_ui.presentation.activity.BebasInflateActivity
+import com.fadlurahmanf.bebas_ui.activity.BaseBebasActivity
+import com.fadlurahmanf.bebas_ui.activity.BebasInflateActivity
 import com.fadlurahmanf.core_crypto.DaggerCoreCryptoComponent
 import com.fadlurahmanf.core_platform.DaggerCorePlatformComponent
 

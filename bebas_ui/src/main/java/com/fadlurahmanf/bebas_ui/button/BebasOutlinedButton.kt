@@ -1,4 +1,4 @@
-package com.fadlurahmanf.bebas_ui.presentation.presentation.button
+package com.fadlurahmanf.bebas_ui.button
 
 import android.content.Context
 import android.content.res.TypedArray

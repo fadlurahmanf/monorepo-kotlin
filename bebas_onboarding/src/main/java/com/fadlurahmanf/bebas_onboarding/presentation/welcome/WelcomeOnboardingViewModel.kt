@@ -6,7 +6,7 @@ import com.fadlurahmanf.bebas_api.data.dto.banner.WelcomeBannerResponse
 import com.fadlurahmanf.bebas_api.data.exception.BebasException
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.domain.repositories.OnboardingRepositoryImpl
-import com.fadlurahmanf.bebas_ui.presentation.viewmodel.BaseViewModel
+import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject

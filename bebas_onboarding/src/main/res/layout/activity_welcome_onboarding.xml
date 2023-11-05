@@ -42,7 +42,7 @@
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@id/btn_create_new_account" />
 
-    <com.fadlurahmanf.bebas_ui.presentation.presentation.button.BebasRoundedButton
+    <com.fadlurahmanf.bebas_ui.button.BebasRoundedButton
         android:id="@+id/btn_create_new_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,12 +51,23 @@
         app:layout_constraintBottom_toTopOf="@id/btn_login_diff_account"
         app:text="Buka Rekening" />
 
-    <com.fadlurahmanf.bebas_ui.presentation.presentation.button.BebasOutlinedButton
+    <com.fadlurahmanf.bebas_ui.button.BebasOutlinedButton
         android:id="@+id/btn_login_diff_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tv_footer_bebas"
         app:text="Sudah Punya Rekening" />
+
+    <TextView
+        android:id="@+id/tv_footer_bebas"
+        style="@style/Font.Text12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Klik disini untuk mengetahui Lokasi Cabang &amp; ATM
+klik Call Center untuk menghubungi kami."
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
