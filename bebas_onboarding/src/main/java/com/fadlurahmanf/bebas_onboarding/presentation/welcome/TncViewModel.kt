@@ -15,6 +15,13 @@ class TncViewModel @Inject constructor(
     private val onboardingRepositoryImpl: OnboardingRepositoryImpl
 ) : BaseViewModel() {
 
+    private val _isTncRead = MutableLiveData<Boolean>(false)
+    val isTncRead: LiveData<Boolean> = _isTncRead
+
+    fun switchIsTncRead(isChecked:Boolean) {
+        _isTncRead.value = isChecked
+    }
+
     private val _state = MutableLiveData<NetworkState<TncResponse>>()
     val state: LiveData<NetworkState<TncResponse>> = _state
 

@@ -18,11 +18,23 @@ class WelcomeOnboardingViewModel @Inject constructor(
     private val _lang = MutableLiveData<String>("id-ID")
     val lang: LiveData<String> = _lang
 
+
+    fun getExistingLanguage() {
+        compositeDisposable().add(onboardingRepositoryImpl.getLanguage().subscribe(
+            {
+                _lang.value = it
+            },
+            {}
+        ))
+    }
+
     fun switchLanguage() {
         if (_lang.value == "id-ID") {
             _lang.value = "en-EN"
+            onboardingRepositoryImpl.switchLanguage("en-EN")
         } else {
             _lang.value = "id-ID"
+            onboardingRepositoryImpl.switchLanguage("id-ID")
         }
     }
 

@@ -8,6 +8,7 @@ import com.fadlurahmanf.bebas_storage.data.constant.BebasDbConstant
 data class BebasEntity(
     @PrimaryKey
     var deviceId: String,
+    var language: String = "id-ID",
     var encodedPublicKey: String? = null,
     var encodedPrivateKey: String? = null,
     var encryptedGuestToken: String? = null,

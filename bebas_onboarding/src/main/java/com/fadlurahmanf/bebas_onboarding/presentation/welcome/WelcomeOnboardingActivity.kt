@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.welcome
 
+import android.content.Intent
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -63,6 +64,7 @@ class WelcomeOnboardingActivity :
             }
         }
 
+        viewModel.getExistingLanguage()
         viewModel.getWelcomeBanner()
     }
 
@@ -72,7 +74,8 @@ class WelcomeOnboardingActivity :
         }
 
         binding.btnCreateNewAccount.setOnClickListener {
-
+            val intent = Intent(this, TncActivity::class.java)
+            startActivity(intent)
         }
 
         binding.btnLoginDiffAccount.setOnClickListener {

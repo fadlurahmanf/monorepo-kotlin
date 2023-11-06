@@ -32,6 +32,7 @@
                 app:title="Syarat &amp; Ketentuan">
 
                 <ImageView
+                    android:id="@+id/iv_back"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_marginEnd="10dp"
@@ -46,6 +47,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:overScrollMode="never"
@@ -75,12 +77,40 @@
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
+        android:id="@+id/ll_scroll_to_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="160dp"
+        android:background="@drawable/outlined_corner_primary_color"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12sp"
+        android:paddingVertical="8dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/round_arrow_downward_24"
+            app:tint="@color/color_primary" />
+
+        <TextView
+            style="@style/Font.Text12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="@font/lexend_deca_bold"
+            android:text="Scroll Ke bawah"
+            android:textColor="@color/color_primary" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@drawable/top_side_rounded"
-        android:elevation="5dp"
+        android:elevation="20dp"
         android:orientation="vertical"
         android:paddingHorizontal="10dp"
         android:paddingVertical="20dp">
@@ -88,16 +118,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
 
             <CheckBox
+                android:id="@+id/checkbox"
                 style="@style/Font.Text12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Saya telah membaca dan menyetujui syarat dan ketentuan di atas" />
+                android:text="Saya telah membaca dan menyetujui syarat dan ketentuan di atas"
+                android:textColor="@color/grey_opacity_20"/>
         </LinearLayout>
 
         <com.fadlurahmanf.bebas_ui.button.BebasRoundedButton
+            android:id="@+id/btn_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:text="Lanjut" />

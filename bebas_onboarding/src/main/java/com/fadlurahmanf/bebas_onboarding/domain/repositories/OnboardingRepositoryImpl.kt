@@ -87,4 +87,12 @@ class OnboardingRepositoryImpl @Inject constructor(
         }
         it.data!!
     }
+
+    fun getLanguage(): Single<String> {
+        return bebasLocalDatasource.getLanguage()
+    }
+
+    fun switchLanguage(language:String) {
+        bebasLocalDatasource.updateLanguage(language)
+    }
 }

@@ -45,6 +45,19 @@ class BebasLocalDatasource @Inject constructor(
         entitySubscriber.subscribe()
     }
 
+    fun getLanguage(): Single<String> {
+        return getEntity().map { entity ->
+            entity.language
+        }
+    }
+
+    fun updateLanguage(language: String) {
+        val entitySubscriber = getEntity().map { entity ->
+            dao.update(entity.copy(language = language))
+        }
+        entitySubscriber.subscribe()
+    }
+
     fun getAll() = dao.getAll()
     fun isDataExist(): Single<Boolean> {
         return dao.getAll().map {

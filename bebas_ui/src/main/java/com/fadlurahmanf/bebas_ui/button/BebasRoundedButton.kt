@@ -35,7 +35,7 @@ class BebasRoundedButton(context: Context, attributeSet: AttributeSet) :
         setActive(active)
     }
 
-    private fun setActive(active: Boolean) {
+    fun setActive(active: Boolean) {
         if (active) {
             button.background =
                 ContextCompat.getDrawable(context, R.drawable.rounded_primary_button_background)
@@ -45,11 +45,13 @@ class BebasRoundedButton(context: Context, attributeSet: AttributeSet) :
         }
     }
 
-    fun setButtonText(text: String) {
+    private fun setButtonText(text: String) {
         button.text = text
     }
 
     override fun setOnClickListener(l: OnClickListener?) {
-        button.setOnClickListener(l)
+        if (active) {
+            button.setOnClickListener(l)
+        }
     }
 }
