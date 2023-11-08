@@ -8,9 +8,12 @@ import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.identity.CreateGuestTokenResponse
 import com.fadlurahmanf.bebas_api.data.dto.identity.GenerateGuestTokenRequest
 import com.fadlurahmanf.bebas_api.data.dto.otp.OtpResponse
+import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpRequest
+import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpResponse
 import com.fadlurahmanf.bebas_api.data.exception.BebasException
 import com.fadlurahmanf.bebas_config.presentation.BebasApplication
 import com.fadlurahmanf.bebas_shared.BebasShared
+import com.fadlurahmanf.bebas_shared.data.dto.OtpModel
 import com.fadlurahmanf.bebas_storage.data.entity.BebasEntity
 import com.fadlurahmanf.bebas_storage.domain.datasource.BebasLocalDatasource
 import com.fadlurahmanf.core_crypto.domain.repositories.CryptoRSARepository
@@ -96,12 +99,37 @@ class OnboardingRepositoryImpl @Inject constructor(
         return bebasLocalDatasource.getLanguage()
     }
 
-    fun switchLanguage(language:String) {
+    fun switchLanguage(language: String) {
         bebasLocalDatasource.updateLanguage(language)
     }
 
-    fun requestOtp(phoneNumber:String): Observable<BaseResponse<OtpResponse>> {
+    fun requestOtp(phoneNumber: String): Observable<OtpModel> {
         val deviceId = deviceRepository.deviceID(context)
-        return onboardingGuestRemoteDatasource.requestOtpAvailability(phoneNumber, deviceId)
+        return onboardingGuestRemoteDatasource.requestOtpAvailability(phoneNumber, deviceId).map {
+            return@map OtpModel(
+                remainingOtpInSecond = 60,
+                totalRequestOtpAttempt = 1
+            )
+        }
+    }
+
+    fun verifyOtp(otp: String, phoneNumber: String): Observable<VerifyOtpResponse> {
+        val deviceId = deviceRepository.deviceID(context)
+        val request = VerifyOtpRequest(
+            phoneNumber, deviceId, otp
+        )
+        return onboardingGuestRemoteDatasource.verifyOtp(request).map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+
+            if (it.data?.isVerify != true) {
+                throw BebasException(
+                    rawMessage = "OTP_FALSE"
+                )
+            }
+
+            it.data!!
+        }
     }
 }

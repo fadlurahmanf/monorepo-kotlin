@@ -23,11 +23,11 @@ class FailedBottomsheet : BaseBottomsheet<BottomsheetFailedBinding>(
 
         binding.tvTitle.text = arguments?.getString(TITLE_TEXT)
         binding.tvDesc.text = arguments?.getString(MESSAGE_TEXT)
-        binding.btnWdgt.text = arguments?.getString(BUTTON_TEXT) ?: "-"
+        binding.btnBottomsheet.setButtonText(arguments?.getString(BUTTON_TEXT) ?: "-")
 
         dialog?.setCanceledOnTouchOutside(false)
 
-        binding.btnWdgt.setOnClickListener {
+        binding.btnBottomsheet.setOnClickListener {
             if (callback != null) {
                 callback?.onButtonClicked()
             } else {

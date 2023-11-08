@@ -11,13 +11,12 @@ import java.net.UnknownHostException
 class BebasExceptionInterceptor(val context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         try {
-            Log.d("BebasLogger", "MASUK REQUEST")
             val request = chain.request()
             val response = chain.proceed(request)
             if (response.code != 200) {
                 when (response.code) {
                     404 -> {
-                        throw BebasException.generalRC("404")
+                        throw BebasException.generalRC("RC_404")
                     }
                 }
             }

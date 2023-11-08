@@ -15,7 +15,7 @@ class BebasRoundedButton(context: Context, attributeSet: AttributeSet) :
     private var attributes: TypedArray
     private var button: Button
 
-    var text: String
+    private var text: String
     private var active: Boolean
 
     init {
@@ -45,7 +45,7 @@ class BebasRoundedButton(context: Context, attributeSet: AttributeSet) :
         }
     }
 
-    private fun setButtonText(text: String) {
+    fun setButtonText(text: String) {
         button.text = text
     }
 

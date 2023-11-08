@@ -32,9 +32,32 @@ class OtpVerificationViewModel @Inject constructor(
                                       .observeOn(AndroidSchedulers.mainThread())
                                       .subscribe(
                                           {
+                                              _requestOtpState.value = NetworkState.SUCCESS(it)
                                           },
                                           {
                                               _requestOtpState.value = NetworkState.FAILED(
+                                                  BebasException.fromThrowable(it)
+                                              )
+                                          },
+                                          {}
+                                      ))
+    }
+
+    private val _verifyOtpState = MutableLiveData<NetworkState<Boolean>>()
+    val verifyOtpState: LiveData<NetworkState<Boolean>> = _verifyOtpState
+    fun verifyOtp(otp: String, phoneNumber: String) {
+        _verifyOtpState.value = NetworkState.LOADING
+        compositeDisposable().add(onboardingRepositoryImpl.verifyOtp(
+            otp, phoneNumber
+        ).subscribeOn(Schedulers.io())
+                                      .observeOn(AndroidSchedulers.mainThread())
+                                      .subscribe(
+                                          {
+                                              _verifyOtpState.value =
+                                                  NetworkState.SUCCESS(data = true)
+                                          },
+                                          {
+                                              _verifyOtpState.value = NetworkState.FAILED(
                                                   BebasException.fromThrowable(it)
                                               )
                                           },

@@ -30,14 +30,17 @@ class OtpVerificationActivity :
     @Inject
     lateinit var viewModel: OtpVerificationViewModel
 
-    private var phoneNumber: String? = null
+    private var phoneNumber: String = "081283601111"
 
     override fun setup() {
         binding.ivBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        phoneNumber = "081283602321".maskPhoneNumber()
+        binding.btnVerifyOtp.setOnClickListener {
+            viewModel.verifyOtp(getOTPText(), phoneNumber)
+        }
+
         val prefixOtpDescSpan = SpannableString("Masukkan OTP yang sudah kami kirimkan ke ")
         prefixOtpDescSpan.setSpan(
             ForegroundColorSpan(ContextCompat.getColor(this, R.color.black)),
@@ -45,7 +48,7 @@ class OtpVerificationActivity :
             prefixOtpDescSpan.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
-        val phoneSpan = SpannableString(phoneNumber)
+        val phoneSpan = SpannableString(phoneNumber.maskPhoneNumber())
         phoneSpan.setSpan(
             ForegroundColorSpan(ContextCompat.getColor(this, R.color.black)),
             0,
@@ -74,6 +77,13 @@ class OtpVerificationActivity :
 
         viewModel.requestOtpState.observe(this) {
             when (it) {
+
+                is NetworkState.SUCCESS -> {
+                    binding.btnCounterOtpRetry.text =
+                        "Kirim Ulang ${it.data.totalRequestOtpAttempt}/3"
+                    setTimerOtp((it.data.remainingOtpInSecond * 1000).toLong())
+                }
+
                 is NetworkState.FAILED -> {
                     showFailedBottomsheet(
                         title = it.exception.toProperTitle(this),
@@ -82,19 +92,20 @@ class OtpVerificationActivity :
                     )
                 }
 
+
                 else -> {
 
                 }
             }
         }
 
-        viewModel.requestOtp("081283601111")
+        viewModel.requestOtp(phoneNumber)
     }
 
     private var timer: CountDownTimer? = null
 
-    private fun setTimerOtp(totalTimerInSecond: Long) {
-        timer = object : CountDownTimer(totalTimerInSecond, 1000) {
+    private fun setTimerOtp(totalTimerInMilliSecond: Long) {
+        timer = object : CountDownTimer(totalTimerInMilliSecond, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 binding.btnCounterOtpRetry.visibility = View.GONE
                 binding.tvCountdownOtpRetry.visibility = View.VISIBLE

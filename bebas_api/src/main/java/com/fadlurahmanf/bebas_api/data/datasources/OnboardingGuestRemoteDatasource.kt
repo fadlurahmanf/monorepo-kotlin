@@ -1,18 +1,16 @@
 package com.fadlurahmanf.bebas_api.data.datasources
 
 import android.content.Context
-import com.fadlurahmanf.bebas_api.data.api.IdentityGuestTokenApi
 import com.fadlurahmanf.bebas_api.data.api.OobApi
-import com.fadlurahmanf.bebas_api.data.dto.identity.LoginRequest
-import com.fadlurahmanf.bebas_api.data.dto.identity.RefreshUserTokenRequest
 import com.fadlurahmanf.bebas_api.data.dto.otp.OtpRequest
-import com.fadlurahmanf.bebas_api.domain.network.IdentityGuestNetwork
+import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpRequest
+import com.fadlurahmanf.bebas_api.domain.network.OobGuestNetwork
 import javax.inject.Inject
 
 class OnboardingGuestRemoteDatasource @Inject constructor(
     context: Context
 ) :
-    IdentityGuestNetwork<OobApi>(context) {
+    OobGuestNetwork<OobApi>(context) {
     override fun getApi(): Class<OobApi> = OobApi::class.java
 
     fun requestOtpAvailability(phoneNumber: String, deviceId: String) =
@@ -28,4 +26,7 @@ class OnboardingGuestRemoteDatasource @Inject constructor(
                 phoneNumber, deviceId, true
             )
         )
+
+    fun verifyOtp(request: VerifyOtpRequest) =
+        networkService(30).verifyOtp(request)
 }
