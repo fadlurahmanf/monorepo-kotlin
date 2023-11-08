@@ -1,14 +1,25 @@
-package com.fadlurahmanf.bebas_onboarding.presentation
+package com.fadlurahmanf.bebas_onboarding.presentation.otp
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import android.os.CountDownTimer
 import android.text.Editable
+import android.text.Spannable
+import android.text.SpannableString
 import android.text.TextWatcher
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.KeyEvent
+import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.text.buildSpannedString
+import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.R
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityOtpVerificationBinding
+import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
+import com.fadlurahmanf.bebas_shared.extension.maskPhoneNumber
 import com.fadlurahmanf.bebas_ui.extension.dismissKeyboard
+import com.fadlurahmanf.bebas_ui.font.BebasFontTypeSpan
+import javax.inject.Inject
 
 class OtpVerificationActivity :
     BaseOnboardingActivity<ActivityOtpVerificationBinding>(ActivityOtpVerificationBinding::inflate) {
@@ -16,8 +27,87 @@ class OtpVerificationActivity :
         component.inject(this)
     }
 
+    @Inject
+    lateinit var viewModel: OtpVerificationViewModel
+
+    private var phoneNumber: String? = null
+
     override fun setup() {
+        binding.ivBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
+        phoneNumber = "081283602321".maskPhoneNumber()
+        val prefixOtpDescSpan = SpannableString("Masukkan OTP yang sudah kami kirimkan ke ")
+        prefixOtpDescSpan.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(this, R.color.black)),
+            0,
+            prefixOtpDescSpan.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        val phoneSpan = SpannableString(phoneNumber)
+        phoneSpan.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(this, R.color.black)),
+            0,
+            phoneSpan.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        phoneSpan.setSpan(
+            BebasFontTypeSpan("", ResourcesCompat.getFont(this, R.font.lexend_deca_bold)!!),
+            0,
+            phoneSpan.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        val spannedBuilder = buildSpannedString {
+            append(prefixOtpDescSpan)
+            append(phoneSpan)
+        }
+
+        binding.tvSubtitleHeader.text = spannedBuilder
+
         listenOtpField()
+
+        viewModel.otpTick.observe(this) {
+            binding.tvCountdownOtpRetry.text = "Kirim ulang dalam ${it / 1000} detik"
+        }
+
+        viewModel.requestOtpState.observe(this) {
+            when (it) {
+                is NetworkState.FAILED -> {
+                    showFailedBottomsheet(
+                        title = it.exception.toProperTitle(this),
+                        message = it.exception.toProperMessage(this),
+                        buttonText = it.exception.toProperButtonText(this)
+                    )
+                }
+
+                else -> {
+
+                }
+            }
+        }
+
+        viewModel.requestOtp("081283601111")
+    }
+
+    private var timer: CountDownTimer? = null
+
+    private fun setTimerOtp(totalTimerInSecond: Long) {
+        timer = object : CountDownTimer(totalTimerInSecond, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                binding.btnCounterOtpRetry.visibility = View.GONE
+                binding.tvCountdownOtpRetry.visibility = View.VISIBLE
+                viewModel.setOtpTick(millisUntilFinished)
+            }
+
+            override fun onFinish() {
+                binding.btnCounterOtpRetry.visibility = View.VISIBLE
+                binding.tvCountdownOtpRetry.visibility = View.GONE
+                viewModel.setOtpTick(0)
+            }
+        }
+        timer?.start()
     }
 
     private fun listenOtpField() {

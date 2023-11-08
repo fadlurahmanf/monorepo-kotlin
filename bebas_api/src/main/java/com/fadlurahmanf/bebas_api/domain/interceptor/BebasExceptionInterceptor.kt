@@ -1,17 +1,27 @@
 package com.fadlurahmanf.bebas_api.domain.interceptor
 
 import android.content.Context
+import android.util.Log
 import com.fadlurahmanf.bebas_api.R
 import com.fadlurahmanf.bebas_api.data.exception.BebasException
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.net.UnknownHostException
 
-class MappExceptionInterceptor(val context: Context) : Interceptor {
+class BebasExceptionInterceptor(val context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         try {
+            Log.d("BebasLogger", "MASUK REQUEST")
             val request = chain.request()
-            return chain.proceed(request)
+            val response = chain.proceed(request)
+            if (response.code != 200) {
+                when (response.code) {
+                    404 -> {
+                        throw BebasException.generalRC("404")
+                    }
+                }
+            }
+            return response
         } catch (e: Throwable) {
             if (e is UnknownHostException) {
                 throw BebasException(

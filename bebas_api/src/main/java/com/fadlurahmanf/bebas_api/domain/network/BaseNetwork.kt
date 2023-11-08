@@ -5,7 +5,7 @@ import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.chuckerteam.chucker.api.RetentionManager
 import com.fadlurahmanf.bebas_api.domain.interceptor.CustomLoggingInterceptor
-import com.fadlurahmanf.bebas_api.domain.interceptor.MappExceptionInterceptor
+import com.fadlurahmanf.bebas_api.domain.interceptor.BebasExceptionInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
@@ -35,7 +35,7 @@ abstract class BaseNetwork<T>(var context: Context) {
     open fun okHttpClientBuilder(builder: OkHttpClient.Builder): OkHttpClient.Builder {
         return builder.addInterceptor(bodyLoggingInterceptor())
             .addInterceptor(getChuckerInterceptor())
-            .addInterceptor(MappExceptionInterceptor(context))
+            .addInterceptor(BebasExceptionInterceptor(context))
     }
 
     private fun provideClient(timeOut: Long): OkHttpClient {

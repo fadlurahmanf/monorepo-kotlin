@@ -3,8 +3,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation.splash
 import android.content.Intent
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityBebasSplashBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
-import com.fadlurahmanf.bebas_onboarding.presentation.OtpVerificationActivity
-import com.fadlurahmanf.bebas_onboarding.presentation.welcome.WelcomeOnboardingActivity
+import com.fadlurahmanf.bebas_onboarding.presentation.otp.OtpVerificationActivity
 import javax.inject.Inject
 
 class BebasSplashActivity :

@@ -3,8 +3,11 @@ package com.fadlurahmanf.bebas_onboarding.domain.repositories
 import android.content.Context
 import com.fadlurahmanf.bebas_api.data.datasources.ContentManagementGuestRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.IdentityRemoteDatasource
+import com.fadlurahmanf.bebas_api.data.datasources.OnboardingGuestRemoteDatasource
+import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.identity.CreateGuestTokenResponse
 import com.fadlurahmanf.bebas_api.data.dto.identity.GenerateGuestTokenRequest
+import com.fadlurahmanf.bebas_api.data.dto.otp.OtpResponse
 import com.fadlurahmanf.bebas_api.data.exception.BebasException
 import com.fadlurahmanf.bebas_config.presentation.BebasApplication
 import com.fadlurahmanf.bebas_shared.BebasShared
@@ -20,6 +23,7 @@ class OnboardingRepositoryImpl @Inject constructor(
     private val context: Context,
     private val identityRemoteDatasource: IdentityRemoteDatasource,
     private val contentManagementGuestRemoteDatasource: ContentManagementGuestRemoteDatasource,
+    private val onboardingGuestRemoteDatasource: OnboardingGuestRemoteDatasource,
     private val bebasLocalDatasource: BebasLocalDatasource,
     private val cryptoRSARepository: CryptoRSARepository,
     private val deviceRepository: DeviceRepository,
@@ -94,5 +98,10 @@ class OnboardingRepositoryImpl @Inject constructor(
 
     fun switchLanguage(language:String) {
         bebasLocalDatasource.updateLanguage(language)
+    }
+
+    fun requestOtp(phoneNumber:String): Observable<BaseResponse<OtpResponse>> {
+        val deviceId = deviceRepository.deviceID(context)
+        return onboardingGuestRemoteDatasource.requestOtpAvailability(phoneNumber, deviceId)
     }
 }

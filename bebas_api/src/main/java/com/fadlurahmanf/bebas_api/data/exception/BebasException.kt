@@ -27,7 +27,8 @@ class BebasException(
 
         fun generalRC(rc: String): BebasException {
             return BebasException(
-                rawMessage = "RC_$rc"
+                idRawTitle = R.string.oops,
+                rawMessage = "ERROR_RC_$rc"
             )
         }
 
@@ -65,7 +66,7 @@ class BebasException(
             return context.getString(it)
         }
 
-        return "Okey"
+        return context.getString(R.string.ok)
     }
 
     private fun getTitle(
@@ -143,8 +144,8 @@ class BebasException(
                 return context.getString(identifierUppercase)
             }
 
-            if (r.contains("RC_")){
-                val rc = r.split("RC_").last()
+            if (r.contains("ERROR_RC_")) {
+                val rc = r.split("ERROR_RC_").last()
                 return context.getString(R.string.general_exception_desc, rc)
             }
 

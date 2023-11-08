@@ -1,85 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.OtpVerificationActivity">
+    tools:context=".presentation.otp.OtpVerificationActivity">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapseToolbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@color/white"
+            app:collapsedTitleTextAppearance="@style/Font.AppBarTitle"
+            app:contentScrim="@color/white"
+            app:expandedTitleMarginBottom="15dp"
+            app:expandedTitleMarginStart="20dp"
+            app:expandedTitleTextAppearance="@style/Font.HeaderTitle"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:toolbarId="@id/toolbar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:title="Syarat &amp; Ketentuan">
+
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/circle_outlined"
+                    android:padding="5dp"
+                    android:src="@drawable/round_arrow_back_ios_new_24" />
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent">
+        android:overScrollMode="never"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <EditText
-            android:id="@+id/otp1"
-            style="@style/Font.Otp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginHorizontal="5dp"
-            android:background="@drawable/otp_background"
-            android:cursorVisible="false"
-            android:gravity="center"
-            android:maxLength="1" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp">
 
-        <EditText
-            android:id="@+id/otp2"
-            style="@style/Font.Otp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginHorizontal="5dp"
-            android:background="@drawable/otp_background"
-            android:cursorVisible="false"
-            android:gravity="center"
-            android:maxLength="1" />
+            <TextView
+                android:id="@+id/tv_subtitle_header"
+                style="@style/Font.HeaderSubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Masukkan OTP yang sudah kami kirimkan ke +62 81*****7690" />
 
-        <EditText
-            android:id="@+id/otp3"
-            style="@style/Font.Otp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginHorizontal="5dp"
-            android:background="@drawable/otp_background"
-            android:cursorVisible="false"
-            android:gravity="center"
-            android:maxLength="1" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/otp4"
-            style="@style/Font.Otp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginHorizontal="5dp"
-            android:background="@drawable/otp_background"
-            android:cursorVisible="false"
-            android:gravity="center"
-            android:maxLength="1" />
+                <EditText
+                    android:id="@+id/otp1"
+                    style="@style/Font.Otp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/otp_background"
+                    android:cursorVisible="false"
+                    android:gravity="center"
+                    android:maxLength="1" />
 
-        <EditText
-            android:id="@+id/otp5"
-            style="@style/Font.Otp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginHorizontal="5dp"
-            android:background="@drawable/otp_background"
-            android:cursorVisible="false"
-            android:gravity="center"
-            android:maxLength="1" />
+                <EditText
+                    android:id="@+id/otp2"
+                    style="@style/Font.Otp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/otp_background"
+                    android:cursorVisible="false"
+                    android:gravity="center"
+                    android:maxLength="1" />
 
-        <EditText
-            android:id="@+id/otp6"
-            style="@style/Font.Otp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginHorizontal="5dp"
-            android:background="@drawable/otp_background"
-            android:cursorVisible="false"
-            android:gravity="center"
-            android:maxLength="1" />
+                <EditText
+                    android:id="@+id/otp3"
+                    style="@style/Font.Otp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/otp_background"
+                    android:cursorVisible="false"
+                    android:gravity="center"
+                    android:maxLength="1" />
 
-    </LinearLayout>
+                <EditText
+                    android:id="@+id/otp4"
+                    style="@style/Font.Otp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/otp_background"
+                    android:cursorVisible="false"
+                    android:gravity="center"
+                    android:maxLength="1" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <EditText
+                    android:id="@+id/otp5"
+                    style="@style/Font.Otp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/otp_background"
+                    android:cursorVisible="false"
+                    android:gravity="center"
+                    android:maxLength="1" />
+
+                <EditText
+                    android:id="@+id/otp6"
+                    style="@style/Font.Otp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/otp_background"
+                    android:cursorVisible="false"
+                    android:gravity="center"
+                    android:maxLength="1" />
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/Font.Text12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                android:gravity="center"
+                android:text="Tidak mendapatkan otp?" />
+
+            <TextView
+                android:id="@+id/btn_counter_otp_retry"
+                style="@style/Font.Text12"
+                android:fontFamily="@font/lexend_deca_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/outlined_corner_primary_color"
+                android:gravity="center"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="5dp"
+                android:visibility="gone"
+                android:text="Kirim ulang 0/3" />
+
+            <TextView
+                android:id="@+id/tv_countdown_otp_retry"
+                style="@style/Font.Text12"
+                android:fontFamily="@font/lexend_deca_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="5dp"
+                android:text="Kirim ulang dalam 60 detik" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

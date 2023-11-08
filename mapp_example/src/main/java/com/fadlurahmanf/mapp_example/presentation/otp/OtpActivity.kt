@@ -17,6 +17,7 @@ class OtpActivity : BaseExampleActivity<ActivityOtpBinding>(ActivityOtpBinding::
     }
 
     override fun setup() {
+
         listenOtpField()
     }
 
