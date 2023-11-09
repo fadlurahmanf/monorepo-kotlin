@@ -81,9 +81,10 @@ class OtpVerificationActivity :
             val seconds = (it / 1000) % 60
             if (minutes > 0) {
                 binding.tvCountdownOtpRetry.text =
-                    "Kirim ulang dalam $minutes menit $seconds detik"
+                    getString(R.string.resend_otp_in_minutes_seconds, minutes, seconds)
             } else {
-                binding.tvCountdownOtpRetry.text = "Kirim ulang dalam $seconds detik"
+                binding.tvCountdownOtpRetry.text =
+                    getString(R.string.resend_otp_in_seconds, seconds)
             }
         }
 
@@ -92,7 +93,7 @@ class OtpVerificationActivity :
 
                 is NetworkState.SUCCESS -> {
                     binding.btnCounterOtpRetry.text =
-                        "Kirim Ulang ${it.data.totalRequestOtpAttempt}/3"
+                        getString(R.string.otp_counter_retry, it.data.totalRequestOtpAttempt, 3)
 
                     setTimerOtp(it.data.remainingOtpInSecond)
                 }

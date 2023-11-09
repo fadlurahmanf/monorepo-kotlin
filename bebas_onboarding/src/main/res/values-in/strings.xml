@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Oke</string>
+    <string name="resend_otp_in_minutes_seconds">Kirim ulang dalam %1$d menit %2$d detik</string>
+    <string name="resend_otp_in_seconds">Kirim ulang dalam %1$d detik</string>
+    <string name="otp_counter_retry">Resend OTP %1$d/%2$d</string>
+</resources>
