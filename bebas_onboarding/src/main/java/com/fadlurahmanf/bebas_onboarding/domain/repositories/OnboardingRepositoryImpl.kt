@@ -191,4 +191,10 @@ class OnboardingRepositoryImpl @Inject constructor(
             it.data!!
         }
     }
+
+    fun getEntityStorage(): Single<BebasEntity> {
+        return bebasLocalDatasource.getAll().map {
+            it.first()
+        }
+    }
 }

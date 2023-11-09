@@ -5,6 +5,7 @@ import com.fadlurahmanf.bebas_storage.data.entity.BebasEntity
 import com.fadlurahmanf.bebas_storage.domain.common.BebasDatabase
 import com.fadlurahmanf.core_crypto.domain.repositories.CryptoRSARepository
 import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.disposables.Disposable
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -43,6 +44,13 @@ class BebasLocalDatasource @Inject constructor(
             dao.update(entity.copy(encryptedGuestToken = encryptedGuestToken))
         }
         entitySubscriber.subscribe()
+    }
+
+    fun updateFlowOnboarding(flow: String): Disposable {
+        val entitySubscriber = getEntity().map { entity ->
+            dao.update(entity.copy(onboardingFlow = flow))
+        }
+        return entitySubscriber.subscribe()
     }
 
     fun getLanguage(): Single<String> {

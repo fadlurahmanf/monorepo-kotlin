@@ -16,4 +16,9 @@ data class BebasEntity(
     var encryptedRefreshToken: String? = null,
     var expiresAt: String? = null,
     var refreshExpiresAt: String? = null,
+    /**
+     * POSSIBLE VALUE: CREATE_ACCOUNT/LOGIN_DIFFERENT_ACCOUNT
+     * */
+    var onboardingFlow: String? = null,
+    var lastScreen: String? = null,
 )

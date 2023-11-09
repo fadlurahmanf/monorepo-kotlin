@@ -5,15 +5,34 @@ import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.data.dto.banner.WelcomeBannerResponse
 import com.fadlurahmanf.bebas_api.data.exception.BebasException
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
+import com.fadlurahmanf.bebas_onboarding.data.state.InitWelcomeState
 import com.fadlurahmanf.bebas_onboarding.domain.repositories.OnboardingRepositoryImpl
+import com.fadlurahmanf.bebas_storage.domain.datasource.BebasLocalDatasource
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class WelcomeOnboardingViewModel @Inject constructor(
-    private val onboardingRepositoryImpl: OnboardingRepositoryImpl
+    private val onboardingRepositoryImpl: OnboardingRepositoryImpl,
+    private val bebasLocalDatasource: BebasLocalDatasource
 ) : BaseViewModel() {
+
+    private val _initState = MutableLiveData<InitWelcomeState>()
+    val initState: LiveData<InitWelcomeState> = _initState
+
+    fun initLastStorage() {
+        compositeDisposable().add(onboardingRepositoryImpl.getEntityStorage().subscribe(
+            {
+                if (it.onboardingFlow != null) {
+                    _initState.value = InitWelcomeState.SuccessToTnc
+                }
+            },
+            {
+                _initState.value = InitWelcomeState.FAILED(BebasException.fromThrowable(it))
+            }
+        ))
+    }
 
     private val _lang = MutableLiveData<String>("id-ID")
     val lang: LiveData<String> = _lang
@@ -57,5 +76,9 @@ class WelcomeOnboardingViewModel @Inject constructor(
                                           },
                                           {}
                                       ))
+    }
+
+    fun updateOobFlow(flow: String) {
+        compositeDisposable().add(bebasLocalDatasource.updateFlowOnboarding(flow))
     }
 }

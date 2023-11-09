@@ -36,7 +36,10 @@ class BebasException(
             return if (throwable is BebasException) {
                 throwable
             } else {
-                BebasException(rawMessage = throwable.message)
+                BebasException(
+                    idRawTitle = R.string.oops,
+                    rawMessage = throwable.message,
+                )
             }
         }
 

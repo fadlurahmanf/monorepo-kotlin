@@ -11,6 +11,7 @@ import androidx.core.text.buildSpannedString
 import com.fadlurahmanf.bebas_api.data.dto.banner.WelcomeBannerResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.R
+import com.fadlurahmanf.bebas_onboarding.data.state.InitWelcomeState
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityWelcomeOnboardingBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import com.fadlurahmanf.bebas_ui.font.BebasFontTypeSpan
@@ -64,8 +65,20 @@ class WelcomeOnboardingActivity :
             }
         }
 
+        viewModel.initState.observe(this) {
+            when (it) {
+                is InitWelcomeState.SuccessToTnc -> {
+                    val intent = Intent(this, TncActivity::class.java)
+                    startActivity(intent)
+                }
+
+                else -> {}
+            }
+        }
+
         viewModel.getExistingLanguage()
         viewModel.getWelcomeBanner()
+        viewModel.initLastStorage()
     }
 
     private fun initAction() {
@@ -74,12 +87,15 @@ class WelcomeOnboardingActivity :
         }
 
         binding.btnCreateNewAccount.setOnClickListener {
+            viewModel.updateOobFlow("CREATE_ACCOUNT")
             val intent = Intent(this, TncActivity::class.java)
             startActivity(intent)
         }
 
         binding.btnLoginDiffAccount.setOnClickListener {
-
+            viewModel.updateOobFlow("LOGIN_DIFFERENT_ACCOUNT")
+            val intent = Intent(this, TncActivity::class.java)
+            startActivity(intent)
         }
     }
 
