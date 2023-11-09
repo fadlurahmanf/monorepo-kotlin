@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.otp
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.data.exception.BebasException
@@ -35,6 +36,7 @@ class OtpVerificationViewModel @Inject constructor(
                                               _requestOtpState.value = NetworkState.SUCCESS(it)
                                           },
                                           {
+                                              Log.d("BebasLogger", "Throw: ${BebasException.fromThrowable(it)}")
                                               _requestOtpState.value = NetworkState.FAILED(
                                                   BebasException.fromThrowable(it)
                                               )

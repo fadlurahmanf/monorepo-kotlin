@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_onboarding.domain.repositories
 
 import android.content.Context
+import android.util.Log
 import com.fadlurahmanf.bebas_api.data.datasources.ContentManagementGuestRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.IdentityRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.OnboardingGuestRemoteDatasource
@@ -20,6 +21,13 @@ import com.fadlurahmanf.core_crypto.domain.repositories.CryptoRSARepository
 import com.fadlurahmanf.core_platform.domain.repositories.DeviceRepository
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.Period
+import java.util.Calendar
+import java.util.Locale
+import java.util.TimeZone
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class OnboardingRepositoryImpl @Inject constructor(
@@ -105,12 +113,63 @@ class OnboardingRepositoryImpl @Inject constructor(
 
     fun requestOtp(phoneNumber: String): Observable<OtpModel> {
         val deviceId = deviceRepository.deviceID(context)
-        return onboardingGuestRemoteDatasource.requestOtpAvailability(phoneNumber, deviceId).map {
-            return@map OtpModel(
-                remainingOtpInSecond = 60,
-                totalRequestOtpAttempt = 1
-            )
-        }
+
+        return onboardingGuestRemoteDatasource.requestOtpAvailability(phoneNumber, deviceId)
+            .flatMap { respRequestOtp ->
+                if (respRequestOtp.data != null) {
+                    val data = respRequestOtp.data!!
+                    val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
+                    parser.timeZone = TimeZone.getTimeZone("UTC")
+                    val lastRequestDate = parser.parse(data.lastRequestDate ?: "")
+                    val dateNow = Calendar.getInstance().time
+                    val diffInMinutes =
+                        TimeUnit.MILLISECONDS.toMinutes(
+                            dateNow.time - (lastRequestDate?.time ?: 0L)
+                        )
+                    val diffInSeconds =
+                        TimeUnit.MILLISECONDS.toSeconds(
+                            dateNow.time - (lastRequestDate?.time ?: 0L)
+                        )
+                    Log.d("BebasLogger", "MASUK TEST")
+                    Log.d("BebasLogger", "lastRequestDate: $lastRequestDate")
+                    Log.d("BebasLogger", "dateNow: $dateNow")
+                    Log.d("BebasLogger", "diffInSeconds: $diffInSeconds")
+                    Log.d("BebasLogger", "diffInMinutes: $diffInMinutes")
+                    if ((data.requestAttempt ?: 1) < 3 && diffInSeconds < 60) {
+                        Log.d("BebasLogger", "remaining otp ${60L - diffInSeconds}")
+                        return@flatMap Observable.just(
+                            OtpModel(
+                                remainingOtpInSecond = 60L - diffInSeconds,
+                                totalRequestOtpAttempt = data.requestAttempt ?: 1
+                            )
+                        )
+                    } else if ((data.requestAttempt ?: 1) >= 3 && diffInMinutes < 10) {
+                        Log.d("BebasLogger", "remaining otp ${600L - diffInSeconds}")
+                        return@flatMap Observable.just(
+                            OtpModel(
+                                remainingOtpInSecond = 600L - diffInSeconds,
+                                totalRequestOtpAttempt = data.requestAttempt ?: 0
+                            )
+                        )
+                    } else {
+                        onboardingGuestRemoteDatasource.sendOtp(phoneNumber, deviceId)
+                            .map { respSendOtp ->
+                                return@map OtpModel(
+                                    remainingOtpInSecond = 60L,
+                                    totalRequestOtpAttempt = respSendOtp.data?.requestAttempt ?: 1
+                                )
+                            }
+                    }
+                } else {
+                    onboardingGuestRemoteDatasource.sendOtp(phoneNumber, deviceId)
+                        .map { respSendOtp ->
+                            return@map OtpModel(
+                                remainingOtpInSecond = 60L,
+                                totalRequestOtpAttempt = respSendOtp.data?.requestAttempt ?: 1
+                            )
+                        }
+                }
+            }
     }
 
     fun verifyOtp(otp: String, phoneNumber: String): Observable<VerifyOtpResponse> {
