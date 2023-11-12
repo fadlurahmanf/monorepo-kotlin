@@ -46,9 +46,23 @@ class BebasLocalDatasource @Inject constructor(
         entitySubscriber.subscribe()
     }
 
+    fun updateLastScreen(screen: String): Disposable {
+        val entitySubscriber = getEntity().map { entity ->
+            dao.update(entity.copy(lastScreen = screen))
+        }
+        return entitySubscriber.subscribe()
+    }
+
     fun updateFlowOnboarding(flow: String): Disposable {
         val entitySubscriber = getEntity().map { entity ->
             dao.update(entity.copy(onboardingFlow = flow))
+        }
+        return entitySubscriber.subscribe()
+    }
+
+    fun updateIsFinishedReadTNC(value: Boolean): Disposable {
+        val entitySubscriber = getEntity().map { entity ->
+            dao.update(entity.copy(isFinishedReadTnc = value))
         }
         return entitySubscriber.subscribe()
     }

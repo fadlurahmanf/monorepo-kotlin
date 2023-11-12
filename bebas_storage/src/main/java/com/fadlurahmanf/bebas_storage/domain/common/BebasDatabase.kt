@@ -18,7 +18,7 @@ abstract class BebasDatabase : RoomDatabase() {
     abstract fun bebasDao(): BebasDao
 
     companion object {
-        const val VERSION = 4
+        const val VERSION = 5
 
         @Volatile
         private var INSTANCE: BebasDatabase? = null

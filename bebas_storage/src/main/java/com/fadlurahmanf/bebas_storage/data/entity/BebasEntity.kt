@@ -20,5 +20,6 @@ data class BebasEntity(
      * POSSIBLE VALUE: CREATE_ACCOUNT/LOGIN_DIFFERENT_ACCOUNT
      * */
     var onboardingFlow: String? = null,
+    var isFinishedReadTnc: Boolean? = null,
     var lastScreen: String? = null,
 )

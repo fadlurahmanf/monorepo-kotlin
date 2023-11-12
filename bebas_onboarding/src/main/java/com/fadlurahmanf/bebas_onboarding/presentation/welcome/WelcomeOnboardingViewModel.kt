@@ -24,7 +24,7 @@ class WelcomeOnboardingViewModel @Inject constructor(
     fun initLastStorage() {
         compositeDisposable().add(onboardingRepositoryImpl.getEntityStorage().subscribe(
             {
-                if (it.onboardingFlow != null) {
+                if (it.onboardingFlow != null ) {
                     _initState.value = InitWelcomeState.SuccessToTnc
                 }
             },
@@ -39,7 +39,7 @@ class WelcomeOnboardingViewModel @Inject constructor(
 
 
     fun getExistingLanguage() {
-        compositeDisposable().add(onboardingRepositoryImpl.getLanguage().subscribe(
+        compositeDisposable().add(bebasLocalDatasource.getLanguage().subscribe(
             {
                 _lang.value = it
             },
@@ -50,10 +50,10 @@ class WelcomeOnboardingViewModel @Inject constructor(
     fun switchLanguage() {
         if (_lang.value == "id-ID") {
             _lang.value = "en-EN"
-            onboardingRepositoryImpl.switchLanguage("en-EN")
+            bebasLocalDatasource.updateLanguage("en-EN")
         } else {
             _lang.value = "id-ID"
-            onboardingRepositoryImpl.switchLanguage("id-ID")
+            bebasLocalDatasource.updateLanguage("id-ID")
         }
     }
 
