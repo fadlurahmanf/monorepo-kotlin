@@ -7,6 +7,7 @@ import com.fadlurahmanf.bebas_api.data.exception.BebasException
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.data.state.InitWelcomeState
 import com.fadlurahmanf.bebas_onboarding.domain.repositories.OnboardingRepositoryImpl
+import com.fadlurahmanf.bebas_shared.data.enum_class.OnboardingFlow
 import com.fadlurahmanf.bebas_storage.domain.datasource.BebasLocalDatasource
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -78,7 +79,7 @@ class WelcomeOnboardingViewModel @Inject constructor(
                                       ))
     }
 
-    fun updateOobFlow(flow: String) {
+    fun updateOobFlow(flow: OnboardingFlow) {
         compositeDisposable().add(bebasLocalDatasource.updateFlowOnboarding(flow))
     }
 }

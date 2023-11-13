@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.InputPhoneEmailActivity">
+    tools:context=".presentation.form_user.InputPhoneEmailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -61,22 +61,30 @@
                 android:layout_height="wrap_content"
                 android:text="Masukkan OTP yang sudah kami kirimkan ke +62 81*****7690" />
 
-            <EditText
+            <com.fadlurahmanf.bebas_ui.edittext.BebasEdittext
                 android:id="@+id/et_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edittext_background"
-                android:padding="10dp"
                 android:layout_marginTop="20dp"
-                android:hint="Phonenumber"
-                style="@style/Font.EdittextHint" />
+                app:hint="e.g. 0812XXX"
+                android:imeOptions="actionSearch"
+                app:label="Phone Number"/>
+
+            <com.fadlurahmanf.bebas_ui.edittext.BebasEdittext
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:hint="Email"
+                android:imeOptions="actionSearch"
+                app:label="Email"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <com.fadlurahmanf.bebas_ui.button.BebasRoundedButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_verify_otp"
+        android:id="@+id/btn_next"
         app:text="Lanjut"
         android:layout_gravity="bottom"
         android:layout_marginBottom="20dp"

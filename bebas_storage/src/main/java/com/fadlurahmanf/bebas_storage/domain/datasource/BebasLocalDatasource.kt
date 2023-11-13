@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_storage.domain.datasource
 
 import android.content.Context
+import com.fadlurahmanf.bebas_shared.data.enum_class.OnboardingFlow
 import com.fadlurahmanf.bebas_storage.data.entity.BebasEntity
 import com.fadlurahmanf.bebas_storage.domain.common.BebasDatabase
 import com.fadlurahmanf.core_crypto.domain.repositories.CryptoRSARepository
@@ -53,7 +54,7 @@ class BebasLocalDatasource @Inject constructor(
         return entitySubscriber.subscribe()
     }
 
-    fun updateFlowOnboarding(flow: String): Disposable {
+    fun updateFlowOnboarding(flow: OnboardingFlow): Disposable {
         val entitySubscriber = getEntity().map { entity ->
             dao.update(entity.copy(onboardingFlow = flow))
         }
@@ -78,6 +79,23 @@ class BebasLocalDatasource @Inject constructor(
             dao.update(entity.copy(language = language))
         }
         entitySubscriber.subscribe()
+    }
+
+    fun updatePhoneAndEmailAndReturn(phone: String, email: String): Single<BebasEntity> {
+        val subscriber = getEntity().map { entity ->
+            if (entity.encodedPublicKey == null) {
+                throw Exception()
+            }
+            val encryptedPhone =
+                coreRSARepository.encrypt(phone, entity.encodedPublicKey ?: "")
+            val encryptedEmail =
+                coreRSARepository.encrypt(email, entity.encodedPublicKey ?: "")
+            val newEntity =
+                entity.copy(encryptedPhone = encryptedPhone, encryptedEmail = encryptedEmail)
+            dao.update(newEntity)
+            newEntity
+        }
+        return subscriber
     }
 
     fun getAll() = dao.getAll()

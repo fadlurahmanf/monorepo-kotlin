@@ -14,6 +14,7 @@ import com.fadlurahmanf.bebas_onboarding.R
 import com.fadlurahmanf.bebas_onboarding.data.state.InitWelcomeState
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityWelcomeOnboardingBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
+import com.fadlurahmanf.bebas_shared.data.enum_class.OnboardingFlow
 import com.fadlurahmanf.bebas_ui.font.BebasFontTypeSpan
 import javax.inject.Inject
 
@@ -87,13 +88,13 @@ class WelcomeOnboardingActivity :
         }
 
         binding.btnCreateNewAccount.setOnClickListener {
-            viewModel.updateOobFlow("CREATE_ACCOUNT")
+            viewModel.updateOobFlow(OnboardingFlow.CREATE_ACCOUNT)
             val intent = Intent(this, TncActivity::class.java)
             startActivity(intent)
         }
 
         binding.btnLoginDiffAccount.setOnClickListener {
-            viewModel.updateOobFlow("LOGIN_DIFFERENT_ACCOUNT")
+            viewModel.updateOobFlow(OnboardingFlow.ALREADY_HAVE_ACCOUNT_NUMBER)
             val intent = Intent(this, TncActivity::class.java)
             startActivity(intent)
         }

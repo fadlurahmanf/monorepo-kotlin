@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.fadlurahmanf.bebas_storage.data.constant.BebasDbConstant
 import com.fadlurahmanf.bebas_storage.data.dao.BebasDao
 import com.fadlurahmanf.bebas_storage.data.entity.BebasEntity
+import com.fadlurahmanf.bebas_storage.domain.converter.BebasConverters
 
 @Database(
     entities = [
@@ -14,11 +16,14 @@ import com.fadlurahmanf.bebas_storage.data.entity.BebasEntity
     ], version = BebasDatabase.VERSION,
     exportSchema = false
 )
+@TypeConverters(value = [
+    BebasConverters::class
+])
 abstract class BebasDatabase : RoomDatabase() {
     abstract fun bebasDao(): BebasDao
 
     companion object {
-        const val VERSION = 5
+        const val VERSION = 7
 
         @Volatile
         private var INSTANCE: BebasDatabase? = null

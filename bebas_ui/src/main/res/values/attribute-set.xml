@@ -10,4 +10,10 @@
     <declare-styleable name="BebasOutlinedButton">
         <attr name="text" />
     </declare-styleable>
+
+    <declare-styleable name="BebasEdittext">
+        <attr name="hint" format="string" />
+        <attr name="label" format="string" />
+        <attr name="android:imeOptions"/>
+    </declare-styleable>
 </resources>

@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_storage.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.fadlurahmanf.bebas_shared.data.enum_class.OnboardingFlow
 import com.fadlurahmanf.bebas_storage.data.constant.BebasDbConstant
 
 @Entity(tableName = BebasDbConstant.tMapp)
@@ -19,7 +20,9 @@ data class BebasEntity(
     /**
      * POSSIBLE VALUE: CREATE_ACCOUNT/LOGIN_DIFFERENT_ACCOUNT
      * */
-    var onboardingFlow: String? = null,
+    var onboardingFlow: OnboardingFlow? = null,
+    var encryptedPhone: String? = null,
+    var encryptedEmail: String? = null,
     var isFinishedReadTnc: Boolean? = null,
     var lastScreen: String? = null,
 )

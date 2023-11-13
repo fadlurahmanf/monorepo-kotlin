@@ -1,9 +1,10 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.splash
 
 import android.content.Intent
+import android.util.Log
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityBebasSplashBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
-import com.fadlurahmanf.bebas_onboarding.presentation.otp.OtpVerificationActivity
+import com.fadlurahmanf.bebas_onboarding.presentation.form_user.InputPhoneEmailActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.welcome.WelcomeOnboardingActivity
 import javax.inject.Inject
 
@@ -27,6 +28,10 @@ class BebasSplashActivity :
                     }
                     startActivity(intent)
                     finish()
+                }
+
+                is SplashState.FAILED -> {
+                    Log.d("BebasLogger", "FAILED: ${it.exception.toJson()}")
                 }
 
                 else -> {

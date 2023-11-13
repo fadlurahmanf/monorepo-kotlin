@@ -24,6 +24,10 @@ import javax.inject.Inject
 
 class OtpVerificationActivity :
     BaseOnboardingActivity<ActivityOtpVerificationBinding>(ActivityOtpVerificationBinding::inflate) {
+
+    companion object {
+        const val PHONE_NUMBER_ARG = "PHONE_NUMBER_ARG"
+    }
     override fun injectActivity() {
         component.inject(this)
     }

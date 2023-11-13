@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name=".presentation.InputPhoneEmailActivity"
+            android:name=".presentation.form_user.InputPhoneEmailActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.otp.OtpVerificationActivity"
