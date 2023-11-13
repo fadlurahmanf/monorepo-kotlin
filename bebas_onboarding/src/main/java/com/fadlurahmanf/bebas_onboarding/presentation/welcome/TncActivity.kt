@@ -85,6 +85,13 @@ class TncActivity : BaseOnboardingActivity<ActivityTncBinding>(ActivityTncBindin
             when (it) {
                 is NetworkState.SUCCESS -> {
                     binding.tvText.text = Html.fromHtml(it.data.text ?: "")
+                    binding.tvText.visibility = View.VISIBLE
+                    binding.tncShimmer.root.visibility = View.GONE
+                }
+
+                is NetworkState.LOADING -> {
+                    binding.tvText.visibility = View.GONE
+                    binding.tncShimmer.root.visibility = View.VISIBLE
                 }
 
                 else -> {}
