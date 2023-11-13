@@ -10,6 +10,7 @@ import com.fadlurahmanf.bebas_onboarding.R
 import com.fadlurahmanf.bebas_onboarding.data.state.InitTncState
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityTncBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
+import com.fadlurahmanf.bebas_onboarding.presentation.form_user.InputPhoneEmailActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.otp.OtpVerificationActivity
 import javax.inject.Inject
 
@@ -39,7 +40,7 @@ class TncActivity : BaseOnboardingActivity<ActivityTncBinding>(ActivityTncBindin
 
         binding.btnNext.setOnClickListener {
             viewModel.updateIsFinishedReadTnc(true)
-            val intent = Intent(this, OtpVerificationActivity::class.java)
+            val intent = Intent(this, InputPhoneEmailActivity::class.java)
             startActivity(intent)
         }
 
@@ -52,14 +53,14 @@ class TncActivity : BaseOnboardingActivity<ActivityTncBinding>(ActivityTncBindin
             }
         })
 
-        viewModel.initState.observe(this){
-            when(it){
-                is InitTncState.SuccessToOtp -> {
+        viewModel.initState.observe(this) {
+            when (it) {
+                is InitTncState.SuccessToInputPhoneAndEmail -> {
                     binding.llScrollToBottom.visibility = View.GONE
                     binding.checkbox.setTextColor(ContextCompat.getColor(this, R.color.black))
                     binding.checkbox.isChecked = true
-//                    val intent = Intent(this, OtpVerificationActivity::class.java)
-//                    startActivity(intent)
+                    val intent = Intent(this, InputPhoneEmailActivity::class.java)
+                    startActivity(intent)
                 }
 
                 else -> {

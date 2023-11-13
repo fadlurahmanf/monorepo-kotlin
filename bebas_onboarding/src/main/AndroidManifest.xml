@@ -3,10 +3,12 @@
 
     <application>
         <activity
-            android:name=".presentation.form_user.InputPhoneEmailActivity"
-            android:exported="false" />
-        <activity
             android:name=".presentation.otp.OtpVerificationActivity"
+            android:exported="false"
+            android:theme="@style/BaseBebas"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".presentation.form_user.InputPhoneEmailActivity"
             android:exported="false"
             android:theme="@style/BaseBebas"
             android:windowSoftInputMode="adjustResize" />

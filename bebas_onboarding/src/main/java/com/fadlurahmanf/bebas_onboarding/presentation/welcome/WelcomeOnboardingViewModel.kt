@@ -25,7 +25,7 @@ class WelcomeOnboardingViewModel @Inject constructor(
     fun initLastStorage() {
         compositeDisposable().add(onboardingRepositoryImpl.getEntityStorage().subscribe(
             {
-                if (it.onboardingFlow != null ) {
+                if (it.onboardingFlow != null) {
                     _initState.value = InitWelcomeState.SuccessToTnc
                 }
             },

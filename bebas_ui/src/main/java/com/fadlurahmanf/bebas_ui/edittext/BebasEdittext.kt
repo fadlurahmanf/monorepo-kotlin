@@ -21,6 +21,7 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
     private var attributes: TypedArray
     private var editText: EditText
     private var label: TextView
+    private var llMain: LinearLayout
 
     var hintInput: String?
     var labelInput: String?
@@ -38,6 +39,7 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
 
         editText = findViewById(R.id.et)
         label = findViewById(R.id.tv_label)
+        llMain = findViewById(R.id.ll_main)
 
         hintInput = attributes.getString(R.styleable.BebasEdittext_hint)
         labelInput = attributes.getString(R.styleable.BebasEdittext_label)
@@ -87,15 +89,19 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
         if (editTextHasFocus && editTextLength() > 0) {
             label.visibility = View.VISIBLE
             editText.setTextAppearance(this.context, R.style.Font_Edittext)
+            llMain.background = ContextCompat.getDrawable(this.context, R.drawable.edittext_focused)
         } else if (editTextHasFocus && editTextLength() <= 0) {
             label.visibility = View.VISIBLE
             editText.setTextAppearance(this.context, R.style.Font_EdittextHint)
+            llMain.background = ContextCompat.getDrawable(this.context, R.drawable.edittext_focused)
         } else if (editTextLength() > 0) {
             label.visibility = View.VISIBLE
             editText.setTextAppearance(this.context, R.style.Font_Edittext)
+            llMain.background = ContextCompat.getDrawable(this.context, R.drawable.edittext_unfocused)
         } else if (editTextLength() <= 0) {
             label.visibility = View.GONE
             editText.setTextAppearance(this.context, R.style.Font_Edittext)
+            llMain.background = ContextCompat.getDrawable(this.context, R.drawable.edittext_unfocused)
         }
     }
 

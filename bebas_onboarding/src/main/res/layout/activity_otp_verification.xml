@@ -78,6 +78,7 @@
                     android:layout_marginHorizontal="5dp"
                     android:background="@drawable/otp_background"
                     android:cursorVisible="false"
+                    android:inputType="text"
                     android:gravity="center"
                     android:maxLength="1" />
 
@@ -89,6 +90,7 @@
                     android:layout_marginHorizontal="5dp"
                     android:background="@drawable/otp_background"
                     android:cursorVisible="false"
+                    android:inputType="text"
                     android:gravity="center"
                     android:maxLength="1" />
 
@@ -100,6 +102,7 @@
                     android:layout_marginHorizontal="5dp"
                     android:background="@drawable/otp_background"
                     android:cursorVisible="false"
+                    android:inputType="text"
                     android:gravity="center"
                     android:maxLength="1" />
 
@@ -111,6 +114,7 @@
                     android:layout_marginHorizontal="5dp"
                     android:background="@drawable/otp_background"
                     android:cursorVisible="false"
+                    android:inputType="text"
                     android:gravity="center"
                     android:maxLength="1" />
 

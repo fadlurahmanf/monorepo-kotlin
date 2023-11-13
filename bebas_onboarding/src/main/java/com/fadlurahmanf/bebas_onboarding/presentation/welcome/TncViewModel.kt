@@ -21,7 +21,7 @@ class TncViewModel @Inject constructor(
     private val _isTncRead = MutableLiveData<Boolean>(false)
     val isTncRead: LiveData<Boolean> = _isTncRead
 
-    fun switchIsTncRead(isChecked:Boolean) {
+    fun switchIsTncRead(isChecked: Boolean) {
         _isTncRead.value = isChecked
     }
 
@@ -35,7 +35,8 @@ class TncViewModel @Inject constructor(
                                       .observeOn(AndroidSchedulers.mainThread())
                                       .subscribe(
                                           {
-                                              _tncContentState.value = NetworkState.SUCCESS(data = it)
+                                              _tncContentState.value =
+                                                  NetworkState.SUCCESS(data = it)
                                           },
                                           {
                                               _tncContentState.value = NetworkState.FAILED(
@@ -47,14 +48,14 @@ class TncViewModel @Inject constructor(
     }
 
     private val _initState = MutableLiveData<InitTncState>()
-    val initState:LiveData<InitTncState> = _initState
+    val initState: LiveData<InitTncState> = _initState
 
-    fun initState(){
+    fun initState() {
         compositeDisposable().add(onboardingRepositoryImpl.getEntityStorage().subscribe(
             {
-                if (it.isFinishedReadTnc == true){
+                if (it.isFinishedReadTnc == true) {
                     _isTncRead.value = true
-                    _initState.value = InitTncState.SuccessToOtp
+                    _initState.value = InitTncState.SuccessToInputPhoneAndEmail
                 }
             },
             {
@@ -63,11 +64,11 @@ class TncViewModel @Inject constructor(
         ))
     }
 
-    fun updateIsFinishedReadTnc(value:Boolean){
+    fun updateIsFinishedReadTnc(value: Boolean) {
         compositeDisposable().add(bebasLocalDatasource.updateIsFinishedReadTNC(value))
     }
 
-    fun removeOnboardingFlow(){
+    fun removeOnboardingFlow() {
         compositeDisposable().add(bebasLocalDatasource.removeOnboardingFlow())
     }
 }
