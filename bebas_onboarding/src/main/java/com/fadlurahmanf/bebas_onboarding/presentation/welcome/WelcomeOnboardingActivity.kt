@@ -4,10 +4,14 @@ import android.content.Intent
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.buildSpannedString
+import androidx.viewpager2.widget.ViewPager2
 import com.fadlurahmanf.bebas_api.data.dto.banner.WelcomeBannerResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.R
@@ -38,6 +42,13 @@ class WelcomeOnboardingActivity :
         adapter.setList(banners)
         binding.vp.adapter = adapter
 
+        binding.vp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                refreshIndicator(position)
+            }
+        })
+
         viewModel.lang.observe(this) {
             when (it) {
                 "en-EN" -> {
@@ -58,6 +69,7 @@ class WelcomeOnboardingActivity :
                     banners.clear()
                     banners.addAll(it.data)
                     adapter.setList(banners)
+                    createBanners()
                 }
 
                 else -> {
@@ -80,6 +92,58 @@ class WelcomeOnboardingActivity :
         viewModel.getExistingLanguage()
         viewModel.getWelcomeBanner()
         viewModel.initLastStorage()
+    }
+
+    private lateinit var indicatorBanners: Array<ImageView?>
+    private var currentIndex: Int = 0
+
+    private fun createBanners() {
+        indicatorBanners = arrayOfNulls<ImageView>(banners.size)
+        for (i in indicatorBanners.indices) {
+            if (i != currentIndex) {
+                val view = ImageView(applicationContext)
+                val lp = LinearLayout.LayoutParams(30, 30)
+                lp.setMargins(10, 0, 10, 0)
+                view.layoutParams = lp
+                view.background =
+                    ContextCompat.getDrawable(this, R.drawable.indicator_banner_inactive)
+                indicatorBanners[i] = view
+            } else {
+                val view = ImageView(applicationContext)
+                val lp = LinearLayout.LayoutParams(70, 30)
+                lp.setMargins(10, 0, 10, 0)
+                view.layoutParams = lp
+                view.background =
+                    ContextCompat.getDrawable(this, R.drawable.indicator_banner_active)
+                indicatorBanners[i] = view
+            }
+        }
+
+        binding.llIndicator.removeAllViews()
+
+        for (element in indicatorBanners) {
+            binding.llIndicator.addView(element)
+        }
+    }
+
+    private fun refreshIndicator(currentIndex: Int) {
+        for (i in 0 until binding.llIndicator.childCount) {
+            if (i != currentIndex) {
+                val view = binding.llIndicator.getChildAt(i) as ImageView
+                val lp = LinearLayout.LayoutParams(30, 30)
+                lp.setMargins(10, 0, 10, 0)
+                view.layoutParams = lp
+                view.background =
+                    ContextCompat.getDrawable(this, R.drawable.indicator_banner_inactive)
+            } else {
+                val view = binding.llIndicator.getChildAt(i) as ImageView
+                val lp = LinearLayout.LayoutParams(70, 30)
+                lp.setMargins(10, 0, 10, 0)
+                view.layoutParams = lp
+                view.background =
+                    ContextCompat.getDrawable(this, R.drawable.indicator_banner_active)
+            }
+        }
     }
 
     private fun initAction() {

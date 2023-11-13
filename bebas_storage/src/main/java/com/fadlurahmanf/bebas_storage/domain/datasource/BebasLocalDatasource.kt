@@ -68,6 +68,13 @@ class BebasLocalDatasource @Inject constructor(
         return entitySubscriber.subscribe()
     }
 
+    fun removeOnboardingFlow(): Disposable {
+        val entitySubscriber = getEntity().map { entity ->
+            dao.update(entity.copy(onboardingFlow = null))
+        }
+        return entitySubscriber.subscribe()
+    }
+
     fun getLanguage(): Single<String> {
         return getEntity().map { entity ->
             entity.language

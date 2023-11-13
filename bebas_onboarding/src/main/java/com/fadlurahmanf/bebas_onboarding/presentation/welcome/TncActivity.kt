@@ -103,6 +103,7 @@ class TncActivity : BaseOnboardingActivity<ActivityTncBinding>(ActivityTncBindin
 
     override fun onDestroy() {
         viewModel.updateIsFinishedReadTnc(false)
+        viewModel.removeOnboardingFlow()
         super.onDestroy()
     }
 }
