@@ -5,10 +5,7 @@ import android.content.res.TypedArray
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.util.Log
-import android.util.TypedValue
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -28,6 +25,8 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
     var hintInput: String?
     var labelInput: String?
     private var editTextHasFocus: Boolean = false
+
+    private var watcher: BebasEdittextTextWatcher? = null
 
     var text: String
         get() = editText.text.toString()
@@ -71,14 +70,17 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
         }
 
         textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                watcher?.beforeTextChanged(s, start, count, after)
+            }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
+                watcher?.onTextChanged(s, start, before, count)
             }
 
             override fun afterTextChanged(s: Editable?) {
                 changeEditTextStyle()
+                watcher?.afterTextChanged(s)
             }
 
         }
@@ -88,6 +90,10 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
             editTextHasFocus = hasFocus
             changeEditTextStyle()
         }
+    }
+
+    fun addTextChangedListener(watcher: BebasEdittextTextWatcher) {
+        this.watcher = watcher
     }
 
     private fun changeEditTextStyle() {
@@ -102,15 +108,22 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
         } else if (editTextLength() > 0) {
             label.visibility = View.VISIBLE
             editText.setTextAppearance(this.context, R.style.Font_Edittext)
-            llMain.background = ContextCompat.getDrawable(this.context, R.drawable.edittext_unfocused)
+            llMain.background =
+                ContextCompat.getDrawable(this.context, R.drawable.edittext_unfocused)
         } else if (editTextLength() <= 0) {
             label.visibility = View.GONE
             editText.setTextAppearance(this.context, R.style.Font_Edittext)
-            llMain.background = ContextCompat.getDrawable(this.context, R.drawable.edittext_unfocused)
+            llMain.background =
+                ContextCompat.getDrawable(this.context, R.drawable.edittext_unfocused)
         }
     }
 
     private fun editTextLength() = editText.length()
 
+    interface BebasEdittextTextWatcher {
+        fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int)
+        fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int)
+        fun afterTextChanged(s: Editable?)
+    }
 
 }

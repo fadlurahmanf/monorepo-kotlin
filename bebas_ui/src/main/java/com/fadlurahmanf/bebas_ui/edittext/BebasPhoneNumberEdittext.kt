@@ -5,10 +5,7 @@ import android.content.res.TypedArray
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.util.Log
-import android.util.TypedValue
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -24,10 +21,14 @@ class BebasPhoneNumberEdittext(context: Context, attributeSet: AttributeSet) :
     private var label: TextView
     private var llMain: LinearLayout
     private var drawableStart: ImageView
+    private var errorTv: TextView
 
     var hintInput: String?
     var labelInput: String?
+    var errorText: String? = null
     private var editTextHasFocus: Boolean = false
+
+    private var watcher: BebasPhoneNumberEdittextTextWatcher? = null
 
     var text: String
         get() = editText.text.toString()
@@ -44,6 +45,7 @@ class BebasPhoneNumberEdittext(context: Context, attributeSet: AttributeSet) :
         label = findViewById(R.id.tv_label)
         llMain = findViewById(R.id.ll_main)
         drawableStart = findViewById(R.id.drawable_start)
+        errorTv = findViewById(R.id.tv_error)
 
         hintInput = attributes.getString(R.styleable.BebasPhoneNumberEdittext_hint)
         labelInput = attributes.getString(R.styleable.BebasPhoneNumberEdittext_label)
@@ -76,10 +78,12 @@ class BebasPhoneNumberEdittext(context: Context, attributeSet: AttributeSet) :
         }
 
         textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                watcher?.beforeTextChanged(s, start, count, after)
+            }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
+                watcher?.onTextChanged(s, start, before, count)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -109,6 +113,11 @@ class BebasPhoneNumberEdittext(context: Context, attributeSet: AttributeSet) :
                 editText.setSelection(formattedNumber.length)
 
                 isFormatting = false
+                watcher?.afterTextChanged(
+                    s,
+                    formattedNumber.toString(),
+                    s?.toString()?.replace("\\D".toRegex(), "")
+                )
             }
 
         }
@@ -117,6 +126,20 @@ class BebasPhoneNumberEdittext(context: Context, attributeSet: AttributeSet) :
         editText.setOnFocusChangeListener { v, hasFocus ->
             editTextHasFocus = hasFocus
             changeEditTextStyle()
+        }
+    }
+
+    fun addTextChangedListener(watcher: BebasPhoneNumberEdittextTextWatcher) {
+        this.watcher = watcher
+    }
+
+    fun setError(error: String?) {
+        errorText = error
+        if (errorText != null) {
+            errorTv.visibility = View.VISIBLE
+            errorTv.text = error
+        } else {
+            errorTv.visibility = View.GONE
         }
     }
 
@@ -145,4 +168,9 @@ class BebasPhoneNumberEdittext(context: Context, attributeSet: AttributeSet) :
     private fun editTextLength() = editText.length()
 
 
+    interface BebasPhoneNumberEdittextTextWatcher {
+        fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int)
+        fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int)
+        fun afterTextChanged(s: Editable?, formattedText: String?, unformattedText: String?)
+    }
 }

@@ -1,4 +1,4 @@
-package com.fadlurahmanf.bebas_shared.data.enum_class
+package com.fadlurahmanf.bebas_shared.data.flow
 
 enum class OnboardingFlow {
     CREATE_ACCOUNT,

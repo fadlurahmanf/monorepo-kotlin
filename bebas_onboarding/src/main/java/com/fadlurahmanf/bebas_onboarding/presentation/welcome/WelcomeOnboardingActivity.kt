@@ -4,7 +4,6 @@ import android.content.Intent
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -18,7 +17,7 @@ import com.fadlurahmanf.bebas_onboarding.R
 import com.fadlurahmanf.bebas_onboarding.data.state.InitWelcomeState
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityWelcomeOnboardingBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
-import com.fadlurahmanf.bebas_shared.data.enum_class.OnboardingFlow
+import com.fadlurahmanf.bebas_shared.data.flow.OnboardingFlow
 import com.fadlurahmanf.bebas_ui.font.BebasFontTypeSpan
 import javax.inject.Inject
 

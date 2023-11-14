@@ -1,7 +1,7 @@
 package com.fadlurahmanf.bebas_storage.domain.datasource
 
 import android.content.Context
-import com.fadlurahmanf.bebas_shared.data.enum_class.OnboardingFlow
+import com.fadlurahmanf.bebas_shared.data.flow.OnboardingFlow
 import com.fadlurahmanf.bebas_storage.data.entity.BebasEntity
 import com.fadlurahmanf.bebas_storage.domain.common.BebasDatabase
 import com.fadlurahmanf.core_crypto.domain.repositories.CryptoRSARepository
