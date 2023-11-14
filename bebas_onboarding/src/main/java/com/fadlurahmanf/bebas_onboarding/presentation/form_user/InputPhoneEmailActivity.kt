@@ -1,6 +1,8 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.form_user
 
 import android.content.Intent
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityInputPhoneEmailBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
@@ -47,5 +49,4 @@ class InputPhoneEmailActivity : BaseOnboardingActivity<ActivityInputPhoneEmailBi
         }
         otpLauncher().launch(intent)
     }
-
 }

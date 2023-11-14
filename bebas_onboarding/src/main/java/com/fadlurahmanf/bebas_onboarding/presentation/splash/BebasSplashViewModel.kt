@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.splash
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.data.exception.BebasException
@@ -37,7 +38,9 @@ class BebasSplashViewModel @Inject constructor(
 
         if (isErrorGenerateCryptoKeyOrFetchTheExisting == true && errorGenerateCryptoKeyOrFetchTheExisting != null) {
             _state.value = SplashState.FAILED(
-                exception = BebasException.fromThrowable(errorGenerateCryptoKeyOrFetchTheExisting!!)
+                exception = BebasException.fromThrowable(
+                    errorGenerateCryptoKeyOrFetchTheExisting ?: BebasException.generalRC("SPLASH_01")
+                )
             )
             return
         }

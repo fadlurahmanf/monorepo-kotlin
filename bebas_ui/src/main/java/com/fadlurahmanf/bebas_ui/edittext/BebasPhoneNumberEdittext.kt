@@ -16,7 +16,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_ui.R
 
-class BebasEdittext(context: Context, attributeSet: AttributeSet) :
+class BebasPhoneNumberEdittext(context: Context, attributeSet: AttributeSet) :
     LinearLayout(context, attributeSet) {
 
     private var attributes: TypedArray
@@ -37,18 +37,21 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
 
     init {
         inflate(context, R.layout.cust_bebas_edittext, this)
-        attributes = context.obtainStyledAttributes(attributeSet, R.styleable.BebasEdittext)
+        attributes =
+            context.obtainStyledAttributes(attributeSet, R.styleable.BebasPhoneNumberEdittext)
 
         editText = findViewById(R.id.et)
         label = findViewById(R.id.tv_label)
         llMain = findViewById(R.id.ll_main)
         drawableStart = findViewById(R.id.drawable_start)
 
-        hintInput = attributes.getString(R.styleable.BebasEdittext_hint)
-        labelInput = attributes.getString(R.styleable.BebasEdittext_label)
+        hintInput = attributes.getString(R.styleable.BebasPhoneNumberEdittext_hint)
+        labelInput = attributes.getString(R.styleable.BebasPhoneNumberEdittext_label)
 
-        editText.imeOptions = attributes.getInt(R.styleable.BebasEdittext_android_imeOptions, 0)
-        editText.inputType = attributes.getInt(R.styleable.BebasEdittext_android_inputType, 0)
+        editText.imeOptions =
+            attributes.getInt(R.styleable.BebasPhoneNumberEdittext_android_imeOptions, 0)
+        editText.inputType =
+            attributes.getInt(R.styleable.BebasPhoneNumberEdittext_android_inputType, 0)
 
         val drawable = attributes.getDrawable(R.styleable.BebasPhoneNumberEdittext_android_src)
         if (drawable != null) {
@@ -60,6 +63,8 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
     }
 
     private lateinit var textWatcher: TextWatcher
+
+    private var isFormatting: Boolean = false
 
     private fun setup() {
         if (labelInput != null && hintInput != null) {
@@ -79,6 +84,31 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
 
             override fun afterTextChanged(s: Editable?) {
                 changeEditTextStyle()
+
+                if (isFormatting) {
+                    return
+                }
+
+                isFormatting = true
+
+                // Remove any previous non-digit characters
+                val digits = s?.toString()?.replace("\\D".toRegex(), "") ?: ""
+
+                // Add spaces every 4 characters
+                val formattedNumber = StringBuilder()
+                for (i in digits.indices) {
+                    if (i > 0 && i % 4 == 0) {
+                        formattedNumber.append(" ")
+                    }
+                    formattedNumber.append(digits[i])
+                }
+
+                editText.setText(formattedNumber.toString())
+
+                // Move the cursor to the end of the formatted text
+                editText.setSelection(formattedNumber.length)
+
+                isFormatting = false
             }
 
         }
@@ -102,11 +132,13 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
         } else if (editTextLength() > 0) {
             label.visibility = View.VISIBLE
             editText.setTextAppearance(this.context, R.style.Font_Edittext)
-            llMain.background = ContextCompat.getDrawable(this.context, R.drawable.edittext_unfocused)
+            llMain.background =
+                ContextCompat.getDrawable(this.context, R.drawable.edittext_unfocused)
         } else if (editTextLength() <= 0) {
             label.visibility = View.GONE
             editText.setTextAppearance(this.context, R.style.Font_Edittext)
-            llMain.background = ContextCompat.getDrawable(this.context, R.drawable.edittext_unfocused)
+            llMain.background =
+                ContextCompat.getDrawable(this.context, R.drawable.edittext_unfocused)
         }
     }
 

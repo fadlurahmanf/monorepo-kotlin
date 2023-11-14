@@ -72,6 +72,7 @@ class OnboardingRepositoryImpl @Inject constructor(
     }
 
     fun generateGuestToken(): Observable<CreateGuestTokenResponse> {
+        Log.d("BebasLogger", "STATE GENERATE GUEST TOKEN")
         val guestId = deviceRepository.randomUUID()
         val request = GenerateGuestTokenRequest(
             guestId = guestId

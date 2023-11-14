@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation
 
 import android.os.Bundle
 import androidx.viewbinding.ViewBinding
+import com.fadlurahmanf.bebas_api.data.exception.BebasException
 import com.fadlurahmanf.bebas_config.presentation.BebasApplication
 import com.fadlurahmanf.bebas_onboarding.R
 import com.fadlurahmanf.bebas_onboarding.domain.di.BebasOnboardingComponent
@@ -52,6 +53,28 @@ abstract class BaseOnboardingActivity<VB : ViewBinding>(inflate: BebasInflateAct
             } else {
                 putString(FailedBottomsheet.BUTTON_TEXT, getString(R.string.ok))
             }
+        }
+        failedBottomsheet = FailedBottomsheet()
+        failedBottomsheet?.arguments = bundle
+        if (callback != null) {
+            failedBottomsheet?.setCallback(callback)
+        }
+        failedBottomsheet?.show(supportFragmentManager, FailedBottomsheet::class.java.simpleName)
+    }
+
+    fun showFailedBottomsheet(
+        exception:BebasException,
+        callback: FailedBottomsheet.Callback? = null
+    ) {
+        if (isFailedBottomsheetOpen) {
+            dismissFailedBottomsheet()
+        }
+        isFailedBottomsheetOpen = true
+        val bundle = Bundle()
+        bundle.apply {
+            putString(FailedBottomsheet.TITLE_TEXT, exception.toProperTitle(this@BaseOnboardingActivity))
+            putString(FailedBottomsheet.MESSAGE_TEXT, exception.toProperMessage(this@BaseOnboardingActivity))
+            putString(FailedBottomsheet.BUTTON_TEXT, exception.toProperButtonText(this@BaseOnboardingActivity))
         }
         failedBottomsheet = FailedBottomsheet()
         failedBottomsheet?.arguments = bundle
