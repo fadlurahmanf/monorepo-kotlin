@@ -1,8 +1,13 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.welcome
 
 import android.content.Intent
+import android.graphics.Color
+import android.net.Uri
 import android.text.Spannable
 import android.text.SpannableString
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.ImageView
@@ -184,6 +189,26 @@ class WelcomeOnboardingActivity :
             spannable2.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
+        val clickableSpannable2: ClickableSpan = object : ClickableSpan() {
+            override fun onClick(textView: View) {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://bankmas.co.id/id/jaringan-kami/kantor-cabang/")
+                )
+                startActivity(intent)
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = false
+            }
+        }
+        spannable2.setSpan(
+            clickableSpannable2,
+            0,
+            spannable2.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         val spannable3 = SpannableString("klik ")
         spannable3.setSpan(
             ForegroundColorSpan(ContextCompat.getColor(this, R.color.black)),
@@ -200,6 +225,26 @@ class WelcomeOnboardingActivity :
         )
         spannable4.setSpan(
             BebasFontTypeSpan("", ResourcesCompat.getFont(this, R.font.lexend_deca_bold)!!),
+            0,
+            spannable4.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        val clickableSpannable4: ClickableSpan = object : ClickableSpan() {
+            override fun onClick(textView: View) {
+                val intent = Intent(
+                    Intent.ACTION_DIAL,
+                    Uri.parse("tel:1500011")
+                )
+                startActivity(intent)
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = false
+            }
+        }
+        spannable4.setSpan(
+            clickableSpannable4,
             0,
             spannable4.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -221,5 +266,7 @@ class WelcomeOnboardingActivity :
         }
 
         binding.tvFooterBebas.text = spannableStringBuilder
+        binding.tvFooterBebas.movementMethod = LinkMovementMethod.getInstance()
+        binding.tvFooterBebas.highlightColor = Color.TRANSPARENT
     }
 }
