@@ -1,6 +1,8 @@
 package com.fadlurahmanf.bebas_storage.domain.datasource
 
 import android.content.Context
+import android.util.Log
+import com.fadlurahmanf.bebas_shared.BebasShared
 import com.fadlurahmanf.bebas_shared.data.flow.OnboardingFlow
 import com.fadlurahmanf.bebas_storage.data.entity.BebasEntity
 import com.fadlurahmanf.bebas_storage.domain.common.BebasDatabase
@@ -81,11 +83,11 @@ class BebasLocalDatasource @Inject constructor(
         }
     }
 
-    fun updateLanguage(language: String) {
-        val entitySubscriber = getEntity().map { entity ->
+    fun updateLanguage(language: String): Single<Unit> {
+        return getEntity().map { entity ->
+            BebasShared.language = language
             dao.update(entity.copy(language = language))
         }
-        entitySubscriber.subscribe()
     }
 
     fun updatePhoneAndEmailAndReturn(phone: String, email: String): Single<BebasEntity> {

@@ -35,4 +35,6 @@ object BebasShared {
     fun getGuestToken(): String {
         return guestToken
     }
+
+    lateinit var language: String
 }

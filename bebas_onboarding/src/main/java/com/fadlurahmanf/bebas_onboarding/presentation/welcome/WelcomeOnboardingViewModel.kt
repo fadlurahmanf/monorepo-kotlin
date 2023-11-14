@@ -7,6 +7,7 @@ import com.fadlurahmanf.bebas_api.data.exception.BebasException
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.data.state.InitWelcomeState
 import com.fadlurahmanf.bebas_onboarding.domain.repositories.OnboardingRepositoryImpl
+import com.fadlurahmanf.bebas_shared.data.dto.BebasAppLanguage
 import com.fadlurahmanf.bebas_shared.data.flow.OnboardingFlow
 import com.fadlurahmanf.bebas_storage.domain.datasource.BebasLocalDatasource
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
@@ -35,12 +36,12 @@ class WelcomeOnboardingViewModel @Inject constructor(
         ))
     }
 
-    private val _lang = MutableLiveData<String>("id-ID")
-    val lang: LiveData<String> = _lang
+    private val _lang = MutableLiveData<BebasAppLanguage>()
+    val lang: LiveData<BebasAppLanguage> = _lang
 
 
     fun getExistingLanguage() {
-        compositeDisposable().add(bebasLocalDatasource.getLanguage().subscribe(
+        compositeDisposable().add(onboardingRepositoryImpl.getLanguage().subscribe(
             {
                 _lang.value = it
             },
@@ -49,12 +50,26 @@ class WelcomeOnboardingViewModel @Inject constructor(
     }
 
     fun switchLanguage() {
-        if (_lang.value == "id-ID") {
-            _lang.value = "en-EN"
-            bebasLocalDatasource.updateLanguage("en-EN")
+        if (_lang.value?.entityLanguage == "in-ID") {
+            compositeDisposable().add(bebasLocalDatasource.updateLanguage("en-US").subscribe(
+                {
+                    _lang.value = BebasAppLanguage(
+                        entityLanguage = "en-US",
+                        deviceLocaleLanguage = _lang.value?.deviceLocaleLanguage ?: "en-US"
+                    )
+                },
+                {}
+            ))
         } else {
-            _lang.value = "id-ID"
-            bebasLocalDatasource.updateLanguage("id-ID")
+            compositeDisposable().add(bebasLocalDatasource.updateLanguage("in-ID").subscribe(
+                {
+                    _lang.value = BebasAppLanguage(
+                        entityLanguage = "in-ID",
+                        deviceLocaleLanguage = _lang.value?.deviceLocaleLanguage ?: "in-ID"
+                    )
+                },
+                {}
+            ))
         }
     }
 

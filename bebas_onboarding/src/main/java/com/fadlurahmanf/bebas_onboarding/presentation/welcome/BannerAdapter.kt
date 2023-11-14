@@ -13,11 +13,17 @@ import com.fadlurahmanf.bebas_onboarding.R
 class BannerAdapter : RecyclerView.Adapter<BannerAdapter.ViewHolder>() {
 
     private val list: ArrayList<WelcomeBannerResponse> = arrayListOf()
+    private var language: String? = null
 
     fun setList(list: List<WelcomeBannerResponse>) {
         this.list.clear()
         this.list.addAll(list)
         notifyItemRangeInserted(0, list.size)
+    }
+
+    fun setLanguage(language: String) {
+        this.language = language
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -36,7 +42,11 @@ class BannerAdapter : RecyclerView.Adapter<BannerAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val banner = list[position]
 
-        holder.description.text = banner.descriptionId
+        if (language == "en-US") {
+            holder.description.text = banner.descriptionEn
+        } else {
+            holder.description.text = banner.descriptionId
+        }
         Glide.with(holder.bannerImage).load(banner.image).into(holder.bannerImage)
     }
 }

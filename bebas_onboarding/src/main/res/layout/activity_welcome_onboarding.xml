@@ -69,7 +69,7 @@
         android:id="@+id/vp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@id/ll_indicator"
         app:layout_constraintTop_toBottomOf="@id/ll_top" />
 
@@ -79,7 +79,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@id/tv_welcome_to_mas_mobile" />
 
     <TextView
@@ -87,7 +87,7 @@
         style="@style/Font.Text16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:fontFamily="@font/lexend_deca_bold"
         android:gravity="center"
         android:text="Selamat datang di MAS Mobile!"
@@ -101,7 +101,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@id/btn_login_diff_account"
-        app:text="Buka Rekening" />
+        app:text="@string/create_new_account_number" />
 
     <com.fadlurahmanf.bebas_ui.button.BebasOutlinedButton
         android:id="@+id/btn_login_diff_account"
@@ -110,7 +110,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@id/tv_footer_bebas"
-        app:text="Sudah Punya Rekening" />
+        app:text="@string/already_have_an_account_number" />
 
     <TextView
         android:id="@+id/tv_footer_bebas"

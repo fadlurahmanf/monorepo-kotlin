@@ -141,7 +141,7 @@
             android:id="@+id/btn_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:text="Lanjut" />
+            app:text="@string/next" />
 
     </LinearLayout>
 

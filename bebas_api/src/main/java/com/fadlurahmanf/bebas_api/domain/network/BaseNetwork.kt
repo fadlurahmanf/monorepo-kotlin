@@ -17,7 +17,7 @@ abstract class BaseNetwork<T>(var context: Context) {
     var service: T? = null
 
     private fun bodyLoggingInterceptor(): CustomLoggingInterceptor {
-        return CustomLoggingInterceptor("BebasLogger").setLevel(CustomLoggingInterceptor.Level.BODY)
+        return CustomLoggingInterceptor("BebasNetworkLogger").setLevel(CustomLoggingInterceptor.Level.BODY)
     }
 
     private fun getChuckerInterceptor(): ChuckerInterceptor {

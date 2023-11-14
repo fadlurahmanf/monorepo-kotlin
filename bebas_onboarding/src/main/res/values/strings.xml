@@ -3,4 +3,7 @@
     <string name="resend_otp_in_minutes_seconds">Resend OTP in %1$d minutes %2$d seconds</string>
     <string name="resend_otp_in_seconds">Resend OTP in %1$d seconds</string>
     <string name="otp_counter_retry">Resend OTP %1$d/%2$d</string>
+    <string name="create_new_account_number">Create an account</string>
+    <string name="already_have_an_account_number">Already have an account</string>
+    <string name="next">Next</string>
 </resources>

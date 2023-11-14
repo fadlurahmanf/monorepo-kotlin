@@ -14,6 +14,9 @@ import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpResponse
 import com.fadlurahmanf.bebas_api.data.exception.BebasException
 import com.fadlurahmanf.bebas_config.presentation.BebasApplication
 import com.fadlurahmanf.bebas_shared.BebasShared
+import com.fadlurahmanf.bebas_shared.RxBus
+import com.fadlurahmanf.bebas_shared.RxEvent
+import com.fadlurahmanf.bebas_shared.data.dto.BebasAppLanguage
 import com.fadlurahmanf.bebas_shared.data.dto.OtpModel
 import com.fadlurahmanf.bebas_storage.data.entity.BebasEntity
 import com.fadlurahmanf.bebas_storage.domain.datasource.BebasLocalDatasource
@@ -45,6 +48,9 @@ class OnboardingRepositoryImpl @Inject constructor(
         return bebasLocalDatasource.getAll().map {
             if (it.isNotEmpty()) {
                 val entity = it.first()
+
+                BebasShared.language = entity.language
+
                 if (entity.encodedPrivateKey != null && entity.encodedPublicKey != null) {
                     BebasShared.setCryptoKey(
                         encodedPublicKey = entity.encodedPublicKey!!,
@@ -72,7 +78,6 @@ class OnboardingRepositoryImpl @Inject constructor(
     }
 
     fun generateGuestToken(): Observable<CreateGuestTokenResponse> {
-        Log.d("BebasLogger", "STATE GENERATE GUEST TOKEN")
         val guestId = deviceRepository.randomUUID()
         val request = GenerateGuestTokenRequest(
             guestId = guestId
@@ -188,6 +193,17 @@ class OnboardingRepositoryImpl @Inject constructor(
     fun getEntityStorage(): Single<BebasEntity> {
         return bebasLocalDatasource.getAll().map {
             it.first()
+        }
+    }
+
+    fun getLanguage(): Single<BebasAppLanguage> {
+        return bebasLocalDatasource.getLanguage().map {
+            val configuration = context.resources.configuration
+            val currentLocale = configuration.locale
+            BebasAppLanguage(
+                it,
+                "${currentLocale.language}-${currentLocale.country}"
+            )
         }
     }
 }
