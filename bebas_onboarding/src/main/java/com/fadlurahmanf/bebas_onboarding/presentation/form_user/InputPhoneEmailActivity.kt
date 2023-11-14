@@ -44,15 +44,15 @@ class InputPhoneEmailActivity :
         viewModel.phoneState.observe(this) {
             when (it) {
                 is EditTextFormState.SUCCESS -> {
-                    binding.etPhone.setError(null)
+                    binding.etPhone.removeError()
                 }
 
                 is EditTextFormState.FAILED -> {
-                    binding.etPhone.setError(it.errorMessage)
+                    binding.etPhone.setError(it.idRawStringRes)
                 }
 
                 EditTextFormState.EMPTY -> {
-                    binding.etPhone.setError(null)
+                    binding.etPhone.removeError()
                 }
             }
         }

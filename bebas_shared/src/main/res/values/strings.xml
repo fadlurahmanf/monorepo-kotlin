@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="invalid_phone_number_length_message">Maximum phone number length is 13 digits</string>
+    <string name="invalid_phone_number_format">Phone number format is incorrect</string>
+</resources>

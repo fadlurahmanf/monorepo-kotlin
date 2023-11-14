@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_shared.validator
 
+import com.fadlurahmanf.bebas_shared.R
 import com.fadlurahmanf.bebas_shared.state.EditTextFormState
 
 object PhoneValidator {
@@ -10,10 +11,16 @@ object PhoneValidator {
             if (phone.length in 8..13) {
                 EditTextFormState.SUCCESS(text = phone)
             } else {
-                EditTextFormState.FAILED(text = phone, errorMessage = "PANJANG ${phone.length}")
+                EditTextFormState.FAILED(
+                    text = phone,
+                    idRawStringRes = R.string.invalid_phone_number_length_message
+                )
             }
         } else {
-            EditTextFormState.FAILED(text = phone, errorMessage = "FORMAT PHONE")
+            EditTextFormState.FAILED(
+                text = phone,
+                idRawStringRes = R.string.invalid_phone_number_format
+            )
         }
     }
 }

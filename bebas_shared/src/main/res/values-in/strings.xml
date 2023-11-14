@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="invalid_phone_number_length_message">Panjang Nomor Ponsel maksimal 13 digit</string>
+    <string name="invalid_phone_number_format">Format nomor ponsel tidak sesuai</string>
+</resources>

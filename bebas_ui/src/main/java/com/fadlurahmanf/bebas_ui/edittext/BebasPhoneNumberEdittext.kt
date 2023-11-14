@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_ui.R
 
@@ -141,6 +142,16 @@ class BebasPhoneNumberEdittext(context: Context, attributeSet: AttributeSet) :
         } else {
             errorTv.visibility = View.GONE
         }
+    }
+
+    fun setError(@StringRes idError: Int) {
+        errorTv.visibility = View.VISIBLE
+        errorTv.text = context.getString(idError)
+    }
+
+    fun removeError() {
+        errorTv.visibility = View.GONE
+        errorTv.text = ""
     }
 
     private fun changeEditTextStyle() {
