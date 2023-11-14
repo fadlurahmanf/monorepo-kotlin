@@ -15,10 +15,13 @@ class InputPhoneEmailViewModel @Inject constructor(
     private val _state = MutableLiveData<Boolean>()
     val state: LiveData<Boolean> = _state
 
+    var processFormThroughButton:Boolean = false
+
     private val _phoneState = MutableLiveData<EditTextFormState<String>>()
     val phoneState: LiveData<EditTextFormState<String>> = _phoneState
 
-    fun setPhone(phone: String) {
+    fun setPhone(phone: String, isThroughButton:Boolean = false) {
+        processFormThroughButton = isThroughButton
         _phoneState.value = PhoneValidator.validatePhone(phone)
     }
 

@@ -48,7 +48,7 @@ class InputPhoneEmailActivity :
                 }
 
                 is EditTextFormState.FAILED -> {
-                    binding.etPhone.setError(it.idRawStringRes)
+                    binding.etPhone.setError(it.idRawStringRes, viewModel.processFormThroughButton)
                 }
 
                 EditTextFormState.EMPTY -> {
@@ -70,7 +70,8 @@ class InputPhoneEmailActivity :
         }
 
         binding.btnNext.setOnClickListener {
-            viewModel.process(binding.etPhone.text, binding.etEmail.text)
+//            viewModel.process(binding.etPhone.text, binding.etEmail.text)
+            viewModel.setPhone(binding.etPhone.text.replace("\\D".toRegex(), ""), true)
         }
     }
 
