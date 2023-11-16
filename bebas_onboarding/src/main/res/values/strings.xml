@@ -6,4 +6,7 @@
     <string name="create_new_account_number">Create an account</string>
     <string name="already_have_an_account_number">Already have an account</string>
     <string name="next">Next</string>
+    <string name="phone_number">Phone number</string>
+    <string name="email">Email</string>
+    <string name="error_general_message_form_empty">%s cannot be empty</string>
 </resources>

@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_ui.R
 
@@ -21,10 +22,13 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
     private var label: TextView
     private var llMain: LinearLayout
     private var drawableStart: ImageView
+    private var errorTv: TextView
 
     var hintInput: String?
     var labelInput: String?
+    var errorText: String? = null
     private var editTextHasFocus: Boolean = false
+    private var fieldError: Boolean = false
 
     private var watcher: BebasEdittextTextWatcher? = null
 
@@ -42,6 +46,7 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
         label = findViewById(R.id.tv_label)
         llMain = findViewById(R.id.ll_main)
         drawableStart = findViewById(R.id.drawable_start)
+        errorTv = findViewById(R.id.tv_error)
 
         hintInput = attributes.getString(R.styleable.BebasEdittext_hint)
         labelInput = attributes.getString(R.styleable.BebasEdittext_label)
@@ -96,26 +101,55 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
         this.watcher = watcher
     }
 
+    fun setError(error: String, fieldError: Boolean = false) {
+        errorText = error
+        this.fieldError = fieldError
+        errorTv.visibility = View.VISIBLE
+        errorTv.text = errorText
+        changeEditTextStyle()
+    }
+
+    fun removeError() {
+        fieldError = false
+        errorTv.visibility = View.GONE
+        errorTv.text = ""
+        changeEditTextStyle()
+    }
+
     private fun changeEditTextStyle() {
         if (editTextHasFocus && editTextLength() > 0) {
             label.visibility = View.VISIBLE
             editText.setTextAppearance(this.context, R.style.Font_Edittext)
+            editText.background = ContextCompat.getDrawable(this.context, R.color.white)
             llMain.background = ContextCompat.getDrawable(this.context, R.drawable.edittext_focused)
         } else if (editTextHasFocus && editTextLength() <= 0) {
             label.visibility = View.VISIBLE
             editText.setTextAppearance(this.context, R.style.Font_EdittextHint)
+            editText.background = ContextCompat.getDrawable(this.context, R.color.white)
             llMain.background = ContextCompat.getDrawable(this.context, R.drawable.edittext_focused)
         } else if (editTextLength() > 0) {
             label.visibility = View.VISIBLE
             editText.setTextAppearance(this.context, R.style.Font_Edittext)
+            editText.background = ContextCompat.getDrawable(this.context, R.color.white)
             llMain.background =
                 ContextCompat.getDrawable(this.context, R.drawable.edittext_unfocused)
         } else if (editTextLength() <= 0) {
             label.visibility = View.GONE
-            editText.setTextAppearance(this.context, R.style.Font_Edittext)
+            editText.setTextAppearance(this.context, R.style.Font_EdittextHint)
+            editText.background = ContextCompat.getDrawable(this.context, R.color.white)
             llMain.background =
                 ContextCompat.getDrawable(this.context, R.drawable.edittext_unfocused)
         }
+
+        if (fieldError) {
+            changeFieldToError()
+        }
+    }
+
+    private fun changeFieldToError() {
+        llMain.background =
+            ContextCompat.getDrawable(this.context, R.drawable.edittext_field_error)
+        editText.background = ContextCompat.getDrawable(this.context, R.color.warm_red)
     }
 
     private fun editTextLength() = editText.length()

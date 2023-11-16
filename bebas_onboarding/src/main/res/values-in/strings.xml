@@ -7,4 +7,7 @@
     <string name="create_new_account_number">Buat akun baru</string>
     <string name="already_have_an_account_number">Sudah punya rekening</string>
     <string name="next">Lanjut</string>
+    <string name="phone_number">Nomor ponsel</string>
+    <string name="email">Email</string>
+    <string name="error_general_message_form_empty">%s tidak boleh kosong</string>
 </resources>

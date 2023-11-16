@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="error_general_message_form_empty">%s tidak boleh kosong</string>
     <string name="invalid_phone_number_length_message">Panjang Nomor Ponsel maksimal 13 digit</string>
     <string name="invalid_phone_number_format">Format nomor ponsel tidak sesuai</string>
+    <string name="invalid_email_format">Format Email tidak sesuai</string>
 </resources>
