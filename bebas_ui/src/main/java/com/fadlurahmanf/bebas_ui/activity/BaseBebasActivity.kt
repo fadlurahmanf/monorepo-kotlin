@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.fadlurahmanf.bebas_ui.dialog.LoadingDialog
 
 typealias BebasInflateActivity<VB> = (LayoutInflater) -> VB
 
@@ -30,4 +31,20 @@ abstract class BaseBebasActivity<VB : ViewBinding>(
     abstract fun injectActivity()
 
     abstract fun setup()
+
+    private var loadingDialog: LoadingDialog? = null
+    fun showLoadingDialog(isCancelable: Boolean = false) {
+        dismissLoadingDialog()
+        if (loadingDialog == null) {
+            loadingDialog = LoadingDialog()
+            loadingDialog?.show(supportFragmentManager, LoadingDialog::class.java.simpleName)
+        }
+    }
+
+    private fun dismissLoadingDialog() {
+        if (loadingDialog != null) {
+            loadingDialog?.dismiss()
+            loadingDialog = null
+        }
+    }
 }

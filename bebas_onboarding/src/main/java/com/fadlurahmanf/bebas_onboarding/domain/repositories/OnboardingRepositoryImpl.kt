@@ -112,8 +112,10 @@ class OnboardingRepositoryImpl @Inject constructor(
     fun requestOtp(phoneNumber: String): Observable<OtpModel> {
         val deviceId = deviceRepository.deviceID(context)
 
+        Log.d("BebasLogger", "deviceId: $deviceId")
         return onboardingGuestRemoteDatasource.requestOtpAvailability(phoneNumber, deviceId)
             .flatMap { respRequestOtp ->
+                Log.d("BebasLogger", "req: $respRequestOtp")
                 if (respRequestOtp.data != null) {
                     val data = respRequestOtp.data!!
                     val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())

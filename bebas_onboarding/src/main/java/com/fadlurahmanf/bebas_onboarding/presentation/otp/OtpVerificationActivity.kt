@@ -1,5 +1,7 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.otp
 
+import android.content.Intent
+import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.Spannable
@@ -12,6 +14,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.buildSpannedString
+import com.fadlurahmanf.bebas_api.data.exception.BebasException
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.R
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityOtpVerificationBinding
@@ -28,6 +31,7 @@ class OtpVerificationActivity :
     companion object {
         const val PHONE_NUMBER_ARG = "PHONE_NUMBER_ARG"
     }
+
     override fun injectActivity() {
         component.inject(this)
     }
@@ -35,7 +39,8 @@ class OtpVerificationActivity :
     @Inject
     lateinit var viewModel: OtpVerificationViewModel
 
-    private var phoneNumber: String = "081283601111"
+    private lateinit var phoneNumber: String
+
 
     override fun setup() {
         binding.ivBack.setOnClickListener {
@@ -47,8 +52,17 @@ class OtpVerificationActivity :
         }
 
         binding.btnCounterOtpRetry.setOnClickListener {
-            viewModel.requestOtp(phoneNumber)
+            if (getOTPText().length >= 6) {
+                viewModel.verifyOtp(getOTPText(), phoneNumber)
+            }
         }
+
+        val phoneNumberArg = intent.getStringExtra(PHONE_NUMBER_ARG)
+        if (phoneNumberArg == null) {
+            showFailedBottomsheet(BebasException.generalRC("PHONE_NUMBER_MISSING"))
+            return
+        }
+        this.phoneNumber = phoneNumberArg
 
         val prefixOtpDescSpan = SpannableString("Masukkan OTP yang sudah kami kirimkan ke ")
         prefixOtpDescSpan.setSpan(
@@ -103,13 +117,30 @@ class OtpVerificationActivity :
                 }
 
                 is NetworkState.FAILED -> {
-                    showFailedBottomsheet(
-                        title = it.exception.toProperTitle(this),
-                        message = it.exception.toProperMessage(this),
-                        buttonText = it.exception.toProperButtonText(this)
-                    )
+                    showFailedBottomsheet(it.exception)
                 }
 
+
+                else -> {
+
+                }
+            }
+        }
+
+        viewModel.verifyOtpState.observe(this) {
+            when (it) {
+                is NetworkState.SUCCESS -> {
+                    setResult(RESULT_OK, intent)
+                    finish()
+                }
+
+                is NetworkState.FAILED -> {
+                    showFailedBottomsheet(it.exception)
+                }
+
+                is NetworkState.LOADING -> {
+                    showLoadingDialog()
+                }
 
                 else -> {
 

@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.fadlurahmanf.bebas_shared.BebasShared
 import com.fadlurahmanf.bebas_shared.data.flow.OnboardingFlow
+import com.fadlurahmanf.bebas_storage.data.entity.BebasDecryptedEntity
 import com.fadlurahmanf.bebas_storage.data.entity.BebasEntity
 import com.fadlurahmanf.bebas_storage.domain.common.BebasDatabase
 import com.fadlurahmanf.core_crypto.domain.repositories.CryptoRSARepository
@@ -108,6 +109,63 @@ class BebasLocalDatasource @Inject constructor(
     }
 
     fun getAll() = dao.getAll()
+    fun getDecryptedEntity() = dao.getAll().map { entities ->
+        val entity = entities.first()
+        val key = entity.encodedPrivateKey ?: ""
+        var guestToken: String? = null
+        if (entity.encryptedGuestToken != null) {
+            guestToken = coreRSARepository.decrypt(
+                entity.encryptedGuestToken ?: "",
+                entity.encodedPrivateKey ?: ""
+            )
+        }
+        var accessToken: String? = null
+        if (entity.encryptedAccessToken != null) {
+            accessToken = coreRSARepository.decrypt(
+                entity.encryptedAccessToken ?: "",
+                entity.encodedPrivateKey ?: ""
+            )
+        }
+        var refreshToken: String? = null
+        if (entity.encryptedRefreshToken != null) {
+            refreshToken = coreRSARepository.decrypt(
+                entity.encryptedRefreshToken ?: "",
+                entity.encodedPrivateKey ?: ""
+            )
+        }
+        var phone: String? = null
+        if (entity.encryptedPhone != null) {
+            phone = coreRSARepository.decrypt(
+                entity.encryptedPhone ?: "",
+                entity.encodedPrivateKey ?: ""
+            )
+        }
+        var email: String? = null
+        if (entity.encryptedEmail != null) {
+            email = coreRSARepository.decrypt(
+                entity.encryptedEmail ?: "",
+                entity.encodedPrivateKey ?: ""
+            )
+        }
+        val decryptedEntity = BebasDecryptedEntity(
+            deviceId = entity.deviceId,
+            language = entity.language,
+            publicKey = entity.encodedPublicKey,
+            privateKey = entity.encodedPrivateKey,
+            guestToken = guestToken,
+            accessToken = accessToken,
+            refreshToken = refreshToken,
+            expiresAt = entity.expiresAt,
+            refreshExpiresAt = entity.refreshExpiresAt,
+            onboardingFlow = entity.onboardingFlow,
+            phone = phone,
+            email = email,
+            isFinishedReadTnc = entity.isFinishedReadTnc,
+            lastScreen = entity.lastScreen
+        )
+        decryptedEntity
+    }
+
     fun isDataExist(): Single<Boolean> {
         return dao.getAll().map {
             it.isNotEmpty()

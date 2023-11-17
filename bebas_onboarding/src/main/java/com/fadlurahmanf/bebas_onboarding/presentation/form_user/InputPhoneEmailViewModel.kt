@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation.form_user
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.fadlurahmanf.bebas_onboarding.data.state.InitInputPhoneAndEmailState
 import com.fadlurahmanf.bebas_storage.domain.datasource.BebasLocalDatasource
 import com.fadlurahmanf.bebas_shared.state.EditTextFormState
 import com.fadlurahmanf.bebas_shared.validator.EmailValidator
@@ -48,5 +49,20 @@ class InputPhoneEmailViewModel @Inject constructor(
                                               {}
                                           ))
         }
+    }
+
+    private val _initState = MutableLiveData<InitInputPhoneAndEmailState>()
+    val initState: LiveData<InitInputPhoneAndEmailState> = _initState
+
+    fun initLastStorage() {
+        compositeDisposable().add(bebasLocalDatasource.getDecryptedEntity().subscribe(
+            {
+                _initState.value = InitInputPhoneAndEmailState.SuccessLoadData(
+                    it.phone,
+                    it.email
+                )
+            },
+            {}
+        ))
     }
 }
