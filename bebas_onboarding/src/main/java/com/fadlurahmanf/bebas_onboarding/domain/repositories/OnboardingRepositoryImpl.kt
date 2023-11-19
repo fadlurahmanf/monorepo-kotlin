@@ -11,7 +11,7 @@ import com.fadlurahmanf.bebas_api.data.dto.identity.GenerateGuestTokenRequest
 import com.fadlurahmanf.bebas_api.data.dto.otp.OtpResponse
 import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpRequest
 import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpResponse
-import com.fadlurahmanf.bebas_api.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_config.presentation.BebasApplication
 import com.fadlurahmanf.bebas_shared.BebasShared
 import com.fadlurahmanf.bebas_shared.RxBus

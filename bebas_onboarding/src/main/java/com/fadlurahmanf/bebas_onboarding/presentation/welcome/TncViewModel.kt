@@ -3,7 +3,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation.welcome
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.data.dto.tnc.TncResponse
-import com.fadlurahmanf.bebas_api.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.data.state.InitTncState
 import com.fadlurahmanf.bebas_onboarding.domain.repositories.OnboardingRepositoryImpl

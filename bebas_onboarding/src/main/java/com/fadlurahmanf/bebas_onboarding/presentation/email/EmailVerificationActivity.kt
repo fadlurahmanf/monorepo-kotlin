@@ -1,6 +1,6 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.email
 
-import com.fadlurahmanf.bebas_api.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityEmailVerificationBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 

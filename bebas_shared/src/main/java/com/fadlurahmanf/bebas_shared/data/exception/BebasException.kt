@@ -1,8 +1,8 @@
-package com.fadlurahmanf.bebas_api.data.exception
+package com.fadlurahmanf.bebas_shared.data.exception
 
 import android.content.Context
 import androidx.annotation.StringRes
-import com.fadlurahmanf.bebas_api.R
+import com.fadlurahmanf.bebas_shared.R
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import java.io.IOException

@@ -3,7 +3,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation.otp
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.fadlurahmanf.bebas_api.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.domain.repositories.OnboardingRepositoryImpl
 import com.fadlurahmanf.bebas_shared.data.dto.OtpModel

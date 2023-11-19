@@ -4,4 +4,8 @@
     <string name="invalid_phone_number_length_message">Panjang Nomor Ponsel maksimal 13 digit</string>
     <string name="invalid_phone_number_format">Format nomor ponsel tidak sesuai</string>
     <string name="invalid_email_format">Format Email tidak sesuai</string>
+    <string name="oops">Ups...</string>
+    <string name="socket_exception_desc">Sepertinya kamu tidak mempunyai jaringan internet.</string>
+    <string name="general_exception_desc">Saat ini kami tidak dapat memproses transaksi. Silakan coba lagi di lain waktu (%1$s)</string>
+    <string name="ok">Oke</string>
 </resources>

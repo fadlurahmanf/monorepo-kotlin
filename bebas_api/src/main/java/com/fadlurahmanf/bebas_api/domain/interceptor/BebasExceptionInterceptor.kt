@@ -3,7 +3,7 @@ package com.fadlurahmanf.bebas_api.domain.interceptor
 import android.content.Context
 import android.util.Log
 import com.fadlurahmanf.bebas_api.R
-import com.fadlurahmanf.bebas_api.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.net.UnknownHostException

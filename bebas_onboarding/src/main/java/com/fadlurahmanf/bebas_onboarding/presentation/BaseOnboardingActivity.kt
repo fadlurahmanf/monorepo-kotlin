@@ -3,7 +3,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation
 import android.os.Bundle
 import android.util.Log
 import androidx.viewbinding.ViewBinding
-import com.fadlurahmanf.bebas_api.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_config.presentation.BebasApplication
 import com.fadlurahmanf.bebas_onboarding.R
 import com.fadlurahmanf.bebas_onboarding.domain.di.BebasOnboardingComponent
@@ -64,7 +64,7 @@ abstract class BaseOnboardingActivity<VB : ViewBinding>(inflate: BebasInflateAct
     }
 
     fun showFailedBottomsheet(
-        exception:BebasException,
+        exception: BebasException,
         callback: FailedBottomsheet.Callback? = null
     ) {
         Log.d("BebasLogger", "MASUK ${exception.toJson()}")
