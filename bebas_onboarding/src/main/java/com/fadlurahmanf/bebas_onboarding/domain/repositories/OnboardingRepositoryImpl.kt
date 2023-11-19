@@ -192,12 +192,6 @@ class OnboardingRepositoryImpl @Inject constructor(
         }
     }
 
-    fun getEntityStorage(): Single<BebasEntity> {
-        return bebasLocalDatasource.getAll().map {
-            it.first()
-        }
-    }
-
     fun getLanguage(): Single<BebasAppLanguage> {
         return bebasLocalDatasource.getLanguage().map {
             val configuration = context.resources.configuration

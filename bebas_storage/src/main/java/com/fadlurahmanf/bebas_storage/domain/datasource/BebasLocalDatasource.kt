@@ -27,7 +27,7 @@ class BebasLocalDatasource @Inject constructor(
         dao.insert(value)
     }
 
-    private fun getEntity(): Single<BebasEntity> {
+    fun getEntity(): Single<BebasEntity> {
         return dao.getAll().map {
             if (it.isEmpty()) {
                 throw Exception()
@@ -109,6 +109,8 @@ class BebasLocalDatasource @Inject constructor(
     }
 
     fun getAll() = dao.getAll()
+
+
     fun getDecryptedEntity() = dao.getAll().map { entities ->
         val entity = entities.first()
         val key = entity.encodedPrivateKey ?: ""

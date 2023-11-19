@@ -51,7 +51,7 @@ class TncViewModel @Inject constructor(
     val initState: LiveData<InitTncState> = _initState
 
     fun initState() {
-        compositeDisposable().add(onboardingRepositoryImpl.getEntityStorage().subscribe(
+        compositeDisposable().add(bebasLocalDatasource.getEntity().subscribe(
             {
                 if (it.isFinishedReadTnc == true) {
                     _isTncRead.value = true

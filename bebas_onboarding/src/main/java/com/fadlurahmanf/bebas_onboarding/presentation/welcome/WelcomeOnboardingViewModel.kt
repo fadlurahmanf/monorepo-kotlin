@@ -24,7 +24,7 @@ class WelcomeOnboardingViewModel @Inject constructor(
     val initState: LiveData<InitWelcomeState> = _initState
 
     fun initLastStorage() {
-        compositeDisposable().add(onboardingRepositoryImpl.getEntityStorage().subscribe(
+        compositeDisposable().add(bebasLocalDatasource.getEntity().subscribe(
             {
                 if (it.onboardingFlow != null) {
                     _initState.value = InitWelcomeState.SuccessToTnc

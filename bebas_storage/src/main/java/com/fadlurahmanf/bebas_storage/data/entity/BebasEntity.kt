@@ -18,7 +18,7 @@ data class BebasEntity(
     var expiresAt: String? = null,
     var refreshExpiresAt: String? = null,
     /**
-     * POSSIBLE VALUE: CREATE_ACCOUNT/LOGIN_DIFFERENT_ACCOUNT
+     * POSSIBLE VALUE: CREATE_ACCOUNT/ALREADY_HAVE_ACCOUNT_NUMBER
      * */
     var onboardingFlow: OnboardingFlow? = null,
     var encryptedPhone: String? = null,
