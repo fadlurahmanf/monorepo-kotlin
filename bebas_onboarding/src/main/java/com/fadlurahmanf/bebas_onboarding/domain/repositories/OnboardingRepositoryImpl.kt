@@ -5,19 +5,17 @@ import android.util.Log
 import com.fadlurahmanf.bebas_api.data.datasources.ContentManagementGuestRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.IdentityRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.OnboardingGuestRemoteDatasource
-import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.identity.CreateGuestTokenResponse
 import com.fadlurahmanf.bebas_api.data.dto.identity.GenerateGuestTokenRequest
-import com.fadlurahmanf.bebas_api.data.dto.otp.OtpResponse
 import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpRequest
 import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpResponse
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_config.presentation.BebasApplication
 import com.fadlurahmanf.bebas_shared.BebasShared
-import com.fadlurahmanf.bebas_shared.RxBus
-import com.fadlurahmanf.bebas_shared.RxEvent
 import com.fadlurahmanf.bebas_shared.data.dto.BebasAppLanguage
+import com.fadlurahmanf.bebas_shared.data.dto.EmailModel
 import com.fadlurahmanf.bebas_shared.data.dto.OtpModel
+import com.fadlurahmanf.bebas_shared.data.flow.OnboardingFlow
 import com.fadlurahmanf.bebas_storage.data.entity.BebasEntity
 import com.fadlurahmanf.bebas_storage.domain.datasource.BebasLocalDatasource
 import com.fadlurahmanf.core_crypto.domain.repositories.CryptoRSARepository
@@ -25,8 +23,6 @@ import com.fadlurahmanf.core_platform.domain.repositories.DeviceRepository
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.Period
 import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
@@ -65,13 +61,15 @@ class OnboardingRepositoryImpl @Inject constructor(
                 )
 
                 val deviceId = deviceRepository.deviceID(context)
-                bebasLocalDatasource.insert(
-                    BebasEntity(
-                        deviceId = deviceId,
-                        encodedPrivateKey = cryptoKey.privateKey,
-                        encodedPublicKey = cryptoKey.publicKey
-                    )
+
+                val entity = BebasEntity(
+                    deviceId = deviceId,
+                    encodedPrivateKey = cryptoKey.privateKey,
+                    encodedPublicKey = cryptoKey.publicKey
                 )
+
+                BebasShared.language = entity.language
+                bebasLocalDatasource.insert(entity)
             }
             true
         }
@@ -112,10 +110,8 @@ class OnboardingRepositoryImpl @Inject constructor(
     fun requestOtp(phoneNumber: String): Observable<OtpModel> {
         val deviceId = deviceRepository.deviceID(context)
 
-        Log.d("BebasLogger", "deviceId: $deviceId")
         return onboardingGuestRemoteDatasource.requestOtpAvailability(phoneNumber, deviceId)
             .flatMap { respRequestOtp ->
-                Log.d("BebasLogger", "req: $respRequestOtp")
                 if (respRequestOtp.data != null) {
                     val data = respRequestOtp.data!!
                     val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
@@ -130,13 +126,7 @@ class OnboardingRepositoryImpl @Inject constructor(
                         TimeUnit.MILLISECONDS.toSeconds(
                             dateNow.time - (lastRequestDate?.time ?: 0L)
                         )
-                    Log.d("BebasLogger", "MASUK TEST")
-                    Log.d("BebasLogger", "lastRequestDate: $lastRequestDate")
-                    Log.d("BebasLogger", "dateNow: $dateNow")
-                    Log.d("BebasLogger", "diffInSeconds: $diffInSeconds")
-                    Log.d("BebasLogger", "diffInMinutes: $diffInMinutes")
                     if ((data.requestAttempt ?: 1) < 3 && diffInSeconds < 60) {
-                        Log.d("BebasLogger", "remaining otp ${60L - diffInSeconds}")
                         return@flatMap Observable.just(
                             OtpModel(
                                 remainingOtpInSecond = 60L - diffInSeconds,
@@ -144,7 +134,6 @@ class OnboardingRepositoryImpl @Inject constructor(
                             )
                         )
                     } else if ((data.requestAttempt ?: 1) >= 3 && diffInMinutes < 10) {
-                        Log.d("BebasLogger", "remaining otp ${600L - diffInSeconds}")
                         return@flatMap Observable.just(
                             OtpModel(
                                 remainingOtpInSecond = 600L - diffInSeconds,
@@ -152,7 +141,7 @@ class OnboardingRepositoryImpl @Inject constructor(
                             )
                         )
                     } else {
-                        onboardingGuestRemoteDatasource.sendOtp(phoneNumber, deviceId)
+                        onboardingGuestRemoteDatasource.sendOtpVerification(phoneNumber, deviceId)
                             .map { respSendOtp ->
                                 return@map OtpModel(
                                     remainingOtpInSecond = 60L,
@@ -161,7 +150,7 @@ class OnboardingRepositoryImpl @Inject constructor(
                             }
                     }
                 } else {
-                    onboardingGuestRemoteDatasource.sendOtp(phoneNumber, deviceId)
+                    onboardingGuestRemoteDatasource.sendOtpVerification(phoneNumber, deviceId)
                         .map { respSendOtp ->
                             return@map OtpModel(
                                 remainingOtpInSecond = 60L,
@@ -200,6 +189,77 @@ class OnboardingRepositoryImpl @Inject constructor(
                 it,
                 "${currentLocale.language}-${currentLocale.country}"
             )
+        }
+    }
+
+    fun requestEmail(email: String): Observable<EmailModel> {
+        val deviceId = deviceRepository.deviceID(context)
+        return bebasLocalDatasource.getDecryptedEntity().toObservable().flatMap { decryptedEntity ->
+            val phoneNumber =
+                decryptedEntity.phone ?: throw BebasException.generalRC("PHONE_NUMBER_MISSING")
+            val flowType =
+                if (decryptedEntity.onboardingFlow == OnboardingFlow.ALREADY_HAVE_ACCOUNT_NUMBER) "selfActivation" else "onboarding"
+            onboardingGuestRemoteDatasource.requestEmailAvailability(
+                email = email,
+                phoneNumber = phoneNumber,
+                otpToken = "",
+                deviceId = deviceId,
+                flowType = flowType
+            ).flatMap { respRequestEmailVerif ->
+                if (respRequestEmailVerif.data == null) {
+                    onboardingGuestRemoteDatasource.sendEmailVerification(
+                        email = email,
+                        phoneNumber = phoneNumber,
+                        otpToken = "",
+                        deviceId = deviceId,
+                        flowType = flowType
+                    ).map {
+                        EmailModel(
+                            remainingEmailInSecond = 60L,
+                            totalRequestEmailAttempt = 1
+                        )
+                    }
+                } else {
+                    onboardingGuestRemoteDatasource.sendEmailVerification(
+                        email = email,
+                        phoneNumber = phoneNumber,
+                        otpToken = "",
+                        deviceId = deviceId,
+                        flowType = flowType
+                    ).map { baseRespRequestEmail ->
+                        val requestAttempt = baseRespRequestEmail.data?.requestAttempt ?: 1
+
+                        val parser =
+                            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
+                        parser.timeZone = TimeZone.getTimeZone("UTC")
+                        val lastRequestDate =
+                            parser.parse(baseRespRequestEmail.data?.lastRequestDate ?: "")
+
+                        val dateNow = Calendar.getInstance().time
+                        val diffInSeconds =
+                            TimeUnit.MILLISECONDS.toSeconds(
+                                dateNow.time - (lastRequestDate?.time ?: 0L)
+                            )
+
+                        if (requestAttempt < 3 && diffInSeconds < 60L) {
+                            EmailModel(
+                                remainingEmailInSecond = 60L - diffInSeconds,
+                                totalRequestEmailAttempt = requestAttempt
+                            )
+                        } else if (requestAttempt >= 3 && diffInSeconds < 600L) {
+                            EmailModel(
+                                remainingEmailInSecond = 600L - diffInSeconds,
+                                totalRequestEmailAttempt = requestAttempt
+                            )
+                        } else {
+                            EmailModel(
+                                remainingEmailInSecond = 60L,
+                                totalRequestEmailAttempt = 1
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }

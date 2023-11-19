@@ -3,6 +3,7 @@ package com.fadlurahmanf.bebas_storage.domain.datasource
 import android.content.Context
 import android.util.Log
 import com.fadlurahmanf.bebas_shared.BebasShared
+import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.data.flow.OnboardingFlow
 import com.fadlurahmanf.bebas_storage.data.entity.BebasDecryptedEntity
 import com.fadlurahmanf.bebas_storage.data.entity.BebasEntity
@@ -30,7 +31,7 @@ class BebasLocalDatasource @Inject constructor(
     fun getEntity(): Single<BebasEntity> {
         return dao.getAll().map {
             if (it.isEmpty()) {
-                throw Exception()
+                throw BebasException.generalRC("ENTITY_MISSING")
             }
 
             val entity = it.first()
@@ -113,57 +114,23 @@ class BebasLocalDatasource @Inject constructor(
 
     fun getDecryptedEntity() = dao.getAll().map { entities ->
         val entity = entities.first()
-        val key = entity.encodedPrivateKey ?: ""
-        var guestToken: String? = null
-        if (entity.encryptedGuestToken != null) {
-            guestToken = coreRSARepository.decrypt(
-                entity.encryptedGuestToken ?: "",
-                entity.encodedPrivateKey ?: ""
-            )
-        }
-        var accessToken: String? = null
-        if (entity.encryptedAccessToken != null) {
-            accessToken = coreRSARepository.decrypt(
-                entity.encryptedAccessToken ?: "",
-                entity.encodedPrivateKey ?: ""
-            )
-        }
-        var refreshToken: String? = null
-        if (entity.encryptedRefreshToken != null) {
-            refreshToken = coreRSARepository.decrypt(
-                entity.encryptedRefreshToken ?: "",
-                entity.encodedPrivateKey ?: ""
-            )
-        }
-        var phone: String? = null
-        if (entity.encryptedPhone != null) {
-            phone = coreRSARepository.decrypt(
-                entity.encryptedPhone ?: "",
-                entity.encodedPrivateKey ?: ""
-            )
-        }
-        var email: String? = null
-        if (entity.encryptedEmail != null) {
-            email = coreRSARepository.decrypt(
-                entity.encryptedEmail ?: "",
-                entity.encodedPrivateKey ?: ""
-            )
-        }
+        val privateKey = entity.encodedPrivateKey
         val decryptedEntity = BebasDecryptedEntity(
             deviceId = entity.deviceId,
             language = entity.language,
             publicKey = entity.encodedPublicKey,
             privateKey = entity.encodedPrivateKey,
-            guestToken = guestToken,
-            accessToken = accessToken,
-            refreshToken = refreshToken,
+            guestToken = decrypt(entity.encryptedGuestToken, privateKey),
+            accessToken = decrypt(entity.encryptedAccessToken, privateKey),
+            refreshToken = decrypt(entity.encryptedRefreshToken, privateKey),
             expiresAt = entity.expiresAt,
             refreshExpiresAt = entity.refreshExpiresAt,
             onboardingFlow = entity.onboardingFlow,
-            phone = phone,
-            email = email,
+            phone = decrypt(entity.encryptedPhone, privateKey),
+            email = decrypt(entity.encryptedEmail, privateKey),
             isFinishedReadTnc = entity.isFinishedReadTnc,
-            lastScreen = entity.lastScreen
+            lastScreen = entity.lastScreen,
+            otpToken = decrypt(entity.encryptedOtpToken, privateKey)
         )
         decryptedEntity
     }
@@ -175,4 +142,15 @@ class BebasLocalDatasource @Inject constructor(
     }
 
     fun delete() = dao.delete()
+
+    private fun decrypt(encrypted: String?, privateKey: String?): String? {
+        return if (encrypted != null) {
+            coreRSARepository.decrypt(
+                encrypted,
+                privateKey ?: ""
+            )
+        } else {
+            null
+        }
+    }
 }
