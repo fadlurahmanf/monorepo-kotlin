@@ -138,7 +138,6 @@ class InputPhoneEmailActivity :
                 }
 
                 else -> {
-
                 }
             }
         }
@@ -164,6 +163,17 @@ class InputPhoneEmailActivity :
         }
 
     private fun goToOtp() {
+        val intent = Intent(this, OtpVerificationActivity::class.java)
+        intent.apply {
+            putExtra(
+                OtpVerificationActivity.PHONE_NUMBER_ARG,
+                binding.etPhone.text.replace("\\D".toRegex(), "")
+            )
+        }
+        otpLauncher.launch(intent)
+    }
+
+    private fun goToEmail() {
         val intent = Intent(this, OtpVerificationActivity::class.java)
         intent.apply {
             putExtra(

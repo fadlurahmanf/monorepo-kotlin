@@ -5,10 +5,13 @@
     <color name="red_opacity_90">#E6CC0921</color>
     <color name="white">#FFFFFF</color>
     <color name="grey">#FFB8B8B8</color>
+    <color name="light_grey">#FFA1A1A1</color>
+    <color name="light_grey_20">#FFE6E6E6</color>
     <color name="grey_opacity_90">#E6B8B8B8</color>
 
     <color name="black">#FF000000</color>
     <color name="black_opacity">#33000000</color>
+    <color name="black_opacity_90">#E6000000</color>
 
     <color name="color_primary">@color/red</color>
     <color name="color_primary_opacity_90">@color/red_opacity_90</color>

@@ -10,7 +10,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_ui.R
 
@@ -29,6 +28,9 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
     var errorText: String? = null
     private var editTextHasFocus: Boolean = false
     private var fieldError: Boolean = false
+
+    private var isEnabled: Boolean = true
+
 
     private var watcher: BebasEdittextTextWatcher? = null
 
@@ -93,6 +95,9 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
         editText.addTextChangedListener(textWatcher)
         editText.setOnFocusChangeListener { v, hasFocus ->
             editTextHasFocus = hasFocus
+            if (hasFocus) {
+                editText.setSelection(editText.text.length)
+            }
             changeEditTextStyle()
         }
     }
@@ -120,11 +125,13 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
         if (editTextHasFocus && editTextLength() > 0) {
             label.visibility = View.VISIBLE
             editText.setTextAppearance(this.context, R.style.Font_Edittext)
+            label.setTextAppearance(this.context, R.style.Font_EdittextLabel)
             editText.background = ContextCompat.getDrawable(this.context, R.color.white)
             llMain.background = ContextCompat.getDrawable(this.context, R.drawable.edittext_focused)
         } else if (editTextHasFocus && editTextLength() <= 0) {
             label.visibility = View.VISIBLE
             editText.setTextAppearance(this.context, R.style.Font_EdittextHint)
+            label.setTextAppearance(this.context, R.style.Font_EdittextLabel)
             editText.background = ContextCompat.getDrawable(this.context, R.color.white)
             llMain.background = ContextCompat.getDrawable(this.context, R.drawable.edittext_focused)
         } else if (editTextLength() > 0) {
@@ -152,7 +159,21 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
         editText.background = ContextCompat.getDrawable(this.context, R.color.warm_red)
     }
 
-    private fun editTextLength() = editText.length()
+    private fun editTextLength() = editText.text.length
+
+    fun setIsEnabled(enable: Boolean) {
+        this.isEnabled = enable
+        editText.isEnabled = enable
+        if (!enable) {
+            llMain.background =
+                ContextCompat.getDrawable(this.context, R.drawable.edittext_disabled)
+            editText.background = ContextCompat.getDrawable(this.context, R.color.light_grey_20)
+            label.setTextAppearance(this.context, R.style.Font_EdittextLabel_Disabled)
+            editText.setTextAppearance(this.context, R.style.Font_Edittext_Disabled)
+        } else {
+            changeEditTextStyle()
+        }
+    }
 
     interface BebasEdittextTextWatcher {
         fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int)

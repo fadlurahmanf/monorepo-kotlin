@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:title="Syarat &amp; Ketentuan">
+                app:title="Otp Verification">
 
                 <ImageView
                     android:id="@+id/iv_back"
@@ -61,7 +61,7 @@
                 style="@style/Font.HeaderSubTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Masukkan OTP yang sudah kami kirimkan ke +62 81*****7690" />
+                android:text="Subtitle OTP Verification" />
 
             <LinearLayout
                 android:layout_width="match_parent"

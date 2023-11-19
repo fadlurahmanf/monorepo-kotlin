@@ -3,6 +3,11 @@
 
     <application>
         <activity
+            android:name=".presentation.email.EmailVerificationActivity"
+            android:exported="false"
+            android:theme="@style/BaseBebas"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".presentation.otp.OtpVerificationActivity"
             android:exported="false"
             android:theme="@style/BaseBebas"

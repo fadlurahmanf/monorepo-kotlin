@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_onboarding.domain.di
 
 import android.content.Context
+import com.fadlurahmanf.bebas_onboarding.presentation.email.EmailVerificationActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.form_user.InputPhoneEmailActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.otp.OtpVerificationActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.splash.BebasSplashActivity
@@ -36,4 +37,5 @@ interface BebasOnboardingComponent {
     fun inject(activity: TncActivity)
     fun inject(activity: OtpVerificationActivity)
     fun inject(activity: InputPhoneEmailActivity)
+    fun inject(activity: EmailVerificationActivity)
 }
