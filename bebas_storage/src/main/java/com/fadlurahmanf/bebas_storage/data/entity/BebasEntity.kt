@@ -26,6 +26,7 @@ data class BebasEntity(
     var isFinishedReadTnc: Boolean? = null,
     var lastScreen: String? = null,
     var encryptedOtpToken: String? = null,
+    var encryptedEmailToken: String? = null,
     var isFinishedOtpVerification: Boolean? = null,
     var isFinishedEmailVerification: Boolean? = null,
 )

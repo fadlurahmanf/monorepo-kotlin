@@ -9,7 +9,6 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -170,13 +169,13 @@ class WelcomeOnboardingActivity :
         }
 
         binding.btnCreateNewAccount.setOnClickListener {
-            viewModel.updateOobFlow(OnboardingFlow.CREATE_ACCOUNT)
+            viewModel.updateOobFlow(OnboardingFlow.ONBOARDING)
             val intent = Intent(this, TncActivity::class.java)
             startActivity(intent)
         }
 
         binding.btnLoginDiffAccount.setOnClickListener {
-            viewModel.updateOobFlow(OnboardingFlow.ALREADY_HAVE_ACCOUNT_NUMBER)
+            viewModel.updateOobFlow(OnboardingFlow.SELF_ACTIVATION)
             val intent = Intent(this, TncActivity::class.java)
             startActivity(intent)
         }

@@ -63,12 +63,12 @@ class InputPhoneEmailViewModel @Inject constructor(
                 onboardingFlow = it.onboardingFlow
 
                 if (it.phone != null && it.email != null) {
-                    if (it.isFinishedOtpVerification == true && it.isFinishedEmailVerification == true && it.onboardingFlow == OnboardingFlow.CREATE_ACCOUNT) {
+                    if (it.isFinishedOtpVerification == true && it.isFinishedEmailVerification == true && it.onboardingFlow == OnboardingFlow.ONBOARDING) {
                         _initState.value = InitInputPhoneAndEmailState.SuccessFlowOnboarding(
                             it.phone ?: "",
                             it.email ?: ""
                         )
-                    } else if (it.isFinishedOtpVerification == true && it.isFinishedEmailVerification == true && it.onboardingFlow == OnboardingFlow.ALREADY_HAVE_ACCOUNT_NUMBER) {
+                    } else if (it.isFinishedOtpVerification == true && it.isFinishedEmailVerification == true && it.onboardingFlow == OnboardingFlow.SELF_ACTIVATION) {
                         _initState.value = InitInputPhoneAndEmailState.SuccessFlowSelfActivation(
                             it.phone ?: "",
                             it.email ?: ""

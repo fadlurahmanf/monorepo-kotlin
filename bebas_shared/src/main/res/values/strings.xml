@@ -7,5 +7,6 @@
     <string name="oops">Oops...</string>
     <string name="socket_exception_desc">Look like you don\'t have any connection</string>
     <string name="general_exception_desc">We cannot process your request at this time. Please try again at another time (%1$s)</string>
+    <string name="general_exception_desc_wo_param">We cannot process your request at this time. Please try again at another time</string>
     <string name="ok">Okay</string>
 </resources>

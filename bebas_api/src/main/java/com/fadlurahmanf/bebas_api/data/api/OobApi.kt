@@ -1,5 +1,7 @@
 package com.fadlurahmanf.bebas_api.data.api
 
+import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyRequest
+import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyResponse
 import com.fadlurahmanf.bebas_api.data.dto.email.RequestEmailVerificationReponse
 import com.fadlurahmanf.bebas_api.data.dto.email.RequestEmailVerificationRequest
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
@@ -26,4 +28,9 @@ interface OobApi {
     fun requestEmail(
         @Body body: RequestEmailVerificationRequest
     ): Observable<BaseResponse<RequestEmailVerificationReponse>>
+
+    @POST("verification/check-email")
+    fun checkIsEmailVerify(
+        @Body body: CheckEmailIsVerifyRequest
+    ): Observable<BaseResponse<CheckEmailIsVerifyResponse>>
 }

@@ -37,4 +37,9 @@ object BebasShared {
     }
 
     lateinit var language: String
+
+
+    lateinit var appVersionCode: String
+
+    lateinit var appVersionName: String
 }

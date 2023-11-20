@@ -1,10 +1,13 @@
 package com.fadlurahmanf.bebas_onboarding.domain.repositories
 
 import android.content.Context
-import android.util.Log
+import android.os.Build
 import com.fadlurahmanf.bebas_api.data.datasources.ContentManagementGuestRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.IdentityRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.OnboardingGuestRemoteDatasource
+import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyRequest
+import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyResponse
+import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.identity.CreateGuestTokenResponse
 import com.fadlurahmanf.bebas_api.data.dto.identity.GenerateGuestTokenRequest
 import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpRequest
@@ -204,7 +207,7 @@ class OnboardingRepositoryImpl @Inject constructor(
             val phoneNumber =
                 decryptedEntity.phone ?: throw BebasException.generalRC("PHONE_NUMBER_MISSING")
             val flowType =
-                if (decryptedEntity.onboardingFlow == OnboardingFlow.ALREADY_HAVE_ACCOUNT_NUMBER) "selfActivation" else "onboarding"
+                if (decryptedEntity.onboardingFlow == OnboardingFlow.SELF_ACTIVATION) "selfActivation" else "onboarding"
             onboardingGuestRemoteDatasource.requestEmailAvailability(
                 email = email,
                 phoneNumber = phoneNumber,
@@ -265,6 +268,34 @@ class OnboardingRepositoryImpl @Inject constructor(
                         }
                     }
                 }
+            }
+        }
+    }
+
+    fun checkIsEmailVerify(email: String): Observable<CheckEmailIsVerifyResponse> {
+        val deviceId = deviceRepository.deviceID(context)
+        return bebasLocalDatasource.getDecryptedEntity().toObservable().flatMap { decrypted ->
+            val request = CheckEmailIsVerifyRequest(
+                email = email,
+                deviceId = deviceId,
+                deviceModel = Build.MODEL,
+                flowType = if (decrypted.onboardingFlow == OnboardingFlow.SELF_ACTIVATION) "selfActivation" else if (decrypted.onboardingFlow == OnboardingFlow.ONBOARDING) "onboarding" else "-",
+                phoneNumber = decrypted.phone ?: "",
+                appVersion = BebasShared.appVersionName,
+                language = decrypted.language,
+            )
+            onboardingGuestRemoteDatasource.checkEmailIsVerify(request).map { baseResp ->
+                if (baseResp.data == null) {
+                    throw BebasException.generalRC("DATA_MISSING")
+                }
+
+                if (baseResp.data?.emailToken == null) {
+                    throw BebasException.generalRC("EMAIL_TOKEN_MISSING")
+                }
+
+                bebasLocalDatasource.updateEmailToken(baseResp.data?.emailToken ?: "")
+
+                baseResp.data!!
             }
         }
     }

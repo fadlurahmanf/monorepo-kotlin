@@ -104,6 +104,7 @@ class OtpVerificationActivity :
         viewModel.verifyOtpState.observe(this) {
             when (it) {
                 is NetworkState.SUCCESS -> {
+                    dismissLoadingDialog()
                     setResult(RESULT_OK, intent.apply {
                         putExtra("OTP_TOKEN", it.data)
                     })

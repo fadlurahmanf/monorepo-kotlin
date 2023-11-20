@@ -10,9 +10,25 @@
             android:exported="false" />
         <activity
             android:name=".presentation.email.EmailVerificationActivity"
-            android:exported="false"
+            android:exported="true"
+            android:launchMode="singleTask"
             android:theme="@style/BaseBebas"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="api.bankmas.my.id"
+                    android:scheme="https" />
+                <data
+                    android:host="api.bankmas2.my.id"
+                    android:path="/online-onboarding-service/verification/email"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".presentation.otp.OtpVerificationActivity"
             android:exported="false"

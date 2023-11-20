@@ -32,7 +32,6 @@ class BebasSplashActivity :
                 }
 
                 is SplashState.FAILED -> {
-                    Log.d("BebasLogger", "STATE SPLASH: ${it.exception.toJson()}")
                     showFailedBottomsheet(it.exception)
                 }
 

@@ -30,7 +30,7 @@ class FailedBottomsheet : BaseBottomsheet<BottomsheetFailedBinding>(
         binding.btnBottomsheet.setOnClickListener {
             if (callback != null) {
                 callback?.onButtonClicked()
-            } else {
+            } else if (isCancelable) {
                 dismiss()
             }
         }

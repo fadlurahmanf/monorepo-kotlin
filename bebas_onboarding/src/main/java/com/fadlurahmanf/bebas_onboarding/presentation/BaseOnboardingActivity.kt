@@ -65,7 +65,8 @@ abstract class BaseOnboardingActivity<VB : ViewBinding>(inflate: BebasInflateAct
 
     fun showFailedBottomsheet(
         exception: BebasException,
-        callback: FailedBottomsheet.Callback? = null
+        isCancelable:Boolean = true,
+        callback: FailedBottomsheet.Callback? = null,
     ) {
         Log.d("BebasLogger", "MASUK ${exception.toJson()}")
         if (isFailedBottomsheetOpen) {
@@ -77,6 +78,7 @@ abstract class BaseOnboardingActivity<VB : ViewBinding>(inflate: BebasInflateAct
             putString(FailedBottomsheet.TITLE_TEXT, exception.toProperTitle(this@BaseOnboardingActivity))
             putString(FailedBottomsheet.MESSAGE_TEXT, exception.toProperMessage(this@BaseOnboardingActivity))
             putString(FailedBottomsheet.BUTTON_TEXT, exception.toProperButtonText(this@BaseOnboardingActivity))
+            putBoolean(FailedBottomsheet.IS_DIALOG_CANCELABLE, isCancelable)
         }
         failedBottomsheet = FailedBottomsheet()
         failedBottomsheet?.arguments = bundle

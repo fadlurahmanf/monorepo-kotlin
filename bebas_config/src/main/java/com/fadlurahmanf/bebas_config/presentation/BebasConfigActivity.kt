@@ -12,6 +12,12 @@ class BebasConfigActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bebas_config)
         val flavor = intent.extras?.getString("FLAVOR")
+        val versionCode = intent.extras?.getString("VERSION_CODE")
+        val versionName = intent.extras?.getString("VERSION_NAME")
+
+        BebasShared.appVersionName = versionName ?: "-"
+        BebasShared.appVersionCode = versionCode ?: "-"
+
 
         when (flavor) {
             "dev" -> {

@@ -7,5 +7,6 @@
     <string name="oops">Ups...</string>
     <string name="socket_exception_desc">Sepertinya kamu tidak mempunyai jaringan internet.</string>
     <string name="general_exception_desc">Saat ini kami tidak dapat memproses transaksi. Silakan coba lagi di lain waktu (%1$s)</string>
+    <string name="general_exception_desc_wo_param">Saat ini kami tidak dapat memproses transaksi. Silakan coba lagi di lain waktu</string>
     <string name="ok">Oke</string>
 </resources>

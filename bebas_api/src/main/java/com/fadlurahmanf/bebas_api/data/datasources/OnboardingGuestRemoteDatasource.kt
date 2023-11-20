@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_api.data.datasources
 
 import android.content.Context
 import com.fadlurahmanf.bebas_api.data.api.OobApi
+import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyRequest
 import com.fadlurahmanf.bebas_api.data.dto.email.RequestEmailVerificationRequest
 import com.fadlurahmanf.bebas_api.data.dto.otp.OtpVerificationRequest
 import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpRequest
@@ -72,4 +73,7 @@ class OnboardingGuestRemoteDatasource @Inject constructor(
                 shouldSendEmail = true
             )
         )
+
+    fun checkEmailIsVerify(request: CheckEmailIsVerifyRequest) =
+        networkService(30).checkIsEmailVerify(request)
 }

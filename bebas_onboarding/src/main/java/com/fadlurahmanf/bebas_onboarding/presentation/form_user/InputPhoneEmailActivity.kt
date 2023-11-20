@@ -3,7 +3,6 @@ package com.fadlurahmanf.bebas_onboarding.presentation.form_user
 import android.app.Activity
 import android.content.Intent
 import android.text.Editable
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import com.fadlurahmanf.bebas_onboarding.R
 import com.fadlurahmanf.bebas_onboarding.data.state.InitInputPhoneAndEmailState
@@ -210,12 +209,12 @@ class InputPhoneEmailActivity :
 
     private fun navigateAfterEmailVerification(emailToken: String) {
         when (viewModel.onboardingFlow) {
-            OnboardingFlow.CREATE_ACCOUNT -> {
+            OnboardingFlow.ONBOARDING -> {
                 val intent = Intent(this, PrepareOnboardingActivity::class.java)
                 startActivity(intent)
             }
 
-            OnboardingFlow.ALREADY_HAVE_ACCOUNT_NUMBER -> {
+            OnboardingFlow.SELF_ACTIVATION -> {
                 val intent = Intent(this, InputPhoneEmailActivity::class.java)
                 startActivity(intent)
             }

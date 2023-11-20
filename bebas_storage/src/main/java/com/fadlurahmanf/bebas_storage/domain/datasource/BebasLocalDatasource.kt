@@ -133,6 +133,7 @@ class BebasLocalDatasource @Inject constructor(
             isFinishedReadTnc = entity.isFinishedReadTnc,
             lastScreen = entity.lastScreen,
             otpToken = decrypt(entity.encryptedOtpToken, privateKey),
+            emailToken = decrypt(entity.encryptedEmailToken, privateKey),
             isFinishedOtpVerification = entity.isFinishedOtpVerification,
             isFinishedEmailVerification = entity.isFinishedEmailVerification
         )
@@ -153,6 +154,18 @@ class BebasLocalDatasource @Inject constructor(
             val encryptedOtpToken =
                 coreRSARepository.encrypt(otpToken, entity.encodedPublicKey ?: "")
             dao.update(entity.copy(encryptedOtpToken = encryptedOtpToken))
+        }
+        return entitySubscriber.subscribe()
+    }
+
+    fun updateEmailToken(emailToken: String): Disposable {
+        val entitySubscriber = getEntity().map { entity ->
+            if (entity.encodedPublicKey == null) {
+                throw Exception()
+            }
+            val encryptedEmailToken =
+                coreRSARepository.encrypt(emailToken, entity.encodedPublicKey ?: "")
+            dao.update(entity.copy(encryptedEmailToken = encryptedEmailToken))
         }
         return entitySubscriber.subscribe()
     }

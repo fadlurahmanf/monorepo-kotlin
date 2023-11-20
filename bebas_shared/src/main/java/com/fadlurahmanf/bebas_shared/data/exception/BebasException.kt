@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_shared.data.exception
 
 import android.content.Context
+import android.util.Log
 import androidx.annotation.StringRes
 import com.fadlurahmanf.bebas_shared.R
 import com.google.gson.Gson
@@ -152,14 +153,14 @@ class BebasException(
                 return context.getString(R.string.general_exception_desc, rc)
             }
 
-            return context.getString(R.string.general_exception_desc, r)
+            return context.getString(R.string.general_exception_desc_wo_param)
         }
 
         default?.let {
             return it
         }
 
-        return "-"
+        return context.getString(R.string.general_exception_desc_wo_param)
     }
 
     fun toJson(): String? {
