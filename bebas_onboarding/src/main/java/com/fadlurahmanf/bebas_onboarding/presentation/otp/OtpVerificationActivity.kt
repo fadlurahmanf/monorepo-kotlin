@@ -48,13 +48,13 @@ class OtpVerificationActivity :
         }
 
         binding.btnVerifyOtp.setOnClickListener {
-            viewModel.verifyOtp(getOTPText(), phoneNumber)
+            if (getOTPText().length >= 6) {
+                viewModel.verifyOtp("111111", phoneNumber)
+            }
         }
 
         binding.btnCounterOtpRetry.setOnClickListener {
-            if (getOTPText().length >= 6) {
-                viewModel.verifyOtp(getOTPText(), phoneNumber)
-            }
+            viewModel.requestOtp(phoneNumber)
         }
 
         val phoneNumberArg = intent.getStringExtra(PHONE_NUMBER_ARG)
@@ -130,7 +130,9 @@ class OtpVerificationActivity :
         viewModel.verifyOtpState.observe(this) {
             when (it) {
                 is NetworkState.SUCCESS -> {
-                    setResult(RESULT_OK, intent)
+                    setResult(RESULT_OK, intent.apply {
+                        putExtra("OTP_TOKEN", it.data)
+                    })
                     finish()
                 }
 

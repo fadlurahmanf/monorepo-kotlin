@@ -145,9 +145,14 @@ class BebasPhoneNumberEdittext(context: Context, attributeSet: AttributeSet) :
 
     fun removeError() {
         fieldError = false
+        errorText = null
         errorTv.visibility = View.GONE
         errorTv.text = ""
         changeEditTextStyle()
+    }
+
+    fun resetEmpty(){
+        errorTv.visibility = View.GONE
     }
 
     private fun changeEditTextStyle() {

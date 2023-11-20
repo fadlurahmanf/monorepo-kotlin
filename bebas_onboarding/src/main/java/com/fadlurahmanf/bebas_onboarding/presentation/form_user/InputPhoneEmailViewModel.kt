@@ -57,10 +57,12 @@ class InputPhoneEmailViewModel @Inject constructor(
     fun initLastStorage() {
         compositeDisposable().add(bebasLocalDatasource.getDecryptedEntity().subscribe(
             {
-                _initState.value = InitInputPhoneAndEmailState.SuccessLoadData(
-                    it.phone,
-                    it.email
-                )
+                if (it.phone != null && it.email != null) {
+                    _initState.value = InitInputPhoneAndEmailState.SuccessLoadData(
+                        it.phone,
+                        it.email
+                    )
+                }
             },
             {}
         ))

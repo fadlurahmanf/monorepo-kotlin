@@ -115,6 +115,7 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
     }
 
     fun removeError() {
+        errorText = null
         fieldError = false
         errorTv.visibility = View.GONE
         errorTv.text = ""

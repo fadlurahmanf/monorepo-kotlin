@@ -45,8 +45,8 @@ class OtpVerificationViewModel @Inject constructor(
                                       ))
     }
 
-    private val _verifyOtpState = MutableLiveData<NetworkState<Boolean>>()
-    val verifyOtpState: LiveData<NetworkState<Boolean>> = _verifyOtpState
+    private val _verifyOtpState = MutableLiveData<NetworkState<String>>()
+    val verifyOtpState: LiveData<NetworkState<String>> = _verifyOtpState
     fun verifyOtp(otp: String, phoneNumber: String) {
         _verifyOtpState.value = NetworkState.LOADING
         compositeDisposable().add(onboardingRepositoryImpl.verifyOtp(
@@ -56,7 +56,7 @@ class OtpVerificationViewModel @Inject constructor(
                                       .subscribe(
                                           {
                                               _verifyOtpState.value =
-                                                  NetworkState.SUCCESS(data = true)
+                                                  NetworkState.SUCCESS(data = it.otpToken ?: "")
                                           },
                                           {
                                               _verifyOtpState.value = NetworkState.FAILED(

@@ -3,11 +3,13 @@ package com.fadlurahmanf.bebas_onboarding.presentation.form_user
 import android.app.Activity
 import android.content.Intent
 import android.text.Editable
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import com.fadlurahmanf.bebas_onboarding.R
 import com.fadlurahmanf.bebas_onboarding.data.state.InitInputPhoneAndEmailState
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityInputPhoneEmailBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
+import com.fadlurahmanf.bebas_onboarding.presentation.email.EmailVerificationActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.otp.OtpVerificationActivity
 import com.fadlurahmanf.bebas_ui.edittext.BebasPhoneNumberEdittext
 import com.fadlurahmanf.bebas_shared.state.EditTextFormState
@@ -33,7 +35,6 @@ class InputPhoneEmailActivity :
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
             }
 
             override fun afterTextChanged(
@@ -84,7 +85,6 @@ class InputPhoneEmailActivity :
                     binding.etPhone.setError(
                         getString(
                             it.idRawStringRes,
-                            getString(R.string.phone_number)
                         ), viewModel.processFormThroughButton
                     )
                 }
@@ -109,8 +109,7 @@ class InputPhoneEmailActivity :
                 is EditTextFormState.FAILED -> {
                     binding.etEmail.setError(
                         getString(
-                            it.idRawStringRes,
-                            getString(R.string.email)
+                            it.idRawStringRes
                         ), viewModel.processFormThroughButton
                     )
                 }
@@ -137,8 +136,7 @@ class InputPhoneEmailActivity :
                     binding.etEmail.text = it.email ?: ""
                 }
 
-                else -> {
-                }
+                else -> {}
             }
         }
 
@@ -158,6 +156,14 @@ class InputPhoneEmailActivity :
     private val otpLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
+                val otpToken = it.data?.getStringExtra("OTP_TOKEN")
+                goToEmail()
+            }
+        }
+
+    private val emailLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
 
             }
         }
@@ -174,13 +180,13 @@ class InputPhoneEmailActivity :
     }
 
     private fun goToEmail() {
-        val intent = Intent(this, OtpVerificationActivity::class.java)
+        val intent = Intent(this, EmailVerificationActivity::class.java)
         intent.apply {
             putExtra(
-                OtpVerificationActivity.PHONE_NUMBER_ARG,
-                binding.etPhone.text.replace("\\D".toRegex(), "")
+                EmailVerificationActivity.EMAIL_ARG,
+                binding.etEmail.text
             )
         }
-        otpLauncher.launch(intent)
+        emailLauncher.launch(intent)
     }
 }

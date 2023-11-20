@@ -20,6 +20,8 @@ class BebasLocalDatasource @Inject constructor(
 ) {
     private var dao = BebasDatabase.getDatabase(context).bebasDao()
 
+    fun getAll() = dao.getAll()
+
     fun insert(value: BebasEntity) {
         dao.insert(value)
     }
@@ -27,6 +29,8 @@ class BebasLocalDatasource @Inject constructor(
     fun insertOrReplaceWithExisting(value: BebasEntity) {
         dao.insert(value)
     }
+
+    fun delete() = dao.delete()
 
     fun getEntity(): Single<BebasEntity> {
         return dao.getAll().map {
@@ -109,8 +113,6 @@ class BebasLocalDatasource @Inject constructor(
         return subscriber
     }
 
-    fun getAll() = dao.getAll()
-
 
     fun getDecryptedEntity() = dao.getAll().map { entities ->
         val entity = entities.first()
@@ -141,7 +143,17 @@ class BebasLocalDatasource @Inject constructor(
         }
     }
 
-    fun delete() = dao.delete()
+    fun updateOtpToken(otpToken: String) {
+        val entitySubscriber = getEntity().map { entity ->
+            if (entity.encodedPublicKey == null) {
+                throw Exception()
+            }
+            val encryptedOtpToken =
+                coreRSARepository.encrypt(otpToken, entity.encodedPublicKey ?: "")
+            dao.update(entity.copy(encryptedOtpToken = encryptedOtpToken))
+        }
+        entitySubscriber.subscribe()
+    }
 
     private fun decrypt(encrypted: String?, privateKey: String?): String? {
         return if (encrypted != null) {

@@ -177,6 +177,12 @@ class OnboardingRepositoryImpl @Inject constructor(
                 )
             }
 
+            if (it.data?.otpToken == null) {
+                throw BebasException.generalRC("OTP_TOKEN_MISSING")
+            }
+
+            bebasLocalDatasource.updateOtpToken(it.data?.otpToken ?: "")
+
             it.data!!
         }
     }
