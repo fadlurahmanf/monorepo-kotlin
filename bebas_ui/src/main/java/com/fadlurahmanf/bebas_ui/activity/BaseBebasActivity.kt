@@ -41,7 +41,7 @@ abstract class BaseBebasActivity<VB : ViewBinding>(
         }
     }
 
-    private fun dismissLoadingDialog() {
+    fun dismissLoadingDialog() {
         if (loadingDialog != null) {
             loadingDialog?.dismiss()
             loadingDialog = null

@@ -80,8 +80,9 @@
                     android:cursorVisible="false"
                     android:digits="0123456789"
                     android:gravity="center"
-                    android:inputType="text"
-                    android:maxLength="1" />
+                    android:inputType="text|number"
+                    android:maxLength="1"
+                    android:maxLines="1" />
 
                 <EditText
                     android:id="@+id/otp2"
@@ -93,8 +94,9 @@
                     android:cursorVisible="false"
                     android:digits="0123456789"
                     android:gravity="center"
-                    android:inputType="text"
-                    android:maxLength="1" />
+                    android:inputType="text|number"
+                    android:maxLength="1"
+                    android:maxLines="1" />
 
                 <EditText
                     android:id="@+id/otp3"
@@ -106,8 +108,9 @@
                     android:cursorVisible="false"
                     android:digits="0123456789"
                     android:gravity="center"
-                    android:inputType="text"
-                    android:maxLength="1" />
+                    android:inputType="text|number"
+                    android:maxLength="1"
+                    android:maxLines="1" />
 
                 <EditText
                     android:id="@+id/otp4"
@@ -119,8 +122,9 @@
                     android:cursorVisible="false"
                     android:digits="0123456789"
                     android:gravity="center"
-                    android:inputType="text"
-                    android:maxLength="1" />
+                    android:inputType="text|number"
+                    android:maxLength="1"
+                    android:maxLines="1" />
 
                 <EditText
                     android:id="@+id/otp5"
@@ -132,8 +136,9 @@
                     android:cursorVisible="false"
                     android:digits="0123456789"
                     android:gravity="center"
-                    android:inputType="text"
-                    android:maxLength="1" />
+                    android:inputType="text|number"
+                    android:maxLength="1"
+                    android:maxLines="1" />
 
                 <EditText
                     android:id="@+id/otp6"
@@ -145,8 +150,9 @@
                     android:cursorVisible="false"
                     android:digits="0123456789"
                     android:gravity="center"
-                    android:inputType="text"
-                    android:maxLength="1" />
+                    android:inputType="text|number"
+                    android:maxLength="1"
+                    android:maxLines="1" />
 
             </LinearLayout>
 

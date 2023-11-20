@@ -81,4 +81,9 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/red</item>
     </style>
+
+    <style name="Font.DialogLoadingText">
+        <item name="android:fontFamily">@font/lexend_deca_regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>

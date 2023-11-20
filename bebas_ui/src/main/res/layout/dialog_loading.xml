@@ -28,6 +28,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="10dp"
+                style="@style/Font.DialogLoadingText"
                 android:text="Loading.." />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

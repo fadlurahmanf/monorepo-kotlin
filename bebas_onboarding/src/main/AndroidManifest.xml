@@ -3,6 +3,12 @@
 
     <application>
         <activity
+            android:name=".presentation.form_user.PrepareOnboardingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.form_user.InputNikAndAccountNumberActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.email.EmailVerificationActivity"
             android:exported="false"
             android:theme="@style/BaseBebas"

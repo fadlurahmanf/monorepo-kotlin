@@ -11,6 +11,8 @@ import com.fadlurahmanf.bebas_onboarding.databinding.ActivityInputPhoneEmailBind
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.email.EmailVerificationActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.otp.OtpVerificationActivity
+import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.data.flow.OnboardingFlow
 import com.fadlurahmanf.bebas_ui.edittext.BebasPhoneNumberEdittext
 import com.fadlurahmanf.bebas_shared.state.EditTextFormState
 import com.fadlurahmanf.bebas_ui.edittext.BebasEdittext
@@ -131,12 +133,43 @@ class InputPhoneEmailActivity :
 
         viewModel.initState.observe(this) {
             when (it) {
-                is InitInputPhoneAndEmailState.SuccessLoadData -> {
-                    binding.etPhone.text = it.phone ?: ""
-                    binding.etEmail.text = it.email ?: ""
+                is InitInputPhoneAndEmailState.SuccessToOtp -> {
+                    binding.etPhone.text = it.phone
+                    binding.etEmail.text = it.email
+
+                    val intent = Intent(this, EmailVerificationActivity::class.java)
+                    intent.putExtra(EmailVerificationActivity.EMAIL_ARG, it.email)
+                    emailLauncher.launch(intent)
                 }
 
-                else -> {}
+                is InitInputPhoneAndEmailState.FAILED -> {
+
+                }
+
+                is InitInputPhoneAndEmailState.SuccessFlowOnboarding -> {
+                    binding.etPhone.text = it.phone
+                    binding.etEmail.text = it.email
+
+                    val intent = Intent(this, PrepareOnboardingActivity::class.java)
+                    startActivity(intent)
+                }
+
+                is InitInputPhoneAndEmailState.SuccessFlowSelfActivation -> {
+                    binding.etPhone.text = it.phone
+                    binding.etEmail.text = it.email
+
+                    val intent = Intent(this, InputNikAndAccountNumberActivity::class.java)
+                    startActivity(intent)
+                }
+
+                is InitInputPhoneAndEmailState.SuccessToEmail -> {
+                    binding.etPhone.text = it.phone
+                    binding.etEmail.text = it.email
+
+                    val intent = Intent(this, EmailVerificationActivity::class.java)
+                    intent.putExtra(EmailVerificationActivity.EMAIL_ARG, it.email)
+                    emailLauncher.launch(intent)
+                }
             }
         }
 
@@ -157,18 +190,44 @@ class InputPhoneEmailActivity :
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 val otpToken = it.data?.getStringExtra("OTP_TOKEN")
-                goToEmail()
+                if (otpToken != null) {
+                    viewModel.updateIsFinishedOtpVerification(true)
+                    goToEmail()
+                }
             }
         }
 
     private val emailLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-
+                val emailToken = it.data?.getStringExtra("EMAIL_TOKEN")
+                if (emailToken != null) {
+                    viewModel.updateIsFinishedEmailVerification(true)
+                    navigateAfterEmailVerification(emailToken)
+                }
             }
         }
 
+    private fun navigateAfterEmailVerification(emailToken: String) {
+        when (viewModel.onboardingFlow) {
+            OnboardingFlow.CREATE_ACCOUNT -> {
+                val intent = Intent(this, PrepareOnboardingActivity::class.java)
+                startActivity(intent)
+            }
+
+            OnboardingFlow.ALREADY_HAVE_ACCOUNT_NUMBER -> {
+                val intent = Intent(this, InputPhoneEmailActivity::class.java)
+                startActivity(intent)
+            }
+
+            null -> {
+                showFailedBottomsheet(BebasException.generalRC("ONBOARDING_FLOW_MISSING"))
+            }
+        }
+    }
+
     private fun goToOtp() {
+        viewModel.updateIsFinishedOtpVerification(false)
         val intent = Intent(this, OtpVerificationActivity::class.java)
         intent.apply {
             putExtra(
@@ -180,6 +239,7 @@ class InputPhoneEmailActivity :
     }
 
     private fun goToEmail() {
+        viewModel.updateIsFinishedEmailVerification(false)
         val intent = Intent(this, EmailVerificationActivity::class.java)
         intent.apply {
             putExtra(

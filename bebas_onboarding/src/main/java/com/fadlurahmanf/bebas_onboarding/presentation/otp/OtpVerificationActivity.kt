@@ -1,28 +1,24 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.otp
 
-import android.content.Intent
-import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.buildSpannedString
-import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.R
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityOtpVerificationBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
+import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.extension.maskPhoneNumber
 import com.fadlurahmanf.bebas_ui.extension.dismissKeyboard
 import com.fadlurahmanf.bebas_ui.font.BebasFontTypeSpan
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class OtpVerificationActivity :
@@ -64,36 +60,14 @@ class OtpVerificationActivity :
         }
         this.phoneNumber = phoneNumberArg
 
-        val prefixOtpDescSpan = SpannableString("Masukkan OTP yang sudah kami kirimkan ke ")
-        prefixOtpDescSpan.setSpan(
-            ForegroundColorSpan(ContextCompat.getColor(this, R.color.black)),
-            0,
-            prefixOtpDescSpan.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        val phoneSpan = SpannableString(phoneNumber.maskPhoneNumber())
-        phoneSpan.setSpan(
-            ForegroundColorSpan(ContextCompat.getColor(this, R.color.black)),
-            0,
-            phoneSpan.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        phoneSpan.setSpan(
-            BebasFontTypeSpan("", ResourcesCompat.getFont(this, R.font.lexend_deca_bold)!!),
-            0,
-            phoneSpan.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-
-        val spannedBuilder = buildSpannedString {
-            append(prefixOtpDescSpan)
-            append(phoneSpan)
-        }
-
-        binding.tvSubtitleHeader.text = spannedBuilder
-
+        initSubHeader()
         listenOtpField()
+        initObserver()
 
+        viewModel.requestOtp(phoneNumber)
+    }
+
+    private fun initObserver() {
         viewModel.otpTick.observe(this) {
             val minutes = (it / 1000) / 60
             val seconds = (it / 1000) % 60
@@ -137,6 +111,7 @@ class OtpVerificationActivity :
                 }
 
                 is NetworkState.FAILED -> {
+                    dismissLoadingDialog()
                     showFailedBottomsheet(it.exception)
                 }
 
@@ -149,8 +124,36 @@ class OtpVerificationActivity :
                 }
             }
         }
+    }
 
-        viewModel.requestOtp(phoneNumber)
+    private fun initSubHeader() {
+        val prefixOtpDescSpan = SpannableString("Masukkan OTP yang sudah kami kirimkan ke ")
+        prefixOtpDescSpan.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(this, R.color.black)),
+            0,
+            prefixOtpDescSpan.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        val phoneSpan = SpannableString(phoneNumber.maskPhoneNumber())
+        phoneSpan.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(this, R.color.black)),
+            0,
+            phoneSpan.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        phoneSpan.setSpan(
+            BebasFontTypeSpan("", ResourcesCompat.getFont(this, R.font.lexend_deca_bold)!!),
+            0,
+            phoneSpan.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        val spannedBuilder = buildSpannedString {
+            append(prefixOtpDescSpan)
+            append(phoneSpan)
+        }
+
+        binding.tvSubtitleHeader.text = spannedBuilder
     }
 
     private var timer: CountDownTimer? = null
@@ -279,18 +282,6 @@ class OtpVerificationActivity :
 
         })
 
-        binding.otp1.setOnKeyListener { v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_UP) {
-                if (binding.otp2.text.isEmpty()) {
-                    binding.otp1.text.clear()
-                    binding.otp1.requestFocus()
-                } else {
-                    binding.otp2.text.clear()
-                }
-            }
-            return@setOnKeyListener true
-        }
-
         binding.otp2.setOnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_UP) {
                 if (binding.otp2.text.isEmpty()) {
@@ -300,7 +291,7 @@ class OtpVerificationActivity :
                     binding.otp2.text.clear()
                 }
             }
-            return@setOnKeyListener true
+            return@setOnKeyListener false
         }
 
         binding.otp3.setOnKeyListener { v, keyCode, event ->
@@ -312,7 +303,7 @@ class OtpVerificationActivity :
                     binding.otp3.text.clear()
                 }
             }
-            return@setOnKeyListener true
+            return@setOnKeyListener false
         }
 
         binding.otp4.setOnKeyListener { v, keyCode, event ->
@@ -324,7 +315,7 @@ class OtpVerificationActivity :
                     binding.otp4.text.clear()
                 }
             }
-            return@setOnKeyListener true
+            return@setOnKeyListener false
         }
 
         binding.otp5.setOnKeyListener { v, keyCode, event ->
@@ -336,7 +327,7 @@ class OtpVerificationActivity :
                     binding.otp5.text.clear()
                 }
             }
-            return@setOnKeyListener true
+            return@setOnKeyListener false
         }
 
         binding.otp6.setOnKeyListener { v, keyCode, event ->
@@ -348,7 +339,7 @@ class OtpVerificationActivity :
                     binding.otp6.text.clear()
                 }
             }
-            return@setOnKeyListener true
+            return@setOnKeyListener false
         }
 
         binding.otp1.setOnFocusChangeListener { v, hasFocus ->

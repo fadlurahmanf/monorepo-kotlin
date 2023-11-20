@@ -1,6 +1,5 @@
 package com.fadlurahmanf.bebas_storage.data.entity
 
-import androidx.room.PrimaryKey
 import com.fadlurahmanf.bebas_shared.data.flow.OnboardingFlow
 
 data class BebasDecryptedEntity(
@@ -22,4 +21,6 @@ data class BebasDecryptedEntity(
     var isFinishedReadTnc: Boolean? = null,
     var lastScreen: String? = null,
     var otpToken: String? = null,
+    var isFinishedOtpVerification: Boolean? = null,
+    var isFinishedEmailVerification: Boolean? = null,
 )

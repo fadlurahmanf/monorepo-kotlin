@@ -132,7 +132,9 @@ class BebasLocalDatasource @Inject constructor(
             email = decrypt(entity.encryptedEmail, privateKey),
             isFinishedReadTnc = entity.isFinishedReadTnc,
             lastScreen = entity.lastScreen,
-            otpToken = decrypt(entity.encryptedOtpToken, privateKey)
+            otpToken = decrypt(entity.encryptedOtpToken, privateKey),
+            isFinishedOtpVerification = entity.isFinishedOtpVerification,
+            isFinishedEmailVerification = entity.isFinishedEmailVerification
         )
         decryptedEntity
     }
@@ -143,7 +145,7 @@ class BebasLocalDatasource @Inject constructor(
         }
     }
 
-    fun updateOtpToken(otpToken: String) {
+    fun updateOtpToken(otpToken: String): Disposable {
         val entitySubscriber = getEntity().map { entity ->
             if (entity.encodedPublicKey == null) {
                 throw Exception()
@@ -152,7 +154,21 @@ class BebasLocalDatasource @Inject constructor(
                 coreRSARepository.encrypt(otpToken, entity.encodedPublicKey ?: "")
             dao.update(entity.copy(encryptedOtpToken = encryptedOtpToken))
         }
-        entitySubscriber.subscribe()
+        return entitySubscriber.subscribe()
+    }
+
+    fun updateIsFinishedOtpVerification(isFinished: Boolean?): Disposable {
+        val entitySubscriber = getEntity().map { entity ->
+            dao.update(entity.copy(isFinishedOtpVerification = isFinished))
+        }
+        return entitySubscriber.subscribe()
+    }
+
+    fun updateIsFinishedEmailVerification(isFinished: Boolean?): Disposable {
+        val entitySubscriber = getEntity().map { entity ->
+            dao.update(entity.copy(isFinishedEmailVerification = isFinished))
+        }
+        return entitySubscriber.subscribe()
     }
 
     private fun decrypt(encrypted: String?, privateKey: String?): String? {
