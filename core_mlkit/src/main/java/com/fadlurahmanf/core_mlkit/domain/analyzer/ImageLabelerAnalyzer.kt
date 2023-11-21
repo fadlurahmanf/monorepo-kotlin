@@ -1,4 +1,4 @@
-package com.fadlurahmanf.bebas_onboarding.domain.analyzer
+package com.fadlurahmanf.core_mlkit.domain.analyzer
 
 import android.graphics.Bitmap
 import androidx.camera.core.ExperimentalGetImage

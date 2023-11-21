@@ -30,5 +30,7 @@
         <attr name="android:drawableStart" />
     </declare-styleable>
 
-    <declare-styleable name="BebasBackButton" />
+    <declare-styleable name="BebasBackButton">
+        <attr name="color" />
+    </declare-styleable>
 </resources>

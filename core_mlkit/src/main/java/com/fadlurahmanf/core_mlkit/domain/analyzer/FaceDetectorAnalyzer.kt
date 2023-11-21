@@ -1,9 +1,11 @@
-package com.fadlurahmanf.bebas_onboarding.domain.analyzer
+package com.fadlurahmanf.core_mlkit.domain.analyzer
 
+import android.graphics.Bitmap
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.common.internal.ImageConvertUtils
 import com.google.mlkit.vision.face.Face
 import com.google.mlkit.vision.face.FaceDetection
 import com.google.mlkit.vision.face.FaceDetectorOptions
@@ -23,13 +25,13 @@ class FaceDetectorAnalyzer(
                 .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
                 .build()
             val detector = FaceDetection.getClient(highAccuracyOpts)
-            detector.process(
-                InputImage.fromMediaImage(
-                    mediaImage,
-                    image.imageInfo.rotationDegrees
-                )
-            ).addOnSuccessListener { faces ->
-                listener.onSuccessGetFaces(faces.toList(), image)
+            val inputImage = InputImage.fromMediaImage(
+                mediaImage,
+                image.imageInfo.rotationDegrees
+            )
+            val bitmap = ImageConvertUtils.getInstance().getUpRightBitmap(inputImage)
+            detector.process(inputImage).addOnSuccessListener { faces ->
+                listener.onSuccessGetFaces(faces.toList(), image, bitmap)
             }.addOnFailureListener {
                 listener.onFailedGetFaces(it)
             }
@@ -37,7 +39,7 @@ class FaceDetectorAnalyzer(
     }
 
     interface Listener {
-        fun onSuccessGetFaces(faces: List<Face>, image: ImageProxy)
+        fun onSuccessGetFaces(faces: List<Face>, image: ImageProxy, bitmapImage: Bitmap)
         fun onFailedGetFaces(e: Exception)
     }
 }

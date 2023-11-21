@@ -1,10 +1,6 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.camera_verification
 
-import android.R.attr.label
-import android.R.attr.text
 import android.app.Activity
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.graphics.Bitmap
 import android.util.Base64
 import android.util.Log
@@ -14,8 +10,8 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.core.content.ContextCompat
-import com.fadlurahmanf.bebas_onboarding.databinding.ActivityEktpVerificationBinding
-import com.fadlurahmanf.bebas_onboarding.domain.analyzer.ImageLabelerAnalyzer
+import com.fadlurahmanf.bebas_onboarding.databinding.ActivityEktpVerificationCameraBinding
+import com.fadlurahmanf.core_mlkit.domain.analyzer.ImageLabelerAnalyzer
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingCameraActivity
 import com.google.mlkit.vision.label.ImageLabel
 import java.io.ByteArrayOutputStream
@@ -23,8 +19,8 @@ import java.util.concurrent.Executors
 
 
 @androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
-class EktpVerificationActivity :
-    BaseOnboardingCameraActivity<ActivityEktpVerificationBinding>(ActivityEktpVerificationBinding::inflate) {
+class EktpVerificationCameraActivity :
+    BaseOnboardingCameraActivity<ActivityEktpVerificationCameraBinding>(ActivityEktpVerificationCameraBinding::inflate) {
     private lateinit var analyzer: ImageAnalysis
 
     override fun initCameraListener() {

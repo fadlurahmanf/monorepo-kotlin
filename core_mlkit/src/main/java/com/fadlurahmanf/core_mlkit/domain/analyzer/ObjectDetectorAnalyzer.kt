@@ -1,9 +1,11 @@
-package com.fadlurahmanf.bebas_onboarding.domain.analyzer
+package com.fadlurahmanf.core_mlkit.domain.analyzer
 
+import android.graphics.Bitmap
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.common.internal.ImageConvertUtils
 import com.google.mlkit.vision.objects.DetectedObject
 import com.google.mlkit.vision.objects.ObjectDetection
 import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
@@ -22,9 +24,10 @@ class ObjectDetectorAnalyzer(
         val mediaImage = image.image
         if (mediaImage != null) {
             val inputImage = InputImage.fromMediaImage(mediaImage, image.imageInfo.rotationDegrees)
+            val bitmap = ImageConvertUtils.getInstance().getUpRightBitmap(inputImage)
             val detection = ObjectDetection.getClient(options)
             detection.process(inputImage).addOnSuccessListener {
-                listener.onSuccessGetLabels(it.toList(), image)
+                listener.onSuccessGetLabels(it.toList(), image, bitmap)
             }.addOnFailureListener {
                 listener.onFailedGetLabels(it)
             }
@@ -32,7 +35,12 @@ class ObjectDetectorAnalyzer(
     }
 
     interface Listener {
-        fun onSuccessGetLabels(objects: List<DetectedObject>, image: ImageProxy)
+        fun onSuccessGetLabels(
+            objects: List<DetectedObject>,
+            image: ImageProxy,
+            bitmapImage: Bitmap
+        )
+
         fun onFailedGetLabels(e: Exception)
     }
 }

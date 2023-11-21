@@ -3,8 +3,9 @@
 
     <application>
         <activity
-            android:name=".presentation.camera_verification.EktpVerificationActivity"
-            android:exported="false" />
+            android:name=".presentation.camera_verification.EktpVerificationCameraActivity"
+            android:exported="false"
+            android:theme="@style/BaseBebas.Camera" />
         <activity
             android:name=".presentation.form_user.PrepareOnboardingActivity"
             android:exported="false"

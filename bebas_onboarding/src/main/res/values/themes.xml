@@ -13,6 +13,11 @@
         <item name="bottomSheetDialogTheme">@style/BaseBottomSheetDialogTheme</item>
     </style>
 
+    <!-- Base application theme. -->
+    <style name="BaseBebas.Camera">
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@color/light_grey</item>
+    </style>
+
     <style name="BaseBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/RoundedBottomsheetCorner</item>
     </style>

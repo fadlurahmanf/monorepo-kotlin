@@ -9,8 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityPrepareOnboardingBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
-import com.fadlurahmanf.bebas_onboarding.presentation.camera_verification.EktpVerificationActivity
-import com.fadlurahmanf.bebas_shared.BebasShared
+import com.fadlurahmanf.bebas_onboarding.presentation.camera_verification.EktpVerificationCameraActivity
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_ui.bottomsheet.FailedBottomsheet
 import javax.inject.Inject
@@ -72,7 +71,7 @@ class PrepareOnboardingActivity :
     }
 
     private fun goToEktpCameraVerification() {
-        val intent = Intent(this, EktpVerificationActivity::class.java)
+        val intent = Intent(this, EktpVerificationCameraActivity::class.java)
         startActivity(intent)
     }
 
