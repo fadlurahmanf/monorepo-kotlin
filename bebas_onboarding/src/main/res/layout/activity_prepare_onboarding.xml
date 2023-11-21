@@ -6,4 +6,118 @@
     android:layout_height="match_parent"
     tools:context=".presentation.form_user.PrepareOnboardingActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_collapseMode="pin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/circle_outlined"
+            android:padding="5dp"
+            android:src="@drawable/round_arrow_back_ios_new_24" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <TextView
+            style="@style/Font.HeaderTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Yang perlu kamu siapkan
+untuk Kami mengenalmu.. " />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/il_graphicon_small_ektp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Font.Text16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lexend_deca_bold"
+                    android:text="E-KTP" />
+
+                <TextView
+                    style="@style/Font.Text14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/lexend_deca_regular"
+                    android:text="E-KTP asli bukan fotokopi" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/il_graphicon_small_selfie" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Font.Text16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lexend_deca_bold"
+                    android:text="Foto Selfie" />
+
+                <TextView
+                    style="@style/Font.Text14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/lexend_deca_regular"
+                    android:text="Wajahmu akan kami rekam untuk verifikasi" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.fadlurahmanf.bebas_ui.button.BebasRoundedButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:text="@string/next" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

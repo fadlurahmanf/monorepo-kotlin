@@ -4,7 +4,8 @@
     <application>
         <activity
             android:name=".presentation.form_user.PrepareOnboardingActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/BaseBebas" />
         <activity
             android:name=".presentation.form_user.InputNikAndAccountNumberActivity"
             android:exported="false" />
