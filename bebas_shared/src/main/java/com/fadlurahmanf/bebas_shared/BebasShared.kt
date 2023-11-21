@@ -42,4 +42,6 @@ object BebasShared {
     lateinit var appVersionCode: String
 
     lateinit var appVersionName: String
+
+    lateinit var packageId: String
 }

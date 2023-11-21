@@ -18,6 +18,7 @@ class BebasActivity : AppCompatActivity() {
             putExtra("FLAVOR", BuildConfig.FLAVOR)
             putExtra("VERSION_CODE", BuildConfig.VERSION_CODE)
             putExtra("VERSION_NAME", BuildConfig.VERSION_NAME)
+            putExtra("PACKAGE_ID", BuildConfig.APPLICATION_ID)
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         startActivity(intent)

@@ -65,6 +65,10 @@ dependencies {
     // ga support android 33, naikin jadi 34 kalo update
     implementation "androidx.camera:camera-view:1.0.0-alpha28"
 
+    implementation 'com.google.mlkit:image-labeling:17.0.7'
+    implementation 'com.google.mlkit:face-detection:16.1.5'
+    implementation 'com.google.mlkit:object-detection:17.0.0'
+
     implementation(project(":core_crypto"))
     implementation(project(":core_logger"))
     implementation(project(":core_network"))

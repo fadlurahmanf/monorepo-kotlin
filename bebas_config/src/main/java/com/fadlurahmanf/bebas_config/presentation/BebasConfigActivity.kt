@@ -14,9 +14,11 @@ class BebasConfigActivity : AppCompatActivity() {
         val flavor = intent.extras?.getString("FLAVOR")
         val versionCode = intent.extras?.getString("VERSION_CODE")
         val versionName = intent.extras?.getString("VERSION_NAME")
+        val packageId = intent.extras?.getString("PACKAGE_ID")
 
         BebasShared.appVersionName = versionName ?: "-"
         BebasShared.appVersionCode = versionCode ?: "-"
+        BebasShared.packageId = packageId ?: "-"
 
 
         when (flavor) {
