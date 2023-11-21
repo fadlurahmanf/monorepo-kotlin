@@ -24,10 +24,6 @@ class TncActivity : BaseOnboardingActivity<ActivityTncBinding>(ActivityTncBindin
     }
 
     override fun setup() {
-        binding.ivBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
-
         binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
             viewModel.switchIsTncRead(isChecked)
         }

@@ -31,14 +31,9 @@
                 app:layout_collapseMode="pin"
                 app:title="Email Verification">
 
-                <ImageView
-                    android:id="@+id/iv_back"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/circle_outlined"
-                    android:padding="5dp"
-                    android:src="@drawable/round_arrow_back_ios_new_24" />
+                <com.fadlurahmanf.bebas_ui.button.BebasBackButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
 
             </androidx.appcompat.widget.Toolbar>

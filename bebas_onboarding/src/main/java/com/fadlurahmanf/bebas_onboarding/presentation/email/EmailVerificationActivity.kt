@@ -35,10 +35,6 @@ class EmailVerificationActivity :
     override fun setup() {
         val emailArg = intent.extras?.getString(EMAIL_ARG)
 
-        binding.ivBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
-
         if (emailArg == null) {
             showFailedBottomsheet(BebasException.generalRC("EMAIL_MISSING"))
             return

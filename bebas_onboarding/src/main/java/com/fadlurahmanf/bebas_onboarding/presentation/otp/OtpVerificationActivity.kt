@@ -39,10 +39,6 @@ class OtpVerificationActivity :
 
 
     override fun setup() {
-        binding.ivBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
-
         binding.btnVerifyOtp.setOnClickListener {
             if (getOTPText().length >= 6) {
                 viewModel.verifyOtp("111111", phoneNumber)
