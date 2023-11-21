@@ -48,7 +48,7 @@ class EmailVerificationViewModel @Inject constructor(
                                           {
                                               if (it.isVerify == true) {
                                                   _checkEmailVerifyState.value =
-                                                      CheckIsEmailVerifyState.IsVerified
+                                                      CheckIsEmailVerifyState.IsVerified(it.emailToken!!)
                                               } else {
                                                   _checkEmailVerifyState.value =
                                                       CheckIsEmailVerifyState.IsNotVerified

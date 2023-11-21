@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.email
 
+import android.app.Activity
 import android.content.Intent
 import android.os.CountDownTimer
 import android.os.Handler
@@ -56,8 +57,12 @@ class EmailVerificationActivity :
     private fun initObserver() {
         viewModel.checkEmailVerifyState.observe(this) {
             when (it) {
-                CheckIsEmailVerifyState.IsVerified -> {
+                is CheckIsEmailVerifyState.IsVerified -> {
                     handler.removeCallbacks(fetchEmailStatusRunnable)
+                    setResult(Activity.RESULT_OK, intent.apply {
+                        putExtra("EMAIL_TOKEN", it.emailToken)
+                    })
+                    finish()
                 }
 
                 else -> {

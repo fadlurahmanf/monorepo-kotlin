@@ -184,7 +184,7 @@ class OnboardingRepositoryImpl @Inject constructor(
                 throw BebasException.generalRC("OTP_TOKEN_MISSING")
             }
 
-            bebasLocalDatasource.updateOtpToken(it.data?.otpToken ?: "")
+            bebasLocalDatasource.updateOtpToken(it.data!!.otpToken!!)
 
             it.data!!
         }
@@ -206,7 +206,8 @@ class OnboardingRepositoryImpl @Inject constructor(
         return bebasLocalDatasource.getDecryptedEntity().toObservable().flatMap { decryptedEntity ->
             val phoneNumber =
                 decryptedEntity.phone ?: throw BebasException.generalRC("PHONE_NUMBER_MISSING")
-            val otpToken = decryptedEntity.otpToken ?: throw BebasException.generalRC("OTP_TOKEN_MISSING")
+            val otpToken =
+                decryptedEntity.otpToken ?: throw BebasException.generalRC("OTP_TOKEN_MISSING")
             val flowType =
                 if (decryptedEntity.onboardingFlow == OnboardingFlow.SELF_ACTIVATION) "selfActivation" else "onboarding"
             onboardingGuestRemoteDatasource.requestEmailAvailability(
@@ -220,7 +221,7 @@ class OnboardingRepositoryImpl @Inject constructor(
                     onboardingGuestRemoteDatasource.sendEmailVerification(
                         email = email,
                         phoneNumber = phoneNumber,
-                        otpToken = "",
+                        otpToken = otpToken,
                         deviceId = deviceId,
                         flowType = flowType
                     ).map {
@@ -233,7 +234,7 @@ class OnboardingRepositoryImpl @Inject constructor(
                     onboardingGuestRemoteDatasource.sendEmailVerification(
                         email = email,
                         phoneNumber = phoneNumber,
-                        otpToken = "",
+                        otpToken = otpToken,
                         deviceId = deviceId,
                         flowType = flowType
                     ).map { baseRespRequestEmail ->
@@ -294,7 +295,7 @@ class OnboardingRepositoryImpl @Inject constructor(
                     throw BebasException.generalRC("EMAIL_TOKEN_MISSING")
                 }
 
-                bebasLocalDatasource.updateEmailToken(baseResp.data?.emailToken ?: "")
+                bebasLocalDatasource.updateEmailToken(baseResp.data!!.emailToken!!)
 
                 baseResp.data!!
             }
