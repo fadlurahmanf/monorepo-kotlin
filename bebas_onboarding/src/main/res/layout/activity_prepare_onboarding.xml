@@ -33,10 +33,31 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/track_progress_background"
+            android:progress="10"
+            app:indicatorColor="@color/red"
+            app:trackColor="@color/light_grey_20"
+            app:trackCornerRadius="10dp"
+            app:trackThickness="7dp" />
+
+        <TextView
+            style="@style/Font.Text12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/lexend_deca_regular"
+            android:text="Langkah 1"
+            android:textColor="@color/light_grey" />
+
         <TextView
             style="@style/Font.HeaderTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:text="Yang perlu kamu siapkan
 untuk Kami mengenalmu.. " />
 
@@ -44,7 +65,8 @@ untuk Kami mengenalmu.. " />
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp">
 
             <ImageView
                 android:layout_width="40dp"
@@ -79,7 +101,8 @@ untuk Kami mengenalmu.. " />
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp">
 
             <ImageView
                 android:layout_width="40dp"
