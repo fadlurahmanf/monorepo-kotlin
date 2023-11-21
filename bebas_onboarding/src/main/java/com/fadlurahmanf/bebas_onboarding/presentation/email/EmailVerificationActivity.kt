@@ -1,9 +1,13 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.email
 
 import android.content.Intent
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
+import com.fadlurahmanf.bebas_api.network_state.NetworkState
+import com.fadlurahmanf.bebas_onboarding.R
 import com.fadlurahmanf.bebas_onboarding.data.state.CheckIsEmailVerifyState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityEmailVerificationBinding
@@ -45,8 +49,8 @@ class EmailVerificationActivity :
         binding.etEmail.setIsEnabled(false)
 
         initObserver()
-
         fetchStatusEmail()
+        viewModel.requestEmail(email)
     }
 
     private fun initObserver() {
@@ -61,6 +65,49 @@ class EmailVerificationActivity :
                 }
             }
         }
+
+        viewModel.requestEmailState.observe(this) {
+            when (it) {
+                is NetworkState.SUCCESS -> {
+                    dismissLoadingDialog()
+                    if (it.data.remainingEmailInSecond > 0) {
+                        setTimer(it.data.remainingEmailInSecond)
+                    }
+                }
+
+                is NetworkState.LOADING -> {
+                    showLoadingDialog()
+                }
+
+                is NetworkState.FAILED -> {
+                    dismissLoadingDialog()
+                    showFailedBottomsheet(it.exception)
+                }
+
+                else -> {
+
+                }
+            }
+        }
+    }
+
+    private var timer: CountDownTimer? = null
+
+    fun setTimer(remainInSecond: Long) {
+        timer = object : CountDownTimer(remainInSecond * 1000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                binding.btnCounterEmailRetry.visibility = View.GONE
+                binding.tvCountdownEmailRetry.visibility = View.VISIBLE
+                binding.tvCountdownEmailRetry.text =
+                    getString(R.string.resend_email_in_seconds, millisUntilFinished / 1000)
+            }
+
+            override fun onFinish() {
+                binding.btnCounterEmailRetry.visibility = View.VISIBLE
+                binding.tvCountdownEmailRetry.visibility = View.GONE
+            }
+        }
+        timer?.start()
     }
 
     private val handler = Handler(Looper.getMainLooper())

@@ -2,7 +2,8 @@
 <resources>
     <string name="ok">Oke</string>
     <string name="resend_otp_in_minutes_seconds">Kirim ulang dalam %1$d menit %2$d detik</string>
-    <string name="resend_otp_in_seconds">Kirim ulang dalam %1$d detik</string>
+    <string name="resend_otp_in_seconds">Kirim ulang otp dalam %1$d detik</string>
+    <string name="resend_email_in_seconds">Kirim ulang email dalam %1$d detik</string>
     <string name="otp_counter_retry">Resend OTP %1$d/%2$d</string>
     <string name="create_new_account_number">Buat akun baru</string>
     <string name="already_have_an_account_number">Sudah punya rekening</string>

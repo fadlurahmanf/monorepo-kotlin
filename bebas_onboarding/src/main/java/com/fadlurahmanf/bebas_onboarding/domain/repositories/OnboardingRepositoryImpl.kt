@@ -206,12 +206,13 @@ class OnboardingRepositoryImpl @Inject constructor(
         return bebasLocalDatasource.getDecryptedEntity().toObservable().flatMap { decryptedEntity ->
             val phoneNumber =
                 decryptedEntity.phone ?: throw BebasException.generalRC("PHONE_NUMBER_MISSING")
+            val otpToken = decryptedEntity.otpToken ?: throw BebasException.generalRC("OTP_TOKEN_MISSING")
             val flowType =
                 if (decryptedEntity.onboardingFlow == OnboardingFlow.SELF_ACTIVATION) "selfActivation" else "onboarding"
             onboardingGuestRemoteDatasource.requestEmailAvailability(
                 email = email,
                 phoneNumber = phoneNumber,
-                otpToken = "",
+                otpToken = otpToken,
                 deviceId = deviceId,
                 flowType = flowType
             ).flatMap { respRequestEmailVerif ->
