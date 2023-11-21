@@ -81,6 +81,7 @@ dependencies {
 
     implementation(project(":core_crypto"))
     implementation(project(":core_logger"))
+    implementation(project(":core_network"))
     implementation(project(":core_platform"))
     implementation(project(":core_vplayer"))
 

@@ -6,10 +6,10 @@ import com.fadlurahmanf.mapp_shared.MappShared
 import com.fadlurahmanf.mapp_storage.domain.datasource.MappLocalDatasource
 import okhttp3.OkHttpClient
 
-abstract class MasIdentityGuestTokenNetwork<T>(
+abstract class MasIdentityGuestTokenNetworkMapp<T>(
     context: Context,
     private val mappLocalDatasource: MappLocalDatasource
-) : BaseNetwork<T>(context) {
+) : MappBaseNetwork<T>(context) {
     override fun getBaseUrl(): String {
         return "${MappShared.retailGuestBaseUrl}identity-service/"
     }

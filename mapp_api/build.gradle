@@ -57,6 +57,7 @@ dependencies {
     implementation "com.github.chuckerteam.chucker:library:3.5.2"
 
     implementation(project(":core_logger"))
+    implementation(project(":core_network"))
 
     implementation(project(":mapp_shared"))
     implementation(project(":mapp_storage"))

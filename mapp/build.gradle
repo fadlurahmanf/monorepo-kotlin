@@ -14,7 +14,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace 'com.fadlurahmanf.mapp'
-    compileSdk 33
+    compileSdk 34
 
     buildFeatures {
         buildConfig = true
@@ -94,6 +94,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
 
     implementation(project(":core_logger"))
+    implementation(project(":core_network"))
     implementation(project(":core_platform"))
 
     implementation(project(":mapp_analytic"))
