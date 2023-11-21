@@ -48,6 +48,7 @@
         android:layout_height="wrap_content"
         android:overScrollMode="never"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,32 +67,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:hint="e.g. 0812XXX"
-                android:inputType="text|phone"
                 android:imeOptions="actionNext"
-                android:src="@drawable/round_phonelink_ring_24"
-                app:label="Nomor Ponsel"/>
+                android:inputType="text|phone"
+                android:drawableStart="@drawable/round_phonelink_ring_24"
+                app:hint="e.g. 0812XXX"
+                app:label="Nomor Ponsel" />
 
             <com.fadlurahmanf.bebas_ui.edittext.BebasEdittext
                 android:id="@+id/et_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:hint="Email"
-                android:src="@drawable/outline_mail_24"
-                android:inputType="text|textEmailAddress"
                 android:imeOptions="actionDone"
-                app:label="Alamat Email"/>
+                android:inputType="text|textEmailAddress"
+                android:drawableStart="@drawable/outline_mail_24"
+                app:hint="Email"
+                app:label="Alamat Email" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <com.fadlurahmanf.bebas_ui.button.BebasRoundedButton
+        android:id="@+id/btn_next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_next"
-        app:text="Lanjut"
         android:layout_gravity="bottom"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="20dp"
-        android:layout_marginHorizontal="20dp"/>
+        app:text="Lanjut" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

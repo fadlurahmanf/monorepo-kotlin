@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_ui.edittext
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.content.res.TypedArray
 import android.text.Editable
 import android.text.TextWatcher
@@ -56,7 +57,7 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
         editText.imeOptions = attributes.getInt(R.styleable.BebasEdittext_android_imeOptions, 0)
         editText.inputType = attributes.getInt(R.styleable.BebasEdittext_android_inputType, 0)
 
-        val drawable = attributes.getDrawable(R.styleable.BebasPhoneNumberEdittext_android_src)
+        val drawable = attributes.getDrawable(R.styleable.BebasEdittext_android_drawableStart)
         if (drawable != null) {
             drawableStart.visibility = View.VISIBLE
             drawableStart.setImageDrawable(drawable)
@@ -171,6 +172,7 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
             editText.background = ContextCompat.getDrawable(this.context, R.color.light_grey_20)
             label.setTextAppearance(this.context, R.style.Font_EdittextLabel_Disabled)
             editText.setTextAppearance(this.context, R.style.Font_Edittext_Disabled)
+            drawableStart.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this.context, R.color.black_opacity))
         } else {
             changeEditTextStyle()
         }

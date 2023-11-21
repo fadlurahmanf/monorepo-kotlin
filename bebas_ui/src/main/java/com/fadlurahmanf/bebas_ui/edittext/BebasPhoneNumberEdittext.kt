@@ -57,7 +57,7 @@ class BebasPhoneNumberEdittext(context: Context, attributeSet: AttributeSet) :
         editText.inputType =
             attributes.getInt(R.styleable.BebasPhoneNumberEdittext_android_inputType, 0)
 
-        val drawable = attributes.getDrawable(R.styleable.BebasPhoneNumberEdittext_android_src)
+        val drawable = attributes.getDrawable(R.styleable.BebasPhoneNumberEdittext_android_drawableStart)
         if (drawable != null) {
             drawableStart.visibility = View.VISIBLE
             drawableStart.setImageDrawable(drawable)

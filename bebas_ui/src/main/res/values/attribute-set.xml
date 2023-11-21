@@ -19,7 +19,7 @@
         <attr name="label" />
         <attr name="android:imeOptions" />
         <attr name="android:inputType" />
-        <attr name="android:src" />
+        <attr name="android:drawableStart"/>
     </declare-styleable>
 
     <declare-styleable name="BebasPhoneNumberEdittext">
@@ -27,6 +27,6 @@
         <attr name="label" />
         <attr name="android:imeOptions" />
         <attr name="android:inputType" />
-        <attr name="android:src" />
+        <attr name="android:drawableStart"/>
     </declare-styleable>
 </resources>
