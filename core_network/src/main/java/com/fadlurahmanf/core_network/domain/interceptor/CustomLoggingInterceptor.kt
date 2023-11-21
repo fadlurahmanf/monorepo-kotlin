@@ -1,4 +1,4 @@
-package com.fadlurahmanf.bebas_api.domain.interceptor
+package com.fadlurahmanf.core_network.domain.interceptor
 
 import android.util.Log
 import okhttp3.Headers

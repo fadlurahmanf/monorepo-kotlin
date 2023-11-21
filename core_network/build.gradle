@@ -1,12 +1,10 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-parcelize'
-    id 'kotlin-kapt'
 }
 
 android {
-    namespace 'com.fadlurahmanf.bebas_api'
+    namespace 'com.fadlurahmanf.core_network'
     compileSdk 33
 
     defaultConfig {
@@ -45,9 +43,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    implementation 'com.google.dagger:dagger:2.47'
-    kapt 'com.google.dagger:dagger-compiler:2.47'
-
     def retrofit_version = "2.9.0"
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -55,8 +50,4 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofit_version"
 
     implementation "com.github.chuckerteam.chucker:library:3.5.2"
-
-    implementation(project(":core_network"))
-
-    implementation(project(":bebas_shared"))
 }

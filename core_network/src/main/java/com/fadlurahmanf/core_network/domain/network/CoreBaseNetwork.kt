@@ -1,23 +1,22 @@
-package com.fadlurahmanf.bebas_api.domain.network
+package com.fadlurahmanf.core_network.domain.network
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.chuckerteam.chucker.api.RetentionManager
-import com.fadlurahmanf.bebas_api.domain.interceptor.CustomLoggingInterceptor
-import com.fadlurahmanf.bebas_api.domain.interceptor.BebasExceptionInterceptor
+import com.fadlurahmanf.core_network.domain.interceptor.CustomLoggingInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-abstract class BaseNetwork<T>(var context: Context) {
+abstract class CoreBaseNetwork<T>(var context: Context, var tagCustomLogging:String = "CoreNetworkLogger") {
 
     var service: T? = null
 
     private fun bodyLoggingInterceptor(): CustomLoggingInterceptor {
-        return CustomLoggingInterceptor("BebasNetworkLogger").setLevel(CustomLoggingInterceptor.Level.BODY)
+        return CustomLoggingInterceptor(tagCustomLogging).setLevel(CustomLoggingInterceptor.Level.BODY)
     }
 
     private fun getChuckerInterceptor(): ChuckerInterceptor {
@@ -35,7 +34,6 @@ abstract class BaseNetwork<T>(var context: Context) {
     open fun okHttpClientBuilder(builder: OkHttpClient.Builder): OkHttpClient.Builder {
         return builder.addInterceptor(bodyLoggingInterceptor())
             .addInterceptor(getChuckerInterceptor())
-            .addInterceptor(BebasExceptionInterceptor(context))
     }
 
     private fun provideClient(timeOut: Long): OkHttpClient {
