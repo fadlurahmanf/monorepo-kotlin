@@ -29,4 +29,5 @@ data class BebasEntity(
     var encryptedEmailToken: String? = null,
     var isFinishedOtpVerification: Boolean? = null,
     var isFinishedEmailVerification: Boolean? = null,
+    var isFinishedPrepareOnboarding: Boolean? = null,
 )

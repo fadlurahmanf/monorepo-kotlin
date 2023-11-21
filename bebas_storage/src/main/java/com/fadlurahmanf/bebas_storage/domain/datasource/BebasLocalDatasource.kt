@@ -184,6 +184,13 @@ class BebasLocalDatasource @Inject constructor(
         return entitySubscriber.subscribe()
     }
 
+    fun updateIsFinishedPrepareOnboarding(isFinished: Boolean?): Disposable {
+        val entitySubscriber = getEntity().map { entity ->
+            dao.update(entity.copy(isFinishedPrepareOnboarding = isFinished))
+        }
+        return entitySubscriber.subscribe()
+    }
+
     private fun decrypt(encrypted: String?, privateKey: String?): String? {
         return if (encrypted != null) {
             coreRSARepository.decrypt(
