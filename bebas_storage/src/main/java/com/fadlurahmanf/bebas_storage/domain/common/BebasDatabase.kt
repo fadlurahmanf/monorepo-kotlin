@@ -16,14 +16,16 @@ import com.fadlurahmanf.bebas_storage.domain.converter.BebasConverters
     ], version = BebasDatabase.VERSION,
     exportSchema = false
 )
-@TypeConverters(value = [
-    BebasConverters::class
-])
+@TypeConverters(
+    value = [
+        BebasConverters::class
+    ]
+)
 abstract class BebasDatabase : RoomDatabase() {
     abstract fun bebasDao(): BebasDao
 
     companion object {
-        const val VERSION = 10
+        const val VERSION = 11
 
         @Volatile
         private var INSTANCE: BebasDatabase? = null
@@ -33,7 +35,8 @@ abstract class BebasDatabase : RoomDatabase() {
                     context.applicationContext,
                     BebasDatabase::class.java,
                     BebasDbConstant.dbName
-                ).fallbackToDestructiveMigration()
+                )
+//                    .fallbackToDestructiveMigration()
                     .allowMainThreadQueries()
                     .build()
                 INSTANCE = instance
