@@ -22,7 +22,9 @@ data class BebasDecryptedEntity(
     var lastScreen: String? = null,
     var otpToken: String? = null,
     var emailToken: String? = null,
+    var onboardingId: String? = null,
     var isFinishedOtpVerification: Boolean? = null,
     var isFinishedEmailVerification: Boolean? = null,
     var isFinishedPrepareOnboarding: Boolean? = null,
+    var base64ImageEktp: String? = null,
 )

@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation
 
 import android.os.Handler
 import android.os.Looper
+import androidx.camera.core.Camera
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.viewbinding.ViewBinding
 import com.fadlurahmanf.bebas_ui.activity.BebasInflateActivity
@@ -9,7 +10,10 @@ import java.util.concurrent.ExecutorService
 
 abstract class BaseOnboardingCameraActivity<VB : ViewBinding>(inflate: BebasInflateActivity<VB>) :
     BaseOnboardingActivity<VB>(inflate) {
+
     lateinit var cameraExecutor: ExecutorService
+    lateinit var camera: Camera
+    lateinit var cameraProvider: ProcessCameraProvider
 
     val handler = Handler(Looper.getMainLooper())
 

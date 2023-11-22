@@ -7,9 +7,12 @@ import com.fadlurahmanf.bebas_api.data.datasources.IdentityRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.OnboardingGuestRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyRequest
 import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyResponse
+import com.fadlurahmanf.bebas_api.data.dto.email.RequestEmailVerificationReponse
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.identity.CreateGuestTokenResponse
 import com.fadlurahmanf.bebas_api.data.dto.identity.GenerateGuestTokenRequest
+import com.fadlurahmanf.bebas_api.data.dto.ocr.OcrRequest
+import com.fadlurahmanf.bebas_api.data.dto.ocr.OcrResponse
 import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpRequest
 import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpResponse
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
@@ -295,9 +298,36 @@ class OnboardingRepositoryImpl @Inject constructor(
                     throw BebasException.generalRC("EMAIL_TOKEN_MISSING")
                 }
 
-                bebasLocalDatasource.updateEmailToken(baseResp.data!!.emailToken!!)
+                if (baseResp.data?.onboardingId == null) {
+                    throw BebasException.generalRC("ONBOARDING_ID_MISSING")
+                }
+
+                bebasLocalDatasource.updateEmailTokenAndOnboardingId(
+                    emailToken = baseResp.data!!.emailToken!!,
+                    onboardingId = baseResp.data!!.onboardingId!!
+                )
 
                 baseResp.data!!
+            }
+        }
+    }
+
+    fun getOCRv2(base64Image: String): Observable<OcrResponse> {
+        return bebasLocalDatasource.getDecryptedEntity().toObservable().flatMap { decrypted ->
+            val ocrRequest = OcrRequest(
+                onboardingId = decrypted.onboardingId ?: "",
+                emailToken = decrypted.emailToken ?: "",
+                email = decrypted.email ?: "",
+                deviceId = decrypted.deviceId,
+                base64Image = base64Image,
+            )
+            onboardingGuestRemoteDatasource.getOcrV2(ocrRequest).map {
+                if (it.data == null) {
+                    throw BebasException.generalRC("DATA_MISSING")
+                }
+
+                bebasLocalDatasource.updateBase64ImageEktp(base64Image)
+                it.data!!
             }
         }
     }

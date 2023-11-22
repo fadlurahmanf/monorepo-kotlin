@@ -4,17 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.camera_verification.EktpVerificationCameraActivity">
+    android:background="@color/white"
+    tools:context=".presentation.camera_verification.EktpVerificationCameraResultActivity">
 
-    <androidx.camera.view.PreviewView
-        android:id="@+id/cameraView"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="250dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="30dp"
+        android:elevation="10dp"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_subtitle_header">
 
-    <com.fadlurahmanf.bebas_ui.overlay.EktpOverlayView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/light_grey" />
+        <ImageView
+            android:id="@+id/iv_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:scaleType="centerCrop"
+            android:src="@color/black" />
+    </androidx.cardview.widget.CardView>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -27,7 +36,7 @@
         <com.fadlurahmanf.bebas_ui.button.BebasBackButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:color="@color/white" />
+            app:color="@color/black" />
 
 
     </androidx.appcompat.widget.Toolbar>
@@ -39,8 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
-        android:text="Foto E-KTP"
-        android:textColor="@color/white"
+        android:text="Hasil Foto E-KTP"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
@@ -49,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="25dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="70dp"
         android:background="@drawable/helper_text_camera_verification_background"
         android:fontFamily="@font/lexend_deca_semi_bold"
         android:gravity="center"
@@ -57,42 +65,15 @@
         android:paddingVertical="10dp"
         android:text="Pastikan E-KTP berada pada area bingkai
 &amp; terbaca dengan jelas "
-        app:layout_constraintBottom_toTopOf="@id/ll_camera_controller" />
+        app:layout_constraintBottom_toTopOf="@id/btn_next" />
 
-    <LinearLayout
-        android:id="@+id/ll_camera_controller"
+    <com.fadlurahmanf.bebas_ui.button.BebasRoundedButton
+        android:id="@+id/btn_next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:id="@+id/iv_flash"
-            android:src="@drawable/round_flash_off_24"
-            app:tint="@color/white" />
-
-        <ImageView
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:id="@+id/iv_camera"
-            android:layout_marginHorizontal="20dp"
-            android:background="@drawable/circle_light_grey"
-            android:padding="15dp"
-            android:src="@drawable/round_camera_alt_24"
-            app:tint="@color/black" />
-
-        <ImageView
-            android:layout_width="25dp"
-            android:id="@+id/iv_switch_camera"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:src="@drawable/baseline_autorenew_24"
-            app:tint="@color/white" />
-    </LinearLayout>
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:text="@string/next" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

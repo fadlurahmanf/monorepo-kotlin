@@ -27,7 +27,9 @@ data class BebasEntity(
     var lastScreen: String? = null,
     var encryptedOtpToken: String? = null,
     var encryptedEmailToken: String? = null,
+    var encryptedOnboardingId: String? = null,
     var isFinishedOtpVerification: Boolean? = null,
     var isFinishedEmailVerification: Boolean? = null,
     var isFinishedPrepareOnboarding: Boolean? = null,
+    var base64ImageEktp: String? = null,
 )

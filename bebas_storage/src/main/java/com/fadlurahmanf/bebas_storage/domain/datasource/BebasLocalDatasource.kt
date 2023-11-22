@@ -134,8 +134,10 @@ class BebasLocalDatasource @Inject constructor(
             lastScreen = entity.lastScreen,
             otpToken = decrypt(entity.encryptedOtpToken, privateKey),
             emailToken = decrypt(entity.encryptedEmailToken, privateKey),
+            onboardingId = decrypt(entity.encryptedOnboardingId, privateKey),
             isFinishedOtpVerification = entity.isFinishedOtpVerification,
-            isFinishedEmailVerification = entity.isFinishedEmailVerification
+            isFinishedEmailVerification = entity.isFinishedEmailVerification,
+            base64ImageEktp = entity.base64ImageEktp,
         )
         decryptedEntity
     }
@@ -170,6 +172,25 @@ class BebasLocalDatasource @Inject constructor(
         return entitySubscriber.subscribe()
     }
 
+    fun updateEmailTokenAndOnboardingId(emailToken: String, onboardingId: String): Disposable {
+        val entitySubscriber = getEntity().map { entity ->
+            if (entity.encodedPublicKey == null) {
+                throw Exception()
+            }
+            val encryptedEmailToken =
+                coreRSARepository.encrypt(emailToken, entity.encodedPublicKey ?: "")
+            val encryptedOnboardingId =
+                coreRSARepository.encrypt(onboardingId, entity.encodedPublicKey ?: "")
+            dao.update(
+                entity.copy(
+                    encryptedEmailToken = encryptedEmailToken,
+                    encryptedOnboardingId = encryptedOnboardingId
+                )
+            )
+        }
+        return entitySubscriber.subscribe()
+    }
+
     fun updateIsFinishedOtpVerification(isFinished: Boolean?): Disposable {
         val entitySubscriber = getEntity().map { entity ->
             dao.update(entity.copy(isFinishedOtpVerification = isFinished))
@@ -187,6 +208,13 @@ class BebasLocalDatasource @Inject constructor(
     fun updateIsFinishedPrepareOnboarding(isFinished: Boolean?): Disposable {
         val entitySubscriber = getEntity().map { entity ->
             dao.update(entity.copy(isFinishedPrepareOnboarding = isFinished))
+        }
+        return entitySubscriber.subscribe()
+    }
+
+    fun updateBase64ImageEktp(base64Image: String): Disposable {
+        val entitySubscriber = getEntity().map { entity ->
+            dao.update(entity.copy(base64ImageEktp = base64Image))
         }
         return entitySubscriber.subscribe()
     }
