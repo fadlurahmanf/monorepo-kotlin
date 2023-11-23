@@ -2,16 +2,12 @@ package com.fadlurahmanf.bebas_onboarding.presentation.form_user
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.util.Log
-import com.fadlurahmanf.bebas_onboarding.R
 import com.fadlurahmanf.bebas_onboarding.data.flow.EktpVerificationFormFlow
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityEktpVerificationFormBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
-import com.fadlurahmanf.bebas_ui.bottomsheet.FailedBottomsheet
-import com.fadlurahmanf.bebas_ui.bottomsheet.GenderBottomsheet
+import com.fadlurahmanf.bebas_ui.bottomsheet.BebasPickerBottomsheet
 import java.lang.Exception
 
 class EktpVerificationFormActivity :
@@ -40,10 +36,10 @@ class EktpVerificationFormActivity :
 
     private fun initAction() {
         binding.ddGender.setOnClickListener {
-            genderBottomsheet = GenderBottomsheet()
-            genderBottomsheet?.show(
+            bebasPickerBottomsheet = BebasPickerBottomsheet()
+            bebasPickerBottomsheet?.show(
                 supportFragmentManager,
-                GenderBottomsheet::class.java.simpleName
+                BebasPickerBottomsheet::class.java.simpleName
             )
         }
     }
@@ -69,5 +65,5 @@ class EktpVerificationFormActivity :
         }
     }
 
-    private var genderBottomsheet: GenderBottomsheet? = null
+    private var bebasPickerBottomsheet: BebasPickerBottomsheet? = null
 }

@@ -5,16 +5,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.fadlurahmanf.bebas_shared.data.dto.GenderModel
+import com.fadlurahmanf.bebas_shared.data.dto.BebasItemPickerBottomsheetModel
 import com.fadlurahmanf.bebas_ui.R
 
-class SelectGenderAdapter : RecyclerView.Adapter<SelectGenderAdapter.ViewHolder>() {
-    private var list: List<GenderModel> = listOf(
-        GenderModel(
+class BebasPickerBottomsheetAdapter : RecyclerView.Adapter<BebasPickerBottomsheetAdapter.ViewHolder>() {
+    private var list: List<BebasItemPickerBottomsheetModel> = listOf(
+        BebasItemPickerBottomsheetModel(
             id = "LAKI-LAKI",
             label = "LAKI-LAKI"
         ),
-        GenderModel(
+        BebasItemPickerBottomsheetModel(
             id = "PEREMPUAN",
             label = "PEREMPUAN"
         )
@@ -27,13 +27,13 @@ class SelectGenderAdapter : RecyclerView.Adapter<SelectGenderAdapter.ViewHolder>
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): SelectGenderAdapter.ViewHolder {
+    ): BebasPickerBottomsheetAdapter.ViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_text, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.bebas_item_picker_text, parent, false)
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: SelectGenderAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BebasPickerBottomsheetAdapter.ViewHolder, position: Int) {
         val gender = list[position]
         holder.itemText.text = gender.label
     }

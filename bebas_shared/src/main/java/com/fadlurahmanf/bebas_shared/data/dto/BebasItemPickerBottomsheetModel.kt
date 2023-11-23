@@ -1,6 +1,6 @@
 package com.fadlurahmanf.bebas_shared.data.dto
 
-data class GenderModel(
+data class BebasItemPickerBottomsheetModel(
     val id: String,
     val label: String,
 )
