@@ -11,6 +11,7 @@ import com.fadlurahmanf.bebas_onboarding.databinding.ActivityEktpVerificationFor
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_ui.bottomsheet.FailedBottomsheet
+import com.fadlurahmanf.bebas_ui.bottomsheet.GenderBottomsheet
 import java.lang.Exception
 
 class EktpVerificationFormActivity :
@@ -29,7 +30,6 @@ class EktpVerificationFormActivity :
     override fun setup() {
         flow = getFromFlow()
 
-        Log.d("BebasLogger", "fromFlow: $flow")
         if (flow == EktpVerificationFormFlow.UNKNOWN) {
             showForcedBackBottomsheet(BebasException.generalRC("FLOW_UNKNOWN"))
             return
@@ -39,8 +39,12 @@ class EktpVerificationFormActivity :
     }
 
     private fun initAction() {
-        binding.etBirthPlace.setOnClickListener {
-            
+        binding.ddGender.setOnClickListener {
+            genderBottomsheet = GenderBottomsheet()
+            genderBottomsheet?.show(
+                supportFragmentManager,
+                GenderBottomsheet::class.java.simpleName
+            )
         }
     }
 
@@ -65,4 +69,5 @@ class EktpVerificationFormActivity :
         }
     }
 
+    private var genderBottomsheet: GenderBottomsheet? = null
 }
