@@ -73,7 +73,8 @@
     <style name="Font.EdittextHint">
         <item name="android:fontFamily">@font/lexend_deca_semi_bold</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/grey_opacity_90</item>
+        <item name="android:textColor">@color/edittext_hint</item>
+        <item name="android:textColorHint">@color/edittext_hint</item>
     </style>
 
     <style name="Font.EdittextError">

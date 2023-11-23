@@ -34,6 +34,14 @@ class EktpVerificationFormActivity :
             showForcedBackBottomsheet(BebasException.generalRC("FLOW_UNKNOWN"))
             return
         }
+
+        initAction()
+    }
+
+    private fun initAction() {
+        binding.etBirthPlace.setOnClickListener {
+            
+        }
     }
 
     private fun getFromFlow(): EktpVerificationFormFlow {

@@ -72,6 +72,14 @@
                 app:hint="NIK"
                 app:label="NIK" />
 
+            <com.fadlurahmanf.bebas_ui.edittext.BebasPickerEdittext
+                android:id="@+id/et_birth_place"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:hint="NIK"
+                app:label="NIK" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

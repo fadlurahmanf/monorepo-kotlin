@@ -31,6 +31,13 @@
         <attr name="maxLengthIncludingMaskingChar" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="BebasPickerEdittext">
+        <attr name="hint" />
+        <attr name="label" />
+        <attr name="android:drawableStart" />
+        <attr name="android:drawableEnd" />
+    </declare-styleable>
+
     <declare-styleable name="BebasBackButton">
         <attr name="color" />
     </declare-styleable>
