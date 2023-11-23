@@ -79,4 +79,6 @@ class OnboardingGuestRemoteDatasource @Inject constructor(
         networkService(30).checkIsEmailVerify(request)
 
     fun getOcrV2(bodyRequest: OcrRequest) = networkService(30).getOCRv2(bodyRequest)
+
+    fun getProvinces() = networkService(30).getProvinces()
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import com.fadlurahmanf.bebas_onboarding.presentation.camera_verification.EktpVerificationCameraActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.camera_verification.EktpVerificationCameraResultActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.email.EmailVerificationActivity
+import com.fadlurahmanf.bebas_onboarding.presentation.form_user.EktpVerificationFormActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.form_user.InputPhoneEmailActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.form_user.PrepareOnboardingActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.otp.OtpVerificationActivity
@@ -44,4 +45,5 @@ interface BebasOnboardingComponent {
     fun inject(activity: PrepareOnboardingActivity)
     fun inject(activity: EktpVerificationCameraActivity)
     fun inject(activity: EktpVerificationCameraResultActivity)
+    fun inject(activity: EktpVerificationFormActivity)
 }

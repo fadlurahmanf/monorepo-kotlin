@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_api.data.api
 
+import com.fadlurahmanf.bebas_api.data.dto.demography.ProvinceResponse
 import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyRequest
 import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyResponse
 import com.fadlurahmanf.bebas_api.data.dto.email.RequestEmailVerificationReponse
@@ -13,6 +14,7 @@ import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpRequest
 import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpResponse
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface OobApi {
@@ -40,4 +42,7 @@ interface OobApi {
     fun getOCRv2(
         @Body body: OcrRequest
     ): Observable<BaseResponse<OcrResponse>>
+
+    @GET("region/provinces")
+    fun getProvinces(): Observable<BaseResponse<List<ProvinceResponse>>>
 }

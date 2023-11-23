@@ -8,18 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fadlurahmanf.bebas_shared.data.dto.BebasItemPickerBottomsheetModel
 import com.fadlurahmanf.bebas_ui.R
 
-class BebasPickerBottomsheetAdapter : RecyclerView.Adapter<BebasPickerBottomsheetAdapter.ViewHolder>() {
-    private var list: List<BebasItemPickerBottomsheetModel> = listOf(
-        BebasItemPickerBottomsheetModel(
-            id = "LAKI-LAKI",
-            label = "LAKI-LAKI"
-        ),
-        BebasItemPickerBottomsheetModel(
-            id = "PEREMPUAN",
-            label = "PEREMPUAN"
-        )
-    )
-
+class BebasPickerBottomsheetAdapter(
+    private val list:List<BebasItemPickerBottomsheetModel>
+) : RecyclerView.Adapter<BebasPickerBottomsheetAdapter.ViewHolder>() {
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val itemText: TextView = view.findViewById<TextView>(R.id.text)
     }
@@ -29,7 +20,8 @@ class BebasPickerBottomsheetAdapter : RecyclerView.Adapter<BebasPickerBottomshee
         viewType: Int
     ): BebasPickerBottomsheetAdapter.ViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.bebas_item_picker_text, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.bebas_item_picker_text, parent, false)
         return ViewHolder(view)
     }
 
