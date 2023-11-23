@@ -34,8 +34,8 @@
                 <com.fadlurahmanf.bebas_ui.button.BebasBackButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-            </androidx.appcompat.widget.Toolbar>
 
+            </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 

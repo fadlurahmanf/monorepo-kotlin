@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:text="Pastikan nomor ponsel dan email yang kamu masukkan aktif, ya!" />
 
-            <com.fadlurahmanf.bebas_ui.edittext.BebasPhoneNumberEdittext
+            <com.fadlurahmanf.bebas_ui.edittext.BebasMaskingEdittext
                 android:id="@+id/et_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

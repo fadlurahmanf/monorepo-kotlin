@@ -22,12 +22,13 @@
         <attr name="android:drawableStart" />
     </declare-styleable>
 
-    <declare-styleable name="BebasPhoneNumberEdittext">
+    <declare-styleable name="BebasMaskingEdittext">
         <attr name="hint" />
         <attr name="label" />
         <attr name="android:imeOptions" />
         <attr name="android:inputType" />
         <attr name="android:drawableStart" />
+        <attr name="maxLengthIncludingMaskingChar" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="BebasBackButton">

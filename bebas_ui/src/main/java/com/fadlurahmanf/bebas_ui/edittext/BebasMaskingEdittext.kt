@@ -3,6 +3,7 @@ package com.fadlurahmanf.bebas_ui.edittext
 import android.content.Context
 import android.content.res.TypedArray
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.View
@@ -10,11 +11,10 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_ui.R
 
-class BebasPhoneNumberEdittext(context: Context, attributeSet: AttributeSet) :
+class BebasMaskingEdittext(context: Context, attributeSet: AttributeSet) :
     LinearLayout(context, attributeSet) {
 
     private var attributes: TypedArray
@@ -25,12 +25,13 @@ class BebasPhoneNumberEdittext(context: Context, attributeSet: AttributeSet) :
     private var errorTv: TextView
 
     var hintInput: String?
+    var maxLengthIncludingMaskingChar: Int?
     var labelInput: String?
     var errorText: String? = null
     private var editTextHasFocus: Boolean = false
     private var fieldError: Boolean = false
 
-    private var watcher: BebasPhoneNumberEdittextTextWatcher? = null
+    private var watcher: BebasMaskingEdittextTextWatcher? = null
 
     var text: String
         get() = editText.text.toString()
@@ -41,7 +42,7 @@ class BebasPhoneNumberEdittext(context: Context, attributeSet: AttributeSet) :
     init {
         inflate(context, R.layout.cust_bebas_edittext, this)
         attributes =
-            context.obtainStyledAttributes(attributeSet, R.styleable.BebasPhoneNumberEdittext)
+            context.obtainStyledAttributes(attributeSet, R.styleable.BebasMaskingEdittext)
 
         editText = findViewById(R.id.et)
         label = findViewById(R.id.tv_label)
@@ -49,15 +50,18 @@ class BebasPhoneNumberEdittext(context: Context, attributeSet: AttributeSet) :
         drawableStart = findViewById(R.id.drawable_start)
         errorTv = findViewById(R.id.tv_error)
 
-        hintInput = attributes.getString(R.styleable.BebasPhoneNumberEdittext_hint)
-        labelInput = attributes.getString(R.styleable.BebasPhoneNumberEdittext_label)
+        hintInput = attributes.getString(R.styleable.BebasMaskingEdittext_hint)
+        labelInput = attributes.getString(R.styleable.BebasMaskingEdittext_label)
 
         editText.imeOptions =
-            attributes.getInt(R.styleable.BebasPhoneNumberEdittext_android_imeOptions, 0)
+            attributes.getInt(R.styleable.BebasMaskingEdittext_android_imeOptions, 0)
         editText.inputType =
-            attributes.getInt(R.styleable.BebasPhoneNumberEdittext_android_inputType, 0)
+            attributes.getInt(R.styleable.BebasMaskingEdittext_android_inputType, 0)
+        maxLengthIncludingMaskingChar =
+            attributes.getInt(R.styleable.BebasMaskingEdittext_maxLengthIncludingMaskingChar, 0)
 
-        val drawable = attributes.getDrawable(R.styleable.BebasPhoneNumberEdittext_android_drawableStart)
+        val drawable =
+            attributes.getDrawable(R.styleable.BebasMaskingEdittext_android_drawableStart)
         if (drawable != null) {
             drawableStart.visibility = View.VISIBLE
             drawableStart.setImageDrawable(drawable)
@@ -77,6 +81,10 @@ class BebasPhoneNumberEdittext(context: Context, attributeSet: AttributeSet) :
         } else {
             label.text = labelInput ?: hintInput ?: ""
             editText.hint = hintInput ?: labelInput ?: ""
+        }
+
+        if (maxLengthIncludingMaskingChar != null && (maxLengthIncludingMaskingChar ?: 0) > 0) {
+            editText.filters = arrayOf(InputFilter.LengthFilter(maxLengthIncludingMaskingChar!!))
         }
 
         textWatcher = object : TextWatcher {
@@ -131,7 +139,7 @@ class BebasPhoneNumberEdittext(context: Context, attributeSet: AttributeSet) :
         }
     }
 
-    fun addTextChangedListener(watcher: BebasPhoneNumberEdittextTextWatcher) {
+    fun addTextChangedListener(watcher: BebasMaskingEdittextTextWatcher) {
         this.watcher = watcher
     }
 
@@ -151,7 +159,7 @@ class BebasPhoneNumberEdittext(context: Context, attributeSet: AttributeSet) :
         changeEditTextStyle()
     }
 
-    fun resetEmpty(){
+    fun resetEmpty() {
         errorTv.visibility = View.GONE
     }
 
@@ -194,7 +202,7 @@ class BebasPhoneNumberEdittext(context: Context, attributeSet: AttributeSet) :
     private fun editTextLength() = editText.length()
 
 
-    interface BebasPhoneNumberEdittextTextWatcher {
+    interface BebasMaskingEdittextTextWatcher {
         fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int)
         fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int)
         fun afterTextChanged(s: Editable?, formattedText: String?, unformattedText: String?)

@@ -12,7 +12,7 @@ import com.fadlurahmanf.bebas_onboarding.presentation.email.EmailVerificationAct
 import com.fadlurahmanf.bebas_onboarding.presentation.otp.OtpVerificationActivity
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.data.flow.OnboardingFlow
-import com.fadlurahmanf.bebas_ui.edittext.BebasPhoneNumberEdittext
+import com.fadlurahmanf.bebas_ui.edittext.BebasMaskingEdittext
 import com.fadlurahmanf.bebas_shared.state.EditTextFormState
 import com.fadlurahmanf.bebas_ui.edittext.BebasEdittext
 import com.fadlurahmanf.bebas_ui.extension.clearFocusAndDismissKeyboard
@@ -30,7 +30,7 @@ class InputPhoneEmailActivity :
 
     override fun setup() {
         binding.etPhone.addTextChangedListener(object :
-                                                   BebasPhoneNumberEdittext.BebasPhoneNumberEdittextTextWatcher {
+                                                   BebasMaskingEdittext.BebasMaskingEdittextTextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
