@@ -1,10 +1,15 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.camera_verification
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.util.Base64
+import androidx.activity.result.contract.ActivityResultContracts
+import com.fadlurahmanf.bebas_onboarding.data.flow.EktpVerificationFormFlow
 import com.fadlurahmanf.bebas_onboarding.data.state.InitEktpCameraResult
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityEktpVerificationCameraResultBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
+import com.fadlurahmanf.bebas_onboarding.presentation.form_user.EktpVerificationFormActivity
 import javax.inject.Inject
 
 class EktpVerificationCameraResultActivity :
@@ -47,6 +52,27 @@ class EktpVerificationCameraResultActivity :
 //            val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
 //            binding.ivResult.setImageBitmap(image)
 //        }
+
+        binding.btnNext.setOnClickListener {
+            viewModel.updateIsFinishedEktpCameraVerification(true)
+            val intent = Intent(this, EktpVerificationFormActivity::class.java)
+            intent.apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                putExtra(
+                    EktpVerificationFormActivity.FROM_FLOW_ARG,
+                    EktpVerificationFormFlow.FROM_EKTP_CAMERA_RESULT.name
+                )
+            }
+            ektpFormLauncher.launch(intent)
+        }
     }
+
+    private val ektpFormLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_CANCELED) {
+                setResult(Activity.RESULT_CANCELED, intent)
+                finish()
+            }
+        }
 
 }

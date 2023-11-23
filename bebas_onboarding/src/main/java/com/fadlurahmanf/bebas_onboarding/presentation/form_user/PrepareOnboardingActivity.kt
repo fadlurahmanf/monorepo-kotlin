@@ -7,6 +7,8 @@ import android.net.Uri
 import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import com.fadlurahmanf.bebas_onboarding.data.flow.EktpVerificationFormFlow
+import com.fadlurahmanf.bebas_onboarding.data.state.InitPrepareOnboardingState
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityPrepareOnboardingBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.camera_verification.EktpVerificationCameraActivity
@@ -27,8 +29,31 @@ class PrepareOnboardingActivity :
     override fun setup() {
         binding.btnNext.setOnClickListener {
             viewModel.updateIsFinishedPreparedOnBoarding(true)
-            checkCameraPermission()
+            checkCameraPermissionAndGoToEktpCameraVerification()
         }
+
+        viewModel.initState.observe(this) {
+            when (it) {
+                is InitPrepareOnboardingState.SuccessToEktpCamera -> {
+                    checkCameraPermissionAndGoToEktpCameraVerification()
+                }
+
+                is InitPrepareOnboardingState.SuccessToEktpVerification -> {
+                    val intent = Intent(this, EktpVerificationFormActivity::class.java)
+                    intent.putExtra(
+                        EktpVerificationFormActivity.FROM_FLOW_ARG,
+                        EktpVerificationFormFlow.FROM_PREPARE_ONBOARDING.name
+                    )
+                    startActivity(intent)
+                }
+
+                is InitPrepareOnboardingState.FAILED -> {
+                    showFailedBottomsheet(it.exception)
+                }
+            }
+        }
+
+        viewModel.initPrepareOnboarding()
     }
 
     private val permissionLauncher =
@@ -38,7 +63,7 @@ class PrepareOnboardingActivity :
             }
         }
 
-    fun checkCameraPermission() {
+    private fun checkCameraPermissionAndGoToEktpCameraVerification() {
         when (ContextCompat.checkSelfPermission(
             this.applicationContext,
             Manifest.permission.CAMERA

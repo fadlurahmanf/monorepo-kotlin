@@ -65,20 +65,67 @@ abstract class BaseOnboardingActivity<VB : ViewBinding>(inflate: BebasInflateAct
 
     fun showFailedBottomsheet(
         exception: BebasException,
-        isCancelable:Boolean = true,
+        isCancelable: Boolean = true,
         callback: FailedBottomsheet.Callback? = null,
     ) {
-        Log.d("BebasLogger", "MASUK ${exception.toJson()}")
+        Log.e("BebasLogger", "FailedBottomsheet ${exception.rawMessage}")
         if (isFailedBottomsheetOpen) {
             dismissFailedBottomsheet()
         }
         isFailedBottomsheetOpen = true
         val bundle = Bundle()
         bundle.apply {
-            putString(FailedBottomsheet.TITLE_TEXT, exception.toProperTitle(this@BaseOnboardingActivity))
-            putString(FailedBottomsheet.MESSAGE_TEXT, exception.toProperMessage(this@BaseOnboardingActivity))
-            putString(FailedBottomsheet.BUTTON_TEXT, exception.toProperButtonText(this@BaseOnboardingActivity))
+            putString(
+                FailedBottomsheet.TITLE_TEXT,
+                exception.toProperTitle(this@BaseOnboardingActivity)
+            )
+            putString(
+                FailedBottomsheet.MESSAGE_TEXT,
+                exception.toProperMessage(this@BaseOnboardingActivity)
+            )
+            putString(
+                FailedBottomsheet.BUTTON_TEXT,
+                exception.toProperButtonText(this@BaseOnboardingActivity)
+            )
             putBoolean(FailedBottomsheet.IS_DIALOG_CANCELABLE, isCancelable)
+        }
+        failedBottomsheet = FailedBottomsheet()
+        failedBottomsheet?.arguments = bundle
+        if (callback != null) {
+            failedBottomsheet?.setCallback(callback)
+        }
+        failedBottomsheet?.show(supportFragmentManager, FailedBottomsheet::class.java.simpleName)
+    }
+
+    fun showForcedBackBottomsheet(
+        exception: BebasException,
+        callback: FailedBottomsheet.Callback = object : FailedBottomsheet.Callback {
+            override fun onButtonClicked() {
+                dismissFailedBottomsheet()
+                finish()
+            }
+        },
+    ) {
+        Log.e("BebasLogger", "ForcedBackBottomsheet ${exception.rawMessage}")
+        if (isFailedBottomsheetOpen) {
+            dismissFailedBottomsheet()
+        }
+        isFailedBottomsheetOpen = true
+        val bundle = Bundle()
+        bundle.apply {
+            putString(
+                FailedBottomsheet.TITLE_TEXT,
+                exception.toProperTitle(this@BaseOnboardingActivity)
+            )
+            putString(
+                FailedBottomsheet.MESSAGE_TEXT,
+                exception.toProperMessage(this@BaseOnboardingActivity)
+            )
+            putString(
+                FailedBottomsheet.BUTTON_TEXT,
+                exception.toProperButtonText(this@BaseOnboardingActivity)
+            )
+            putBoolean(FailedBottomsheet.IS_DIALOG_CANCELABLE, false)
         }
         failedBottomsheet = FailedBottomsheet()
         failedBottomsheet?.arguments = bundle

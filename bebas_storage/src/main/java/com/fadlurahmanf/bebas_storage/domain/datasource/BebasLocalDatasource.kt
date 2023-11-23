@@ -138,6 +138,8 @@ class BebasLocalDatasource @Inject constructor(
             isFinishedOtpVerification = entity.isFinishedOtpVerification,
             isFinishedEmailVerification = entity.isFinishedEmailVerification,
             base64ImageEktp = entity.base64ImageEktp,
+            isFinishedEktpCameraVerification = entity.isFinishedEktpCameraVerification,
+            idCardNumber = decrypt(entity.encryptedIdCardNumber, privateKey),
         )
         decryptedEntity
     }
@@ -215,6 +217,13 @@ class BebasLocalDatasource @Inject constructor(
     fun updateBase64ImageEktp(base64Image: String): Disposable {
         val entitySubscriber = getEntity().map { entity ->
             dao.update(entity.copy(base64ImageEktp = base64Image))
+        }
+        return entitySubscriber.subscribe()
+    }
+
+    fun updateIsFinishedEktpCameraVerification(value: Boolean?): Disposable {
+        val entitySubscriber = getEntity().map { entity ->
+            dao.update(entity.copy(isFinishedEktpCameraVerification = value))
         }
         return entitySubscriber.subscribe()
     }

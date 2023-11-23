@@ -27,4 +27,6 @@ data class BebasDecryptedEntity(
     var isFinishedEmailVerification: Boolean? = null,
     var isFinishedPrepareOnboarding: Boolean? = null,
     var base64ImageEktp: String? = null,
+    var isFinishedEktpCameraVerification: Boolean? = null,
+    var idCardNumber: String? = null,
 )
