@@ -97,6 +97,22 @@
                 app:hint="Kota/Kabupaten"
                 app:label="Kota/Kabupaten" />
 
+            <com.fadlurahmanf.bebas_ui.edittext.BebasPickerEdittext
+                android:id="@+id/dd_subdistrict"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:hint="Kecamatan"
+                app:label="Kecamatan" />
+
+            <com.fadlurahmanf.bebas_ui.edittext.BebasPickerEdittext
+                android:id="@+id/dd_ward"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:hint="Kelurahan"
+                app:label="Kelurahan" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

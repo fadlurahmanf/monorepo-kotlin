@@ -1,7 +1,6 @@
 package com.fadlurahmanf.bebas_api.data.api
 
-import com.fadlurahmanf.bebas_api.data.dto.demography.CityResponse
-import com.fadlurahmanf.bebas_api.data.dto.demography.ProvinceResponse
+import com.fadlurahmanf.bebas_api.data.dto.demography.DemographyItemResponse
 import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyRequest
 import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyResponse
 import com.fadlurahmanf.bebas_api.data.dto.email.RequestEmailVerificationReponse
@@ -46,10 +45,19 @@ interface OobApi {
     ): Observable<BaseResponse<OcrResponse>>
 
     @GET("region/provinces")
-    fun getProvinces(): Observable<BaseResponse<List<ProvinceResponse>>>
+    fun getProvinces(): Observable<BaseResponse<List<DemographyItemResponse>>>
 
     @GET("region/city/{provinceId}")
     fun getCities(
         @Path("provinceId") provinceId: String
-    ): Observable<BaseResponse<List<CityResponse>>>
+    ): Observable<BaseResponse<List<DemographyItemResponse>>>
+    @GET("region/sub-district/{cityId}")
+    fun getSubDistricts(
+        @Path("cityId") cityId: String
+    ): Observable<BaseResponse<List<DemographyItemResponse>>>
+
+    @GET("region/village/{subDistrictId}")
+    fun getWards(
+        @Path("subDistrictId") subDistrictId: String
+    ): Observable<BaseResponse<List<DemographyItemResponse>>>
 }

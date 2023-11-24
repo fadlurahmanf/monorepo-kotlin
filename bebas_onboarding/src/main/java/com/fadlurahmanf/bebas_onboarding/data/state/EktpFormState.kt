@@ -13,5 +13,13 @@ sealed class EktpFormState {
         val cities: List<BebasItemPickerBottomsheetModel>
     ) : EktpFormState()
 
+    data class FetchedSubDistricts(
+        val subDistricts: List<BebasItemPickerBottomsheetModel>
+    ) : EktpFormState()
+
+    data class FetchedWards(
+        val wards: List<BebasItemPickerBottomsheetModel>
+    ) : EktpFormState()
+
     data class FAILED(val exception: BebasException) : EktpFormState()
 }

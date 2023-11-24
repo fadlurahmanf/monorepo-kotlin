@@ -58,6 +58,14 @@ class EktpVerificationFormActivity :
             binding.ddCity.setText(it?.label ?: "")
         }
 
+        viewModel.selectedSubDistrict.observe(this) {
+            binding.ddSubdistrict.setText(it?.label ?: "")
+        }
+
+        viewModel.selectedWard.observe(this) {
+            binding.ddWard.setText(it?.label ?: "")
+        }
+
         viewModel.ektpState.observe(this) {
             when (it) {
                 is EktpFormState.FetchedProvinces -> {
@@ -68,6 +76,16 @@ class EktpVerificationFormActivity :
                 is EktpFormState.FetchedCities -> {
                     dismissLoadingDialog()
                     showCitiesBottomsheet(it.cities)
+                }
+
+                is EktpFormState.FetchedSubDistricts -> {
+                    dismissLoadingDialog()
+                    showSubDistrictsBottomsheet(it.subDistricts)
+                }
+
+                is EktpFormState.FetchedWards -> {
+                    dismissLoadingDialog()
+                    showWardsBottomsheet(it.wards)
                 }
 
                 is EktpFormState.LOADING -> {
@@ -99,7 +117,23 @@ class EktpVerificationFormActivity :
             if (viewModel.cities != null) {
                 showCitiesBottomsheet(viewModel.cities!!)
             } else if (viewModel.selectedProvince.value != null) {
-                viewModel.fetchCities(viewModel.selectedProvince.value?.id ?: "")
+                viewModel.fetchCities(viewModel.selectedProvince.value?.id!!)
+            }
+        }
+
+        binding.ddSubdistrict.setOnClickListener {
+            if (viewModel.subDistricts != null) {
+                showSubDistrictsBottomsheet(viewModel.subDistricts!!)
+            } else if (viewModel.selectedCity.value != null) {
+                viewModel.fetchSubDistricts(viewModel.selectedCity.value?.id!!)
+            }
+        }
+
+        binding.ddWard.setOnClickListener {
+            if (viewModel.wards != null) {
+                showWardsBottomsheet(viewModel.wards!!)
+            } else if (viewModel.selectedSubDistrict.value != null) {
+                viewModel.fetchWards(viewModel.selectedSubDistrict.value?.id!!)
             }
         }
     }
@@ -159,7 +193,6 @@ class EktpVerificationFormActivity :
                 override fun onItemClicked(model: BebasItemPickerBottomsheetModel) {
                     dismissPickerBottomsheet()
                     viewModel.selectProvince(model)
-                    binding.ddProvince.setText(model.label)
                 }
             })
         showBottomsheet()
@@ -173,7 +206,32 @@ class EktpVerificationFormActivity :
                 override fun onItemClicked(model: BebasItemPickerBottomsheetModel) {
                     dismissPickerBottomsheet()
                     viewModel.selectCity(model)
-                    binding.ddCity.setText(model.label)
+                }
+            })
+        showBottomsheet()
+    }
+
+    private fun showSubDistrictsBottomsheet(subDistricts: List<BebasItemPickerBottomsheetModel>) {
+        dismissPickerBottomsheet()
+
+        pickerBottomsheet =
+            BebasPickerBottomsheet(subDistricts, object : BebasPickerBottomsheetAdapter.Callback {
+                override fun onItemClicked(model: BebasItemPickerBottomsheetModel) {
+                    dismissPickerBottomsheet()
+                    viewModel.selectSubDistrict(model)
+                }
+            })
+        showBottomsheet()
+    }
+
+    private fun showWardsBottomsheet(wards: List<BebasItemPickerBottomsheetModel>) {
+        dismissPickerBottomsheet()
+
+        pickerBottomsheet =
+            BebasPickerBottomsheet(wards, object : BebasPickerBottomsheetAdapter.Callback {
+                override fun onItemClicked(model: BebasItemPickerBottomsheetModel) {
+                    dismissPickerBottomsheet()
+                    viewModel.selectWard(model)
                 }
             })
         showBottomsheet()

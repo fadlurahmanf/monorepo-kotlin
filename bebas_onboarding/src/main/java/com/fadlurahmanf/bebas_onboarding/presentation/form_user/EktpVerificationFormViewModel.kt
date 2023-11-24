@@ -18,12 +18,20 @@ class EktpVerificationFormViewModel @Inject constructor(
 
     var provinces: List<BebasItemPickerBottomsheetModel>? = null
     var cities: List<BebasItemPickerBottomsheetModel>? = null
+    var subDistricts: List<BebasItemPickerBottomsheetModel>? = null
+    var wards: List<BebasItemPickerBottomsheetModel>? = null
 
     private val _selectedProvince = MutableLiveData<BebasItemPickerBottomsheetModel?>()
     val selectedProvince: LiveData<BebasItemPickerBottomsheetModel?> = _selectedProvince
 
     private val _selectedCity = MutableLiveData<BebasItemPickerBottomsheetModel?>()
     val selectedCity: LiveData<BebasItemPickerBottomsheetModel?> = _selectedCity
+
+    private val _selectedSubDistrict = MutableLiveData<BebasItemPickerBottomsheetModel?>()
+    val selectedSubDistrict: LiveData<BebasItemPickerBottomsheetModel?> = _selectedSubDistrict
+
+    private val _selectedWard = MutableLiveData<BebasItemPickerBottomsheetModel?>()
+    val selectedWard: LiveData<BebasItemPickerBottomsheetModel?> = _selectedWard
 
     private val _ektpState = MutableLiveData<EktpFormState>()
     val ektpState: LiveData<EktpFormState> = _ektpState
@@ -42,7 +50,6 @@ class EktpVerificationFormViewModel @Inject constructor(
                                               _ektpState.value = EktpFormState.FAILED(
                                                   BebasException.fromThrowable(it)
                                               )
-
                                           },
                                           {}
                                       ))
@@ -54,6 +61,12 @@ class EktpVerificationFormViewModel @Inject constructor(
 
             _selectedCity.value = null
             cities = null
+
+            _selectedSubDistrict.value = null
+            subDistricts = null
+
+            _selectedWard.value = null
+            wards = null
         }
     }
 
@@ -71,7 +84,6 @@ class EktpVerificationFormViewModel @Inject constructor(
                                               _ektpState.value = EktpFormState.FAILED(
                                                   BebasException.fromThrowable(it)
                                               )
-
                                           },
                                           {}
                                       ))
@@ -79,5 +91,62 @@ class EktpVerificationFormViewModel @Inject constructor(
 
     fun selectCity(city: BebasItemPickerBottomsheetModel) {
         _selectedCity.value = city
+
+        _selectedSubDistrict.value = null
+        subDistricts = null
+
+        _selectedWard.value = null
+        wards = null
+    }
+
+    fun fetchSubDistricts(cityId: String) {
+        _ektpState.value = EktpFormState.LOADING
+        compositeDisposable().add(demographyRepositoryImpl.getSubDistrictItems(cityId)
+                                      .subscribeOn(Schedulers.io())
+                                      .observeOn(AndroidSchedulers.mainThread())
+                                      .subscribe(
+                                          {
+                                              subDistricts = it
+                                              _ektpState.value =
+                                                  EktpFormState.FetchedSubDistricts(it)
+                                          },
+                                          {
+                                              _ektpState.value = EktpFormState.FAILED(
+                                                  BebasException.fromThrowable(it)
+                                              )
+                                          },
+                                          {}
+                                      ))
+    }
+
+    fun selectSubDistrict(subDistrict: BebasItemPickerBottomsheetModel) {
+        _selectedSubDistrict.value = subDistrict
+
+        _selectedWard.value = null
+        wards = null
+    }
+
+    fun fetchWards(subDistrictId: String) {
+        _ektpState.value = EktpFormState.LOADING
+        compositeDisposable().add(demographyRepositoryImpl.getWardItems(subDistrictId)
+                                      .subscribeOn(Schedulers.io())
+                                      .observeOn(AndroidSchedulers.mainThread())
+                                      .subscribe(
+                                          {
+                                              wards = it
+                                              _ektpState.value =
+                                                  EktpFormState.FetchedWards(it)
+                                          },
+                                          {
+                                              _ektpState.value = EktpFormState.FAILED(
+                                                  BebasException.fromThrowable(it)
+                                              )
+                                          },
+                                          {}
+                                      ))
+    }
+
+    fun selectWard(ward: BebasItemPickerBottomsheetModel) {
+        _selectedWard.value = ward
     }
 }

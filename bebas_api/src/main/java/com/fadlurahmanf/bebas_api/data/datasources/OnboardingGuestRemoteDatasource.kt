@@ -83,4 +83,6 @@ class OnboardingGuestRemoteDatasource @Inject constructor(
     fun getProvinces() = networkService(30).getProvinces()
 
     fun getCities(provinceId: String) = networkService(30).getCities(provinceId)
+    fun getSubDistricts(cityId: String) = networkService(30).getSubDistricts(cityId)
+    fun getWards(subDistrictId: String) = networkService(30).getWards(subDistrictId)
 }

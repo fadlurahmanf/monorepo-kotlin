@@ -15,10 +15,10 @@ class DemographyRepositoryImpl @Inject constructor(
                 throw BebasException.generalRC("DATA_MISSING")
             }
 
-            it.data!!.map { provinceResp ->
+            it.data!!.map { demoResp ->
                 BebasItemPickerBottomsheetModel(
-                    id = provinceResp.id ?: "",
-                    label = provinceResp.name ?: ""
+                    id = demoResp.id ?: "",
+                    label = demoResp.name ?: ""
                 )
             }
         }
@@ -30,10 +30,40 @@ class DemographyRepositoryImpl @Inject constructor(
                 throw BebasException.generalRC("DATA_MISSING")
             }
 
-            it.data!!.map { provinceResp ->
+            it.data!!.map { demoResp ->
                 BebasItemPickerBottomsheetModel(
-                    id = provinceResp.id ?: "",
-                    label = provinceResp.name ?: ""
+                    id = demoResp.id ?: "",
+                    label = demoResp.name ?: ""
+                )
+            }
+        }
+    }
+
+    fun getSubDistrictItems(cityId: String): Observable<List<BebasItemPickerBottomsheetModel>> {
+        return onboardingGuestRemoteDatasource.getSubDistricts(cityId).map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+
+            it.data!!.map { demoResp ->
+                BebasItemPickerBottomsheetModel(
+                    id = demoResp.id ?: "",
+                    label = demoResp.name ?: ""
+                )
+            }
+        }
+    }
+
+    fun getWardItems(subDistrictId: String): Observable<List<BebasItemPickerBottomsheetModel>> {
+        return onboardingGuestRemoteDatasource.getWards(subDistrictId).map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+
+            it.data!!.map { demoResp ->
+                BebasItemPickerBottomsheetModel(
+                    id = demoResp.id ?: "",
+                    label = demoResp.name ?: ""
                 )
             }
         }
