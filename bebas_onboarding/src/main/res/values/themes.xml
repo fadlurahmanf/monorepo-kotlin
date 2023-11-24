@@ -20,6 +20,7 @@
 
     <style name="BaseBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/RoundedBottomsheetCorner</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
     <style name="RoundedBottomsheetCorner" parent="Widget.Design.BottomSheet.Modal">

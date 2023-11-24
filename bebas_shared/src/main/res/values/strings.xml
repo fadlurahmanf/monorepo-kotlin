@@ -9,4 +9,5 @@
     <string name="general_exception_desc">We cannot process your request at this time. Please try again at another time (%1$s)</string>
     <string name="general_exception_desc_wo_param">We cannot process your request at this time. Please try again at another time</string>
     <string name="ok">Okay</string>
+    <string name="empty_search_picker_bottomsheet">Oops... %s that you looking for is not found</string>
 </resources>

@@ -82,6 +82,14 @@
                 app:label="Tanggal Lahir" />
 
             <com.fadlurahmanf.bebas_ui.edittext.BebasPickerEdittext
+                android:id="@+id/dd_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:hint="Jenis Kelamin"
+                app:label="Jenis Kelamin" />
+
+            <com.fadlurahmanf.bebas_ui.edittext.BebasPickerEdittext
                 android:id="@+id/dd_province"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

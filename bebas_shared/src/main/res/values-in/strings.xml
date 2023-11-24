@@ -9,4 +9,5 @@
     <string name="general_exception_desc">Saat ini kami tidak dapat memproses transaksi. Silakan coba lagi di lain waktu (%1$s)</string>
     <string name="general_exception_desc_wo_param">Saat ini kami tidak dapat memproses transaksi. Silakan coba lagi di lain waktu</string>
     <string name="ok">Oke</string>
+    <string name="empty_search_picker_bottomsheet">Ups... %s yang anda cari tidak ditemukan</string>
 </resources>

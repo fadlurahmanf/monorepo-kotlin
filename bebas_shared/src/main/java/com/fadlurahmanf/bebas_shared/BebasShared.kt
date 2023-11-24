@@ -1,5 +1,7 @@
 package com.fadlurahmanf.bebas_shared
 
+import com.fadlurahmanf.bebas_shared.data.dto.BebasItemPickerBottomsheetModel
+
 object BebasShared {
     lateinit var flavor: String
     private lateinit var bebasUrl: String
@@ -42,5 +44,26 @@ object BebasShared {
     lateinit var appVersionName: String
 
     lateinit var packageId: String
+
+    val genderItems: List<BebasItemPickerBottomsheetModel> =
+        if (::language.isInitialized && language == "en-US") listOf(
+            BebasItemPickerBottomsheetModel(
+                id = "F",
+                label = "FEMALE",
+            ),
+            BebasItemPickerBottomsheetModel(
+                id = "M",
+                label = "MALE",
+            )
+        ) else listOf(
+            BebasItemPickerBottomsheetModel(
+                id = "F",
+                label = "PEREMPUAN",
+            ),
+            BebasItemPickerBottomsheetModel(
+                id = "M",
+                label = "LAKI-LAKI",
+            )
+        )
 }
 

@@ -8,14 +8,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fadlurahmanf.bebas_shared.data.dto.BebasItemPickerBottomsheetModel
 import com.fadlurahmanf.bebas_ui.R
 
-class BebasPickerBottomsheetAdapter(
-    private val list: List<BebasItemPickerBottomsheetModel>
-) : RecyclerView.Adapter<BebasPickerBottomsheetAdapter.ViewHolder>() {
+class BebasPickerBottomsheetAdapter() :
+    RecyclerView.Adapter<BebasPickerBottomsheetAdapter.ViewHolder>() {
+
+    private var list: ArrayList<BebasItemPickerBottomsheetModel> = arrayListOf()
 
     private lateinit var callback: Callback
 
     fun setCallback(callback: Callback) {
         this.callback = callback
+    }
+
+    fun setList(list: ArrayList<BebasItemPickerBottomsheetModel>) {
+        this.list.clear()
+        this.list.addAll(list)
+        notifyItemRangeInserted(0, list.size)
+    }
+
+    fun refreshList(list: ArrayList<BebasItemPickerBottomsheetModel>) {
+        this.list.clear()
+        this.list.addAll(list)
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

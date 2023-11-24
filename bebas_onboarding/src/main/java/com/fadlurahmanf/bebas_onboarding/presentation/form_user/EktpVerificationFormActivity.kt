@@ -7,6 +7,7 @@ import com.fadlurahmanf.bebas_onboarding.data.flow.EktpVerificationFormFlow
 import com.fadlurahmanf.bebas_onboarding.data.state.EktpFormState
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityEktpVerificationFormBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
+import com.fadlurahmanf.bebas_shared.BebasShared
 import com.fadlurahmanf.bebas_shared.data.dto.BebasItemPickerBottomsheetModel
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.extension.formatToEktpForm
@@ -104,6 +105,10 @@ class EktpVerificationFormActivity :
             showDatePickerDialog()
         }
 
+        binding.ddGender.setOnClickListener {
+            showGendersBottomsheet()
+        }
+
 
         binding.ddProvince.setOnClickListener {
             if (viewModel.provinces != null) {
@@ -185,16 +190,34 @@ class EktpVerificationFormActivity :
         pickerBottomsheet = null
     }
 
+    private fun showGendersBottomsheet() {
+        dismissPickerBottomsheet()
+        pickerBottomsheet =
+            BebasPickerBottomsheet(
+                editTextHint = "Jenis Kelamin",
+                content = BebasShared.genderItems,
+                callback = object : BebasPickerBottomsheetAdapter.Callback {
+                    override fun onItemClicked(model: BebasItemPickerBottomsheetModel) {
+                        dismissPickerBottomsheet()
+                        viewModel.selectProvince(model)
+                    }
+                })
+        showBottomsheet()
+    }
+
     private fun showProvincesBottomsheet(provinces: List<BebasItemPickerBottomsheetModel>) {
         dismissPickerBottomsheet()
 
         pickerBottomsheet =
-            BebasPickerBottomsheet(provinces, object : BebasPickerBottomsheetAdapter.Callback {
-                override fun onItemClicked(model: BebasItemPickerBottomsheetModel) {
-                    dismissPickerBottomsheet()
-                    viewModel.selectProvince(model)
-                }
-            })
+            BebasPickerBottomsheet(
+                editTextHint = "Provinsi",
+                content = provinces,
+                callback = object : BebasPickerBottomsheetAdapter.Callback {
+                    override fun onItemClicked(model: BebasItemPickerBottomsheetModel) {
+                        dismissPickerBottomsheet()
+                        viewModel.selectProvince(model)
+                    }
+                })
         showBottomsheet()
     }
 
@@ -202,12 +225,15 @@ class EktpVerificationFormActivity :
         dismissPickerBottomsheet()
 
         pickerBottomsheet =
-            BebasPickerBottomsheet(cities, object : BebasPickerBottomsheetAdapter.Callback {
-                override fun onItemClicked(model: BebasItemPickerBottomsheetModel) {
-                    dismissPickerBottomsheet()
-                    viewModel.selectCity(model)
-                }
-            })
+            BebasPickerBottomsheet(
+                editTextHint = "Kota/Kabupaten",
+                content = cities,
+                callback = object : BebasPickerBottomsheetAdapter.Callback {
+                    override fun onItemClicked(model: BebasItemPickerBottomsheetModel) {
+                        dismissPickerBottomsheet()
+                        viewModel.selectCity(model)
+                    }
+                })
         showBottomsheet()
     }
 
@@ -215,12 +241,15 @@ class EktpVerificationFormActivity :
         dismissPickerBottomsheet()
 
         pickerBottomsheet =
-            BebasPickerBottomsheet(subDistricts, object : BebasPickerBottomsheetAdapter.Callback {
-                override fun onItemClicked(model: BebasItemPickerBottomsheetModel) {
-                    dismissPickerBottomsheet()
-                    viewModel.selectSubDistrict(model)
-                }
-            })
+            BebasPickerBottomsheet(
+                editTextHint = "Kecamatan",
+                content = subDistricts,
+                callback = object : BebasPickerBottomsheetAdapter.Callback {
+                    override fun onItemClicked(model: BebasItemPickerBottomsheetModel) {
+                        dismissPickerBottomsheet()
+                        viewModel.selectSubDistrict(model)
+                    }
+                })
         showBottomsheet()
     }
 
@@ -228,12 +257,15 @@ class EktpVerificationFormActivity :
         dismissPickerBottomsheet()
 
         pickerBottomsheet =
-            BebasPickerBottomsheet(wards, object : BebasPickerBottomsheetAdapter.Callback {
-                override fun onItemClicked(model: BebasItemPickerBottomsheetModel) {
-                    dismissPickerBottomsheet()
-                    viewModel.selectWard(model)
-                }
-            })
+            BebasPickerBottomsheet(
+                editTextHint = "Kelurahan",
+                content = wards,
+                callback = object : BebasPickerBottomsheetAdapter.Callback {
+                    override fun onItemClicked(model: BebasItemPickerBottomsheetModel) {
+                        dismissPickerBottomsheet()
+                        viewModel.selectWard(model)
+                    }
+                })
         showBottomsheet()
     }
 
