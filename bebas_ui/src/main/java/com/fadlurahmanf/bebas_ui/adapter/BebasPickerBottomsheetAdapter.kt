@@ -9,8 +9,15 @@ import com.fadlurahmanf.bebas_shared.data.dto.BebasItemPickerBottomsheetModel
 import com.fadlurahmanf.bebas_ui.R
 
 class BebasPickerBottomsheetAdapter(
-    private val list:List<BebasItemPickerBottomsheetModel>
+    private val list: List<BebasItemPickerBottomsheetModel>
 ) : RecyclerView.Adapter<BebasPickerBottomsheetAdapter.ViewHolder>() {
+
+    private lateinit var callback: Callback
+
+    fun setCallback(callback: Callback) {
+        this.callback = callback
+    }
+
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val itemText: TextView = view.findViewById<TextView>(R.id.text)
     }
@@ -26,9 +33,17 @@ class BebasPickerBottomsheetAdapter(
     }
 
     override fun onBindViewHolder(holder: BebasPickerBottomsheetAdapter.ViewHolder, position: Int) {
-        val gender = list[position]
-        holder.itemText.text = gender.label
+        val model = list[position]
+        holder.itemText.text = model.label
+
+        holder.itemView.setOnClickListener {
+            callback.onItemClicked(model)
+        }
     }
 
     override fun getItemCount(): Int = list.size
+
+    interface Callback {
+        fun onItemClicked(model: BebasItemPickerBottomsheetModel)
+    }
 }

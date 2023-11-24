@@ -9,9 +9,16 @@ import com.fadlurahmanf.bebas_onboarding.databinding.ActivityEktpVerificationFor
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import com.fadlurahmanf.bebas_shared.data.dto.BebasItemPickerBottomsheetModel
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.extension.formatToEktpForm
+import com.fadlurahmanf.bebas_ui.adapter.BebasPickerBottomsheetAdapter
 import com.fadlurahmanf.bebas_ui.bottomsheet.BebasPickerBottomsheet
 import com.fadlurahmanf.bebas_ui.databinding.BottomsheetBebasPickerBinding
+import com.fadlurahmanf.bebas_ui.dialog.DatePickerDialog
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 class EktpVerificationFormActivity :
@@ -43,11 +50,24 @@ class EktpVerificationFormActivity :
     }
 
     private fun initObserver() {
+        viewModel.selectedProvince.observe(this) {
+            binding.ddProvince.setText(it?.label ?: "")
+        }
+
+        viewModel.selectedCity.observe(this) {
+            binding.ddCity.setText(it?.label ?: "")
+        }
+
         viewModel.ektpState.observe(this) {
             when (it) {
                 is EktpFormState.FetchedProvinces -> {
                     dismissLoadingDialog()
                     showProvincesBottomsheet(it.provinces)
+                }
+
+                is EktpFormState.FetchedCities -> {
+                    dismissLoadingDialog()
+                    showCitiesBottomsheet(it.cities)
                 }
 
                 is EktpFormState.LOADING -> {
@@ -62,10 +82,46 @@ class EktpVerificationFormActivity :
     }
 
     private fun initAction() {
-        binding.ddGender.setOnClickListener {
-            Log.d("BebasLogger", "TES DD GENDER PROVINCES")
-            viewModel.fetchProvinces()
+        binding.ddDatepicker.setOnClickListener {
+            showDatePickerDialog()
         }
+
+
+        binding.ddProvince.setOnClickListener {
+            if (viewModel.provinces != null) {
+                showProvincesBottomsheet(viewModel.provinces!!)
+            } else {
+                viewModel.fetchProvinces()
+            }
+        }
+
+        binding.ddCity.setOnClickListener {
+            if (viewModel.cities != null) {
+                showCitiesBottomsheet(viewModel.cities!!)
+            } else if (viewModel.selectedProvince.value != null) {
+                viewModel.fetchCities(viewModel.selectedProvince.value?.id ?: "")
+            }
+        }
+    }
+
+    private var datePickerDialog: DatePickerDialog? = null
+
+    private fun dismissDatePickerDialog() {
+        datePickerDialog?.dismiss()
+        datePickerDialog = null
+    }
+
+    private fun showDatePickerDialog() {
+        dismissDatePickerDialog()
+
+        datePickerDialog = DatePickerDialog()
+        datePickerDialog?.setCallback(object : DatePickerDialog.Callback {
+            override fun onClicked(year: Int, month: Int, dayOfMonth: Int, date: Date) {
+                datePickerDialog?.dismiss()
+                binding.ddDatepicker.setText(date.formatToEktpForm())
+            }
+        })
+        datePickerDialog?.show(supportFragmentManager, DatePickerDialog::class.java.simpleName)
     }
 
     private fun getFromFlow(): EktpVerificationFormFlow {
@@ -97,7 +153,29 @@ class EktpVerificationFormActivity :
 
     private fun showProvincesBottomsheet(provinces: List<BebasItemPickerBottomsheetModel>) {
         dismissPickerBottomsheet()
-        pickerBottomsheet = BebasPickerBottomsheet(provinces)
+
+        pickerBottomsheet =
+            BebasPickerBottomsheet(provinces, object : BebasPickerBottomsheetAdapter.Callback {
+                override fun onItemClicked(model: BebasItemPickerBottomsheetModel) {
+                    dismissPickerBottomsheet()
+                    viewModel.selectProvince(model)
+                    binding.ddProvince.setText(model.label)
+                }
+            })
+        showBottomsheet()
+    }
+
+    private fun showCitiesBottomsheet(cities: List<BebasItemPickerBottomsheetModel>) {
+        dismissPickerBottomsheet()
+
+        pickerBottomsheet =
+            BebasPickerBottomsheet(cities, object : BebasPickerBottomsheetAdapter.Callback {
+                override fun onItemClicked(model: BebasItemPickerBottomsheetModel) {
+                    dismissPickerBottomsheet()
+                    viewModel.selectCity(model)
+                    binding.ddCity.setText(model.label)
+                }
+            })
         showBottomsheet()
     }
 

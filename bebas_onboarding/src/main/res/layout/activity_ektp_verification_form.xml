@@ -68,17 +68,34 @@
                 android:layout_marginTop="20dp"
                 android:imeOptions="actionNext"
                 android:inputType="text|phone"
-                app:maxLengthIncludingMaskingChar="19"
                 app:hint="NIK"
-                app:label="NIK" />
+                app:label="NIK"
+                app:maxLengthIncludingMaskingChar="19" />
 
             <com.fadlurahmanf.bebas_ui.edittext.BebasPickerEdittext
-                android:id="@+id/dd_gender"
+                android:id="@+id/dd_datepicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:hint="NIK"
-                app:label="NIK" />
+                android:drawableEnd="@drawable/round_calendar_today_24"
+                app:hint="Tanggal Lahir"
+                app:label="Tanggal Lahir" />
+
+            <com.fadlurahmanf.bebas_ui.edittext.BebasPickerEdittext
+                android:id="@+id/dd_province"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:hint="Provinsi"
+                app:label="Provinsi" />
+
+            <com.fadlurahmanf.bebas_ui.edittext.BebasPickerEdittext
+                android:id="@+id/dd_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:hint="Kota/Kabupaten"
+                app:label="Kota/Kabupaten" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

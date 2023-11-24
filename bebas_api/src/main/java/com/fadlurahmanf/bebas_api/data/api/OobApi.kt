@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_api.data.api
 
+import com.fadlurahmanf.bebas_api.data.dto.demography.CityResponse
 import com.fadlurahmanf.bebas_api.data.dto.demography.ProvinceResponse
 import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyRequest
 import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyResponse
@@ -16,6 +17,7 @@ import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface OobApi {
     @POST("verification/request-otp")
@@ -45,4 +47,9 @@ interface OobApi {
 
     @GET("region/provinces")
     fun getProvinces(): Observable<BaseResponse<List<ProvinceResponse>>>
+
+    @GET("region/city/{provinceId}")
+    fun getCities(
+        @Path("provinceId") provinceId: String
+    ): Observable<BaseResponse<List<CityResponse>>>
 }

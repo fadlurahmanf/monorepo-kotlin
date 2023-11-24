@@ -9,5 +9,9 @@ sealed class EktpFormState {
         val provinces: List<BebasItemPickerBottomsheetModel>
     ) : EktpFormState()
 
+    data class FetchedCities(
+        val cities: List<BebasItemPickerBottomsheetModel>
+    ) : EktpFormState()
+
     data class FAILED(val exception: BebasException) : EktpFormState()
 }

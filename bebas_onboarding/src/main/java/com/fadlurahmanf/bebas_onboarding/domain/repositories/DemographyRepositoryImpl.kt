@@ -23,4 +23,19 @@ class DemographyRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    fun getCityItems(provinceId: String): Observable<List<BebasItemPickerBottomsheetModel>> {
+        return onboardingGuestRemoteDatasource.getCities(provinceId).map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+
+            it.data!!.map { provinceResp ->
+                BebasItemPickerBottomsheetModel(
+                    id = provinceResp.id ?: "",
+                    label = provinceResp.name ?: ""
+                )
+            }
+        }
+    }
 }

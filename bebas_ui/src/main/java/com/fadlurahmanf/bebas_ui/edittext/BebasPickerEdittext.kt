@@ -34,12 +34,11 @@ class BebasPickerEdittext(context: Context, attributeSet: AttributeSet) :
 
     private var watcher: BebasPickerEdittextTextWatcher? = null
 
-    //todo
-//    var text: String
-//        get() = editText.text.toString()
-//        set(value) {
-//            editText.setText(value)
-//        }
+
+    fun setText(text: String) {
+        tvAnswer.text = text
+        changeEditTextStyle()
+    }
 
     init {
         inflate(context, R.layout.cust_bebas_picker_edittext, this)
@@ -57,11 +56,20 @@ class BebasPickerEdittext(context: Context, attributeSet: AttributeSet) :
         labelInput = attributes.getString(R.styleable.BebasPickerEdittext_label)
 
 
-        val drawable = attributes.getDrawable(R.styleable.BebasPickerEdittext_android_drawableStart)
-        if (drawable != null) {
+        val inputDrawableStart =
+            attributes.getDrawable(R.styleable.BebasPickerEdittext_android_drawableStart)
+        if (inputDrawableStart != null) {
             drawableStart.visibility = View.VISIBLE
-            drawableStart.setImageDrawable(drawable)
+            drawableStart.setImageDrawable(inputDrawableStart)
         }
+
+        val inputDrawableEnd =
+            attributes.getDrawable(R.styleable.BebasPickerEdittext_android_drawableEnd)
+        if (inputDrawableEnd != null) {
+            drawableEnd.visibility = View.VISIBLE
+            drawableEnd.setImageDrawable(inputDrawableEnd)
+        }
+
 
         setup()
     }
@@ -69,12 +77,11 @@ class BebasPickerEdittext(context: Context, attributeSet: AttributeSet) :
     private fun setup() {
         if (labelInput != null && hintInput != null) {
             label.text = labelInput ?: "-"
-            tvHint.hint = hintInput ?: ""
+            tvHint.text = hintInput ?: ""
         } else {
             label.text = labelInput ?: hintInput ?: "-"
-            tvHint.hint = hintInput ?: labelInput ?: ""
+            tvHint.text = hintInput ?: labelInput ?: ""
         }
-
 
     }
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_onboarding.data.state.EktpFormState
 import com.fadlurahmanf.bebas_onboarding.domain.repositories.DemographyRepositoryImpl
+import com.fadlurahmanf.bebas_shared.data.dto.BebasItemPickerBottomsheetModel
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -14,6 +15,15 @@ import javax.inject.Inject
 class EktpVerificationFormViewModel @Inject constructor(
     private val demographyRepositoryImpl: DemographyRepositoryImpl
 ) : BaseViewModel() {
+
+    var provinces: List<BebasItemPickerBottomsheetModel>? = null
+    var cities: List<BebasItemPickerBottomsheetModel>? = null
+
+    private val _selectedProvince = MutableLiveData<BebasItemPickerBottomsheetModel?>()
+    val selectedProvince: LiveData<BebasItemPickerBottomsheetModel?> = _selectedProvince
+
+    private val _selectedCity = MutableLiveData<BebasItemPickerBottomsheetModel?>()
+    val selectedCity: LiveData<BebasItemPickerBottomsheetModel?> = _selectedCity
 
     private val _ektpState = MutableLiveData<EktpFormState>()
     val ektpState: LiveData<EktpFormState> = _ektpState
@@ -25,6 +35,7 @@ class EktpVerificationFormViewModel @Inject constructor(
                                       .observeOn(AndroidSchedulers.mainThread())
                                       .subscribe(
                                           {
+                                              provinces = it
                                               _ektpState.value = EktpFormState.FetchedProvinces(it)
                                           },
                                           {
@@ -35,5 +46,38 @@ class EktpVerificationFormViewModel @Inject constructor(
                                           },
                                           {}
                                       ))
+    }
+
+    fun selectProvince(province: BebasItemPickerBottomsheetModel) {
+        if (_selectedProvince.value?.id != province.id) {
+            _selectedProvince.value = province
+
+            _selectedCity.value = null
+            cities = null
+        }
+    }
+
+    fun fetchCities(provinceId: String) {
+        _ektpState.value = EktpFormState.LOADING
+        compositeDisposable().add(demographyRepositoryImpl.getCityItems(provinceId)
+                                      .subscribeOn(Schedulers.io())
+                                      .observeOn(AndroidSchedulers.mainThread())
+                                      .subscribe(
+                                          {
+                                              cities = it
+                                              _ektpState.value = EktpFormState.FetchedCities(it)
+                                          },
+                                          {
+                                              _ektpState.value = EktpFormState.FAILED(
+                                                  BebasException.fromThrowable(it)
+                                              )
+
+                                          },
+                                          {}
+                                      ))
+    }
+
+    fun selectCity(city: BebasItemPickerBottomsheetModel) {
+        _selectedCity.value = city
     }
 }

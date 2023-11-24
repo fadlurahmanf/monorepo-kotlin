@@ -81,4 +81,6 @@ class OnboardingGuestRemoteDatasource @Inject constructor(
     fun getOcrV2(bodyRequest: OcrRequest) = networkService(30).getOCRv2(bodyRequest)
 
     fun getProvinces() = networkService(30).getProvinces()
+
+    fun getCities(provinceId: String) = networkService(30).getCities(provinceId)
 }

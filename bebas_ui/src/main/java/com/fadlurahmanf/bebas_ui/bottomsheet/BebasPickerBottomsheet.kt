@@ -5,7 +5,10 @@ import com.fadlurahmanf.bebas_shared.data.dto.BebasItemPickerBottomsheetModel
 import com.fadlurahmanf.bebas_ui.adapter.BebasPickerBottomsheetAdapter
 import com.fadlurahmanf.bebas_ui.databinding.BottomsheetBebasPickerBinding
 
-class BebasPickerBottomsheet(private val list: List<BebasItemPickerBottomsheetModel>) :
+class BebasPickerBottomsheet(
+    private val list: List<BebasItemPickerBottomsheetModel>,
+    private val callback: BebasPickerBottomsheetAdapter.Callback
+) :
     BaseBottomsheet<BottomsheetBebasPickerBinding>(
         BottomsheetBebasPickerBinding::inflate
     ) {
@@ -14,6 +17,7 @@ class BebasPickerBottomsheet(private val list: List<BebasItemPickerBottomsheetMo
 
     override fun setup() {
         adapter = BebasPickerBottomsheetAdapter(list)
+        adapter.setCallback(callback)
         binding.rv.adapter = adapter
     }
 
