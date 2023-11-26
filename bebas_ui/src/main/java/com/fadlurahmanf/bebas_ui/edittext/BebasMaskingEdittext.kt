@@ -25,6 +25,7 @@ class BebasMaskingEdittext(context: Context, attributeSet: AttributeSet) :
     private var errorTv: TextView
 
     var hintInput: String?
+    var formatType: Int?
     var maxLengthIncludingMaskingChar: Int?
     var labelInput: String?
     var errorText: String? = null
@@ -59,6 +60,7 @@ class BebasMaskingEdittext(context: Context, attributeSet: AttributeSet) :
             attributes.getInt(R.styleable.BebasMaskingEdittext_android_inputType, 0)
         maxLengthIncludingMaskingChar =
             attributes.getInt(R.styleable.BebasMaskingEdittext_maxLengthIncludingMaskingChar, 0)
+        formatType = attributes.getInt(R.styleable.BebasMaskingEdittext_formatType, 0)
 
         val drawable =
             attributes.getDrawable(R.styleable.BebasMaskingEdittext_android_drawableStart)
@@ -83,8 +85,14 @@ class BebasMaskingEdittext(context: Context, attributeSet: AttributeSet) :
             editText.hint = hintInput ?: labelInput ?: ""
         }
 
-        if (maxLengthIncludingMaskingChar != null && (maxLengthIncludingMaskingChar ?: 0) > 0) {
-            editText.filters = arrayOf(InputFilter.LengthFilter(maxLengthIncludingMaskingChar!!))
+        // rtrw example: 007/021 -> t char with '/'
+        if (formatType == 1) {
+            editText.filters = arrayOf(InputFilter.LengthFilter(7))
+        } else {
+            if (maxLengthIncludingMaskingChar != null && (maxLengthIncludingMaskingChar ?: 0) > 0) {
+                editText.filters =
+                    arrayOf(InputFilter.LengthFilter(maxLengthIncludingMaskingChar!!))
+            }
         }
 
         textWatcher = object : TextWatcher {
@@ -105,29 +113,56 @@ class BebasMaskingEdittext(context: Context, attributeSet: AttributeSet) :
 
                 isFormatting = true
 
-                // Remove any previous non-digit characters
-                val digits = s?.toString()?.replace("\\D".toRegex(), "") ?: ""
+                // rtrw
+                if (formatType == 1) {
+                    // Remove any previous non-digit characters
+                    val digits = s?.toString()?.replace("/".toRegex(), "") ?: ""
 
-                // Add spaces every 4 characters
-                val formattedNumber = StringBuilder()
-                for (i in digits.indices) {
-                    if (i > 0 && i % 4 == 0) {
-                        formattedNumber.append(" ")
+                    // Add spaces every 4 characters
+                    val formattedNumber = StringBuilder()
+                    for (i in digits.indices) {
+                        if (i > 0 && i % 3 == 0) {
+                            formattedNumber.append("/")
+                        }
+                        formattedNumber.append(digits[i])
                     }
-                    formattedNumber.append(digits[i])
+
+                    editText.setText(formattedNumber.toString())
+
+                    // Move the cursor to the end of the formatted text
+                    editText.setSelection(formattedNumber.length)
+
+                    isFormatting = false
+                    watcher?.afterTextChanged(
+                        s,
+                        formattedNumber.toString(),
+                        s?.toString()?.replace("/".toRegex(), "")
+                    )
+                } else {
+                    // Remove any previous non-digit characters
+                    val digits = s?.toString()?.replace("\\D".toRegex(), "") ?: ""
+
+                    // Add spaces every 4 characters
+                    val formattedNumber = StringBuilder()
+                    for (i in digits.indices) {
+                        if (i > 0 && i % 4 == 0) {
+                            formattedNumber.append(" ")
+                        }
+                        formattedNumber.append(digits[i])
+                    }
+
+                    editText.setText(formattedNumber.toString())
+
+                    // Move the cursor to the end of the formatted text
+                    editText.setSelection(formattedNumber.length)
+
+                    isFormatting = false
+                    watcher?.afterTextChanged(
+                        s,
+                        formattedNumber.toString(),
+                        s?.toString()?.replace("\\D".toRegex(), "")
+                    )
                 }
-
-                editText.setText(formattedNumber.toString())
-
-                // Move the cursor to the end of the formatted text
-                editText.setSelection(formattedNumber.length)
-
-                isFormatting = false
-                watcher?.afterTextChanged(
-                    s,
-                    formattedNumber.toString(),
-                    s?.toString()?.replace("\\D".toRegex(), "")
-                )
             }
 
         }

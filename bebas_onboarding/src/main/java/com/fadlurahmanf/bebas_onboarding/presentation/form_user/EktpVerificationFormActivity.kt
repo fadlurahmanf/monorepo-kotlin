@@ -109,7 +109,6 @@ class EktpVerificationFormActivity :
             showGendersBottomsheet()
         }
 
-
         binding.ddProvince.setOnClickListener {
             if (viewModel.provinces != null) {
                 showProvincesBottomsheet(viewModel.provinces!!)
