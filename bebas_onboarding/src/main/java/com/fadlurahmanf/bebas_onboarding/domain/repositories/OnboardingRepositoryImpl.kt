@@ -326,7 +326,22 @@ class OnboardingRepositoryImpl @Inject constructor(
                     throw BebasException.generalRC("DATA_MISSING")
                 }
 
+                val ocrData = it.data!!
                 bebasLocalDatasource.updateBase64ImageEktp(base64Image)
+                bebasLocalDatasource.updateOcrOobData(
+                    nik = ocrData.idCardNumber,
+                    fullName = ocrData.name,
+                    birthPlace = ocrData.birthPlace,
+                    birthDate = ocrData.birthDate,
+                    gender = ocrData.gender,
+                    province = ocrData.province,
+                    city = ocrData.city,
+                    subDistrict = ocrData.subDistrict,
+                    ward = ocrData.ward,
+                    address = ocrData.address,
+                    rtRw = ocrData.rtrw
+                )
+
                 it.data!!
             }
         }

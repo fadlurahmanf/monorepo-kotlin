@@ -2,7 +2,6 @@ package com.fadlurahmanf.bebas_onboarding.presentation.form_user
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.util.Log
 import com.fadlurahmanf.bebas_onboarding.data.flow.EktpVerificationFormFlow
 import com.fadlurahmanf.bebas_onboarding.data.state.EktpFormState
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityEktpVerificationFormBinding
@@ -15,11 +14,7 @@ import com.fadlurahmanf.bebas_ui.adapter.BebasPickerBottomsheetAdapter
 import com.fadlurahmanf.bebas_ui.bottomsheet.BebasPickerBottomsheet
 import com.fadlurahmanf.bebas_ui.databinding.BottomsheetBebasPickerBinding
 import com.fadlurahmanf.bebas_ui.dialog.DatePickerDialog
-import java.lang.Exception
-import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 import javax.inject.Inject
 
 class EktpVerificationFormActivity :
@@ -48,9 +43,26 @@ class EktpVerificationFormActivity :
 
         initObserver()
         initAction()
+
+        viewModel.initData()
     }
 
     private fun initObserver() {
+        viewModel.initState.observe(this) {
+            when (it) {
+                is EktpFormState.FetchedLocalData -> {
+                    binding.etNik.text = it.nik ?: ""
+                    binding.etFullname.text = it.fullName ?: ""
+                    binding.etBirthplace.text = it.birthPlace ?: ""
+
+                    if (viewModel.initSelectedProvinceLabel != null) {
+                        viewModel.fetchProvinces(selectedProvinceLabel = it.province)
+                    }
+                }
+
+                else -> {}
+            }
+        }
         viewModel.selectedProvince.observe(this) {
             binding.ddProvince.setText(it?.label ?: "")
         }
@@ -74,9 +86,31 @@ class EktpVerificationFormActivity :
                     showProvincesBottomsheet(it.provinces)
                 }
 
+                is EktpFormState.FetchedProvincesAndSelect -> {
+                    dismissLoadingDialog()
+
+                    if (viewModel.selectedProvince.value?.id != null && viewModel.initSelectedCityLabel != null) {
+                        viewModel.fetchCities(
+                            provinceId = viewModel.selectedProvince.value?.id ?: "",
+                            selectedCityLabel = viewModel.initSelectedCityLabel
+                        )
+                    }
+                }
+
                 is EktpFormState.FetchedCities -> {
                     dismissLoadingDialog()
                     showCitiesBottomsheet(it.cities)
+                }
+
+                is EktpFormState.FetchedCitiesAndSelect -> {
+                    dismissLoadingDialog()
+
+                    if (viewModel.selectedCity.value?.id != null && viewModel.initSelectedSubDistrictLabel != null) {
+                        viewModel.fetchSubDistricts(
+                            cityId = viewModel.selectedProvince.value?.id ?: "",
+                            selectedSubDistrictLabel = viewModel.initSelectedSubDistrictLabel
+                        )
+                    }
                 }
 
                 is EktpFormState.FetchedSubDistricts -> {
@@ -84,9 +118,24 @@ class EktpVerificationFormActivity :
                     showSubDistrictsBottomsheet(it.subDistricts)
                 }
 
+                is EktpFormState.FetchedSubDistrictsAndSelect -> {
+                    dismissLoadingDialog()
+
+                    if (viewModel.selectedSubDistrict.value?.id != null && viewModel.initSelectedWardLabel != null) {
+                        viewModel.fetchWards(
+                            subDistrictId = viewModel.selectedSubDistrict.value?.id ?: "",
+                            selectedWardLabel = viewModel.initSelectedWardLabel
+                        )
+                    }
+                }
+
                 is EktpFormState.FetchedWards -> {
                     dismissLoadingDialog()
                     showWardsBottomsheet(it.wards)
+                }
+
+                is EktpFormState.FetchedWardAndSelect -> {
+                    dismissLoadingDialog()
                 }
 
                 is EktpFormState.LOADING -> {
@@ -95,7 +144,10 @@ class EktpVerificationFormActivity :
 
                 is EktpFormState.FAILED -> {
                     dismissLoadingDialog()
+                    showFailedBottomsheet(it.exception)
                 }
+
+                else -> {}
             }
         }
     }

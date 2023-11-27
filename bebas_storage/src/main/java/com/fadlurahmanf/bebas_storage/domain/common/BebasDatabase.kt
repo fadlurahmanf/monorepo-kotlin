@@ -26,7 +26,7 @@ abstract class BebasDatabase : RoomDatabase() {
     abstract fun bebasDao(): BebasDao
 
     companion object {
-        const val VERSION = 15
+        const val VERSION = 16
 
         @Volatile
         private var INSTANCE: BebasDatabase? = null
@@ -42,6 +42,7 @@ abstract class BebasDatabase : RoomDatabase() {
                         BebasDbMigrations.MANUAL_MIGRATION_12_13,
                         BebasDbMigrations.MANUAL_MIGRATION_13_14,
                         BebasDbMigrations.MANUAL_MIGRATION_14_15,
+                        BebasDbMigrations.MANUAL_MIGRATION_15_16,
                     )
 //                    .fallbackToDestructiveMigration()
                     .allowMainThreadQueries()

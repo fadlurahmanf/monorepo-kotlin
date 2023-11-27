@@ -70,7 +70,7 @@ class EktpVerificationCameraActivity :
             var isIdCardFound = false
             currentLabels.forEach {
                 Log.d("BebasLogger", "LABELS SIZE INSIDE OBJECT: ${it.text} & ${it.confidence}")
-                if (it.text == "Mobile phone" && it.confidence >= 0.5f) {
+                if ((it.text == "Mobile phone" || it.text == "Hand") && it.confidence >= 0.5f) {
                     isIdCardFound = true
                 }
             }

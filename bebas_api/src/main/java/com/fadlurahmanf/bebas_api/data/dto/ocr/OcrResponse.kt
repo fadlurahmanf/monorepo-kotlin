@@ -14,8 +14,10 @@ data class OcrResponse(
     var bloodGroup: String? = null,
     var province: String? = null,
     var city: String? = null,
-    var district: String? = null,
+    @SerializedName("district")
     var subDistrict: String? = null,
+    @SerializedName("subDistrict")
+    var ward: String? = null,
     var address: String? = null,
     var rtrw: String? = null,
 )

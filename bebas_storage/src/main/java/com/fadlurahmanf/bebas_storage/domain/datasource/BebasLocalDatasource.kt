@@ -140,6 +140,16 @@ class BebasLocalDatasource @Inject constructor(
             base64ImageEktp = entity.base64ImageEktp,
             isFinishedEktpCameraVerification = entity.isFinishedEktpCameraVerification,
             idCardNumber = decrypt(entity.encryptedIdCardNumber, privateKey),
+            fullName = decrypt(entity.encryptedFullName, privateKey),
+            birthPlace = entity.birthPlace,
+            birthDate = entity.birthDate,
+            gender = entity.gender,
+            province = decrypt(entity.encryptedProvince, privateKey),
+            city = decrypt(entity.encryptedCity, privateKey),
+            subDistrict = decrypt(entity.encryptedSubDistrict, privateKey),
+            ward = decrypt(entity.encryptedWard, privateKey),
+            address = decrypt(entity.encryptedAddress, privateKey),
+            rtRw = decrypt(entity.encryptedRtRw, privateKey)
         )
         decryptedEntity
     }
@@ -221,11 +231,55 @@ class BebasLocalDatasource @Inject constructor(
         return entitySubscriber.subscribe()
     }
 
+    fun updateOcrOobData(
+        nik: String? = null,
+        fullName: String? = null,
+        birthPlace: String? = null,
+        birthDate: String? = null,
+        gender: String? = null,
+        province: String? = null,
+        city: String? = null,
+        subDistrict: String? = null,
+        ward: String? = null,
+        address: String? = null,
+        rtRw: String? = null,
+    ): Disposable {
+        val entitySubscriber = getEntity().map { entity ->
+            val publicKey = entity.encodedPublicKey
+            val newEntity = entity.copy(
+                encryptedIdCardNumber = encrypt(nik, publicKey),
+                encryptedFullName = encrypt(fullName, publicKey),
+                birthPlace = birthPlace,
+                birthDate = birthDate,
+                gender = gender,
+                encryptedProvince = encrypt(province, publicKey),
+                encryptedCity = encrypt(city, publicKey),
+                encryptedSubDistrict = encrypt(subDistrict, publicKey),
+                encryptedWard = encrypt(ward, publicKey),
+                encryptedAddress = encrypt(address, publicKey),
+                encryptedRtRw = encrypt(rtRw, publicKey)
+            )
+            dao.update(newEntity)
+        }
+        return entitySubscriber.subscribe()
+    }
+
     fun updateIsFinishedEktpCameraVerification(value: Boolean?): Disposable {
         val entitySubscriber = getEntity().map { entity ->
             dao.update(entity.copy(isFinishedEktpCameraVerification = value))
         }
         return entitySubscriber.subscribe()
+    }
+
+    private fun encrypt(plain: String?, publicKey: String?): String? {
+        return if (plain != null) {
+            coreRSARepository.encrypt(
+                plain,
+                publicKey ?: ""
+            )
+        } else {
+            null
+        }
     }
 
     private fun decrypt(encrypted: String?, privateKey: String?): String? {

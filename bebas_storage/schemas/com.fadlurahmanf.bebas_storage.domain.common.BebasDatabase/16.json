@@ -1,0 +1,226 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 16,
+    "identityHash": "859572b73b1a083c9b90cc65cf8f257d",
+    "entities": [
+      {
+        "tableName": "t_bebas",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`deviceId` TEXT NOT NULL, `language` TEXT NOT NULL, `encodedPublicKey` TEXT, `encodedPrivateKey` TEXT, `encryptedGuestToken` TEXT, `encryptedAccessToken` TEXT, `encryptedRefreshToken` TEXT, `expiresAt` TEXT, `refreshExpiresAt` TEXT, `onboardingFlow` TEXT, `encryptedPhone` TEXT, `encryptedEmail` TEXT, `isFinishedReadTnc` INTEGER, `lastScreen` TEXT, `encryptedOtpToken` TEXT, `encryptedEmailToken` TEXT, `encryptedOnboardingId` TEXT, `isFinishedOtpVerification` INTEGER, `isFinishedEmailVerification` INTEGER, `isFinishedPrepareOnboarding` INTEGER, `base64ImageEktp` TEXT, `isFinishedEktpCameraVerification` INTEGER, `encryptedIdCardNumber` TEXT, `encryptedFullName` TEXT, `birthPlace` TEXT, `birthDate` TEXT, `gender` TEXT, `encryptedProvince` TEXT, `encryptedCity` TEXT, `encryptedSubDistrict` TEXT, `encryptedWard` TEXT, `encryptedAddress` TEXT, `encryptedRtRw` TEXT, PRIMARY KEY(`deviceId`))",
+        "fields": [
+          {
+            "fieldPath": "deviceId",
+            "columnName": "deviceId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "language",
+            "columnName": "language",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "encodedPublicKey",
+            "columnName": "encodedPublicKey",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encodedPrivateKey",
+            "columnName": "encodedPrivateKey",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encryptedGuestToken",
+            "columnName": "encryptedGuestToken",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encryptedAccessToken",
+            "columnName": "encryptedAccessToken",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encryptedRefreshToken",
+            "columnName": "encryptedRefreshToken",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "expiresAt",
+            "columnName": "expiresAt",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "refreshExpiresAt",
+            "columnName": "refreshExpiresAt",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "onboardingFlow",
+            "columnName": "onboardingFlow",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encryptedPhone",
+            "columnName": "encryptedPhone",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encryptedEmail",
+            "columnName": "encryptedEmail",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isFinishedReadTnc",
+            "columnName": "isFinishedReadTnc",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lastScreen",
+            "columnName": "lastScreen",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encryptedOtpToken",
+            "columnName": "encryptedOtpToken",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encryptedEmailToken",
+            "columnName": "encryptedEmailToken",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encryptedOnboardingId",
+            "columnName": "encryptedOnboardingId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isFinishedOtpVerification",
+            "columnName": "isFinishedOtpVerification",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isFinishedEmailVerification",
+            "columnName": "isFinishedEmailVerification",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isFinishedPrepareOnboarding",
+            "columnName": "isFinishedPrepareOnboarding",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "base64ImageEktp",
+            "columnName": "base64ImageEktp",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isFinishedEktpCameraVerification",
+            "columnName": "isFinishedEktpCameraVerification",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encryptedIdCardNumber",
+            "columnName": "encryptedIdCardNumber",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encryptedFullName",
+            "columnName": "encryptedFullName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "birthPlace",
+            "columnName": "birthPlace",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "birthDate",
+            "columnName": "birthDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "gender",
+            "columnName": "gender",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encryptedProvince",
+            "columnName": "encryptedProvince",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encryptedCity",
+            "columnName": "encryptedCity",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encryptedSubDistrict",
+            "columnName": "encryptedSubDistrict",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encryptedWard",
+            "columnName": "encryptedWard",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encryptedAddress",
+            "columnName": "encryptedAddress",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encryptedRtRw",
+            "columnName": "encryptedRtRw",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "deviceId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '859572b73b1a083c9b90cc65cf8f257d')"
+    ]
+  }
+}

@@ -1,20 +1,26 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.form_user
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_onboarding.data.state.EktpFormState
 import com.fadlurahmanf.bebas_onboarding.domain.repositories.DemographyRepositoryImpl
 import com.fadlurahmanf.bebas_shared.data.dto.BebasItemPickerBottomsheetModel
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_storage.domain.datasource.BebasLocalDatasource
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class EktpVerificationFormViewModel @Inject constructor(
-    private val demographyRepositoryImpl: DemographyRepositoryImpl
+    private val demographyRepositoryImpl: DemographyRepositoryImpl,
+    private val bebasLocalDatasource: BebasLocalDatasource
 ) : BaseViewModel() {
+
+    var initSelectedProvinceLabel: String? = null
+    var initSelectedCityLabel: String? = null
+    var initSelectedSubDistrictLabel: String? = null
+    var initSelectedWardLabel: String? = null
 
     var provinces: List<BebasItemPickerBottomsheetModel>? = null
     var cities: List<BebasItemPickerBottomsheetModel>? = null
@@ -36,15 +42,36 @@ class EktpVerificationFormViewModel @Inject constructor(
     private val _ektpState = MutableLiveData<EktpFormState>()
     val ektpState: LiveData<EktpFormState> = _ektpState
 
-    fun fetchProvinces() {
+    fun fetchProvinces(selectedProvinceLabel: String? = null) {
         _ektpState.value = EktpFormState.LOADING
         compositeDisposable().add(demographyRepositoryImpl.getProvinceItems()
                                       .subscribeOn(Schedulers.io())
                                       .observeOn(AndroidSchedulers.mainThread())
                                       .subscribe(
-                                          {
-                                              provinces = it
-                                              _ektpState.value = EktpFormState.FetchedProvinces(it)
+                                          { models ->
+                                              provinces = models
+                                              var selected: BebasItemPickerBottomsheetModel? = null
+
+                                              if (selectedProvinceLabel != null) {
+                                                  selected = models.first { model ->
+                                                      model.label.equals(
+                                                          selectedProvinceLabel,
+                                                          ignoreCase = true
+                                                      )
+                                                  }
+                                              }
+
+                                              if (selected != null) {
+                                                  _selectedProvince.value = selected
+                                                  _ektpState.value =
+                                                      EktpFormState.FetchedProvincesAndSelect(
+                                                          provinces = models,
+                                                          selectedProvince = selected
+                                                      )
+                                              } else {
+                                                  _ektpState.value =
+                                                      EktpFormState.FetchedProvinces(models)
+                                              }
                                           },
                                           {
                                               _ektpState.value = EktpFormState.FAILED(
@@ -70,15 +97,38 @@ class EktpVerificationFormViewModel @Inject constructor(
         }
     }
 
-    fun fetchCities(provinceId: String) {
+    fun fetchCities(provinceId: String, selectedCityLabel: String? = null) {
         _ektpState.value = EktpFormState.LOADING
         compositeDisposable().add(demographyRepositoryImpl.getCityItems(provinceId)
                                       .subscribeOn(Schedulers.io())
                                       .observeOn(AndroidSchedulers.mainThread())
                                       .subscribe(
-                                          {
-                                              cities = it
-                                              _ektpState.value = EktpFormState.FetchedCities(it)
+                                          { models ->
+                                              cities = models
+
+                                              var selected: BebasItemPickerBottomsheetModel? = null
+
+                                              if (selectedCityLabel != null) {
+                                                  selected = models.first { model ->
+                                                      model.label.equals(
+                                                          selectedCityLabel,
+                                                          ignoreCase = true
+                                                      )
+                                                  }
+                                              }
+
+                                              if (selected != null) {
+                                                  _selectedCity.value = selected
+                                                  _ektpState.value =
+                                                      EktpFormState.FetchedCitiesAndSelect(
+                                                          cities = models,
+                                                          selectedCity = selected
+                                                      )
+                                              } else {
+                                                  _ektpState.value =
+                                                      EktpFormState.FetchedCities(models)
+                                              }
+
                                           },
                                           {
                                               _ektpState.value = EktpFormState.FAILED(
@@ -99,16 +149,36 @@ class EktpVerificationFormViewModel @Inject constructor(
         wards = null
     }
 
-    fun fetchSubDistricts(cityId: String) {
+    fun fetchSubDistricts(cityId: String, selectedSubDistrictLabel: String? = null) {
         _ektpState.value = EktpFormState.LOADING
         compositeDisposable().add(demographyRepositoryImpl.getSubDistrictItems(cityId)
                                       .subscribeOn(Schedulers.io())
                                       .observeOn(AndroidSchedulers.mainThread())
                                       .subscribe(
-                                          {
-                                              subDistricts = it
-                                              _ektpState.value =
-                                                  EktpFormState.FetchedSubDistricts(it)
+                                          { models ->
+                                              subDistricts = models
+
+                                              var selected: BebasItemPickerBottomsheetModel? = null
+
+                                              if (selectedSubDistrictLabel != null) {
+                                                  selected = models.first { model ->
+                                                      model.label.equals(
+                                                          selectedSubDistrictLabel,
+                                                          ignoreCase = true
+                                                      )
+                                                  }
+                                              }
+
+                                              if (selected != null) {
+                                                  _ektpState.value =
+                                                      EktpFormState.FetchedSubDistrictsAndSelect(
+                                                          subDistricts = models,
+                                                          selectedSubDistrict = selected
+                                                      )
+                                              } else {
+                                                  _ektpState.value =
+                                                      EktpFormState.FetchedSubDistricts(models)
+                                              }
                                           },
                                           {
                                               _ektpState.value = EktpFormState.FAILED(
@@ -126,16 +196,36 @@ class EktpVerificationFormViewModel @Inject constructor(
         wards = null
     }
 
-    fun fetchWards(subDistrictId: String) {
+    fun fetchWards(subDistrictId: String, selectedWardLabel: String? = null) {
         _ektpState.value = EktpFormState.LOADING
         compositeDisposable().add(demographyRepositoryImpl.getWardItems(subDistrictId)
                                       .subscribeOn(Schedulers.io())
                                       .observeOn(AndroidSchedulers.mainThread())
                                       .subscribe(
-                                          {
-                                              wards = it
-                                              _ektpState.value =
-                                                  EktpFormState.FetchedWards(it)
+                                          { models ->
+                                              wards = models
+
+                                              var selected: BebasItemPickerBottomsheetModel? = null
+
+                                              if (selectedWardLabel != null) {
+                                                  selected = models.first { model ->
+                                                      model.label.equals(
+                                                          selectedWardLabel,
+                                                          ignoreCase = true
+                                                      )
+                                                  }
+                                              }
+
+                                              if (selected != null) {
+                                                  _ektpState.value =
+                                                      EktpFormState.FetchedWardAndSelect(
+                                                          wards = models,
+                                                          selectedWard = selected
+                                                      )
+                                              } else {
+                                                  _ektpState.value =
+                                                      EktpFormState.FetchedWards(models)
+                                              }
                                           },
                                           {
                                               _ektpState.value = EktpFormState.FAILED(
@@ -148,5 +238,33 @@ class EktpVerificationFormViewModel @Inject constructor(
 
     fun selectWard(ward: BebasItemPickerBottomsheetModel) {
         _selectedWard.value = ward
+    }
+
+    private val _initState = MutableLiveData<EktpFormState>()
+    val initState: LiveData<EktpFormState> = _initState
+
+    fun initData() {
+        compositeDisposable().add(
+            bebasLocalDatasource.getDecryptedEntity().subscribe(
+                {
+                    _initState.value = EktpFormState.FetchedLocalData(
+                        nik = it.idCardNumber,
+                        fullName = it.fullName,
+                        birthPlace = it.birthPlace,
+                        birthDate = it.birthDate,
+                        gender = it.gender,
+                        province = it.province,
+                        city = it.city,
+                        subDistrict = it.subDistrict,
+                        ward = it.ward,
+                        address = it.address,
+                        rtRw = it.rtRw
+                    )
+                },
+                {
+                    _initState.value = EktpFormState.FAILED(BebasException.fromThrowable(it))
+                },
+            )
+        )
     }
 }

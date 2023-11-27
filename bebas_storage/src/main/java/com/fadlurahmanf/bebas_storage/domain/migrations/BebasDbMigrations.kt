@@ -27,4 +27,19 @@ object BebasDbMigrations {
             database.execSQL("ALTER TABLE t_bebas ADD COLUMN encryptedIdCardNumber TEXT NULL")
         }
     }
+
+    val MANUAL_MIGRATION_15_16 = object : Migration(15, 16) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("ALTER TABLE t_bebas ADD COLUMN encryptedFullName TEXT NULL")
+            database.execSQL("ALTER TABLE t_bebas ADD COLUMN birthPlace TEXT NULL")
+            database.execSQL("ALTER TABLE t_bebas ADD COLUMN birthDate TEXT NULL")
+            database.execSQL("ALTER TABLE t_bebas ADD COLUMN gender TEXT NULL")
+            database.execSQL("ALTER TABLE t_bebas ADD COLUMN encryptedProvince TEXT NULL")
+            database.execSQL("ALTER TABLE t_bebas ADD COLUMN encryptedCity TEXT NULL")
+            database.execSQL("ALTER TABLE t_bebas ADD COLUMN encryptedSubDistrict TEXT NULL")
+            database.execSQL("ALTER TABLE t_bebas ADD COLUMN encryptedWard TEXT NULL")
+            database.execSQL("ALTER TABLE t_bebas ADD COLUMN encryptedAddress TEXT NULL")
+            database.execSQL("ALTER TABLE t_bebas ADD COLUMN encryptedRtRw TEXT NULL")
+        }
+    }
 }
