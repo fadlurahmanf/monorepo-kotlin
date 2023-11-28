@@ -15,7 +15,9 @@ object AnalyticEvent {
     const val ex_mp4_vplayer_clicked = "ex_mp4_vplayer_clicked"
     const val ex_object_labeling_mlkit_clicked = "ex_object_labeling_mlkit_clicked"
     const val ex_face_detector_mlkit_clicked = "ex_face_detector_mlkit_clicked"
+    const val ex_logger_clicked = "ex_logger_clicked"
     const val ex_list_room_rtc_clicked = "ex_list_room_rtc_clicked"
+    const val ex_otp_clicked = "ex_otp_clicked"
 
     fun defaultParamMap(context: Context): Map<String, Any> {
         val map = mutableMapOf<String, Any>()

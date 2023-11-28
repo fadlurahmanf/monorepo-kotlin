@@ -53,6 +53,7 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.47'
 
     implementation(project(":core_crypto"))
+    implementation(project(":core_logger"))
     implementation(project(":core_platform"))
 
     implementation(project(":mapp_fcm"))

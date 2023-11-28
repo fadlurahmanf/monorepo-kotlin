@@ -1,22 +1,27 @@
 package com.fadlurahmanf.mapp_example.domain.repositories
 
-import android.util.Log
+import com.fadlurahmanf.mapp_api.data.datasources.JsonPlaceHolderRemoteDatasource
 import com.fadlurahmanf.mapp_api.data.datasources.MasIdentityGuestTokenRemoteDatasource
-import com.fadlurahmanf.mapp_api.data.dto.general.BaseResponse
+import com.fadlurahmanf.mapp_api.data.dto.example.PostResponse
 import com.fadlurahmanf.mapp_api.data.dto.identity.LoginRequest
-import com.fadlurahmanf.mapp_api.data.dto.identity.AuthResponse
 import com.fadlurahmanf.mapp_api.data.dto.identity.RefreshUserTokenRequest
 import com.fadlurahmanf.mapp_api.data.exception.MappException
-import com.fadlurahmanf.mapp_shared.extension.*
+import com.fadlurahmanf.mapp_shared.extension.formatDate5
 import com.fadlurahmanf.mapp_storage.domain.datasource.MappLocalDatasource
 import io.reactivex.rxjava3.core.Observable
 import java.util.Calendar
 import javax.inject.Inject
 
 class ExampleRepositoryImpl @Inject constructor(
+    private val jsonPlaceHolderRemoteDatasource: JsonPlaceHolderRemoteDatasource,
     private val masIdentityGuestTokenRemoteDatasource: MasIdentityGuestTokenRemoteDatasource,
     private val mappLocalDatasource: MappLocalDatasource
 ) {
+
+    fun getListPostJsonPlaceHolder(): Observable<List<PostResponse>> {
+        return jsonPlaceHolderRemoteDatasource.getListPost()
+    }
+
     fun login(): Observable<Boolean> {
         val loginRequest = LoginRequest(
             nik = "3511222222222222",

@@ -39,7 +39,7 @@ class HLSPlayerActivity :
                 if (qualities[i].id == currentQuality?.id) {
                     checkedItem = i
                 }
-                array[i] = qualities[i].formatName ?: "-"
+                array[i] = qualities[i].formatName
             }
             builder.setNegativeButton("CANCEL") { dialog, _ ->
                 dialog.dismiss()

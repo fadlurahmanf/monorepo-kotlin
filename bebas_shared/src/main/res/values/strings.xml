@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_general_message_form_empty">%s cannot be empty</string>
+    <string name="invalid_phone_number_length_message">Maximum phone number length is 13 digits</string>
+    <string name="invalid_phone_number_format">Phone number format is incorrect</string>
+    <string name="invalid_email_format">Email format is correct</string>
+    <string name="oops">Oops...</string>
+    <string name="socket_exception_desc">Look like you don\'t have any connection</string>
+    <string name="general_exception_desc">We cannot process your request at this time. Please try again at another time (%1$s)</string>
+    <string name="general_exception_desc_wo_param">We cannot process your request at this time. Please try again at another time</string>
+    <string name="ok">Okay</string>
+    <string name="empty_search_picker_bottomsheet">Oops... %s that you looking for is not found</string>
+    <string name="error_message_length_nik">Minimum length of NIK is 16 digits</string>
+    <string name="error_message_length_full_name">Minimum length of Full Name is 3 digits</string>
+    <string name="error_minimum_17_years">Minimum 17 years</string>
+</resources>

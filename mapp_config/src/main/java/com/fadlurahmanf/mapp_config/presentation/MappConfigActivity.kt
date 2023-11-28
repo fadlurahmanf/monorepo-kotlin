@@ -22,8 +22,8 @@ class MappConfigActivity : AppCompatActivity() {
         }
 
         val intent = Intent(
-                this,
-        Class.forName("com.fadlurahmanf.mapp_splash.presentation.SplashActivity")
+            this,
+            Class.forName("com.fadlurahmanf.mapp_splash.presentation.SplashActivity")
         )
         startActivity(intent)
     }

@@ -3,11 +3,25 @@
 
     <application>
         <activity
+            android:name=".presentation.otp.OtpActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light" />
+        <activity
+            android:name=".presentation.keyword.HighlightKeywordActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light" />
+        <activity
+            android:name=".presentation.logger.LoggerActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light" />
+        <activity
             android:name=".presentation.session.LoginActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light" />
         <activity
             android:name=".presentation.session.ActivityAfterLogin"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light" />
         <activity
             android:name=".presentation.vplayer.Mp4PlayerPlayerActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"

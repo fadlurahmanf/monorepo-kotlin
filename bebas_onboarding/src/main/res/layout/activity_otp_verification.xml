@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.otp.OtpVerificationActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapseToolbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@color/white"
+            app:collapsedTitleTextAppearance="@style/Font.AppBarTitle"
+            app:contentScrim="@color/white"
+            app:expandedTitleMarginBottom="15dp"
+            app:expandedTitleMarginStart="20dp"
+            app:expandedTitleTextAppearance="@style/Font.HeaderTitle"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:toolbarId="@id/toolbar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:title="Otp Verification">
+
+                <com.fadlurahmanf.bebas_ui.button.BebasBackButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp">
+
+            <TextView
+                android:id="@+id/tv_subtitle_header"
+                style="@style/Font.HeaderSubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subtitle OTP Verification" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/otp1"
+                    style="@style/Font.Otp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/otp_background"
+                    android:cursorVisible="false"
+                    android:digits="0123456789"
+                    android:gravity="center"
+                    android:inputType="text|number"
+                    android:maxLength="1"
+                    android:maxLines="1" />
+
+                <EditText
+                    android:id="@+id/otp2"
+                    style="@style/Font.Otp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/otp_background"
+                    android:cursorVisible="false"
+                    android:digits="0123456789"
+                    android:gravity="center"
+                    android:inputType="text|number"
+                    android:maxLength="1"
+                    android:maxLines="1" />
+
+                <EditText
+                    android:id="@+id/otp3"
+                    style="@style/Font.Otp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/otp_background"
+                    android:cursorVisible="false"
+                    android:digits="0123456789"
+                    android:gravity="center"
+                    android:inputType="text|number"
+                    android:maxLength="1"
+                    android:maxLines="1" />
+
+                <EditText
+                    android:id="@+id/otp4"
+                    style="@style/Font.Otp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/otp_background"
+                    android:cursorVisible="false"
+                    android:digits="0123456789"
+                    android:gravity="center"
+                    android:inputType="text|number"
+                    android:maxLength="1"
+                    android:maxLines="1" />
+
+                <EditText
+                    android:id="@+id/otp5"
+                    style="@style/Font.Otp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/otp_background"
+                    android:cursorVisible="false"
+                    android:digits="0123456789"
+                    android:gravity="center"
+                    android:inputType="text|number"
+                    android:maxLength="1"
+                    android:maxLines="1" />
+
+                <EditText
+                    android:id="@+id/otp6"
+                    style="@style/Font.Otp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/otp_background"
+                    android:cursorVisible="false"
+                    android:digits="0123456789"
+                    android:gravity="center"
+                    android:inputType="text|number"
+                    android:maxLength="1"
+                    android:maxLines="1" />
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/Font.Text12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                android:gravity="center"
+                android:text="Belum menerima?" />
+
+            <TextView
+                android:id="@+id/btn_counter_otp_retry"
+                style="@style/Font.Text12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/outlined_corner_primary_color"
+                android:fontFamily="@font/lexend_deca_bold"
+                android:gravity="center"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="5dp"
+                android:text="Kirim ulang 0/3"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tv_countdown_otp_retry"
+                style="@style/Font.Text12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/lexend_deca_light"
+                android:gravity="center"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="5dp"
+                android:text="Kirim ulang dalam 60 detik"
+                android:visibility="gone" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.fadlurahmanf.bebas_ui.button.BebasRoundedButton
+        android:id="@+id/btn_verify_otp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        app:text="Verifikasi" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

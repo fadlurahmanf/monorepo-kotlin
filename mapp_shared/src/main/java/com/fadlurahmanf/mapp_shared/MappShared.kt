@@ -4,4 +4,5 @@ object MappShared {
     lateinit var flavor: String
     lateinit var merchantGuestBaseUrl: String
     lateinit var retailGuestBaseUrl: String
+//    lateinit var logConsole: LogCo
 }

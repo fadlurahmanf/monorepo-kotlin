@@ -2,6 +2,7 @@ package com.fadlurahmanf.mapp_example.presentation
 
 import androidx.viewbinding.ViewBinding
 import com.fadlurahmanf.mapp_config.helper.di.CoreInjectHelper
+import com.fadlurahmanf.mapp_config.presentation.MappApplication
 import com.fadlurahmanf.mapp_example.DaggerMappExampleComponent
 import com.fadlurahmanf.mapp_example.MappExampleComponent
 import com.fadlurahmanf.mapp_ui.presentation.activity.BaseMappActivity
@@ -22,5 +23,7 @@ abstract class BaseExampleActivity<VB : ViewBinding>(
                 CoreInjectHelper.provideMappFirebaseDatabaseComponent(applicationContext),
             )
     }
+
+    fun logConsole() = (applicationContext as MappApplication).logConsole
 }
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFF</color>
+    <color name="green">#FF019267</color>
+    <color name="green_opacity_90">#E6019267</color>
+    <color name="grey">#FFCACACA</color>
+    <color name="grey_opacity_90">#E6CACACA</color>
+
+    <color name="black">#FF000000</color>
+    <color name="black_opacity">#33000000</color>
+
+    <color name="red">#FFFF0000</color>
+
+    <color name="blue">#FF1010E1</color>
+</resources>

@@ -83,6 +83,7 @@ class ObjectLabelingActivity :
     }
 
     override fun injectActivity() {
+
     }
 
     override fun setup() {

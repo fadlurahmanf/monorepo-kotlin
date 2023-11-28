@@ -12,7 +12,17 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/bebas" />
+            <option value="$PROJECT_DIR$/bebas_api" />
+            <option value="$PROJECT_DIR$/bebas_config" />
+            <option value="$PROJECT_DIR$/bebas_onboarding" />
+            <option value="$PROJECT_DIR$/bebas_shared" />
+            <option value="$PROJECT_DIR$/bebas_storage" />
+            <option value="$PROJECT_DIR$/bebas_ui" />
             <option value="$PROJECT_DIR$/core_crypto" />
+            <option value="$PROJECT_DIR$/core_logger" />
+            <option value="$PROJECT_DIR$/core_mlkit" />
+            <option value="$PROJECT_DIR$/core_network" />
             <option value="$PROJECT_DIR$/core_platform" />
             <option value="$PROJECT_DIR$/core_vplayer" />
             <option value="$PROJECT_DIR$/mapp" />
