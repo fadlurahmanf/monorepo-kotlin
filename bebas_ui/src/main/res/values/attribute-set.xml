@@ -20,6 +20,7 @@
         <attr name="android:imeOptions" />
         <attr name="android:inputType" />
         <attr name="android:drawableStart" />
+        <attr name="android:textAllCaps" />
     </declare-styleable>
 
     <declare-styleable name="BebasMaskingEdittext">
@@ -28,6 +29,7 @@
         <attr name="android:imeOptions" />
         <attr name="android:inputType" />
         <attr name="android:drawableStart" />
+        <attr name="android:textAllCaps" />
         <attr name="maxLengthIncludingMaskingChar" format="integer" />
         <attr name="formatType" format="enum">
             <enum name="phoneOrNik" value="0" />

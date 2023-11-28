@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.TypedArray
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.View
@@ -29,6 +30,7 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
     var errorText: String? = null
     private var editTextHasFocus: Boolean = false
     private var fieldError: Boolean = false
+    private var isTextAllCaps: Boolean = false
 
     private var isEnabled: Boolean = true
 
@@ -53,6 +55,7 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
 
         hintInput = attributes.getString(R.styleable.BebasEdittext_hint)
         labelInput = attributes.getString(R.styleable.BebasEdittext_label)
+        isTextAllCaps = attributes.getBoolean(R.styleable.BebasEdittext_android_textAllCaps, false)
 
         editText.imeOptions = attributes.getInt(R.styleable.BebasEdittext_android_imeOptions, 0)
         editText.inputType = attributes.getInt(R.styleable.BebasEdittext_android_inputType, 0)
@@ -75,6 +78,12 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
         } else {
             label.text = labelInput ?: hintInput ?: ""
             editText.hint = hintInput ?: labelInput ?: ""
+        }
+
+        if (isTextAllCaps) {
+            val arraysFilter = arrayListOf<InputFilter>()
+            arraysFilter.add(InputFilter.AllCaps())
+            editText.filters = arraysFilter.toTypedArray()
         }
 
         textWatcher = object : TextWatcher {
@@ -172,7 +181,8 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
             editText.background = ContextCompat.getDrawable(this.context, R.color.light_grey_20)
             label.setTextAppearance(this.context, R.style.Font_EdittextLabel_Disabled)
             editText.setTextAppearance(this.context, R.style.Font_Edittext_Disabled)
-            drawableStart.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this.context, R.color.black_opacity))
+            drawableStart.imageTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(this.context, R.color.black_opacity))
         } else {
             changeEditTextStyle()
         }

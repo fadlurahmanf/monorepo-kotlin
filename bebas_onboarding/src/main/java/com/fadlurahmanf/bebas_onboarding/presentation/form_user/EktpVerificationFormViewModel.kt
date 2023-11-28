@@ -7,6 +7,9 @@ import com.fadlurahmanf.bebas_onboarding.data.state.EktpFormState
 import com.fadlurahmanf.bebas_onboarding.domain.repositories.DemographyRepositoryImpl
 import com.fadlurahmanf.bebas_shared.data.dto.BebasItemPickerBottomsheetModel
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.state.EditTextFormState
+import com.fadlurahmanf.bebas_shared.validator.GeneralValidator
+import com.fadlurahmanf.bebas_shared.validator.PhoneValidator
 import com.fadlurahmanf.bebas_storage.domain.datasource.BebasLocalDatasource
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -292,5 +295,35 @@ class EktpVerificationFormViewModel @Inject constructor(
                 },
             )
         )
+    }
+
+    var processFormThroughButton: Boolean = false
+
+    private val _nikState = MutableLiveData<EditTextFormState<String>>()
+    val nikState: LiveData<EditTextFormState<String>> = _nikState
+
+    fun setNik(nik: String) {
+        _nikState.value = GeneralValidator.validateNik(nik)
+    }
+
+    private val _fullNameState = MutableLiveData<EditTextFormState<String>>()
+    val fullNameState: LiveData<EditTextFormState<String>> = _fullNameState
+
+    fun setFullName(name: String) {
+        _fullNameState.value = GeneralValidator.validateFullName(name)
+    }
+
+    private val _birthPlaceState = MutableLiveData<EditTextFormState<String>>()
+    val birthPlaceState: LiveData<EditTextFormState<String>> = _birthPlaceState
+
+    fun setBirthPlaceState(text: String) {
+        _birthPlaceState.value = GeneralValidator.validateGeneral(text)
+    }
+
+    private val _birthDateState = MutableLiveData<EditTextFormState<Long>>()
+    val birthDateState: LiveData<EditTextFormState<Long>> = _birthDateState
+
+    fun setBirthDateState(birthDate: Long) {
+        _birthDateState.value = GeneralValidator.validateBirhDate(birthDate)
     }
 }

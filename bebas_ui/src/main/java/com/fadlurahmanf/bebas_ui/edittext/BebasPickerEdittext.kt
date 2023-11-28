@@ -82,7 +82,6 @@ class BebasPickerEdittext(context: Context, attributeSet: AttributeSet) :
             label.text = labelInput ?: hintInput ?: "-"
             tvHint.text = hintInput ?: labelInput ?: ""
         }
-
     }
 
     fun addTextChangedListener(watcher: BebasPickerEdittextTextWatcher) {

@@ -2,7 +2,8 @@ package com.fadlurahmanf.bebas_onboarding.presentation.form_user
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.util.Log
+import android.text.Editable
+import com.fadlurahmanf.bebas_onboarding.R
 import com.fadlurahmanf.bebas_onboarding.data.flow.EktpVerificationFormFlow
 import com.fadlurahmanf.bebas_onboarding.data.state.EktpFormState
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityEktpVerificationFormBinding
@@ -11,10 +12,13 @@ import com.fadlurahmanf.bebas_shared.BebasShared
 import com.fadlurahmanf.bebas_shared.data.dto.BebasItemPickerBottomsheetModel
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.extension.formatToEktpForm
+import com.fadlurahmanf.bebas_shared.state.EditTextFormState
 import com.fadlurahmanf.bebas_ui.adapter.BebasPickerBottomsheetAdapter
 import com.fadlurahmanf.bebas_ui.bottomsheet.BebasPickerBottomsheet
 import com.fadlurahmanf.bebas_ui.databinding.BottomsheetBebasPickerBinding
 import com.fadlurahmanf.bebas_ui.dialog.DatePickerDialog
+import com.fadlurahmanf.bebas_ui.edittext.BebasEdittext
+import com.fadlurahmanf.bebas_ui.edittext.BebasMaskingEdittext
 import java.util.Date
 import javax.inject.Inject
 
@@ -42,13 +46,147 @@ class EktpVerificationFormActivity :
             return
         }
 
+        initFieldListener()
         initObserver()
         initAction()
 
         viewModel.initData()
     }
 
+    private fun initFieldListener() {
+        binding.etNik.addTextChangedListener(object :
+                                                 BebasMaskingEdittext.BebasMaskingEdittextTextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(
+                s: Editable?,
+                formattedText: String?,
+                unformattedText: String?
+            ) {
+                viewModel.processFormThroughButton = true
+                viewModel.setNik(unformattedText ?: "")
+            }
+
+        })
+
+        binding.etFullname.addTextChangedListener(object :
+                                                      BebasEdittext.BebasEdittextTextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.processFormThroughButton = true
+                viewModel.setFullName(s?.toString() ?: "")
+            }
+
+        })
+
+        binding.etBirthplace.addTextChangedListener(object :
+                                                        BebasEdittext.BebasEdittextTextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.processFormThroughButton = true
+                viewModel.setBirthPlaceState(s?.toString() ?: "")
+            }
+
+        })
+    }
+
     private fun initObserver() {
+        viewModel.nikState.observe(this) {
+            when (it) {
+                is EditTextFormState.FAILED -> {
+                    binding.etNik.setError(
+                        getString(
+                            it.idRawStringRes,
+                        ), viewModel.processFormThroughButton
+                    )
+                }
+
+                is EditTextFormState.EMPTY -> {
+                    binding.etNik.setError(
+                        getString(
+                            R.string.error_general_message_form_empty,
+                            "NIK"
+                        ), viewModel.processFormThroughButton
+                    )
+                }
+
+                is EditTextFormState.SUCCESS -> {
+                    binding.etNik.removeError()
+                }
+            }
+        }
+
+        viewModel.fullNameState.observe(this) {
+            when (it) {
+                is EditTextFormState.FAILED -> {
+                    binding.etFullname.setError(
+                        getString(
+                            it.idRawStringRes,
+                        ), viewModel.processFormThroughButton
+                    )
+                }
+
+                is EditTextFormState.EMPTY -> {
+                    binding.etFullname.setError(
+                        getString(
+                            R.string.error_general_message_form_empty,
+                            "Full Name"
+                        ), viewModel.processFormThroughButton
+                    )
+                }
+
+                is EditTextFormState.SUCCESS -> {
+                    binding.etFullname.removeError()
+                }
+            }
+        }
+
+        viewModel.birthPlaceState.observe(this) {
+            when (it) {
+                is EditTextFormState.FAILED -> {
+                    binding.etBirthplace.setError(
+                        getString(
+                            it.idRawStringRes,
+                        ), viewModel.processFormThroughButton
+                    )
+                }
+
+                is EditTextFormState.EMPTY -> {
+                    binding.etBirthplace.setError(
+                        getString(
+                            R.string.error_general_message_form_empty,
+                            "Birth Place"
+                        ), viewModel.processFormThroughButton
+                    )
+                }
+
+                is EditTextFormState.SUCCESS -> {
+                    binding.etBirthplace.removeError()
+                }
+            }
+        }
+
+
         viewModel.initState.observe(this) {
             when (it) {
                 is EktpFormState.FetchedLocalData -> {
@@ -217,6 +355,7 @@ class EktpVerificationFormActivity :
             override fun onClicked(year: Int, month: Int, dayOfMonth: Int, date: Date) {
                 datePickerDialog?.dismiss()
                 binding.ddBirthdate.setText(date.formatToEktpForm())
+                viewModel.setBirthDateState(date.time)
             }
         })
         datePickerDialog?.show(supportFragmentManager, DatePickerDialog::class.java.simpleName)

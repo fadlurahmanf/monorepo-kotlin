@@ -31,6 +31,7 @@ class BebasMaskingEdittext(context: Context, attributeSet: AttributeSet) :
     var errorText: String? = null
     private var editTextHasFocus: Boolean = false
     private var fieldError: Boolean = false
+    private var isTextAllCaps: Boolean = false
 
     private var watcher: BebasMaskingEdittextTextWatcher? = null
 
@@ -53,6 +54,8 @@ class BebasMaskingEdittext(context: Context, attributeSet: AttributeSet) :
 
         hintInput = attributes.getString(R.styleable.BebasMaskingEdittext_hint)
         labelInput = attributes.getString(R.styleable.BebasMaskingEdittext_label)
+        isTextAllCaps =
+            attributes.getBoolean(R.styleable.BebasMaskingEdittext_android_textAllCaps, false)
 
         editText.imeOptions =
             attributes.getInt(R.styleable.BebasMaskingEdittext_android_imeOptions, 0)
@@ -87,11 +90,19 @@ class BebasMaskingEdittext(context: Context, attributeSet: AttributeSet) :
 
         // rtrw example: 007/021 -> t char with '/'
         if (formatType == 1) {
-            editText.filters = arrayOf(InputFilter.LengthFilter(7))
+            val arraysFilter = arrayListOf<InputFilter>(InputFilter.LengthFilter(7))
+            if (isTextAllCaps) {
+                arraysFilter.add(InputFilter.AllCaps())
+            }
+            editText.filters = arraysFilter.toTypedArray()
         } else {
             if (maxLengthIncludingMaskingChar != null && (maxLengthIncludingMaskingChar ?: 0) > 0) {
-                editText.filters =
-                    arrayOf(InputFilter.LengthFilter(maxLengthIncludingMaskingChar!!))
+                val arraysFilter =
+                    arrayListOf<InputFilter>(InputFilter.LengthFilter(maxLengthIncludingMaskingChar!!))
+                if (isTextAllCaps) {
+                    arraysFilter.add(InputFilter.AllCaps())
+                }
+                editText.filters = arraysFilter.toTypedArray()
             }
         }
 
