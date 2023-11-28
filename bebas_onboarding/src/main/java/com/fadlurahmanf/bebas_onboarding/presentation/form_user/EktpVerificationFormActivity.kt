@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation.form_user
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.util.Log
 import com.fadlurahmanf.bebas_onboarding.data.flow.EktpVerificationFormFlow
 import com.fadlurahmanf.bebas_onboarding.data.state.EktpFormState
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityEktpVerificationFormBinding
@@ -55,6 +56,10 @@ class EktpVerificationFormActivity :
                     binding.etFullname.text = it.fullName ?: ""
                     binding.etBirthplace.text = it.birthPlace ?: ""
 
+                    if (it.birthDate != null) {
+                        binding.ddBirthdate.setText(it.birthDate)
+                    }
+
                     if (viewModel.initSelectedProvinceLabel != null) {
                         viewModel.fetchProvinces(selectedProvinceLabel = it.province)
                     }
@@ -107,7 +112,7 @@ class EktpVerificationFormActivity :
 
                     if (viewModel.selectedCity.value?.id != null && viewModel.initSelectedSubDistrictLabel != null) {
                         viewModel.fetchSubDistricts(
-                            cityId = viewModel.selectedProvince.value?.id ?: "",
+                            cityId = viewModel.selectedCity.value?.id ?: "",
                             selectedSubDistrictLabel = viewModel.initSelectedSubDistrictLabel
                         )
                     }
@@ -153,8 +158,11 @@ class EktpVerificationFormActivity :
     }
 
     private fun initAction() {
-        binding.ddDatepicker.setOnClickListener {
-            showDatePickerDialog()
+        binding.ddBirthdate.setOnClickListener {
+            val text = if (!binding.ddBirthdate.getText()
+                    .isNullOrEmpty()
+            ) binding.ddBirthdate.getText() else null
+            showPickBirthDateBottomsheet(text)
         }
 
         binding.ddGender.setOnClickListener {
@@ -201,14 +209,14 @@ class EktpVerificationFormActivity :
         datePickerDialog = null
     }
 
-    private fun showDatePickerDialog() {
+    private fun showPickBirthDateBottomsheet(text: String? = null) {
         dismissDatePickerDialog()
 
-        datePickerDialog = DatePickerDialog()
+        datePickerDialog = DatePickerDialog(text)
         datePickerDialog?.setCallback(object : DatePickerDialog.Callback {
             override fun onClicked(year: Int, month: Int, dayOfMonth: Int, date: Date) {
                 datePickerDialog?.dismiss()
-                binding.ddDatepicker.setText(date.formatToEktpForm())
+                binding.ddBirthdate.setText(date.formatToEktpForm())
             }
         })
         datePickerDialog?.show(supportFragmentManager, DatePickerDialog::class.java.simpleName)
@@ -250,7 +258,7 @@ class EktpVerificationFormActivity :
                 callback = object : BebasPickerBottomsheetAdapter.Callback {
                     override fun onItemClicked(model: BebasItemPickerBottomsheetModel) {
                         dismissPickerBottomsheet()
-                        viewModel.selectProvince(model)
+                        binding.ddGender.setText(model.label)
                     }
                 })
         showBottomsheet()

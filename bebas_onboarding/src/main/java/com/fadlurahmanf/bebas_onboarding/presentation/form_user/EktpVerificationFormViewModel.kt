@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.form_user
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_onboarding.data.state.EktpFormState
@@ -10,6 +11,10 @@ import com.fadlurahmanf.bebas_storage.domain.datasource.BebasLocalDatasource
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 class EktpVerificationFormViewModel @Inject constructor(
@@ -53,7 +58,7 @@ class EktpVerificationFormViewModel @Inject constructor(
                                               var selected: BebasItemPickerBottomsheetModel? = null
 
                                               if (selectedProvinceLabel != null) {
-                                                  selected = models.first { model ->
+                                                  selected = models.firstOrNull { model ->
                                                       model.label.equals(
                                                           selectedProvinceLabel,
                                                           ignoreCase = true
@@ -109,7 +114,7 @@ class EktpVerificationFormViewModel @Inject constructor(
                                               var selected: BebasItemPickerBottomsheetModel? = null
 
                                               if (selectedCityLabel != null) {
-                                                  selected = models.first { model ->
+                                                  selected = models.firstOrNull { model ->
                                                       model.label.equals(
                                                           selectedCityLabel,
                                                           ignoreCase = true
@@ -140,13 +145,15 @@ class EktpVerificationFormViewModel @Inject constructor(
     }
 
     fun selectCity(city: BebasItemPickerBottomsheetModel) {
-        _selectedCity.value = city
+        if (_selectedCity.value?.id != city.id) {
+            _selectedCity.value = city
 
-        _selectedSubDistrict.value = null
-        subDistricts = null
+            _selectedSubDistrict.value = null
+            subDistricts = null
 
-        _selectedWard.value = null
-        wards = null
+            _selectedWard.value = null
+            wards = null
+        }
     }
 
     fun fetchSubDistricts(cityId: String, selectedSubDistrictLabel: String? = null) {
@@ -161,7 +168,7 @@ class EktpVerificationFormViewModel @Inject constructor(
                                               var selected: BebasItemPickerBottomsheetModel? = null
 
                                               if (selectedSubDistrictLabel != null) {
-                                                  selected = models.first { model ->
+                                                  selected = models.firstOrNull { model ->
                                                       model.label.equals(
                                                           selectedSubDistrictLabel,
                                                           ignoreCase = true
@@ -190,10 +197,12 @@ class EktpVerificationFormViewModel @Inject constructor(
     }
 
     fun selectSubDistrict(subDistrict: BebasItemPickerBottomsheetModel) {
-        _selectedSubDistrict.value = subDistrict
+        if (_selectedSubDistrict.value?.id != subDistrict.id) {
+            _selectedSubDistrict.value = subDistrict
 
-        _selectedWard.value = null
-        wards = null
+            _selectedWard.value = null
+            wards = null
+        }
     }
 
     fun fetchWards(subDistrictId: String, selectedWardLabel: String? = null) {
@@ -208,7 +217,7 @@ class EktpVerificationFormViewModel @Inject constructor(
                                               var selected: BebasItemPickerBottomsheetModel? = null
 
                                               if (selectedWardLabel != null) {
-                                                  selected = models.first { model ->
+                                                  selected = models.firstOrNull { model ->
                                                       model.label.equals(
                                                           selectedWardLabel,
                                                           ignoreCase = true
@@ -247,11 +256,28 @@ class EktpVerificationFormViewModel @Inject constructor(
         compositeDisposable().add(
             bebasLocalDatasource.getDecryptedEntity().subscribe(
                 {
+                    initSelectedProvinceLabel = it.province
+                    initSelectedCityLabel = it.city
+                    initSelectedSubDistrictLabel = it.subDistrict
+                    initSelectedWardLabel = it.ward
+
+                    val birthDateString = it.birthDate
+                    var birthDate: Date? = null
+
+                    try {
+                        if (birthDateString != null) {
+                            val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                            birthDate = sdf.parse(birthDateString)
+                        }
+                    } catch (e: Exception) {
+                        birthDate = null
+                    }
+
                     _initState.value = EktpFormState.FetchedLocalData(
                         nik = it.idCardNumber,
                         fullName = it.fullName,
                         birthPlace = it.birthPlace,
-                        birthDate = it.birthDate,
+                        birthDate = if (birthDate != null) birthDateString else null,
                         gender = it.gender,
                         province = it.province,
                         city = it.city,

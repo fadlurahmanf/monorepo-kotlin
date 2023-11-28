@@ -31,14 +31,14 @@ class BebasPickerEdittext(context: Context, attributeSet: AttributeSet) :
 
     private var isEnabled: Boolean = true
 
-
     private var watcher: BebasPickerEdittextTextWatcher? = null
-
 
     fun setText(text: String) {
         tvAnswer.text = text
         changeEditTextStyle()
     }
+
+    fun getText() = tvAnswer.text.toString()
 
     init {
         inflate(context, R.layout.cust_bebas_picker_edittext, this)
