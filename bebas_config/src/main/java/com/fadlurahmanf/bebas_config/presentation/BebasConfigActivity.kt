@@ -24,6 +24,7 @@ class BebasConfigActivity : AppCompatActivity() {
         when (flavor) {
             "dev" -> {
                 BebasShared.setBebasUrl("https://api.bankmas.my.id/")
+                BebasShared.setOpenviduBaseUrl("https://vc.bankmas.my.id/", "vc.bankmas.my.id")
             }
 
             "staging" -> {

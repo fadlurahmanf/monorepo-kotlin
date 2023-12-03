@@ -41,6 +41,8 @@ abstract class BaseOnboardingActivity<VB : ViewBinding>(inflate: BebasInflateAct
         buttonText: String? = null,
         callback: FailedBottomsheet.Callback? = null
     ) {
+        Log.e("BebasLogger", "FailedBottomsheet 1 $title")
+        Log.e("BebasLogger", "FailedBottomsheet 1 $message")
         if (isFailedBottomsheetOpen) {
             dismissFailedBottomsheet()
         }
@@ -68,7 +70,7 @@ abstract class BaseOnboardingActivity<VB : ViewBinding>(inflate: BebasInflateAct
         isCancelable: Boolean = true,
         callback: FailedBottomsheet.Callback? = null,
     ) {
-        Log.e("BebasLogger", "FailedBottomsheet ${exception.rawMessage}")
+        Log.e("BebasLogger", "FailedBottomsheet ${exception.toJson()}")
         if (isFailedBottomsheetOpen) {
             dismissFailedBottomsheet()
         }

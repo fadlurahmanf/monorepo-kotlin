@@ -6,6 +6,7 @@ import com.fadlurahmanf.bebas_onboarding.databinding.ActivityBebasSplashBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.form_user.InputPhoneEmailActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.otp.OtpVerificationActivity
+import com.fadlurahmanf.bebas_onboarding.presentation.vc.VideoCallActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.welcome.WelcomeOnboardingActivity
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ class BebasSplashActivity :
         viewModel.state.observe(this) {
             when (it) {
                 is SplashState.SUCCESS -> {
-                    val intent = Intent(this, WelcomeOnboardingActivity::class.java)
+                    val intent = Intent(this, VideoCallActivity::class.java)
                     intent.apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     }

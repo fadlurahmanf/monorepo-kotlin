@@ -4,6 +4,7 @@ import com.fadlurahmanf.bebas_shared.data.dto.BebasItemPickerBottomsheetModel
 
 object BebasShared {
     lateinit var flavor: String
+
     private lateinit var bebasUrl: String
 
     fun setBebasUrl(url: String) {
@@ -65,5 +66,30 @@ object BebasShared {
                 label = "LAKI-LAKI",
             )
         )
+
+
+    // OPEN VIDU
+    private lateinit var openviduBaseUrl: String
+    private lateinit var openviduHost: String
+
+    fun setOpenviduBaseUrl(url: String, host:String) {
+        if (!this::openviduBaseUrl.isInitialized) {
+            openviduBaseUrl = url
+        }
+
+        if (!this::openviduHost.isInitialized){
+            openviduHost = host
+        }
+    }
+
+    fun getOpenviduBaseUrl(): String {
+        return openviduBaseUrl
+    }
+
+    fun getOpenviduHost(): String {
+        return openviduHost
+    }
+
+    var openviduBasicHeader: String = "OPENVIDUAPP:QkFOS01BUzIwMjIK"
 }
 

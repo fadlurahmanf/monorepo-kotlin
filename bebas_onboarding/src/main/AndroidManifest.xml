@@ -3,6 +3,9 @@
 
     <application>
         <activity
+            android:name=".presentation.vc.VideoCallActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.form_user.EktpVerificationFormActivity"
             android:exported="false"
             android:theme="@style/BaseBebas"
