@@ -66,10 +66,8 @@ class EktpVerificationCameraActivity :
             currentLabels = labels
             currentBitmap = bitmapImage
 
-            Log.d("BebasLogger", "OBJECTS SIZE: ${labels.size}")
             var isIdCardFound = false
             currentLabels.forEach {
-                Log.d("BebasLogger", "LABELS SIZE INSIDE OBJECT: ${it.text} & ${it.confidence}")
                 if ((it.text == "Mobile phone" || it.text == "Hand") && it.confidence >= 0.5f) {
                     isIdCardFound = true
                 }

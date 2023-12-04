@@ -36,7 +36,6 @@ class OtpVerificationViewModel @Inject constructor(
                                               _requestOtpState.value = NetworkState.SUCCESS(it)
                                           },
                                           {
-                                              Log.d("BebasLogger", "Throw: ${it.message}")
                                               _requestOtpState.value = NetworkState.FAILED(
                                                   BebasException.fromThrowable(it)
                                               )

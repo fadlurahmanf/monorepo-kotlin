@@ -1,12 +1,12 @@
 package com.fadlurahmanf.bebas_onboarding.external
 
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import com.fadlurahmanf.bebas_onboarding.presentation.vc.VideoCallActivity
 import com.fadlurahmanf.bebas_shared.BebasShared
-import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.neovisionaries.ws.client.ThreadType
 import com.neovisionaries.ws.client.WebSocket
 import com.neovisionaries.ws.client.WebSocketException
@@ -16,8 +16,6 @@ import com.neovisionaries.ws.client.WebSocketListener
 import com.neovisionaries.ws.client.WebSocketState
 import org.json.JSONException
 import org.json.JSONObject
-import java.net.URI
-import java.net.URISyntaxException
 import java.security.SecureRandom
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
@@ -30,7 +28,8 @@ import javax.net.ssl.X509TrustManager
 class CustomWebSocket(private val session: RTCSession) : AsyncTask<VideoCallActivity, Void, Void>(),
     WebSocketListener {
 
-    private val TAG = "BebasRtcLogger"
+    private val TAG = "BebasLoggerRTC"
+    private val ID_JOINROOM = AtomicInteger(-1)
     private val trustManagers = arrayOf<TrustManager>(object : X509TrustManager {
         override fun getAcceptedIssuers(): Array<X509Certificate?> {
             return arrayOfNulls<X509Certificate>(0)
@@ -72,23 +71,9 @@ class CustomWebSocket(private val session: RTCSession) : AsyncTask<VideoCallActi
     }
 
     private fun getWebSocketAddress(): String {
-        return try {
-//            val url = URI(session.sessionToken)
-//            wsUri = if (url.port > -1) {
-//                url.scheme + "://" + url.host + ":" + url.port + "/openvidu"
-//            } else {
-//                url.scheme + "://" + url.host + "/openvidu"
-//            }
-//            Log.d(TAG, "WEBSOCKET ADDRESS: $wsUri")
-//            wsUri
-            val wsuri = "wss://${BebasShared.getOpenviduHost()}:443/openvidu?sessionId=${session.sessionId}&token=${session.sessionToken}"
-            Log.d(TAG, "WSURI WEBSOCKET: ${wsuri}")
-            return wsuri
-        } catch (e: URISyntaxException) {
-            Log.e(TAG, "WRONG URL: $e", e)
-            e.printStackTrace()
-            throw BebasException.generalRC("WRONG_VIDU_URL")
-        }
+        val wsuri = "wss://${BebasShared.getOpenviduHost()}:443/openvidu?sessionId=${session.sessionId}&token=${session.sessionToken}"
+        Log.d(TAG, "WSURI WEBSOCKET: ${wsuri}")
+        return wsuri
     }
 
     override fun onTextMessage(websocket: WebSocket?, text: String?) {
@@ -133,12 +118,25 @@ class CustomWebSocket(private val session: RTCSession) : AsyncTask<VideoCallActi
         return id
     }
 
+    fun joinRoom() {
+        val joinRoomParams: MutableMap<String, String?> = HashMap()
+        joinRoomParams[JsonConstants.METADATA] =
+            "{\"clientData\": \"" + session.localParticipant.participantName + "\"}"
+        joinRoomParams["secret"] = ""
+        joinRoomParams["session"] = session.sessionId
+        joinRoomParams["platform"] = "Android " + Build.VERSION.SDK_INT
+        joinRoomParams["token"] = session.sessionToken
+        joinRoomParams["sdkVersion"] = "2.29.0"
+        this.ID_JOINROOM.set(sendJson(JsonConstants.JOINROOM_METHOD, joinRoomParams))
+    }
+
     override fun onConnected(
         websocket: WebSocket?,
         headers: MutableMap<String, MutableList<String>>?
     ) {
         Log.d(TAG, "WEBRTC Connected")
         handler.postDelayed(pingRunnable, 5000)
+        joinRoom()
     }
 
     override fun onConnectError(websocket: WebSocket?, cause: WebSocketException?) {

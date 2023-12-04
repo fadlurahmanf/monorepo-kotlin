@@ -1,13 +1,19 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.vc
 
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_api.data.dto.openvidu.ConnectionResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityVideoCallBinding
 import com.fadlurahmanf.bebas_onboarding.external.CustomWebSocket
+import com.fadlurahmanf.bebas_onboarding.external.LocalParticipant
 import com.fadlurahmanf.bebas_onboarding.external.RTCSession
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import org.webrtc.EglBase
 import javax.inject.Inject
+
 
 class VideoCallActivity :
     BaseOnboardingActivity<ActivityVideoCallBinding>(ActivityVideoCallBinding::inflate) {
@@ -49,25 +55,56 @@ class VideoCallActivity :
     }
 
     lateinit var rtcSession: RTCSession
+    lateinit var localParticipant: LocalParticipant
 
     private fun getTokenSuccess(connection: ConnectionResponse) {
         if (connection.sessionId != null && connection.token != null) {
             rtcSession = RTCSession(connection.sessionId!!, connection.token!!, this)
+            localParticipant = LocalParticipant(
+                participantName = "participantName",
+                session = rtcSession,
+                context = this.applicationContext,
+                localVideoView = binding.localGlSurfaceView
+            )
+            localParticipant.startCamera()
             startWebSocket()
         } else {
             showFailedBottomsheet(BebasException.generalRC("SESSION_ID"))
         }
     }
 
+    private fun initViews() {
+        if (arePermissionGranted()){
+            val rootEglBase = EglBase.create()
+            binding.localGlSurfaceView.init(rootEglBase.eglBaseContext, null)
+            binding.localGlSurfaceView.setMirror(true)
+            binding.localGlSurfaceView.setEnableHardwareScaler(true)
+            binding.localGlSurfaceView.setZOrderMediaOverlay(true)
+        }else{
+            showFailedBottomsheet(BebasException.generalRC("PERMISSION_MISSING"))
+        }
+    }
+
     private fun startWebSocket() {
         val webSocket = CustomWebSocket(rtcSession)
         webSocket.execute()
+        rtcSession.setWebSocket(webSocket)
     }
 
     private fun initAction() {
         binding.btnInitConnection.setOnClickListener {
             viewModel.initializeConnection("toxic-plum-porcupine")
         }
+    }
+
+    private fun arePermissionGranted(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.CAMERA
+        ) != PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.RECORD_AUDIO
+        ) != PackageManager.PERMISSION_DENIED
     }
 
 }

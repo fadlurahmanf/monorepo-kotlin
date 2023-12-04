@@ -9,7 +9,7 @@ import okhttp3.OkHttpClient
 
 abstract class OpenviduNetwork<T>(
     context: Context,
-) : CoreBaseNetwork<T>(context, "BebasNetworkLogger") {
+) : CoreBaseNetwork<T>(context, "BebasLoggerNetwork") {
     override fun getBaseUrl(): String {
         return BebasShared.getOpenviduBaseUrl()
     }
