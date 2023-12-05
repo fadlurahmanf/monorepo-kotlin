@@ -95,6 +95,6 @@ class WelcomeOnboardingViewModel @Inject constructor(
     }
 
     fun updateOobFlow(flow: OnboardingFlow) {
-        compositeDisposable().add(bebasLocalDatasource.updateFlowOnboarding(flow))
+        compositeDisposable().add(bebasLocalDatasource.updateFlowOnboarding(flow).subscribe())
     }
 }

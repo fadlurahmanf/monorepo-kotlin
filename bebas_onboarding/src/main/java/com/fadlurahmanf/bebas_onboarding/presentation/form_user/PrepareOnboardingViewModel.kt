@@ -31,6 +31,6 @@ class PrepareOnboardingViewModel @Inject constructor(
     }
 
     fun updateIsFinishedPreparedOnBoarding(isFinished: Boolean) {
-        compositeDisposable().add(bebasLocalDatasource.updateIsFinishedPrepareOnboarding(isFinished))
+        compositeDisposable().add(bebasLocalDatasource.updateIsFinishedPrepareOnboarding(isFinished).subscribe())
     }
 }

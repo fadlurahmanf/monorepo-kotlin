@@ -9,6 +9,8 @@ import com.fadlurahmanf.bebas_shared.state.EditTextFormState
 import com.fadlurahmanf.bebas_shared.validator.EmailValidator
 import com.fadlurahmanf.bebas_shared.validator.PhoneValidator
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.functions.Function
 import javax.inject.Inject
 
 class InputPhoneEmailViewModel @Inject constructor(
@@ -91,10 +93,27 @@ class InputPhoneEmailViewModel @Inject constructor(
     }
 
     fun updateIsFinishedOtpVerification(isFinished: Boolean? = null) {
-        compositeDisposable().add(bebasLocalDatasource.updateIsFinishedOtpVerification(isFinished))
+        compositeDisposable().add(
+            bebasLocalDatasource.updateIsFinishedOtpVerification(isFinished).subscribe()
+        )
     }
 
     fun updateIsFinishedEmailVerification(isFinished: Boolean? = null) {
-        compositeDisposable().add(bebasLocalDatasource.updateIsFinishedEmailVerification(isFinished))
+        compositeDisposable().add(
+            bebasLocalDatasource.updateIsFinishedEmailVerification(isFinished).subscribe()
+        )
+    }
+
+    fun deleteDataInputPhoneAndEmail() {
+        compositeDisposable().add(
+            Observable.merge(
+                listOf<Observable<Unit>>(
+                    bebasLocalDatasource.updateIsFinishedOtpVerification(null).toObservable(),
+                    bebasLocalDatasource.updateIsFinishedEmailVerification(null).toObservable(),
+                    bebasLocalDatasource.deletePhoneAndEmail().toObservable(),
+                    bebasLocalDatasource.updateIsFinishedReadTNC(false).toObservable(),
+                )
+            ).subscribe()
+        )
     }
 }

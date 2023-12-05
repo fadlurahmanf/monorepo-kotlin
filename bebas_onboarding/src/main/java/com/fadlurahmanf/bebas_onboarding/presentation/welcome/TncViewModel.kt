@@ -65,10 +65,10 @@ class TncViewModel @Inject constructor(
     }
 
     fun updateIsFinishedReadTnc(value: Boolean) {
-        compositeDisposable().add(bebasLocalDatasource.updateIsFinishedReadTNC(value))
+        compositeDisposable().add(bebasLocalDatasource.updateIsFinishedReadTNC(value).subscribe())
     }
 
     fun removeOnboardingFlow() {
-        compositeDisposable().add(bebasLocalDatasource.removeOnboardingFlow())
+        compositeDisposable().add(bebasLocalDatasource.removeOnboardingFlow().subscribe())
     }
 }

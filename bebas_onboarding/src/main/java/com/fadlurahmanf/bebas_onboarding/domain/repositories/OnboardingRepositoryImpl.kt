@@ -93,7 +93,7 @@ class OnboardingRepositoryImpl @Inject constructor(
 
             val guestToken = it.data?.accessToken ?: ""
             BebasShared.setGuestToken(guestToken)
-            bebasLocalDatasource.updateGuestToken(guestToken)
+            bebasLocalDatasource.updateGuestToken(guestToken).subscribe()
 
             it.data!!
         }
@@ -187,7 +187,7 @@ class OnboardingRepositoryImpl @Inject constructor(
                 throw BebasException.generalRC("OTP_TOKEN_MISSING")
             }
 
-            bebasLocalDatasource.updateOtpToken(it.data!!.otpToken!!)
+            bebasLocalDatasource.updateOtpToken(it.data!!.otpToken!!).subscribe()
 
             it.data!!
         }
@@ -305,7 +305,7 @@ class OnboardingRepositoryImpl @Inject constructor(
                 bebasLocalDatasource.updateEmailTokenAndOnboardingId(
                     emailToken = baseResp.data!!.emailToken!!,
                     onboardingId = baseResp.data!!.onboardingId!!
-                )
+                ).subscribe()
 
                 baseResp.data!!
             }
@@ -327,7 +327,7 @@ class OnboardingRepositoryImpl @Inject constructor(
                 }
 
                 val ocrData = it.data!!
-                bebasLocalDatasource.updateBase64ImageEktp(base64Image)
+                bebasLocalDatasource.updateBase64ImageEktp(base64Image).subscribe()
                 bebasLocalDatasource.updateOcrOobData(
                     nik = ocrData.idCardNumber,
                     fullName = ocrData.name,
@@ -340,7 +340,7 @@ class OnboardingRepositoryImpl @Inject constructor(
                     ward = ocrData.ward,
                     address = ocrData.address,
                     rtRw = ocrData.rtrw
-                )
+                ).subscribe()
 
                 it.data!!
             }

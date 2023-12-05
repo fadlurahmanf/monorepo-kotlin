@@ -215,7 +215,7 @@ class InputPhoneEmailActivity :
             }
 
             OnboardingFlow.SELF_ACTIVATION -> {
-                val intent = Intent(this, InputPhoneEmailActivity::class.java)
+                val intent = Intent(this, InputNikAndAccountNumberActivity::class.java)
                 startActivity(intent)
             }
 
@@ -248,4 +248,10 @@ class InputPhoneEmailActivity :
         }
         emailLauncher.launch(intent)
     }
+
+    override fun onDestroy() {
+        viewModel.deleteDataInputPhoneAndEmail()
+        super.onDestroy()
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.email
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
@@ -46,6 +47,7 @@ class EmailVerificationViewModel @Inject constructor(
                                       .observeOn(AndroidSchedulers.mainThread())
                                       .subscribe(
                                           {
+                                              Log.d("BebasLogger", "TES 1: $it")
                                               if (it.isVerify == true) {
                                                   _checkEmailVerifyState.value =
                                                       CheckIsEmailVerifyState.IsVerified(it.emailToken!!)
@@ -55,6 +57,7 @@ class EmailVerificationViewModel @Inject constructor(
                                               }
                                           },
                                           {
+                                              Log.d("BebasLogger", "TES 2: ${it.message}")
                                               _checkEmailVerifyState.value =
                                                   CheckIsEmailVerifyState.FAILED(
                                                       BebasException.fromThrowable(it)

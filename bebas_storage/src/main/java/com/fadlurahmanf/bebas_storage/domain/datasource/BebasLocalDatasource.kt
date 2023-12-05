@@ -43,7 +43,7 @@ class BebasLocalDatasource @Inject constructor(
         }
     }
 
-    fun updateGuestToken(guestToken: String) {
+    fun updateGuestToken(guestToken: String): Single<Unit> {
         val entitySubscriber = getEntity().map { entity ->
             if (entity.encodedPublicKey == null) {
                 throw Exception()
@@ -52,35 +52,35 @@ class BebasLocalDatasource @Inject constructor(
                 coreRSARepository.encrypt(guestToken, entity.encodedPublicKey ?: "")
             dao.update(entity.copy(encryptedGuestToken = encryptedGuestToken))
         }
-        entitySubscriber.subscribe()
+        return entitySubscriber
     }
 
-    fun updateLastScreen(screen: String): Disposable {
+    fun updateLastScreen(screen: String): Single<Unit> {
         val entitySubscriber = getEntity().map { entity ->
             dao.update(entity.copy(lastScreen = screen))
         }
-        return entitySubscriber.subscribe()
+        return entitySubscriber
     }
 
-    fun updateFlowOnboarding(flow: OnboardingFlow): Disposable {
+    fun updateFlowOnboarding(flow: OnboardingFlow): Single<Unit> {
         val entitySubscriber = getEntity().map { entity ->
             dao.update(entity.copy(onboardingFlow = flow))
         }
-        return entitySubscriber.subscribe()
+        return entitySubscriber
     }
 
-    fun updateIsFinishedReadTNC(value: Boolean): Disposable {
+    fun updateIsFinishedReadTNC(value: Boolean): Single<Unit> {
         val entitySubscriber = getEntity().map { entity ->
             dao.update(entity.copy(isFinishedReadTnc = value))
         }
-        return entitySubscriber.subscribe()
+        return entitySubscriber
     }
 
-    fun removeOnboardingFlow(): Disposable {
+    fun removeOnboardingFlow(): Single<Unit> {
         val entitySubscriber = getEntity().map { entity ->
             dao.update(entity.copy(onboardingFlow = null))
         }
-        return entitySubscriber.subscribe()
+        return entitySubscriber
     }
 
     fun getLanguage(): Single<String> {
@@ -111,6 +111,20 @@ class BebasLocalDatasource @Inject constructor(
             newEntity
         }
         return subscriber
+    }
+
+    fun deletePhoneAndEmail(): Single<Unit> {
+        val entitySubscriber = getEntity().map { entity ->
+            dao.update(
+                entity.copy(
+                    encryptedPhone = null,
+                    encryptedEmail = null,
+                    encryptedOtpToken = null,
+                    encryptedEmailToken = null
+                )
+            )
+        }
+        return entitySubscriber
     }
 
 
@@ -160,7 +174,7 @@ class BebasLocalDatasource @Inject constructor(
         }
     }
 
-    fun updateOtpToken(otpToken: String): Disposable {
+    fun updateOtpToken(otpToken: String): Single<Unit> {
         val entitySubscriber = getEntity().map { entity ->
             if (entity.encodedPublicKey == null) {
                 throw Exception()
@@ -169,10 +183,10 @@ class BebasLocalDatasource @Inject constructor(
                 coreRSARepository.encrypt(otpToken, entity.encodedPublicKey ?: "")
             dao.update(entity.copy(encryptedOtpToken = encryptedOtpToken))
         }
-        return entitySubscriber.subscribe()
+        return entitySubscriber
     }
 
-    fun updateEmailToken(emailToken: String): Disposable {
+    fun updateEmailToken(emailToken: String): Single<Unit> {
         val entitySubscriber = getEntity().map { entity ->
             if (entity.encodedPublicKey == null) {
                 throw Exception()
@@ -181,10 +195,10 @@ class BebasLocalDatasource @Inject constructor(
                 coreRSARepository.encrypt(emailToken, entity.encodedPublicKey ?: "")
             dao.update(entity.copy(encryptedEmailToken = encryptedEmailToken))
         }
-        return entitySubscriber.subscribe()
+        return entitySubscriber
     }
 
-    fun updateEmailTokenAndOnboardingId(emailToken: String, onboardingId: String): Disposable {
+    fun updateEmailTokenAndOnboardingId(emailToken: String, onboardingId: String): Single<Unit> {
         val entitySubscriber = getEntity().map { entity ->
             if (entity.encodedPublicKey == null) {
                 throw Exception()
@@ -200,35 +214,35 @@ class BebasLocalDatasource @Inject constructor(
                 )
             )
         }
-        return entitySubscriber.subscribe()
+        return entitySubscriber
     }
 
-    fun updateIsFinishedOtpVerification(isFinished: Boolean?): Disposable {
+    fun updateIsFinishedOtpVerification(isFinished: Boolean?): Single<Unit> {
         val entitySubscriber = getEntity().map { entity ->
             dao.update(entity.copy(isFinishedOtpVerification = isFinished))
         }
-        return entitySubscriber.subscribe()
+        return entitySubscriber
     }
 
-    fun updateIsFinishedEmailVerification(isFinished: Boolean?): Disposable {
+    fun updateIsFinishedEmailVerification(isFinished: Boolean?): Single<Unit> {
         val entitySubscriber = getEntity().map { entity ->
             dao.update(entity.copy(isFinishedEmailVerification = isFinished))
         }
-        return entitySubscriber.subscribe()
+        return entitySubscriber
     }
 
-    fun updateIsFinishedPrepareOnboarding(isFinished: Boolean?): Disposable {
+    fun updateIsFinishedPrepareOnboarding(isFinished: Boolean?): Single<Unit> {
         val entitySubscriber = getEntity().map { entity ->
             dao.update(entity.copy(isFinishedPrepareOnboarding = isFinished))
         }
-        return entitySubscriber.subscribe()
+        return entitySubscriber
     }
 
-    fun updateBase64ImageEktp(base64Image: String): Disposable {
+    fun updateBase64ImageEktp(base64Image: String): Single<Unit> {
         val entitySubscriber = getEntity().map { entity ->
             dao.update(entity.copy(base64ImageEktp = base64Image))
         }
-        return entitySubscriber.subscribe()
+        return entitySubscriber
     }
 
     fun updateOcrOobData(
@@ -243,7 +257,7 @@ class BebasLocalDatasource @Inject constructor(
         ward: String? = null,
         address: String? = null,
         rtRw: String? = null,
-    ): Disposable {
+    ): Single<Unit> {
         val entitySubscriber = getEntity().map { entity ->
             val publicKey = entity.encodedPublicKey
             val newEntity = entity.copy(
@@ -261,14 +275,14 @@ class BebasLocalDatasource @Inject constructor(
             )
             dao.update(newEntity)
         }
-        return entitySubscriber.subscribe()
+        return entitySubscriber
     }
 
-    fun updateIsFinishedEktpCameraVerification(value: Boolean?): Disposable {
+    fun updateIsFinishedEktpCameraVerification(value: Boolean?): Single<Unit> {
         val entitySubscriber = getEntity().map { entity ->
             dao.update(entity.copy(isFinishedEktpCameraVerification = value))
         }
-        return entitySubscriber.subscribe()
+        return entitySubscriber
     }
 
     private fun encrypt(plain: String?, publicKey: String?): String? {

@@ -52,6 +52,7 @@ class EmailVerificationActivity :
 
     private fun initObserver() {
         viewModel.checkEmailVerifyState.observe(this) {
+            Log.d("BebasLogger", "MASUK STATE: $it")
             when (it) {
                 is CheckIsEmailVerifyState.IsVerified -> {
                     handler.removeCallbacks(fetchEmailStatusRunnable)
@@ -59,6 +60,10 @@ class EmailVerificationActivity :
                         putExtra("EMAIL_TOKEN", it.emailToken)
                     })
                     finish()
+                }
+
+                is CheckIsEmailVerifyState.FAILED -> {
+                    handler.postDelayed(fetchEmailStatusRunnable, 10000)
                 }
 
                 else -> {

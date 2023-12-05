@@ -57,6 +57,6 @@ class EktpVerificationCameraViewModel @Inject constructor(
     }
 
     fun updateIsFinishedEktpCameraVerification(value: Boolean) {
-        compositeDisposable().add(bebasLocalDatasource.updateIsFinishedEktpCameraVerification(value))
+        compositeDisposable().add(bebasLocalDatasource.updateIsFinishedEktpCameraVerification(value).subscribe())
     }
 }
