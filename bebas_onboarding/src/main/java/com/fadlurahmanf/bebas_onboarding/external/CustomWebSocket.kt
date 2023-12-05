@@ -5,7 +5,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import com.fadlurahmanf.bebas_onboarding.presentation.vc.VideoCallActivity
+import com.fadlurahmanf.bebas_onboarding.presentation.vc.DebugVideoCallActivity
 import com.fadlurahmanf.bebas_shared.BebasShared
 import com.neovisionaries.ws.client.ThreadType
 import com.neovisionaries.ws.client.WebSocket
@@ -25,7 +25,7 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 
-class CustomWebSocket(private val session: RTCSession) : AsyncTask<VideoCallActivity, Void, Void>(),
+class CustomWebSocket(private val session: RTCSession) : AsyncTask<DebugVideoCallActivity, Void, Void>(),
     WebSocketListener {
 
     private val TAG = "BebasLoggerRTC"
@@ -51,7 +51,7 @@ class CustomWebSocket(private val session: RTCSession) : AsyncTask<VideoCallActi
     private val RPC_ID = AtomicInteger(0)
 
     @Deprecated("Deprecated in Java")
-    override fun doInBackground(vararg params: VideoCallActivity?): Void? {
+    override fun doInBackground(vararg params: DebugVideoCallActivity?): Void? {
         try {
             val factory = WebSocketFactory()
 

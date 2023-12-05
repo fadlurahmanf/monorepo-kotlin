@@ -2,30 +2,21 @@ package com.fadlurahmanf.bebas_onboarding.presentation.vc
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.os.Build
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_api.data.dto.openvidu.ConnectionResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
-import com.fadlurahmanf.bebas_onboarding.databinding.ActivityVideoCallBinding
+import com.fadlurahmanf.bebas_onboarding.databinding.ActivityDebugVideoCallBinding
 import com.fadlurahmanf.bebas_onboarding.external.CustomWebSocket
 import com.fadlurahmanf.bebas_onboarding.external.LocalParticipant
 import com.fadlurahmanf.bebas_onboarding.external.RTCSession
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
-import org.webrtc.Camera1Enumerator
-import org.webrtc.Camera2Enumerator
-import org.webrtc.CameraEnumerator
 import org.webrtc.EglBase
-import org.webrtc.MediaConstraints
-import org.webrtc.SurfaceTextureHelper
-import org.webrtc.VideoCapturer
-import org.webrtc.VideoSource
 import javax.inject.Inject
 
 
-class VideoCallActivity :
-    BaseOnboardingActivity<ActivityVideoCallBinding>(ActivityVideoCallBinding::inflate) {
+class DebugVideoCallActivity :
+    BaseOnboardingActivity<ActivityDebugVideoCallBinding>(ActivityDebugVideoCallBinding::inflate) {
 
     @Inject
     lateinit var viewModel: VideoCallViewModel
@@ -95,8 +86,10 @@ class VideoCallActivity :
         }
     }
 
+    private lateinit var webSocket: CustomWebSocket
+
     private fun startWebSocket() {
-        val webSocket = CustomWebSocket(rtcSession)
+        webSocket = CustomWebSocket(rtcSession)
         webSocket.execute()
         rtcSession.setWebSocket(webSocket)
     }

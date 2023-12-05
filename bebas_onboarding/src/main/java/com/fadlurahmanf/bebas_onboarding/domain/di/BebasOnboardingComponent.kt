@@ -10,7 +10,7 @@ import com.fadlurahmanf.bebas_onboarding.presentation.form_user.InputPhoneEmailA
 import com.fadlurahmanf.bebas_onboarding.presentation.form_user.PrepareOnboardingActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.otp.OtpVerificationActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.splash.BebasSplashActivity
-import com.fadlurahmanf.bebas_onboarding.presentation.vc.VideoCallActivity
+import com.fadlurahmanf.bebas_onboarding.presentation.vc.DebugVideoCallActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.welcome.TncActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.welcome.WelcomeOnboardingActivity
 import com.fadlurahmanf.bebas_storage.BebasStorageComponent
@@ -49,5 +49,5 @@ interface BebasOnboardingComponent {
     fun inject(activity: FaceVerificationActivity)
     fun inject(activity: EktpVerificationCameraResultActivity)
     fun inject(activity: EktpVerificationFormActivity)
-    fun inject(activity: VideoCallActivity)
+    fun inject(activity: DebugVideoCallActivity)
 }
