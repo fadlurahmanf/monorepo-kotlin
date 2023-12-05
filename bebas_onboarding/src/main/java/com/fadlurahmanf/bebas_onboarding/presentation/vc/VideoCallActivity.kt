@@ -2,6 +2,8 @@ package com.fadlurahmanf.bebas_onboarding.presentation.vc
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
+import android.util.Log
 import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_api.data.dto.openvidu.ConnectionResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
@@ -11,7 +13,14 @@ import com.fadlurahmanf.bebas_onboarding.external.LocalParticipant
 import com.fadlurahmanf.bebas_onboarding.external.RTCSession
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import org.webrtc.Camera1Enumerator
+import org.webrtc.Camera2Enumerator
+import org.webrtc.CameraEnumerator
 import org.webrtc.EglBase
+import org.webrtc.MediaConstraints
+import org.webrtc.SurfaceTextureHelper
+import org.webrtc.VideoCapturer
+import org.webrtc.VideoSource
 import javax.inject.Inject
 
 
@@ -26,6 +35,8 @@ class VideoCallActivity :
     }
 
     override fun setup() {
+        initViews()
+
         initObserver()
         initAction()
     }
@@ -66,7 +77,7 @@ class VideoCallActivity :
                 context = this.applicationContext,
                 localVideoView = binding.localGlSurfaceView
             )
-            localParticipant.startCamera()
+            localParticipant.startCamera(eglBaseContext)
             startWebSocket()
         } else {
             showFailedBottomsheet(BebasException.generalRC("SESSION_ID"))
@@ -74,13 +85,12 @@ class VideoCallActivity :
     }
 
     private fun initViews() {
-        if (arePermissionGranted()){
-            val rootEglBase = EglBase.create()
-            binding.localGlSurfaceView.init(rootEglBase.eglBaseContext, null)
+        if (arePermissionGranted()) {
+            binding.localGlSurfaceView.init(eglBaseContext, null)
             binding.localGlSurfaceView.setMirror(true)
             binding.localGlSurfaceView.setEnableHardwareScaler(true)
             binding.localGlSurfaceView.setZOrderMediaOverlay(true)
-        }else{
+        } else {
             showFailedBottomsheet(BebasException.generalRC("PERMISSION_MISSING"))
         }
     }
@@ -107,4 +117,5 @@ class VideoCallActivity :
         ) != PackageManager.PERMISSION_DENIED
     }
 
+    private var eglBaseContext = EglBase.create().eglBaseContext
 }

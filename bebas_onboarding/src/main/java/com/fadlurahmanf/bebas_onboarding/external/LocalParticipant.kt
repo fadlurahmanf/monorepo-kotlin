@@ -23,11 +23,11 @@ class LocalParticipant(
 
     private lateinit var surfaceTextureHelper: SurfaceTextureHelper
     private lateinit var videoCapturer: VideoCapturer
+    private lateinit var eglBaseContext: EglBase.Context
 
-    fun startCamera() {
-        val eglBaseContext = EglBase.create().eglBaseContext
+    fun startCamera(eglBaseContext: EglBase.Context) {
+        this.eglBaseContext = eglBaseContext
         val peerConnectionFactory = session.peerConnectionFactory
-
         val audioSource = peerConnectionFactory.createAudioSource(MediaConstraints())
         audioTrack = peerConnectionFactory.createAudioTrack("101", audioSource)
 
@@ -35,7 +35,7 @@ class LocalParticipant(
 
         // Create VideoCapturer
         val videoCapturer = createCameraCapturer()
-        if(videoCapturer != null){
+        if (videoCapturer != null) {
             val videoSource: VideoSource =
                 peerConnectionFactory.createVideoSource(videoCapturer.isScreencast)
             videoCapturer.initialize(surfaceTextureHelper, context, videoSource.capturerObserver)
@@ -43,7 +43,7 @@ class LocalParticipant(
             videoTrack = peerConnectionFactory.createVideoTrack("100", videoSource)
             videoTrack.addSink(localVideoView)
             Log.d("BebasLogger", "SUCCESS START CAMERA")
-        }else{
+        } else {
             Log.d("BebasLogger", "CAMERA NULL")
         }
     }

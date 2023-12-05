@@ -1,8 +1,6 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.camera_verification
 
-import android.content.Intent
 import android.graphics.Bitmap
-import android.util.Base64
 import android.util.Log
 import android.util.Size
 import android.view.View
@@ -12,24 +10,16 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.core.TorchState
 import androidx.core.content.ContextCompat
-import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.R
-import com.fadlurahmanf.bebas_onboarding.databinding.ActivityEktpVerificationCameraBinding
+import com.fadlurahmanf.bebas_onboarding.databinding.ActivityFaceVerificationBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingCameraActivity
-import com.fadlurahmanf.bebas_shared.BebasSharedFake
-import com.fadlurahmanf.core_mlkit.domain.analyzer.ImageLabelerAnalyzer
+import com.fadlurahmanf.core_mlkit.domain.analyzer.FaceDetectorAnalyzer
 import com.fadlurahmanf.core_mlkit.external.CoreMlkitUtility
-import com.google.mlkit.vision.label.ImageLabel
-import java.io.ByteArrayOutputStream
+import com.google.mlkit.vision.face.Face
 import java.util.concurrent.Executors
-import javax.inject.Inject
 
-
-@androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
-class EktpVerificationCameraActivity :
-    BaseOnboardingCameraActivity<ActivityEktpVerificationCameraBinding>(
-        ActivityEktpVerificationCameraBinding::inflate
-    ) {
+class FaceVerificationActivity :
+    BaseOnboardingCameraActivity<ActivityFaceVerificationBinding>(ActivityFaceVerificationBinding::inflate) {
     private lateinit var analyzer: ImageAnalysis
     private lateinit var preview: Preview
     private var torchEnabled: Boolean = false
@@ -37,17 +27,8 @@ class EktpVerificationCameraActivity :
     private var isStartAnalyzer = false
 
     private lateinit var currentImageProxy: ImageProxy
-    private lateinit var currentLabels: List<ImageLabel>
+    private lateinit var currentFaces: List<Face>
     private lateinit var currentBitmap: Bitmap
-
-    @Inject
-    lateinit var viewModel: EktpVerificationCameraViewModel
-
-    override fun initCameraListener() {
-        cameraProviderFuture().addListener({
-                                               analyze()
-                                           }, ContextCompat.getMainExecutor(this))
-    }
 
     private val onSuccessRunnable = object : Runnable {
         override fun run() {
@@ -56,37 +37,50 @@ class EktpVerificationCameraActivity :
         }
     }
 
-    private val listener = object : ImageLabelerAnalyzer.Listener {
-        override fun onSuccessGetLabels(
-            labels: List<ImageLabel>,
-            image: ImageProxy,
-            bitmapImage: Bitmap
-        ) {
+    private val listener = object : FaceDetectorAnalyzer.Listener {
+
+        override fun onSuccessGetFaces(faces: List<Face>, image: ImageProxy, bitmapImage: Bitmap) {
             currentImageProxy = image
-            currentLabels = labels
+            currentFaces = faces
             currentBitmap = bitmapImage
 
-            var isIdCardFound = false
-            currentLabels.forEach {
-                if ((it.text == "Mobile phone" || it.text == "Hand") && it.confidence >= 0.5f) {
-                    isIdCardFound = true
+            var isFaceFound = false
+            currentFaces.forEach {
+                val rightEyeOpenProbability = it.rightEyeOpenProbability ?: 0f
+                val leftEyeOpenProbability = it.leftEyeOpenProbability ?: 0f
+                val smilingProbability = it.smilingProbability ?: 0f
+                Log.d("BebasLogger", "RIGHT: $rightEyeOpenProbability")
+                Log.d("BebasLogger", "LEFT: $leftEyeOpenProbability")
+                Log.d("BebasLogger", "SMILE: $smilingProbability")
+                if (leftEyeOpenProbability > 0.5f && rightEyeOpenProbability > 0.5f && smilingProbability > 0.2f) {
+                    isFaceFound = true
                 }
             }
 
             handler.removeCallbacks(onSuccessRunnable)
-            if (!isIdCardFound) {
+            if (!isFaceFound) {
                 handler.postDelayed(onSuccessRunnable, 3000)
             }
 
-            if (isIdCardFound) {
-                getOcrV2()
+            if (isFaceFound) {
+                processFace()
             }
-
         }
 
-        override fun onFailedGetLabels(e: Exception) {
-            Log.d("BebasLogger", "onFailedGetLabels: ${e.message}")
+        override fun onFailedGetFaces(e: Exception) {
+            Log.d("BebasLogger", "onFailedGetFaces: ${e.message}")
         }
+    }
+
+    private fun processFace() {
+        val stringBase64Image = CoreMlkitUtility.getBase64FromBitmap(currentBitmap)
+        // TODO: TAUFIK PROCESS HERE
+    }
+
+    override fun initCameraListener() {
+        cameraProviderFuture().addListener({
+                                               analyze()
+                                           }, ContextCompat.getMainExecutor(this))
     }
 
     override fun analyze() {
@@ -102,7 +96,7 @@ class EktpVerificationCameraActivity :
             .build().apply {
                 setAnalyzer(
                     cameraExecutor,
-                    ImageLabelerAnalyzer(listener)
+                    FaceDetectorAnalyzer(listener)
                 )
             }
         cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
@@ -156,6 +150,7 @@ class EktpVerificationCameraActivity :
 
         binding.ivCamera.setOnClickListener {
             binding.ivCamera.visibility = View.INVISIBLE
+            isStartAnalyzer = true
             cameraProvider.unbindAll()
             camera = cameraProvider.bindToLifecycle(
                 this, cameraSelector, preview, analyzer
@@ -167,40 +162,14 @@ class EktpVerificationCameraActivity :
         component.inject(this)
     }
 
-    override fun setup() {
-        viewModel.ocrState.observe(this) {
-            when (it) {
-                is NetworkState.SUCCESS -> {
-                    dismissLoadingDialog()
-                    val intent = Intent(this, EktpVerificationCameraResultActivity::class.java)
-                    startActivity(intent)
-                }
-
-                is NetworkState.FAILED -> {
-                    dismissLoadingDialog()
-                    showFailedBottomsheet(it.exception)
-                }
-
-                is NetworkState.LOADING -> {
-                    showLoadingDialog()
-                }
-
-                else -> {}
-            }
-        }
-    }
-
-    private fun getOcrV2() {
-        val stringBase64Image = CoreMlkitUtility.getBase64FromBitmap(currentBitmap)
-//         TODO(TAUFIK): BERMASALAH BASE64 NYA
-        viewModel.getOCRv2(BebasSharedFake.base64ImageKtpFake)
-    }
+    override fun setup() {}
 
     private fun switchCamera() {
         cameraSelector =
             if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) CameraSelector.DEFAULT_FRONT_CAMERA else CameraSelector.DEFAULT_BACK_CAMERA
         cameraProvider.unbindAll()
-        camera = cameraProvider.bindToLifecycle(
+
+        cameraProvider.bindToLifecycle(
             this, cameraSelector, preview, if (isStartAnalyzer) analyzer else null
         )
     }
