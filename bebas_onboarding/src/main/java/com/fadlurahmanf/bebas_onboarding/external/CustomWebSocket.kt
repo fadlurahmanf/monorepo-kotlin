@@ -25,7 +25,8 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 
-class CustomWebSocket(private val session: RTCSession) : AsyncTask<DebugVideoCallActivity, Void, Void>(),
+class CustomWebSocket(private val session: RTCSession) :
+    AsyncTask<DebugVideoCallActivity, Void, Void>(),
     WebSocketListener {
 
     private val TAG = "BebasLoggerRTC"
@@ -50,6 +51,8 @@ class CustomWebSocket(private val session: RTCSession) : AsyncTask<DebugVideoCal
     private val ID_PING = AtomicInteger(-1)
     private val RPC_ID = AtomicInteger(0)
 
+    private lateinit var mediaServer: String
+
     @Deprecated("Deprecated in Java")
     override fun doInBackground(vararg params: DebugVideoCallActivity?): Void? {
         try {
@@ -71,13 +74,53 @@ class CustomWebSocket(private val session: RTCSession) : AsyncTask<DebugVideoCal
     }
 
     private fun getWebSocketAddress(): String {
-        val wsuri = "wss://${BebasShared.getOpenviduHost()}:443/openvidu?sessionId=${session.sessionId}&token=${session.sessionToken}"
+        val wsuri =
+            "wss://${BebasShared.getOpenviduHost()}:443/openvidu?sessionId=${session.sessionId}&token=${session.sessionToken}"
         Log.d(TAG, "WSURI WEBSOCKET: ${wsuri}")
         return wsuri
     }
 
     override fun onTextMessage(websocket: WebSocket?, text: String?) {
-        Log.d(TAG, "BEBAS ON TEXT MESSAGE: $text")
+        Log.d(TAG, "<--- BEBAS ON TEXT MESSAGE: $text --->")
+        if (text != null) {
+            val json = JSONObject(text)
+
+            if (json.has(JsonConstants.RESULT)) {
+                handleServerResponse(json)
+            } else if (json.has(JsonConstants.ERROR)) {
+                handleServerError(json)
+            } else if (json.has(JsonConstants.METHOD)) {
+                handleServerMethod(json)
+            }
+        }
+    }
+
+    override fun onTextMessage(websocket: WebSocket?, data: ByteArray?) {
+
+    }
+
+    private fun handleServerResponse(json: JSONObject) {
+        Log.d(TAG, "<--- HANDLE RESULT SERVER: $json --->")
+        val rpcId = json.getInt(JsonConstants.ID)
+        val result = JSONObject(json.getString(JsonConstants.RESULT))
+
+        if (result.has("value") && result.getString("value").equals("pong")) {
+            // Response to ping
+            Log.i(TAG, "pong")
+        } else if (rpcId == ID_JOINROOM.get()) {
+            val localParticipant = session.localParticipant
+            val localConnectionId = result.getString(JsonConstants.MEDIA_SERVER)
+            localParticipant.connectionId = localConnectionId
+            mediaServer = result.getString(JsonConstants.MEDIA_SERVER)
+        }
+    }
+
+    private fun handleServerError(json: JSONObject) {
+
+    }
+
+    private fun handleServerMethod(json: JSONObject) {
+
     }
 
     override fun onStateChanged(websocket: WebSocket?, newState: WebSocketState?) {
@@ -178,10 +221,6 @@ class CustomWebSocket(private val session: RTCSession) : AsyncTask<DebugVideoCal
     }
 
     override fun onPongFrame(websocket: WebSocket?, frame: WebSocketFrame?) {
-
-    }
-
-    override fun onTextMessage(websocket: WebSocket?, data: ByteArray?) {
 
     }
 

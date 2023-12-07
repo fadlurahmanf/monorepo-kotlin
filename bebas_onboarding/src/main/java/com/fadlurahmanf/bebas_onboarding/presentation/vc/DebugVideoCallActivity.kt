@@ -63,15 +63,15 @@ class DebugVideoCallActivity :
         if (connection.sessionId != null && connection.token != null) {
             rtcSession = RTCSession(connection.sessionId!!, connection.token!!, this)
             localParticipant = LocalParticipant(
-                participantName = "participantName",
+                participantName = "DEBUG PARTICIPANT NAME",
                 session = rtcSession,
-                context = this.applicationContext,
+                context = applicationContext,
                 localVideoView = binding.localGlSurfaceView
             )
             localParticipant.startCamera(eglBaseContext)
             startWebSocket()
         } else {
-            showFailedBottomsheet(BebasException.generalRC("SESSION_ID"))
+            showFailedBottomsheet(BebasException.generalRC("SESSION_ID_MISSING"))
         }
     }
 

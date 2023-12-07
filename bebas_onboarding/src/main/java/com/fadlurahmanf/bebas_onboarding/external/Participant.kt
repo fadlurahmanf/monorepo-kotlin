@@ -12,6 +12,7 @@ abstract class Participant(
     open val participantName: String, open val session: RTCSession
 ) {
 
+    lateinit var connectionId: String
     private var iceCandidateList: List<IceCandidate> = ArrayList()
     private var peerConnection: PeerConnection? = null
     lateinit var audioTrack: AudioTrack
