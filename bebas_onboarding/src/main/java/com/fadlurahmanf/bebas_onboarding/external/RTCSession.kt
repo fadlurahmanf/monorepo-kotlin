@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_onboarding.external
 
 import android.app.Activity
+import android.util.Log
 import com.fadlurahmanf.bebas_onboarding.presentation.vc.DebugVideoCallActivity
 import org.webrtc.IceCandidate
 import org.webrtc.MediaConstraints
@@ -18,7 +19,11 @@ import org.webrtc.VideoDecoderFactory
 import org.webrtc.VideoEncoderFactory
 
 
-class RTCSession(val sessionId: String, val sessionToken: String, val activity: DebugVideoCallActivity) {
+class RTCSession(
+    val sessionId: String,
+    val sessionToken: String,
+    val activity: DebugVideoCallActivity
+) {
 
     var peerConnectionFactory: PeerConnectionFactory
     lateinit var customWebSocket: CustomWebSocket
@@ -55,7 +60,7 @@ class RTCSession(val sessionId: String, val sessionToken: String, val activity: 
 
     fun createLocalPeerConnection(): PeerConnection {
         val config =
-            PeerConnection.RTCConfiguration(if (iceServers.isEmpty()) iceServersDefault else iceServers)
+            PeerConnection.RTCConfiguration(iceServers.ifEmpty { iceServersDefault })
         config.tcpCandidatePolicy = PeerConnection.TcpCandidatePolicy.ENABLED
         config.bundlePolicy = PeerConnection.BundlePolicy.MAXBUNDLE
         config.rtcpMuxPolicy = PeerConnection.RtcpMuxPolicy.NEGOTIATE
@@ -91,12 +96,17 @@ class RTCSession(val sessionId: String, val sessionToken: String, val activity: 
     }
 
     fun createOfferForPublishing(constraints: MediaConstraints) {
+        Log.d("BebasLoggerRTC", "CREATE OFFER: $constraints")
         localParticipant.getPeerConnection()!!
-            .createOffer(object : CustomSdpObserver() {
+            .createOffer(object : CustomSdpObserver("local create offer") {
                 override fun onCreateSuccess(p0: SessionDescription?) {
                     super.onCreateSuccess(p0)
+                    Log.d("BebasLoggerRTC", "SDP TYPE: ${p0?.type}")
+                    Log.d("BebasLoggerRTC", "SDP OFFER: ${p0?.description}")
                     localParticipant.getPeerConnection()!!.setLocalDescription(object :
-                                                                                   CustomSdpObserver() {
+                                                                                   CustomSdpObserver(
+                                                                                       "local set description"
+                                                                                   ) {
                         override fun onSetSuccess() {
                             super.onSetSuccess()
                             if (p0 != null) {

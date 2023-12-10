@@ -31,7 +31,10 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 
-class CustomWebSocket(private val session: RTCSession, private val activity: DebugVideoCallActivity) :
+class CustomWebSocket(
+    private val session: RTCSession,
+    private val activity: DebugVideoCallActivity
+) :
     AsyncTask<DebugVideoCallActivity, Void, Void>(),
     WebSocketListener {
 
@@ -142,7 +145,7 @@ class CustomWebSocket(private val session: RTCSession, private val activity: Deb
                     try {
                         iceServerBuilder = IceServer.builder(urls)
                     } catch (e: IllegalArgumentException) {
-                        Log.d(TAG, "JOIN ROOM METHOD ERROR: ${e.message}")
+                        Log.e(TAG, "JOIN ROOM METHOD ERROR: ${e.message}")
                         return
                     }
                     if (jsonIceServer.has("username")) {
@@ -164,13 +167,13 @@ class CustomWebSocket(private val session: RTCSession, private val activity: Deb
             sdpConstraints.mandatory.add(
                 MediaConstraints.KeyValuePair(
                     "offerToReceiveAudio",
-                    "false"
+                    "true"
                 )
             )
             sdpConstraints.mandatory.add(
                 MediaConstraints.KeyValuePair(
                     "offerToReceiveVideo",
-                    "false"
+                    "true"
                 )
             )
             session.createOfferForPublishing(sdpConstraints)
@@ -183,8 +186,11 @@ class CustomWebSocket(private val session: RTCSession, private val activity: Deb
     }
 
     private fun addRemoteParticipantsAlreadyInRoom(result: JSONObject) {
-        for (i in 0 until result.getJSONArray(JsonConstants.VALUE).length()) {
-            val participantJson = result.getJSONArray(JsonConstants.VALUE).getJSONObject(i)
+        val participantsAlreadyInRoom = result.getJSONArray(JsonConstants.VALUE)
+        Log.d(TAG, "TOTAL PARTICIPANT ALREADY IN ROOM ${participantsAlreadyInRoom.length()}")
+        for (i in 0 until participantsAlreadyInRoom.length()) {
+            val participantJson = participantsAlreadyInRoom.getJSONObject(i)
+            Log.d(TAG, "PARTICIPANT ALREADY IN ROOM: $participantJson")
             val remoteParticipant: RemoteParticipant = newRemoteParticipantAux(participantJson)
             try {
                 val streams = participantJson.getJSONArray("streams")
@@ -231,9 +237,9 @@ class CustomWebSocket(private val session: RTCSession, private val activity: Deb
 
     private fun subscribe(remoteParticipant: RemoteParticipant, streamId: String) {
         if ("kurento" == mediaServer) {
-            this.subscriptionInitiatedFromClient(remoteParticipant, streamId)
+            subscriptionInitiatedFromClient(remoteParticipant, streamId)
         } else {
-            this.prepareReceiveVideoFrom(remoteParticipant, streamId)
+            prepareReceiveVideoFrom(remoteParticipant, streamId)
         }
     }
 
@@ -245,11 +251,11 @@ class CustomWebSocket(private val session: RTCSession, private val activity: Deb
         sdpConstraints.mandatory.add(MediaConstraints.KeyValuePair("offerToReceiveAudio", "true"))
         sdpConstraints.mandatory.add(MediaConstraints.KeyValuePair("offerToReceiveVideo", "true"))
         remoteParticipant.getPeerConnection()!!
-            .createOffer(object : CustomSdpObserver() {
+            .createOffer(object : CustomSdpObserver("remote create offer") {
                 override fun onCreateSuccess(p0: SessionDescription?) {
                     super.onCreateSuccess(p0)
                     remoteParticipant.getPeerConnection()!!
-                        .setLocalDescription(object : CustomSdpObserver() {
+                        .setLocalDescription(object : CustomSdpObserver("remote set description") {
                             override fun onSetSuccess() {
                                 super.onSetSuccess()
                                 if (p0 != null) {
@@ -343,15 +349,21 @@ class CustomWebSocket(private val session: RTCSession, private val activity: Deb
     }
 
     fun joinRoom() {
-        val joinRoomParams: MutableMap<String, String?> = HashMap()
-        joinRoomParams[JsonConstants.METADATA] =
-            "{\"clientData\": \"" + session.localParticipant.participantName + "\"}"
-        joinRoomParams["secret"] = ""
-        joinRoomParams["session"] = session.sessionId
-        joinRoomParams["platform"] = "Android " + Build.VERSION.SDK_INT
-        joinRoomParams["token"] = session.sessionToken
-        joinRoomParams["sdkVersion"] = "2.29.0"
-        this.ID_JOINROOM.set(sendJson(JsonConstants.JOINROOM_METHOD, joinRoomParams))
+        try {
+            val joinRoomParams: MutableMap<String, String?> = HashMap()
+            joinRoomParams[JsonConstants.METADATA] =
+                "{\"clientData\": \"" + session.localParticipant.participantName + "\"}"
+            joinRoomParams["secret"] = ""
+            joinRoomParams["session"] = session.sessionId
+            joinRoomParams["platform"] = "Android " + Build.VERSION.SDK_INT
+            joinRoomParams["token"] = session.sessionToken
+            joinRoomParams["sdkVersion"] = "2.29.0"
+            val joinRoomId = sendJson(JsonConstants.JOINROOM_METHOD, joinRoomParams)
+            Log.d("BebasLoggerRTC", "ID JOIN ROOM: $joinRoomId")
+            ID_JOINROOM.set(joinRoomId)
+        } catch (e: java.lang.Exception) {
+            Log.d("BebasLoggerRTC", "JOIN ROOM ERROR: ${e.message}")
+        }
     }
 
     fun publishVideo(sessionDescription: SessionDescription) {

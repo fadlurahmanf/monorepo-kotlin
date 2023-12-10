@@ -21,9 +21,14 @@ class LocalParticipant(
     val localVideoView: SurfaceViewRenderer
 ) : Participant(participantName, session) {
 
+
     private lateinit var surfaceTextureHelper: SurfaceTextureHelper
     private lateinit var videoCapturer: VideoCapturer
     private lateinit var eglBaseContext: EglBase.Context
+
+    init {
+        session.localParticipant = this
+    }
 
     fun startCamera(eglBaseContext: EglBase.Context) {
         this.eglBaseContext = eglBaseContext
