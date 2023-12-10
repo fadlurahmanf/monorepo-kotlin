@@ -202,7 +202,19 @@ class BebasWebSocket(
             }
 
         } else if (rpcId == ID_PUBLISHVIDEO.get()) {
-
+            val remoteAnswer = SessionDescription(
+                SessionDescription.Type.ANSWER,
+                result.getString(JsonConstants.SDP_ANSWER)
+            )
+            localPeerConnection.setRemoteDescription(
+                object : CustomSdpObserver("local set remote description") {
+                    override fun onSetSuccess() {
+                        super.onSetSuccess()
+                        Log.d(TAG, "LOCAL SET REMOTE DESCRIPTION SUCCESS")
+                    }
+                },
+                remoteAnswer
+            )
         }
     }
 
@@ -506,6 +518,14 @@ class BebasWebSocket(
 
                     p0?.let {
                         onIceCandidate(p0, localConnectionId)
+                    }
+                }
+
+                override fun onSignalingChange(p0: PeerConnection.SignalingState?) {
+                    super.onSignalingChange(p0)
+                    if (p0 == PeerConnection.SignalingState.STABLE) {
+                        Log.d(TAG, "LOCAL PEER CONNECTION STABLE")
+                        Log.d(TAG, "LOCAL ICE CANDIDATE LENGTH: ${ICE_CANDIDATES_LOCAL.size}")
                     }
                 }
 
