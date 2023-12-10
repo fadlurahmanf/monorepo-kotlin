@@ -2,6 +2,8 @@ package com.fadlurahmanf.bebas_onboarding.presentation.vc
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.util.Log
+import android.view.View
 import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_api.data.dto.openvidu.ConnectionResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
@@ -9,9 +11,12 @@ import com.fadlurahmanf.bebas_onboarding.databinding.ActivityDebugVideoCallBindi
 import com.fadlurahmanf.bebas_onboarding.external.CustomWebSocket
 import com.fadlurahmanf.bebas_onboarding.external.LocalParticipant
 import com.fadlurahmanf.bebas_onboarding.external.RTCSession
+import com.fadlurahmanf.bebas_onboarding.external.RemoteParticipant
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import org.webrtc.EglBase
+import org.webrtc.MediaStream
+import org.webrtc.VideoTrack
 import javax.inject.Inject
 
 
@@ -89,14 +94,14 @@ class DebugVideoCallActivity :
     private lateinit var webSocket: CustomWebSocket
 
     private fun startWebSocket() {
-        webSocket = CustomWebSocket(rtcSession)
+        webSocket = CustomWebSocket(rtcSession, this)
         webSocket.execute()
         rtcSession.setWebSocket(webSocket)
     }
 
     private fun initAction() {
         binding.btnInitConnection.setOnClickListener {
-            viewModel.initializeConnection("toxic-plum-porcupine")
+            viewModel.initializeConnection("misty-moccasin-lynx")
         }
     }
 
@@ -111,4 +116,16 @@ class DebugVideoCallActivity :
     }
 
     private var eglBaseContext = EglBase.create().eglBaseContext
+
+    fun createRemoteParticipantVideo(remoteParticipant: RemoteParticipant) {
+        Log.d("BebasLoggerRTC", "CREATE REMOTE PARTICIPANT VIDEO")
+    }
+
+    fun setRemoteMediaStream(stream:MediaStream, remoteParticipant: RemoteParticipant){
+//        val videoTrack: VideoTrack = stream.videoTracks[0]
+//        videoTrack.addSink(remoteParticipant.getVideoView())
+//        runOnUiThread {
+//            remoteParticipant.getVideoView().setVisibility(View.VISIBLE)
+//        }
+    }
 }

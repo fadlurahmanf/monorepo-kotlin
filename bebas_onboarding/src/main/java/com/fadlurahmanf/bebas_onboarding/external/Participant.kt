@@ -12,7 +12,7 @@ abstract class Participant(
     open val participantName: String, open val session: RTCSession
 ) {
 
-    lateinit var connectionId: String
+    lateinit var connectionId:String
     private var iceCandidateList: List<IceCandidate> = ArrayList()
     private var peerConnection: PeerConnection? = null
     lateinit var audioTrack: AudioTrack
@@ -21,7 +21,9 @@ abstract class Participant(
 
     constructor(connectionId: String, participantName: String, session: RTCSession) : this(
         participantName, session
-    )
+    ){
+      this.connectionId = connectionId
+    }
 
     fun getIceCandidateList(): List<IceCandidate> {
         return this.iceCandidateList

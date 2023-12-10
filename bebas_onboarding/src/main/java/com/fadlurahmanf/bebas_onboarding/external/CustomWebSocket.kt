@@ -16,21 +16,31 @@ import com.neovisionaries.ws.client.WebSocketListener
 import com.neovisionaries.ws.client.WebSocketState
 import org.json.JSONException
 import org.json.JSONObject
+import org.webrtc.IceCandidate
+import org.webrtc.MediaConstraints
+import org.webrtc.PeerConnection.IceServer
+import org.webrtc.SessionDescription
 import java.security.SecureRandom
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
+import java.util.Collections
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 
-class CustomWebSocket(private val session: RTCSession) :
+class CustomWebSocket(private val session: RTCSession, private val activity: DebugVideoCallActivity) :
     AsyncTask<DebugVideoCallActivity, Void, Void>(),
     WebSocketListener {
 
     private val TAG = "BebasLoggerRTC"
     private val ID_JOINROOM = AtomicInteger(-1)
+    private val ID_PUBLISHVIDEO = AtomicInteger(-1)
+    private val IDS_ONICECANDIDATE = Collections.newSetFromMap(ConcurrentHashMap<Int, Boolean>())
+    private val IDS_PREPARERECEIVEVIDEO: HashMap<Int, Pair<String, String>> = hashMapOf()
+    private val IDS_RECEIVEVIDEO: HashMap<Int, String> = hashMapOf()
     private val trustManagers = arrayOf<TrustManager>(object : X509TrustManager {
         override fun getAcceptedIssuers(): Array<X509Certificate?> {
             return arrayOfNulls<X509Certificate>(0)
@@ -112,7 +122,162 @@ class CustomWebSocket(private val session: RTCSession) :
             val localConnectionId = result.getString(JsonConstants.MEDIA_SERVER)
             localParticipant.connectionId = localConnectionId
             mediaServer = result.getString(JsonConstants.MEDIA_SERVER)
+
+            if (result.has(JsonConstants.ICE_SERVERS)) {
+                val jsonIceServers = result.getJSONArray(JsonConstants.ICE_SERVERS)
+                val iceServers: ArrayList<IceServer> = arrayListOf()
+                for (i in 0 until jsonIceServers.length()) {
+                    val jsonIceServer = jsonIceServers.getJSONObject(i)
+                    val urls: MutableList<String> = arrayListOf()
+                    if (jsonIceServer.has("urls")) {
+                        val jsonUrls = jsonIceServer.getJSONArray("urls")
+                        for (j in 0 until jsonUrls.length()) {
+                            urls.add(jsonUrls.getString(j))
+                        }
+                    }
+                    if (jsonIceServer.has("url")) {
+                        urls.add(jsonIceServer.getString("url"))
+                    }
+                    var iceServerBuilder: IceServer.Builder
+                    try {
+                        iceServerBuilder = IceServer.builder(urls)
+                    } catch (e: IllegalArgumentException) {
+                        Log.d(TAG, "JOIN ROOM METHOD ERROR: ${e.message}")
+                        return
+                    }
+                    if (jsonIceServer.has("username")) {
+                        iceServerBuilder.setUsername(jsonIceServer.getString("username"))
+                    }
+                    if (jsonIceServer.has("credential")) {
+                        iceServerBuilder.setPassword(jsonIceServer.getString("credential"))
+                    }
+                    iceServers.add(iceServerBuilder.createIceServer())
+                }
+                session.setIceServers(iceServers)
+            }
+
+            val localPeerConnection = session.createLocalPeerConnection()
+
+            localParticipant.setPeerConnection(localPeerConnection)
+
+            val sdpConstraints = MediaConstraints()
+            sdpConstraints.mandatory.add(
+                MediaConstraints.KeyValuePair(
+                    "offerToReceiveAudio",
+                    "false"
+                )
+            )
+            sdpConstraints.mandatory.add(
+                MediaConstraints.KeyValuePair(
+                    "offerToReceiveVideo",
+                    "false"
+                )
+            )
+            session.createOfferForPublishing(sdpConstraints)
+
+            if (result.getJSONArray(JsonConstants.VALUE).length() > 0) {
+                // There were users already connected to the session
+                addRemoteParticipantsAlreadyInRoom(result)
+            }
         }
+    }
+
+    private fun addRemoteParticipantsAlreadyInRoom(result: JSONObject) {
+        for (i in 0 until result.getJSONArray(JsonConstants.VALUE).length()) {
+            val participantJson = result.getJSONArray(JsonConstants.VALUE).getJSONObject(i)
+            val remoteParticipant: RemoteParticipant = newRemoteParticipantAux(participantJson)
+            try {
+                val streams = participantJson.getJSONArray("streams")
+                for (j in 0 until streams.length()) {
+                    val stream = streams.getJSONObject(0)
+                    val streamId = stream.getString("id")
+                    this.subscribe(remoteParticipant, streamId)
+                }
+            } catch (e: java.lang.Exception) {
+                //Sometimes when we enter in room the other participants have no stream
+                //We catch that in this way the iteration of participants doesn't stop
+                Log.e(TAG, "Error in addRemoteParticipantsAlreadyInRoom: " + e.localizedMessage)
+            }
+        }
+    }
+
+    private fun newRemoteParticipantAux(participantJson: JSONObject): RemoteParticipant {
+        val connectionId = participantJson.getString(JsonConstants.ID)
+        var participantName: String? = ""
+        val jsonStringified = participantJson.getString(JsonConstants.METADATA)
+        try {
+            val json = JSONObject(jsonStringified)
+            val clientData = json.getString("clientData")
+            participantName = clientData
+        } catch (e: JSONException) {
+            participantName = jsonStringified
+        }
+        val remoteParticipant = RemoteParticipant(participantName ?: "-", session, connectionId)
+        this.activity.createRemoteParticipantVideo(remoteParticipant)
+        session.createRemotePeerConnection(remoteParticipant.connectionId)
+        return remoteParticipant
+    }
+
+    fun prepareReceiveVideoFrom(remoteParticipant: RemoteParticipant, streamId: String?) {
+        val prepareReceiveVideoFromParams: MutableMap<String, String?> = HashMap()
+        prepareReceiveVideoFromParams["sender"] = streamId
+        prepareReceiveVideoFromParams["reconnect"] = "false"
+        val ids = sendJson(
+            JsonConstants.PREPARERECEIVEVIDEO_METHOD,
+            prepareReceiveVideoFromParams
+        )
+        IDS_PREPARERECEIVEVIDEO[ids] = Pair(remoteParticipant.connectionId, streamId ?: "-")
+    }
+
+    private fun subscribe(remoteParticipant: RemoteParticipant, streamId: String) {
+        if ("kurento" == mediaServer) {
+            this.subscriptionInitiatedFromClient(remoteParticipant, streamId)
+        } else {
+            this.prepareReceiveVideoFrom(remoteParticipant, streamId)
+        }
+    }
+
+    private fun subscriptionInitiatedFromClient(
+        remoteParticipant: RemoteParticipant,
+        streamId: String
+    ) {
+        val sdpConstraints = MediaConstraints()
+        sdpConstraints.mandatory.add(MediaConstraints.KeyValuePair("offerToReceiveAudio", "true"))
+        sdpConstraints.mandatory.add(MediaConstraints.KeyValuePair("offerToReceiveVideo", "true"))
+        remoteParticipant.getPeerConnection()!!
+            .createOffer(object : CustomSdpObserver() {
+                override fun onCreateSuccess(p0: SessionDescription?) {
+                    super.onCreateSuccess(p0)
+                    remoteParticipant.getPeerConnection()!!
+                        .setLocalDescription(object : CustomSdpObserver() {
+                            override fun onSetSuccess() {
+                                super.onSetSuccess()
+                                if (p0 != null) {
+                                    receiveVideoFrom(p0, remoteParticipant, streamId)
+                                }
+                            }
+                        }, p0)
+                }
+            }, sdpConstraints)
+    }
+
+    fun receiveVideoFrom(
+        sessionDescription: SessionDescription,
+        remoteParticipant: RemoteParticipant,
+        streamId: String?
+    ) {
+        val receiveVideoFromParams: MutableMap<String, String?> = HashMap()
+        receiveVideoFromParams["sender"] = streamId
+        if ("kurento" == mediaServer) {
+            receiveVideoFromParams["sdpOffer"] = sessionDescription.description
+        } else {
+            receiveVideoFromParams["sdpAnswer"] = sessionDescription.description
+        }
+        val ids = sendJson(
+            JsonConstants.RECEIVEVIDEO_METHOD,
+            receiveVideoFromParams
+        )
+        this.IDS_RECEIVEVIDEO[ids] = remoteParticipant.connectionId
     }
 
     private fun handleServerError(json: JSONObject) {
@@ -161,6 +326,22 @@ class CustomWebSocket(private val session: RTCSession) :
         return id
     }
 
+    fun onIceCandidate(iceCandidate: IceCandidate, endpointName: String?) {
+        val onIceCandidateParams: MutableMap<String, String?> = HashMap()
+        if (endpointName != null) {
+            onIceCandidateParams["endpointName"] = endpointName
+        }
+        onIceCandidateParams["candidate"] = iceCandidate.sdp
+        onIceCandidateParams["sdpMid"] = iceCandidate.sdpMid
+        onIceCandidateParams["sdpMLineIndex"] = Integer.toString(iceCandidate.sdpMLineIndex)
+        this.IDS_ONICECANDIDATE.add(
+            sendJson(
+                JsonConstants.ONICECANDIDATE_METHOD,
+                onIceCandidateParams
+            )
+        )
+    }
+
     fun joinRoom() {
         val joinRoomParams: MutableMap<String, String?> = HashMap()
         joinRoomParams[JsonConstants.METADATA] =
@@ -172,6 +353,21 @@ class CustomWebSocket(private val session: RTCSession) :
         joinRoomParams["sdkVersion"] = "2.29.0"
         this.ID_JOINROOM.set(sendJson(JsonConstants.JOINROOM_METHOD, joinRoomParams))
     }
+
+    fun publishVideo(sessionDescription: SessionDescription) {
+        val publishVideoParams: MutableMap<String, String?> = HashMap()
+        publishVideoParams["audioActive"] = "true"
+        publishVideoParams["videoActive"] = "true"
+        publishVideoParams["doLoopback"] = "false"
+        publishVideoParams["frameRate"] = "30"
+        publishVideoParams["hasAudio"] = "true"
+        publishVideoParams["hasVideo"] = "true"
+        publishVideoParams["typeOfVideo"] = "CAMERA"
+        publishVideoParams["videoDimensions"] = "{\"width\":320, \"height\":240}"
+        publishVideoParams["sdpOffer"] = sessionDescription.description
+        this.ID_PUBLISHVIDEO.set(sendJson(JsonConstants.PUBLISHVIDEO_METHOD, publishVideoParams))
+    }
+
 
     override fun onConnected(
         websocket: WebSocket?,
