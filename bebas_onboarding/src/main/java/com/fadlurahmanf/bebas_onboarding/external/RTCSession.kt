@@ -1,6 +1,5 @@
 package com.fadlurahmanf.bebas_onboarding.external
 
-import android.app.Activity
 import android.util.Log
 import com.fadlurahmanf.bebas_onboarding.presentation.vc.DebugVideoCallActivity
 import org.webrtc.IceCandidate
@@ -26,7 +25,7 @@ class RTCSession(
 ) {
 
     var peerConnectionFactory: PeerConnectionFactory
-    lateinit var customWebSocket: CustomWebSocket
+    lateinit var bebasWebSocket: BebasWebSocket
     private val remoteParticipants: Map<String, RemoteParticipant> = HashMap()
     lateinit var localParticipant: LocalParticipant
     private val iceServersDefault =
@@ -54,8 +53,8 @@ class RTCSession(
     }
 
 
-    fun setWebSocket(websocket: CustomWebSocket) {
-        this.customWebSocket = websocket
+    fun setWebSocket(websocket: BebasWebSocket) {
+        this.bebasWebSocket = websocket
     }
 
     fun createLocalPeerConnection(): PeerConnection {
@@ -110,7 +109,7 @@ class RTCSession(
                         override fun onSetSuccess() {
                             super.onSetSuccess()
                             if (p0 != null) {
-                                customWebSocket.publishVideo(p0)
+                                bebasWebSocket.publishVideo(p0)
                             }
                         }
                     }, p0)
@@ -133,7 +132,7 @@ class RTCSession(
                 override fun onIceCandidate(iceCandidate: IceCandidate?) {
                     super.onIceCandidate(iceCandidate)
                     if (iceCandidate != null) {
-                        customWebSocket.onIceCandidate(iceCandidate, connectionId)
+                        bebasWebSocket.onIceCandidate(iceCandidate, connectionId)
                     }
                 }
 

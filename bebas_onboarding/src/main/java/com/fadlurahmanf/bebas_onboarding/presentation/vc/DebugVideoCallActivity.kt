@@ -3,12 +3,11 @@ package com.fadlurahmanf.bebas_onboarding.presentation.vc
 import android.Manifest
 import android.content.pm.PackageManager
 import android.util.Log
-import android.view.View
 import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_api.data.dto.openvidu.ConnectionResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityDebugVideoCallBinding
-import com.fadlurahmanf.bebas_onboarding.external.CustomWebSocket
+import com.fadlurahmanf.bebas_onboarding.external.BebasWebSocket
 import com.fadlurahmanf.bebas_onboarding.external.LocalParticipant
 import com.fadlurahmanf.bebas_onboarding.external.RTCSession
 import com.fadlurahmanf.bebas_onboarding.external.RemoteParticipant
@@ -16,7 +15,6 @@ import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import org.webrtc.EglBase
 import org.webrtc.MediaStream
-import org.webrtc.VideoTrack
 import javax.inject.Inject
 
 
@@ -74,7 +72,10 @@ class DebugVideoCallActivity :
                 localVideoView = binding.localGlSurfaceView
             )
             localParticipant.startCamera(eglBaseContext)
-            startWebSocket()
+            startWebSocket(
+                sessionId = connection.sessionId!!,
+                sessionToken = connection.token!!,
+            )
         } else {
             showFailedBottomsheet(BebasException.generalRC("SESSION_ID_MISSING"))
         }
@@ -91,10 +92,11 @@ class DebugVideoCallActivity :
         }
     }
 
-    private lateinit var webSocket: CustomWebSocket
+    private lateinit var webSocket: BebasWebSocket
 
-    private fun startWebSocket() {
-        webSocket = CustomWebSocket(rtcSession, this)
+    private fun startWebSocket(sessionId: String, sessionToken: String) {
+        webSocket = BebasWebSocket(this.applicationContext, sessionId, sessionToken)
+        webSocket.setCallback(bebasWebSocketCallback)
         webSocket.execute()
         rtcSession.setWebSocket(webSocket)
     }
@@ -117,15 +119,35 @@ class DebugVideoCallActivity :
 
     private var eglBaseContext = EglBase.create().eglBaseContext
 
-    fun createRemoteParticipantVideo(remoteParticipant: RemoteParticipant) {
-        Log.d("BebasLoggerRTC", "CREATE REMOTE PARTICIPANT VIDEO")
-    }
-
-    fun setRemoteMediaStream(stream:MediaStream, remoteParticipant: RemoteParticipant){
+    fun setRemoteMediaStream(stream: MediaStream, remoteParticipant: RemoteParticipant) {
 //        val videoTrack: VideoTrack = stream.videoTracks[0]
 //        videoTrack.addSink(remoteParticipant.getVideoView())
 //        runOnUiThread {
 //            remoteParticipant.getVideoView().setVisibility(View.VISIBLE)
 //        }
+    }
+
+    private var bebasWebSocketCallback = object : BebasWebSocket.Callback {
+        override fun onErrorMessage(errorMessage: String) {
+            showSnackBarShort(binding.root, message = errorMessage)
+        }
+
+        override fun onRemoteParticipantAlreadyInRoom(
+            connectionId: String,
+            participantName: String
+        ) {
+            runOnUiThread {
+                binding.remoteParticipantName.text = "$participantName - $connectionId"
+                binding.remoteGlSurfaceView.init(eglBaseContext, null)
+                binding.remoteGlSurfaceView.setMirror(false)
+                binding.remoteGlSurfaceView.setEnableHardwareScaler(true)
+                binding.remoteGlSurfaceView.setZOrderMediaOverlay(true)
+            }
+        }
+
+        override fun onRemoteMediaStream(mediaStream: MediaStream) {
+            val videoTrack = mediaStream.videoTracks[0]
+            videoTrack.addSink(binding.remoteGlSurfaceView)
+        }
     }
 }

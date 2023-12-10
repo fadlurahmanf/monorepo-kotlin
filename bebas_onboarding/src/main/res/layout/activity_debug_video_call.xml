@@ -28,7 +28,19 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
-
+            <org.webrtc.SurfaceViewRenderer
+                android:id="@+id/remote_gl_surface_view"
+                android:layout_width="match_parent"
+                android:layout_height="212dp"
+                android:visibility="visible" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/remote_participant_name"
+                android:text="TES"
+                style="@style/Font.Text14"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -36,6 +48,7 @@
         android:id="@+id/btn_init_connection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         app:text="INITIALIZE CONNECTION" />
 
 </LinearLayout>

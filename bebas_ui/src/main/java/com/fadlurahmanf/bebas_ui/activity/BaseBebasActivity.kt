@@ -2,9 +2,11 @@ package com.fadlurahmanf.bebas_ui.activity
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.fadlurahmanf.bebas_ui.dialog.LoadingDialog
+import com.google.android.material.snackbar.Snackbar
 
 typealias BebasInflateActivity<VB> = (LayoutInflater) -> VB
 
@@ -46,5 +48,15 @@ abstract class BaseBebasActivity<VB : ViewBinding>(
             loadingDialog?.dismiss()
             loadingDialog = null
         }
+    }
+
+    fun showSnackBarShort(view: View, message: String) {
+        val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+        snackbar.show()
+    }
+
+    fun showSnackBarLong(view: View, message: String) {
+        val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+        snackbar.show()
     }
 }
