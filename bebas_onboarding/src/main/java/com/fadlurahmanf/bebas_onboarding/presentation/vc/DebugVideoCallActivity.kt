@@ -103,7 +103,7 @@ class DebugVideoCallActivity :
 
     private fun initAction() {
         binding.btnInitConnection.setOnClickListener {
-            viewModel.initializeConnection("misty-moccasin-lynx")
+            viewModel.initializeConnection("watery-orange-louse")
         }
     }
 

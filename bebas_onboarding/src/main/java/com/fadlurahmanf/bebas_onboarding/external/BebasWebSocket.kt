@@ -21,6 +21,7 @@ import org.webrtc.IceCandidate
 import org.webrtc.MediaConstraints
 import org.webrtc.MediaStream
 import org.webrtc.PeerConnection
+import org.webrtc.PeerConnection.IceServer
 import org.webrtc.PeerConnectionFactory
 import org.webrtc.RtpReceiver
 import org.webrtc.SessionDescription
@@ -161,6 +162,38 @@ class BebasWebSocket(
             localConnectionId = result.getString(JsonConstants.ID)
             mediaServer = result.getString(JsonConstants.MEDIA_SERVER)
 
+            if (result.has(JsonConstants.ICE_SERVERS)) {
+                val jsonIceServers = result.getJSONArray(JsonConstants.ICE_SERVERS)
+                val iceServers: ArrayList<IceServer> = arrayListOf()
+                for (i in 0 until jsonIceServers.length()) {
+                    val jsonIceServer = jsonIceServers.getJSONObject(i)
+                    val urls: ArrayList<String> = arrayListOf()
+                    if (jsonIceServer.has("urls")) {
+                        val jsonUrls = jsonIceServer.getJSONArray("urls")
+                        for (j in 0 until jsonUrls.length()) {
+                            urls.add(jsonUrls.getString(j))
+                        }
+                    }
+                    if (jsonIceServer.has("url")) {
+                        urls.add(jsonIceServer.getString("url"))
+                    }
+                    val iceServerBuilder: IceServer.Builder = try {
+                        IceServer.builder(urls)
+                    } catch (e: IllegalArgumentException) {
+                        continue
+                    }
+
+                    if (jsonIceServer.has("username")) {
+                        iceServerBuilder.setUsername(jsonIceServer.getString("username"))
+                    }
+                    if (jsonIceServer.has("credential")) {
+                        iceServerBuilder.setPassword(jsonIceServer.getString("credential"))
+                    }
+                    iceServers.add(iceServerBuilder.createIceServer())
+                }
+                this.iceServers = iceServers
+            }
+
             val sdpConstraints = MediaConstraints()
             sdpConstraints.mandatory.add(
                 MediaConstraints.KeyValuePair(
@@ -215,6 +248,18 @@ class BebasWebSocket(
                 },
                 remoteAnswer
             )
+        } else if (IDS_RECEIVEVIDEO.containsKey(rpcId)) {
+            val id = IDS_RECEIVEVIDEO.remove(rpcId)
+            if ("kurento" == mediaServer) {
+                val sessionDescription = SessionDescription(
+                    SessionDescription.Type.ANSWER,
+                    result.getString("sdpAnswer")
+                )
+                remotePeerConnection.setRemoteDescription(
+                    CustomSdpObserver("remote set remote description"),
+                    sessionDescription
+                )
+            }
         }
     }
 
@@ -240,6 +285,7 @@ class BebasWebSocket(
     }
 
     private fun subscribe(streamId: String, stream: JSONObject) {
+        Log.d(TAG, "REMOTE SUBSCRIBE VIDEO $mediaServer $stream")
         if ("kurento" == mediaServer) {
             subscriptionInitiatedFromClient(streamId)
         } else {
@@ -258,7 +304,7 @@ class BebasWebSocket(
                 Log.d(TAG, "type: ${sdp?.type}")
                 Log.d(TAG, "description: ${sdp?.description}")
                 remotePeerConnection
-                    .setLocalDescription(object : CustomSdpObserver("remoteSetLocalDesc") {
+                    .setLocalDescription(object : CustomSdpObserver("remote set local description") {
                         override fun onSetSuccess() {
                             super.onSetSuccess()
                             Log.d(TAG, "SUCCESS SET OFFER REMOTE PEER CONNECTION")
@@ -269,6 +315,16 @@ class BebasWebSocket(
                     }, sdp)
             }
         }, sdpConstraints)
+    }
+
+    private fun subscriptionInitiatedFromServer(
+        remoteParticipant: RemoteParticipant,
+        streamId: String
+    ) {
+        val sdpConstraints = MediaConstraints()
+        sdpConstraints.mandatory.add(MediaConstraints.KeyValuePair("offerToReceiveAudio", "true"))
+        sdpConstraints.mandatory.add(MediaConstraints.KeyValuePair("offerToReceiveVideo", "true"))
+//        this.session.createAnswerForSubscribing(remoteParticipant, streamId, sdpConstraints)
     }
 
     fun receiveVideoFrom(
@@ -339,7 +395,7 @@ class BebasWebSocket(
         val params = JSONObject(json.getString(JsonConstants.PARAMS))
         when (method) {
             JsonConstants.ICE_CANDIDATE -> {
-
+                iceCandidateEvent(params)
             }
         }
     }
@@ -515,7 +571,6 @@ class BebasWebSocket(
             object : CustomPeerConnectionObserver() {
                 override fun onIceCandidate(p0: IceCandidate?) {
                     super.onIceCandidate(p0)
-
                     p0?.let {
                         onIceCandidate(p0, localConnectionId)
                     }
