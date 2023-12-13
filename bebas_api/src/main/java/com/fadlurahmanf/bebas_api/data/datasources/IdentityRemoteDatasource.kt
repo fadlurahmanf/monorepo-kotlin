@@ -3,7 +3,7 @@ package com.fadlurahmanf.bebas_api.data.datasources
 import android.content.Context
 import com.fadlurahmanf.bebas_api.data.api.IdentityApi
 import com.fadlurahmanf.bebas_api.domain.network.IdentityNetwork
-import com.fadlurahmanf.bebas_api.data.dto.identity.GenerateGuestTokenRequest
+import com.fadlurahmanf.bebas_api.data.dto.auth.GenerateGuestTokenRequest
 import javax.inject.Inject
 
 class IdentityRemoteDatasource @Inject constructor(context: Context) :

@@ -2,8 +2,8 @@ package com.fadlurahmanf.bebas_api.data.datasources
 
 import android.content.Context
 import com.fadlurahmanf.bebas_api.data.api.IdentityGuestTokenApi
-import com.fadlurahmanf.bebas_api.data.dto.identity.LoginRequest
-import com.fadlurahmanf.bebas_api.data.dto.identity.RefreshUserTokenRequest
+import com.fadlurahmanf.bebas_api.data.dto.auth.LoginRequest
+import com.fadlurahmanf.bebas_api.data.dto.auth.RefreshUserTokenRequest
 import com.fadlurahmanf.bebas_api.domain.network.IdentityGuestNetwork
 import javax.inject.Inject
 

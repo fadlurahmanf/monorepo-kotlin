@@ -8,8 +8,8 @@ import com.fadlurahmanf.bebas_api.data.datasources.OnboardingGuestRemoteDatasour
 import com.fadlurahmanf.bebas_api.data.dto.ektp.EktpDataV2Request
 import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyRequest
 import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyResponse
-import com.fadlurahmanf.bebas_api.data.dto.identity.CreateGuestTokenResponse
-import com.fadlurahmanf.bebas_api.data.dto.identity.GenerateGuestTokenRequest
+import com.fadlurahmanf.bebas_api.data.dto.auth.CreateGuestTokenResponse
+import com.fadlurahmanf.bebas_api.data.dto.auth.GenerateGuestTokenRequest
 import com.fadlurahmanf.bebas_api.data.dto.ektp.OcrRequest
 import com.fadlurahmanf.bebas_api.data.dto.ektp.OcrResponse
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
