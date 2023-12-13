@@ -21,7 +21,7 @@ class BebasSplashActivity :
         viewModel.state.observe(this) {
             when (it) {
                 is SplashState.SUCCESS -> {
-                    val intent = Intent(this, DebugVideoCallActivity::class.java)
+                    val intent = Intent(this, WelcomeOnboardingActivity::class.java)
                     intent.apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     }
