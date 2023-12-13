@@ -2,21 +2,16 @@ package com.fadlurahmanf.bebas_onboarding.presentation.vc
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_api.data.dto.openvidu.ConnectionResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityDebugVideoCallBinding
 import com.fadlurahmanf.bebas_onboarding.external.BebasWebSocket
-import com.fadlurahmanf.bebas_onboarding.external.LocalParticipant
-import com.fadlurahmanf.bebas_onboarding.external.RTCSession
-import com.fadlurahmanf.bebas_onboarding.external.RemoteParticipant
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import org.webrtc.EglBase
 import org.webrtc.MediaStream
 import javax.inject.Inject
-
 
 class DebugVideoCallActivity :
     BaseOnboardingActivity<ActivityDebugVideoCallBinding>(ActivityDebugVideoCallBinding::inflate) {
@@ -59,19 +54,8 @@ class DebugVideoCallActivity :
         }
     }
 
-    lateinit var rtcSession: RTCSession
-    lateinit var localParticipant: LocalParticipant
-
     private fun getTokenSuccess(connection: ConnectionResponse) {
         if (connection.sessionId != null && connection.token != null) {
-            rtcSession = RTCSession(connection.sessionId!!, connection.token!!, this)
-            localParticipant = LocalParticipant(
-                participantName = "DEBUG PARTICIPANT NAME",
-                session = rtcSession,
-                context = applicationContext,
-                localVideoView = binding.localGlSurfaceView
-            )
-            localParticipant.startCamera(eglBaseContext)
             startWebSocket(
                 sessionId = connection.sessionId!!,
                 sessionToken = connection.token!!,
@@ -97,8 +81,7 @@ class DebugVideoCallActivity :
     private fun startWebSocket(sessionId: String, sessionToken: String) {
         webSocket = BebasWebSocket(this.applicationContext, sessionId, sessionToken)
         webSocket.setCallback(bebasWebSocketCallback)
-        webSocket.execute()
-        rtcSession.setWebSocket(webSocket)
+        webSocket.startCamera(eglBaseContext, this.applicationContext, binding.localGlSurfaceView)
     }
 
     private fun initAction() {
@@ -118,14 +101,6 @@ class DebugVideoCallActivity :
     }
 
     private var eglBaseContext = EglBase.create().eglBaseContext
-
-    fun setRemoteMediaStream(stream: MediaStream, remoteParticipant: RemoteParticipant) {
-//        val videoTrack: VideoTrack = stream.videoTracks[0]
-//        videoTrack.addSink(remoteParticipant.getVideoView())
-//        runOnUiThread {
-//            remoteParticipant.getVideoView().setVisibility(View.VISIBLE)
-//        }
-    }
 
     private var bebasWebSocketCallback = object : BebasWebSocket.Callback {
         override fun onErrorMessage(errorMessage: String) {
@@ -148,6 +123,11 @@ class DebugVideoCallActivity :
         override fun onRemoteMediaStream(mediaStream: MediaStream) {
             val videoTrack = mediaStream.videoTracks[0]
             videoTrack.addSink(binding.remoteGlSurfaceView)
+        }
+
+        override fun onLocalCameraStarted() {
+            showSnackBarShort(binding.root, message = "LOCAL CAMERA STARTED")
+            webSocket.execute()
         }
     }
 }

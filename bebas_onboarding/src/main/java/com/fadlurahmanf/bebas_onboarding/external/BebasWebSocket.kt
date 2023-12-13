@@ -17,6 +17,8 @@ import com.neovisionaries.ws.client.WebSocketListener
 import com.neovisionaries.ws.client.WebSocketState
 import org.json.JSONException
 import org.json.JSONObject
+import org.webrtc.AudioTrack
+import org.webrtc.EglBase
 import org.webrtc.IceCandidate
 import org.webrtc.MediaConstraints
 import org.webrtc.MediaStream
@@ -27,8 +29,12 @@ import org.webrtc.RtpReceiver
 import org.webrtc.SessionDescription
 import org.webrtc.SoftwareVideoDecoderFactory
 import org.webrtc.SoftwareVideoEncoderFactory
+import org.webrtc.SurfaceTextureHelper
+import org.webrtc.SurfaceViewRenderer
 import org.webrtc.VideoDecoderFactory
 import org.webrtc.VideoEncoderFactory
+import org.webrtc.VideoSource
+import org.webrtc.VideoTrack
 import java.security.SecureRandom
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
@@ -48,6 +54,9 @@ class BebasWebSocket(
     private var callback: Callback? = null
     lateinit var localPeerConnection: PeerConnection
     lateinit var remotePeerConnection: PeerConnection
+    lateinit var eglBaseContext: EglBase.Context
+    lateinit var audioTrack: AudioTrack
+    lateinit var videoTrack: VideoTrack
 
     private val ID_JOINROOM = AtomicInteger(-1)
     private val ID_PUBLISHVIDEO = AtomicInteger(-1)
@@ -641,6 +650,33 @@ class BebasWebSocket(
         return peerConnection
     }
 
+    fun startCamera(
+        eglBaseContext: EglBase.Context,
+        context: Context,
+        localVideoView: SurfaceViewRenderer
+    ) {
+        this.eglBaseContext = eglBaseContext
+        val audioSource = peerConnectionFactory.createAudioSource(MediaConstraints())
+        audioTrack = peerConnectionFactory.createAudioTrack("101", audioSource)
+
+        val surfaceTextureHelper = SurfaceTextureHelper.create("CaptureThread", eglBaseContext)
+
+        // Create VideoCapturer
+        val videoCapturer = BebasWebRTCUtility.createCameraCapturer(context)
+        if (videoCapturer != null) {
+            val videoSource: VideoSource =
+                peerConnectionFactory.createVideoSource(videoCapturer.isScreencast)
+            videoCapturer.initialize(surfaceTextureHelper, context, videoSource.capturerObserver)
+            videoCapturer.startCapture(480, 640, 30)
+            videoTrack = peerConnectionFactory.createVideoTrack("100", videoSource)
+            videoTrack.addSink(localVideoView)
+            callback?.onLocalCameraStarted()
+            Log.d("BebasLogger", "SUCCESS START CAMERA")
+        } else {
+            Log.d("BebasLogger", "CAMERA NULL")
+        }
+    }
+
     // ----- > BATAS < -----
 
     override fun onDisconnected(
@@ -772,6 +808,7 @@ class BebasWebSocket(
         fun onErrorMessage(errorMessage: String)
         fun onRemoteParticipantAlreadyInRoom(connectionId: String, participantName: String)
         fun onRemoteMediaStream(mediaStream: MediaStream)
+        fun onLocalCameraStarted()
     }
 
 }
