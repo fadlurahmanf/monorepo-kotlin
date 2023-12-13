@@ -14,7 +14,7 @@ class BebasWebRTCUtility {
             config.continualGatheringPolicy =
                 PeerConnection.ContinualGatheringPolicy.GATHER_CONTINUALLY
             config.keyType = PeerConnection.KeyType.ECDSA
-            config.sdpSemantics = PeerConnection.SdpSemantics.UNIFIED_PLAN
+            config.sdpSemantics = PeerConnection.SdpSemantics.PLAN_B
             return config
         }
 
@@ -27,7 +27,7 @@ class BebasWebRTCUtility {
             config.continualGatheringPolicy =
                 PeerConnection.ContinualGatheringPolicy.GATHER_CONTINUALLY
             config.keyType = PeerConnection.KeyType.ECDSA
-            config.sdpSemantics = PeerConnection.SdpSemantics.UNIFIED_PLAN
+            config.sdpSemantics = PeerConnection.SdpSemantics.PLAN_B
             return config
         }
     }

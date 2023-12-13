@@ -207,7 +207,8 @@ class BebasWebSocket(
                     "true"
                 )
             )
-            localPeerConnection = createLocalPeerConnection(localConnectionId)
+
+            initLocalPeerConnection(localConnectionId)
             localPeerConnection.createOffer(
                 object : CustomSdpObserver("local peer connection offer") {
                     override fun onCreateSuccess(p0: SessionDescription?) {
@@ -235,6 +236,7 @@ class BebasWebSocket(
             }
 
         } else if (rpcId == ID_PUBLISHVIDEO.get()) {
+            Log.d(TAG, "ID_PUBLISHVIDEO -> set remote description")
             val remoteAnswer = SessionDescription(
                 SessionDescription.Type.ANSWER,
                 result.getString(JsonConstants.SDP_ANSWER)
@@ -249,11 +251,12 @@ class BebasWebSocket(
                 remoteAnswer
             )
         } else if (IDS_RECEIVEVIDEO.containsKey(rpcId)) {
-            val id = IDS_RECEIVEVIDEO.remove(rpcId)
+            Log.d(TAG, "IDS_RECEIVEVIDEO -> set remote description")
+//            val id = IDS_RECEIVEVIDEO.remove(rpcId)
             if ("kurento" == mediaServer) {
                 val sessionDescription = SessionDescription(
                     SessionDescription.Type.ANSWER,
-                    result.getString("sdpAnswer")
+                    result.getString(JsonConstants.SDP_ANSWER)
                 )
                 remotePeerConnection.setRemoteDescription(
                     CustomSdpObserver("remote set remote description"),
@@ -261,6 +264,20 @@ class BebasWebSocket(
                 )
             }
         }
+
+        Log.d(
+            TAG,
+            "IDS_RECEIVEVIDEO KEY: ${
+                IDS_RECEIVEVIDEO.keys.toList().joinToString(", ")
+            }, rpcId: ${rpcId}"
+        )
+        Log.d(
+            TAG,
+            "IDS_RECEIVEVIDEO VALUE: ${
+                IDS_RECEIVEVIDEO.values.toList().joinToString(", ")
+            }, rpcId: ${rpcId}"
+        )
+
     }
 
     private fun addRemoteParticipantsAlreadyInRoom(result: JSONObject) {
@@ -304,7 +321,8 @@ class BebasWebSocket(
                 Log.d(TAG, "type: ${sdp?.type}")
                 Log.d(TAG, "description: ${sdp?.description}")
                 remotePeerConnection
-                    .setLocalDescription(object : CustomSdpObserver("remote set local description") {
+                    .setLocalDescription(object :
+                                             CustomSdpObserver("remote set local description") {
                         override fun onSetSuccess() {
                             super.onSetSuccess()
                             Log.d(TAG, "SUCCESS SET OFFER REMOTE PEER CONNECTION")
@@ -563,14 +581,15 @@ class BebasWebSocket(
         )
     private var iceServers: List<PeerConnection.IceServer> = listOf()
 
-    fun createLocalPeerConnection(localConnectionId: String): PeerConnection {
+    fun initLocalPeerConnection(localConnectionId: String) {
         val config =
-            BebasWebRTCUtility.createLocalPeerConnectionConfiguration(iceServers.ifEmpty { iceServersDefault })
-        val peerConnection = peerConnectionFactory.createPeerConnection(
+            BebasWebRTCUtility.createLocalPeerConnectionConfiguration(iceServersDefault)
+        localPeerConnection = peerConnectionFactory.createPeerConnection(
             config,
             object : CustomPeerConnectionObserver() {
                 override fun onIceCandidate(p0: IceCandidate?) {
                     super.onIceCandidate(p0)
+                    Log.d(TAG, "LOCAL ON ICE CANDIDATE: ${p0?.sdp}")
                     p0?.let {
                         onIceCandidate(p0, localConnectionId)
                     }
@@ -585,12 +604,11 @@ class BebasWebSocket(
                 }
 
             })!!
-        return peerConnection
     }
 
     fun createRemotePeerConnection(remoteConnectionId: String): PeerConnection {
         val config =
-            BebasWebRTCUtility.createRemotePeerConnectionConfiguration(iceServers.ifEmpty { iceServersDefault })
+            BebasWebRTCUtility.createRemotePeerConnectionConfiguration(iceServersDefault)
         val peerConnection = peerConnectionFactory.createPeerConnection(
             config,
             object : CustomPeerConnectionObserver() {
