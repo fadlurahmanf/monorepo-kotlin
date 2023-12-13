@@ -3,6 +3,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation.form_user
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.text.Editable
+import android.util.Log
 import com.fadlurahmanf.bebas_onboarding.R
 import com.fadlurahmanf.bebas_onboarding.data.flow.EktpVerificationFormFlow
 import com.fadlurahmanf.bebas_onboarding.data.state.EktpFormState
@@ -50,7 +51,31 @@ class EktpVerificationFormActivity :
         initObserver()
         initAction()
 
-        viewModel.initData()
+        viewModel.setNik("3511333333333333")
+        binding.etNik.text = "3511333333333333"
+        viewModel.setFullName("test bmas 1")
+        binding.etFullname.text = "test bmas 1"
+        viewModel.setBirthPlaceState("jakarta")
+        binding.etBirthplace.text = "jakarta"
+        viewModel.setBirthDateState(982667929983L)
+        binding.ddBirthdate.setText("20-02-2001")
+        viewModel.setGender(BebasItemPickerBottomsheetModel(id = "M", label = "LAKI-LAKI"))
+        binding.ddGender.setText("LAKI-LAKI")
+        viewModel.selectProvince(BebasItemPickerBottomsheetModel(id = "12", label = "JAWA TIMUR"))
+        viewModel.selectCity(BebasItemPickerBottomsheetModel(id = "1213", label = "MALANG"))
+        viewModel.selectSubDistrict(
+            BebasItemPickerBottomsheetModel(
+                id = "121303",
+                label = "BANTUR"
+            )
+        )
+        viewModel.selectWard(BebasItemPickerBottomsheetModel(id = "12130303", label = "BANTUR"))
+        viewModel.setAddress("fake address bmas")
+        binding.etAddress.text = "fake address bmas"
+        viewModel.setRtRw("001/002")
+        binding.etRtRw.text = "001/002"
+
+//        viewModel.initData()
     }
 
     private fun initFieldListener() {
@@ -207,18 +232,22 @@ class EktpVerificationFormActivity :
             }
         }
         viewModel.selectedProvince.observe(this) {
+            Log.d("BebasLogger", "PROVINCE: $it")
             binding.ddProvince.setText(it?.label ?: "")
         }
 
         viewModel.selectedCity.observe(this) {
+            Log.d("BebasLogger", "CITY: $it")
             binding.ddCity.setText(it?.label ?: "")
         }
 
         viewModel.selectedSubDistrict.observe(this) {
+            Log.d("BebasLogger", "SUBDISTRICT: $it")
             binding.ddSubdistrict.setText(it?.label ?: "")
         }
 
         viewModel.selectedWard.observe(this) {
+            Log.d("BebasLogger", "WARD: $it")
             binding.ddWard.setText(it?.label ?: "")
         }
 
@@ -338,6 +367,10 @@ class EktpVerificationFormActivity :
                 viewModel.fetchWards(viewModel.selectedSubDistrict.value?.id!!)
             }
         }
+
+        binding.btnNext.setOnClickListener {
+//            viewModel.setAddress()
+        }
     }
 
     private var datePickerDialog: DatePickerDialog? = null
@@ -355,6 +388,7 @@ class EktpVerificationFormActivity :
             override fun onClicked(year: Int, month: Int, dayOfMonth: Int, date: Date) {
                 datePickerDialog?.dismiss()
                 binding.ddBirthdate.setText(date.formatToEktpForm())
+                Log.d("BebasLogger", "BIRTHDATE: ${date.time}")
                 viewModel.setBirthDateState(date.time)
             }
         })

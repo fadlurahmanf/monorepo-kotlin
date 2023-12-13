@@ -1,13 +1,14 @@
 package com.fadlurahmanf.bebas_api.data.api
 
 import com.fadlurahmanf.bebas_api.data.dto.demography.DemographyItemResponse
+import com.fadlurahmanf.bebas_api.data.dto.ektp.EktpDataV2Request
 import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyRequest
 import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyResponse
 import com.fadlurahmanf.bebas_api.data.dto.email.RequestEmailVerificationReponse
 import com.fadlurahmanf.bebas_api.data.dto.email.RequestEmailVerificationRequest
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
-import com.fadlurahmanf.bebas_api.data.dto.ocr.OcrRequest
-import com.fadlurahmanf.bebas_api.data.dto.ocr.OcrResponse
+import com.fadlurahmanf.bebas_api.data.dto.ektp.OcrRequest
+import com.fadlurahmanf.bebas_api.data.dto.ektp.OcrResponse
 import com.fadlurahmanf.bebas_api.data.dto.otp.OtpVerificationRequest
 import com.fadlurahmanf.bebas_api.data.dto.otp.OtpResponse
 import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpRequest
@@ -51,6 +52,7 @@ interface OobApi {
     fun getCities(
         @Path("provinceId") provinceId: String
     ): Observable<BaseResponse<List<DemographyItemResponse>>>
+
     @GET("region/sub-district/{cityId}")
     fun getSubDistricts(
         @Path("cityId") cityId: String
@@ -60,4 +62,9 @@ interface OobApi {
     fun getWards(
         @Path("subDistrictId") subDistrictId: String
     ): Observable<BaseResponse<List<DemographyItemResponse>>>
+
+    @POST("identity-card/save")
+    fun saveEktpDataV2(
+        @Body body: EktpDataV2Request
+    ): Observable<BaseResponse<Nothing>>
 }

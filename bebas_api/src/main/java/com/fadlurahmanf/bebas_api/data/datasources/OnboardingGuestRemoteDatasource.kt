@@ -2,9 +2,10 @@ package com.fadlurahmanf.bebas_api.data.datasources
 
 import android.content.Context
 import com.fadlurahmanf.bebas_api.data.api.OobApi
+import com.fadlurahmanf.bebas_api.data.dto.ektp.EktpDataV2Request
 import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyRequest
 import com.fadlurahmanf.bebas_api.data.dto.email.RequestEmailVerificationRequest
-import com.fadlurahmanf.bebas_api.data.dto.ocr.OcrRequest
+import com.fadlurahmanf.bebas_api.data.dto.ektp.OcrRequest
 import com.fadlurahmanf.bebas_api.data.dto.otp.OtpVerificationRequest
 import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpRequest
 import com.fadlurahmanf.bebas_api.domain.network.OobGuestNetwork
@@ -79,6 +80,7 @@ class OnboardingGuestRemoteDatasource @Inject constructor(
         networkService(30).checkIsEmailVerify(request)
 
     fun getOcrV2(bodyRequest: OcrRequest) = networkService(30).getOCRv2(bodyRequest)
+    fun saveEktpDataV2(ektpData: EktpDataV2Request) = networkService(30).saveEktpDataV2(ektpData)
 
     fun getProvinces() = networkService(30).getProvinces()
 

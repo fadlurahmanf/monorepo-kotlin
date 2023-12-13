@@ -1,4 +1,4 @@
-package com.fadlurahmanf.bebas_api.data.dto.ocr
+package com.fadlurahmanf.bebas_api.data.dto.ektp
 
 import com.google.gson.annotations.SerializedName
 

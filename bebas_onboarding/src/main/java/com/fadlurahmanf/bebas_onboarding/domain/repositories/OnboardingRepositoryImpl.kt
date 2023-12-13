@@ -5,14 +5,14 @@ import android.os.Build
 import com.fadlurahmanf.bebas_api.data.datasources.ContentManagementGuestRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.IdentityRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.OnboardingGuestRemoteDatasource
+import com.fadlurahmanf.bebas_api.data.dto.ektp.EktpDataV2Request
 import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyRequest
 import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyResponse
-import com.fadlurahmanf.bebas_api.data.dto.email.RequestEmailVerificationReponse
-import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.identity.CreateGuestTokenResponse
 import com.fadlurahmanf.bebas_api.data.dto.identity.GenerateGuestTokenRequest
-import com.fadlurahmanf.bebas_api.data.dto.ocr.OcrRequest
-import com.fadlurahmanf.bebas_api.data.dto.ocr.OcrResponse
+import com.fadlurahmanf.bebas_api.data.dto.ektp.OcrRequest
+import com.fadlurahmanf.bebas_api.data.dto.ektp.OcrResponse
+import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpRequest
 import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpResponse
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
@@ -345,5 +345,48 @@ class OnboardingRepositoryImpl @Inject constructor(
                 it.data!!
             }
         }
+    }
+
+    fun saveEktpDataV2(
+        nik: String,
+        name: String,
+        birthPlace: String,
+        birthDate: String,
+        gender: String,
+        genderCode: String,
+        maritalStatus: String,
+        maritalStatusCode: String,
+        province: String,
+        provinceCode: String,
+        city: String,
+        cityCode: String,
+        district: String,
+        districtCode: String,
+        subDistrict: String,
+        subDistrictCode: String,
+        address: String,
+        rtrw: String,
+    ): Observable<BaseResponse<Nothing>> {
+        val request = EktpDataV2Request(
+            idNumber = nik,
+            name = name,
+            birthPlace = birthPlace,
+            birthDate = birthDate,
+            gender = gender,
+            genderCode = genderCode,
+            maritalStatus = maritalStatus,
+            maritalStatusCode = maritalStatusCode,
+            province = province,
+            provinceCode = provinceCode,
+            city = city,
+            cityCode = cityCode,
+            district = district,
+            districtCode = districtCode,
+            subDistrict = subDistrict,
+            subDistrictCode = subDistrictCode,
+            address = address,
+            rtrw = rtrw,
+        )
+        return onboardingGuestRemoteDatasource.saveEktpDataV2(request)
     }
 }

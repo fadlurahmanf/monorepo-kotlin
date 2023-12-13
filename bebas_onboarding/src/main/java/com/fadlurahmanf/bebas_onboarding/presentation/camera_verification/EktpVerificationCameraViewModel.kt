@@ -2,12 +2,11 @@ package com.fadlurahmanf.bebas_onboarding.presentation.camera_verification
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.fadlurahmanf.bebas_api.data.dto.ocr.OcrResponse
+import com.fadlurahmanf.bebas_api.data.dto.ektp.OcrResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.data.state.InitEktpCameraResult
 import com.fadlurahmanf.bebas_onboarding.domain.repositories.OnboardingRepositoryImpl
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
-import com.fadlurahmanf.bebas_storage.data.entity.BebasDecryptedEntity
 import com.fadlurahmanf.bebas_storage.domain.datasource.BebasLocalDatasource
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers

@@ -1,15 +1,14 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.form_user
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_onboarding.data.state.EktpFormState
 import com.fadlurahmanf.bebas_onboarding.domain.repositories.DemographyRepositoryImpl
+import com.fadlurahmanf.bebas_onboarding.domain.repositories.OnboardingRepositoryImpl
 import com.fadlurahmanf.bebas_shared.data.dto.BebasItemPickerBottomsheetModel
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.state.EditTextFormState
 import com.fadlurahmanf.bebas_shared.validator.GeneralValidator
-import com.fadlurahmanf.bebas_shared.validator.PhoneValidator
 import com.fadlurahmanf.bebas_storage.domain.datasource.BebasLocalDatasource
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -21,6 +20,7 @@ import java.util.Locale
 import javax.inject.Inject
 
 class EktpVerificationFormViewModel @Inject constructor(
+    private val onboardingRepositoryImpl: OnboardingRepositoryImpl,
     private val demographyRepositoryImpl: DemographyRepositoryImpl,
     private val bebasLocalDatasource: BebasLocalDatasource
 ) : BaseViewModel() {
@@ -325,5 +325,32 @@ class EktpVerificationFormViewModel @Inject constructor(
 
     fun setBirthDateState(birthDate: Long) {
         _birthDateState.value = GeneralValidator.validateBirhDate(birthDate)
+    }
+
+    private val _genderState = MutableLiveData<BebasItemPickerBottomsheetModel>()
+    val genderState: LiveData<BebasItemPickerBottomsheetModel> = _genderState
+
+    fun setGender(gender: BebasItemPickerBottomsheetModel) {
+        _genderState.value = gender
+    }
+
+    private val _addressState = MutableLiveData<EditTextFormState<String>>()
+    val addressState: LiveData<EditTextFormState<String>> = _addressState
+
+    fun setAddress(address: String) {
+        _addressState.value = GeneralValidator.validateGeneral(address)
+    }
+
+    private val _rtRwState = MutableLiveData<EditTextFormState<String>>()
+    val rtRwState: LiveData<EditTextFormState<String>> = _rtRwState
+
+    fun setRtRw(address: String) {
+        _rtRwState.value = GeneralValidator.validateGeneral(address)
+    }
+
+    fun saveEktpDataV2(){
+//        baseDisposable.add(onboardingRepositoryImpl.saveEktpDataV2(
+//            nik = ""
+//        ))
     }
 }
