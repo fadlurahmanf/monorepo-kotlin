@@ -47,17 +47,18 @@ class EmailVerificationViewModel @Inject constructor(
                                       .observeOn(AndroidSchedulers.mainThread())
                                       .subscribe(
                                           {
-                                              Log.d("BebasLogger", "TES 1: $it")
                                               if (it.isVerify == true) {
+                                                  Log.d("BebasLogger", "EMAIL IS VERIFY")
                                                   _checkEmailVerifyState.value =
                                                       CheckIsEmailVerifyState.IsVerified(it.emailToken!!)
                                               } else {
+                                                  Log.d("BebasLogger", "EMAIL IS NOT VERIFY")
                                                   _checkEmailVerifyState.value =
                                                       CheckIsEmailVerifyState.IsNotVerified
                                               }
                                           },
                                           {
-                                              Log.d("BebasLogger", "TES 2: ${it.message}")
+                                              Log.d("BebasLogger", "EMAIL THROW ERROR: ${it.message}")
                                               _checkEmailVerifyState.value =
                                                   CheckIsEmailVerifyState.FAILED(
                                                       BebasException.fromThrowable(it)

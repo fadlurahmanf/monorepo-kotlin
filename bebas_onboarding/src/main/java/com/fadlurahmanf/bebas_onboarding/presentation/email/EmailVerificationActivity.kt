@@ -40,22 +40,24 @@ class EmailVerificationActivity :
             return
         }
 
+        binding.srl.setOnRefreshListener {
+            viewModel.checkIsEmailVerify(email)
+        }
+
         email = emailArg
 
         binding.etEmail.text = email
         binding.etEmail.setIsEnabled(false)
 
         initObserver()
-        fetchStatusEmail()
         viewModel.requestEmail(email)
     }
 
     private fun initObserver() {
         viewModel.checkEmailVerifyState.observe(this) {
-            Log.d("BebasLogger", "MASUK STATE: $it")
             when (it) {
                 is CheckIsEmailVerifyState.IsVerified -> {
-                    handler.removeCallbacks(fetchEmailStatusRunnable)
+                    binding.srl.isRefreshing = false
                     setResult(Activity.RESULT_OK, intent.apply {
                         putExtra("EMAIL_TOKEN", it.emailToken)
                     })
@@ -63,12 +65,11 @@ class EmailVerificationActivity :
                 }
 
                 is CheckIsEmailVerifyState.FAILED -> {
-                    handler.postDelayed(fetchEmailStatusRunnable, 10000)
+                    Log.d("BebasLogger", "TES FAILED: ${it.exception.toJson()}")
+                    binding.srl.isRefreshing = false
                 }
 
-                else -> {
-                    handler.postDelayed(fetchEmailStatusRunnable, 10000)
-                }
+                else -> {}
             }
         }
 
@@ -118,30 +119,18 @@ class EmailVerificationActivity :
 
     private val handler = Handler(Looper.getMainLooper())
 
-    private val fetchEmailStatusRunnable = object : Runnable {
-        override fun run() {
-            viewModel.checkIsEmailVerify(email)
-            handler.removeCallbacks(this)
-        }
-
-    }
-
-    private fun fetchStatusEmail() {
-        handler.postDelayed(fetchEmailStatusRunnable, 3000)
-    }
-
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
 
         val uriToken = intent?.data?.getQueryParameter("token")
         if (uriToken != null) {
-            handler.removeCallbacks(fetchEmailStatusRunnable)
-//            viewModel.checkIsEmailVerify()
+            handler.postDelayed({
+                                    viewModel.checkIsEmailVerify(email)
+                                }, 3000)
         }
     }
 
     override fun onDestroy() {
-        handler.removeCallbacks(fetchEmailStatusRunnable)
         super.onDestroy()
     }
 

@@ -72,6 +72,8 @@ dependencies {
     implementation 'com.google.mlkit:face-detection:16.1.5'
     implementation 'com.google.mlkit:object-detection:17.0.0'
 
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
     implementation(project(":core_crypto"))
     implementation(project(":core_logger"))
     implementation(project(":core_mlkit"))

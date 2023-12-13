@@ -76,6 +76,10 @@ class InputPhoneEmailActivity :
             )
         }
 
+        // fake
+        binding.etPhone.text = "081555555555"
+        binding.etEmail.text = "bmastest@mailnesia.com"
+
         viewModel.initLastStorage()
     }
 

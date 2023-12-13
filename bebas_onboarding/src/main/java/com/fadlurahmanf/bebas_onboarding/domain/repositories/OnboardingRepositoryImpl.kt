@@ -298,13 +298,13 @@ class OnboardingRepositoryImpl @Inject constructor(
                     throw BebasException.generalRC("EMAIL_TOKEN_MISSING")
                 }
 
-                if (baseResp.data?.onboardingId == null) {
-                    throw BebasException.generalRC("ONBOARDING_ID_MISSING")
-                }
+//                 onboarding id udah ga kepake
+//                if (baseResp.data?.onboardingId == null) {
+//                    throw BebasException.generalRC("ONBOARDING_ID_MISSING")
+//                }
 
-                bebasLocalDatasource.updateEmailTokenAndOnboardingId(
+                bebasLocalDatasource.updateEmailToken(
                     emailToken = baseResp.data!!.emailToken!!,
-                    onboardingId = baseResp.data!!.onboardingId!!
                 ).subscribe()
 
                 baseResp.data!!
