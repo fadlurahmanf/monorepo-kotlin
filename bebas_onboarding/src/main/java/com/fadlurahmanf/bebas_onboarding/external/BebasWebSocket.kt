@@ -22,10 +22,12 @@ import org.webrtc.EglBase
 import org.webrtc.IceCandidate
 import org.webrtc.MediaConstraints
 import org.webrtc.MediaStream
+import org.webrtc.MediaStreamTrack
 import org.webrtc.PeerConnection
 import org.webrtc.PeerConnection.IceServer
 import org.webrtc.PeerConnectionFactory
 import org.webrtc.RtpReceiver
+import org.webrtc.RtpTransceiver
 import org.webrtc.SessionDescription
 import org.webrtc.SoftwareVideoDecoderFactory
 import org.webrtc.SoftwareVideoEncoderFactory
@@ -390,7 +392,7 @@ class BebasWebSocket(
                     participantName = "-"
                 }
             }
-            remotePeerConnection = createRemotePeerConnection(remoteConnectionId)
+            initRemmotePeerConnection(remoteConnectionId)
             callback?.onRemoteParticipantAlreadyInRoom(remoteConnectionId, participantName)
         } catch (e: java.lang.Exception) {
             Log.e(TAG, "FAILED CREATE REMOTE PEER CONNECTION: ${e.message}")
@@ -613,12 +615,26 @@ class BebasWebSocket(
                 }
 
             })!!
+
+        try {
+            localPeerConnection.addTransceiver(
+                audioTrack,
+                RtpTransceiver.RtpTransceiverInit(RtpTransceiver.RtpTransceiverDirection.SEND_ONLY)
+            )
+
+            localPeerConnection.addTransceiver(
+                videoTrack,
+                RtpTransceiver.RtpTransceiverInit(RtpTransceiver.RtpTransceiverDirection.SEND_ONLY)
+            )
+        }catch (t:Throwable){
+            Log.e(TAG, "LOCAL ADD TRANSCEIVER ERROR: ${t.message}")
+        }
     }
 
-    fun createRemotePeerConnection(remoteConnectionId: String): PeerConnection {
+    fun initRemmotePeerConnection(remoteConnectionId: String) {
         val config =
             BebasWebRTCUtility.createRemotePeerConnectionConfiguration(iceServersDefault)
-        val peerConnection = peerConnectionFactory.createPeerConnection(
+        remotePeerConnection = peerConnectionFactory.createPeerConnection(
             config,
             object : CustomPeerConnectionObserver() {
                 override fun onIceCandidate(p0: IceCandidate?) {
@@ -647,7 +663,19 @@ class BebasWebSocket(
                     }
                 }
             })!!
-        return peerConnection
+
+        try {
+            remotePeerConnection.addTransceiver(
+                MediaStreamTrack.MediaType.MEDIA_TYPE_AUDIO,
+                RtpTransceiver.RtpTransceiverInit(RtpTransceiver.RtpTransceiverDirection.RECV_ONLY)
+            )
+            remotePeerConnection.addTransceiver(
+                MediaStreamTrack.MediaType.MEDIA_TYPE_VIDEO,
+                RtpTransceiver.RtpTransceiverInit(RtpTransceiver.RtpTransceiverDirection.RECV_ONLY)
+            )
+        }catch (e:Throwable){
+            Log.e(TAG, "REMOTE ADD TRANSCEIVER: ${e.message}")
+        }
     }
 
     fun startCamera(
