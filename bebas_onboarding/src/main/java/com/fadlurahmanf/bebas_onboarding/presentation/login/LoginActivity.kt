@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation.login
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.R
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityLoginBinding
@@ -18,7 +19,6 @@ class LoginActivity : BaseOnboardingActivity<ActivityLoginBinding>(ActivityLogin
     }
 
     override fun setup() {
-
         viewModel.loginState.observe(this) {
             when (it) {
                 is NetworkState.FAILED -> {

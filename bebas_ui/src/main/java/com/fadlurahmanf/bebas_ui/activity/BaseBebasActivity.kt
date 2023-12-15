@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.fadlurahmanf.bebas_shared.RxBus
+import com.fadlurahmanf.bebas_shared.RxEvent
 import com.fadlurahmanf.bebas_ui.dialog.LoadingDialog
 import com.google.android.material.snackbar.Snackbar
 
@@ -58,5 +60,9 @@ abstract class BaseBebasActivity<VB : ViewBinding>(
     fun showSnackBarLong(view: View, message: String) {
         val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
         snackbar.show()
+    }
+
+    fun changeLanguage(){
+
     }
 }

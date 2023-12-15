@@ -39,13 +39,13 @@ class BebasSplashViewModel @Inject constructor(
         if (isErrorGenerateCryptoKeyOrFetchTheExisting == true && errorGenerateCryptoKeyOrFetchTheExisting != null) {
             _state.value = SplashState.FAILED(
                 exception = BebasException.fromThrowable(
-                    errorGenerateCryptoKeyOrFetchTheExisting ?: BebasException.generalRC("SPLASH_01")
+                    errorGenerateCryptoKeyOrFetchTheExisting ?: BebasException.generalRC("S_01")
                 )
             )
             return
         }
 
-        compositeDisposable().add(onboardingRepositoryImpl
+        baseDisposable.add(onboardingRepositoryImpl
                                       .generateGuestToken()
                                       .subscribeOn(Schedulers.io())
                                       .observeOn(AndroidSchedulers.mainThread())

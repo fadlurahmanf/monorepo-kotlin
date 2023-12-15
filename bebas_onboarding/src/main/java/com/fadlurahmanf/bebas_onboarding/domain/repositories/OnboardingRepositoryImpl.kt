@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_onboarding.domain.repositories
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import com.fadlurahmanf.bebas_api.data.datasources.ContentManagementGuestRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.IdentityRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.OnboardingGuestRemoteDatasource
@@ -52,6 +53,7 @@ class OnboardingRepositoryImpl @Inject constructor(
                 val entity = it.first()
 
                 BebasShared.language = entity.language
+                Log.d("BebasLogger", "ENTITY LANGUAGE: ${entity.language}")
 
                 if (entity.encodedPrivateKey != null && entity.encodedPublicKey != null) {
                     BebasShared.setCryptoKey(
