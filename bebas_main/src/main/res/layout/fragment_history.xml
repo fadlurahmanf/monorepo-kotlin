@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.home.HomeBebasFragment">
+    tools:context=".presentation.home.HistoryBebasFragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="hello home" />
+        android:text="hello history" />
 
 </FrameLayout>

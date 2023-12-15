@@ -9,8 +9,8 @@ import androidx.viewbinding.ViewBinding
 
 typealias BebasInflateFragment<VB> = (LayoutInflater, ViewGroup?, Boolean) -> VB
 
-abstract class BaseFragment<VB : ViewBinding>(
-    private val inflater2: BebasInflateFragment<VB>
+abstract class BaseBebasFragment<VB : ViewBinding>(
+    private val fragmentInflater: BebasInflateFragment<VB>
 ) : Fragment() {
 
     lateinit var binding: VB
@@ -20,7 +20,7 @@ abstract class BaseFragment<VB : ViewBinding>(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = inflater2.invoke(inflater, container, false)
+        binding = fragmentInflater.invoke(inflater, container, false)
         return binding.root
     }
 
