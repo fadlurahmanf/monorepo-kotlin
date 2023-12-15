@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.login
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -32,6 +33,11 @@ class LoginActivity : BaseOnboardingActivity<ActivityLoginBinding>(ActivityLogin
 
                 is NetworkState.SUCCESS -> {
                     dismissLoadingDialog()
+                    val intent = Intent(
+                        this,
+                        Class.forName("com.fadlurahmanf.bebas_main.presentation.home.HomeActivity")
+                    )
+                    startActivity(intent)
                 }
 
                 else -> {

@@ -40,7 +40,23 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.10.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation 'com.google.dagger:dagger:2.47'
+    kapt 'com.google.dagger:dagger-compiler:2.47'
+
+    implementation(project(":core_crypto"))
+    implementation(project(":core_logger"))
+    implementation(project(":core_mlkit"))
+    implementation(project(":core_network"))
+    implementation(project(":core_platform"))
+
+    implementation(project(":bebas_api"))
+    implementation(project(":bebas_config"))
+    implementation(project(":bebas_shared"))
+    implementation(project(":bebas_storage"))
+    implementation(project(":bebas_ui"))
 }

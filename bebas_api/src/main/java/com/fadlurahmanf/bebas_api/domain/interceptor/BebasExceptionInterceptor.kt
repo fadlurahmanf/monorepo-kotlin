@@ -16,7 +16,7 @@ class BebasExceptionInterceptor(val context: Context) : Interceptor {
             if (response.code != 200) {
                 when (response.code) {
                     404 -> {
-                        throw BebasException.generalRC("RC_404")
+                        throw BebasException.generalRC("BHSC_404")
                     }
                 }
             }

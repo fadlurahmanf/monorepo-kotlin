@@ -16,15 +16,7 @@ class IdentityExceptionInterceptor(val context: Context) : Interceptor {
             xrequestId = request.header("X-Request-ID")
             val response = chain.proceed(request)
             if (response.code != 200) {
-                when (response.code) {
-                    404 -> {
-                        throw BebasException.generalRC("BEBAS_404", xrequestId)
-                    }
-
-                    409 -> {
-                        throw BebasException.generalRC("BEBAS_409", xrequestId)
-                    }
-                }
+                throw BebasException.generalRC("BHSC_${response.code}", xrequestId)
             }
             return response
         } catch (e: Throwable) {
