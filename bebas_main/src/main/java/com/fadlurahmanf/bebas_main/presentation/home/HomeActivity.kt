@@ -8,8 +8,8 @@ import com.fadlurahmanf.bebas_main.presentation.BaseMainActivity
 
 class HomeActivity : BaseMainActivity<ActivityHomeBinding>(ActivityHomeBinding::inflate) {
 
-    val homeFragment = HomeBebasFragment()
-    val historyFragment = HistoryBebasFragment()
+    val homeFragment = HomeFragment()
+    val historyFragment = HistoryFragment()
     val fragmentManager = supportFragmentManager
     var activeIndexFragment: Int = -1
     var activeFragment: Fragment? = null

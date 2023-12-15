@@ -26,6 +26,8 @@ abstract class BaseBebasFragment<VB : ViewBinding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initComponent()
+        injectFragment()
         onBebasCreate(savedInstanceState)
     }
 
@@ -33,6 +35,10 @@ abstract class BaseBebasFragment<VB : ViewBinding>(
         super.onViewCreated(view, savedInstanceState)
         onBebasViewCreated(view, savedInstanceState)
     }
+
+    abstract fun initComponent()
+
+    abstract fun injectFragment()
 
     abstract fun onBebasCreate(savedInstanceState: Bundle?)
 
