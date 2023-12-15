@@ -11,6 +11,7 @@ import java.lang.Exception
 
 class BebasException(
     var httpStatusCode: Int? = null,
+    var xrequestId: String? = null,
     var statusCode: String? = null,
     @StringRes var idRawTitle: Int? = null,
     var rawTitle: String? = null,
@@ -26,9 +27,10 @@ class BebasException(
 
     companion object {
 
-        fun generalRC(rc: String): BebasException {
+        fun generalRC(rc: String, xRequestId: String? = null): BebasException {
             return BebasException(
                 idRawTitle = R.string.oops,
+                xrequestId = xRequestId,
                 rawMessage = "ERROR_RC_$rc"
             )
         }
@@ -166,6 +168,7 @@ class BebasException(
     fun toJson(): String? {
         val json = JsonObject()
         json.addProperty("httpStatusCode", httpStatusCode)
+        json.addProperty("xrequestId", xrequestId)
         json.addProperty("statusCode", statusCode)
         json.addProperty("idRawTitle", idRawTitle)
         json.addProperty("rawTitle", rawTitle)

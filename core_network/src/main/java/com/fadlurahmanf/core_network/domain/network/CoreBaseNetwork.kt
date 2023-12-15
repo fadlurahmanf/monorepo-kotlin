@@ -16,11 +16,11 @@ abstract class CoreBaseNetwork<T>(var context: Context, var tagCustomLogging:Str
 
     var service: T? = null
 
-    private fun bodyLoggingInterceptor(): CustomLoggingInterceptor {
+    fun bodyLoggingInterceptor(): CustomLoggingInterceptor {
         return CustomLoggingInterceptor(tagCustomLogging).setLevel(CustomLoggingInterceptor.Level.BODY)
     }
 
-    private fun getChuckerInterceptor(): ChuckerInterceptor {
+    fun getChuckerInterceptor(): ChuckerInterceptor {
         val collector = ChuckerCollector(
             context = context,
             showNotification = true,
@@ -33,8 +33,7 @@ abstract class CoreBaseNetwork<T>(var context: Context, var tagCustomLogging:Str
     }
 
     open fun okHttpClientBuilder(builder: OkHttpClient.Builder): OkHttpClient.Builder {
-        return builder.addInterceptor(bodyLoggingInterceptor())
-            .addInterceptor(getChuckerInterceptor())
+        return builder
     }
 
     private fun provideClient(timeOut: Long): OkHttpClient {

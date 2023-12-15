@@ -84,6 +84,10 @@ abstract class BaseOnboardingActivity<VB : ViewBinding>(inflate: BebasInflateAct
                 exception.toProperMessage(this@BaseOnboardingActivity)
             )
             putString(
+                FailedBottomsheet.TRACE_ID_TEXT,
+                exception.xrequestId
+            )
+            putString(
                 FailedBottomsheet.BUTTON_TEXT,
                 exception.toProperButtonText(this@BaseOnboardingActivity)
             )

@@ -21,6 +21,7 @@ class GuestTokenInterceptor : Interceptor {
 //                .build()
 //        }.blockingGet()
         return request.newBuilder()
-            .addHeader("Authorization", "Bearer ${BebasShared.getGuestToken()}").build()
+            .addHeader("Authorization", "Bearer ${BebasShared.getGuestToken()}")
+            .build()
     }
 }

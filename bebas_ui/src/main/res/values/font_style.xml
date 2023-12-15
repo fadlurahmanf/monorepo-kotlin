@@ -57,6 +57,12 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="Font.XRequestIdBottomsheet">
+        <item name="android:fontFamily">@font/lexend_deca_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/grey_opacity_90</item>
+    </style>
+
     <style name="Font.Edittext">
         <item name="android:fontFamily">@font/lexend_deca_regular</item>
         <item name="android:textSize">14sp</item>

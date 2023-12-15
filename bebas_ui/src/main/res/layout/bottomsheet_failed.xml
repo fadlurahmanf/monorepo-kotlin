@@ -32,6 +32,16 @@
         android:gravity="center"
         android:text="BODY BODY" />
 
+    <TextView
+        android:id="@+id/tv_xrequest_id"
+        style="@style/Font.XRequestIdBottomsheet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="X-REQUEST-ID" />
+
     <com.fadlurahmanf.bebas_ui.button.BebasRoundedButton
         android:id="@+id/btn_bottomsheet"
         android:layout_width="match_parent"

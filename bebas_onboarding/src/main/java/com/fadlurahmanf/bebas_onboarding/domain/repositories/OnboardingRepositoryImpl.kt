@@ -2,9 +2,8 @@ package com.fadlurahmanf.bebas_onboarding.domain.repositories
 
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import com.fadlurahmanf.bebas_api.data.datasources.ContentManagementGuestRemoteDatasource
-import com.fadlurahmanf.bebas_api.data.datasources.IdentityRemoteDatasource
+import com.fadlurahmanf.bebas_api.data.datasources.IdentityWithoutGuestRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.OnboardingGuestRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.ektp.EktpDataV2Request
 import com.fadlurahmanf.bebas_api.data.dto.email.CheckEmailIsVerifyRequest
@@ -40,7 +39,7 @@ import javax.inject.Inject
 
 class OnboardingRepositoryImpl @Inject constructor(
     private val context: Context,
-    private val identityRemoteDatasource: IdentityRemoteDatasource,
+    private val identityRemoteDatasource: IdentityWithoutGuestRemoteDatasource,
     private val contentManagementGuestRemoteDatasource: ContentManagementGuestRemoteDatasource,
     private val onboardingGuestRemoteDatasource: OnboardingGuestRemoteDatasource,
     private val bebasLocalDatasource: BebasLocalDatasource,
