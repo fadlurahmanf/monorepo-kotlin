@@ -4,7 +4,8 @@
     <application>
         <activity
             android:name=".presentation.home.HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/BaseBebas" />
     </application>
 
 </manifest>
