@@ -19,6 +19,8 @@ import com.fadlurahmanf.bebas_api.data.dto.otp.VerifyOtpResponse
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_config.presentation.BebasApplication
 import com.fadlurahmanf.bebas_shared.BebasShared
+import com.fadlurahmanf.bebas_shared.RxBus
+import com.fadlurahmanf.bebas_shared.RxEvent
 import com.fadlurahmanf.bebas_shared.data.dto.BebasAppLanguage
 import com.fadlurahmanf.bebas_shared.data.dto.EmailModel
 import com.fadlurahmanf.bebas_shared.data.dto.OtpModel
@@ -53,7 +55,13 @@ class OnboardingRepositoryImpl @Inject constructor(
                 val entity = it.first()
 
                 BebasShared.language = entity.language
-                Log.d("BebasLogger", "ENTITY LANGUAGE: ${entity.language}")
+                RxBus.publish(
+                    RxEvent.ChangeLanguageEvent(
+                        entity.language.split("-").first(),
+                        entity.language.split("-").last(),
+                        entity.language
+                    )
+                )
 
                 if (entity.encodedPrivateKey != null && entity.encodedPublicKey != null) {
                     BebasShared.setCryptoKey(
@@ -77,6 +85,13 @@ class OnboardingRepositoryImpl @Inject constructor(
                 )
 
                 BebasShared.language = entity.language
+                RxBus.publish(
+                    RxEvent.ChangeLanguageEvent(
+                        entity.language.split("-").first(),
+                        entity.language.split("-").last(),
+                        entity.language
+                    )
+                )
                 bebasLocalDatasource.insert(entity)
             }
             true

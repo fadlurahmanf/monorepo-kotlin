@@ -9,6 +9,7 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -25,7 +26,6 @@ import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import com.fadlurahmanf.bebas_shared.BebasShared
 import com.fadlurahmanf.bebas_shared.data.flow.OnboardingFlow
 import com.fadlurahmanf.bebas_ui.font.BebasFontTypeSpan
-import java.util.Locale
 import javax.inject.Inject
 
 class WelcomeOnboardingActivity :
@@ -42,6 +42,7 @@ class WelcomeOnboardingActivity :
     private val banners: ArrayList<WelcomeBannerResponse> = arrayListOf()
 
     override fun setup() {
+        setButtonText()
         setFooterText()
         initAction()
         adapter = BannerAdapter()
@@ -116,25 +117,7 @@ class WelcomeOnboardingActivity :
     }
 
     private fun initObserver() {
-        viewModel.lang.observe(this) {
-            when (it.entityLanguage) {
-                "en-US" -> {
-                    binding.tvLangEn.visibility = View.VISIBLE
-                    binding.tvLangId.visibility = View.INVISIBLE
-                }
-
-                else -> {
-                    binding.tvLangEn.visibility = View.INVISIBLE
-                    binding.tvLangId.visibility = View.VISIBLE
-                }
-            }
-
-            changeLanguage(
-                it.entityLanguage.split("-").first(),
-                it.entityLanguage.split("-").last(),
-                it.entityLanguage
-            )
-        }
+        viewModel.lang.observe(this) {}
 
         viewModel.state.observe(this) {
             when (it) {
@@ -385,24 +368,30 @@ class WelcomeOnboardingActivity :
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onChangeLanguageEvent(languageCode: String, countryCode: String) {
+        super.onChangeLanguageEvent(languageCode, countryCode)
+        Log.d("BebasLogger", "onChangeLanguageEvent: $languageCode & $countryCode")
+        when ("$languageCode-$countryCode") {
+            "en-US" -> {
+                binding.tvLangEn.visibility = View.VISIBLE
+                binding.tvLangId.visibility = View.INVISIBLE
+            }
+
+            else -> {
+                binding.tvLangEn.visibility = View.INVISIBLE
+                binding.tvLangId.visibility = View.VISIBLE
+            }
+        }
+        resetTextAfterChangeLanguage()
     }
 
-    fun changeLanguage(languageCode: String, countryCode: String, entityLanguage: String) {
-        val configuration = resources.configuration
-        val local = Locale(languageCode, countryCode)
-        Locale.setDefault(local)
-        configuration.locale = local
-        configuration.setLayoutDirection(local)
-        resources.updateConfiguration(configuration, resources.displayMetrics)
-        setText()
-    }
-
-    fun setText() {
+    private fun setButtonText() {
         binding.btnCreateNewAccount.setButtonText(getString(R.string.create_new_account_number))
         binding.btnLoginDiffAccount.setButtonText(getString(R.string.already_have_an_account_number))
+    }
 
+    private fun resetTextAfterChangeLanguage() {
+        setButtonText()
         setFooterText()
 
         adapter.setLanguage(BebasShared.language)

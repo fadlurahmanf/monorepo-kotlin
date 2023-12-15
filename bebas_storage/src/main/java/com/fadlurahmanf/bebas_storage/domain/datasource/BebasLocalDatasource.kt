@@ -3,6 +3,8 @@ package com.fadlurahmanf.bebas_storage.domain.datasource
 import android.content.Context
 import android.util.Log
 import com.fadlurahmanf.bebas_shared.BebasShared
+import com.fadlurahmanf.bebas_shared.RxBus
+import com.fadlurahmanf.bebas_shared.RxEvent
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.data.flow.OnboardingFlow
 import com.fadlurahmanf.bebas_storage.data.entity.BebasDecryptedEntity
@@ -92,6 +94,13 @@ class BebasLocalDatasource @Inject constructor(
     fun updateLanguage(language: String): Single<Unit> {
         return getEntity().map { entity ->
             BebasShared.language = language
+            RxBus.publish(
+                RxEvent.ChangeLanguageEvent(
+                    languageCode = language.split("-").first(),
+                    countryCode = language.split("-").last(),
+                    language = language
+                )
+            )
             dao.update(entity.copy(language = language))
         }
     }

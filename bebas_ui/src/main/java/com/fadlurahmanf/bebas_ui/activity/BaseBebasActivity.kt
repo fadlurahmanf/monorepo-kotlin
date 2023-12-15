@@ -1,14 +1,18 @@
 package com.fadlurahmanf.bebas_ui.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.fadlurahmanf.bebas_shared.BebasShared
 import com.fadlurahmanf.bebas_shared.RxBus
 import com.fadlurahmanf.bebas_shared.RxEvent
 import com.fadlurahmanf.bebas_ui.dialog.LoadingDialog
 import com.google.android.material.snackbar.Snackbar
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import java.util.Locale
 
 typealias BebasInflateActivity<VB> = (LayoutInflater) -> VB
 
@@ -22,6 +26,7 @@ abstract class BaseBebasActivity<VB : ViewBinding>(
         injectActivity()
         super.onCreate(savedInstanceState)
         bindingView()
+        initRxbusEvent()
         setup()
     }
 
@@ -62,7 +67,28 @@ abstract class BaseBebasActivity<VB : ViewBinding>(
         snackbar.show()
     }
 
-    fun changeLanguage(){
+    private val baseDisposable = CompositeDisposable()
 
+    open fun onChangeLanguageEvent(languageCode: String, countryCode: String) {
+        val configuration = resources.configuration
+        val local = Locale(languageCode, countryCode)
+        Locale.setDefault(local)
+        configuration.locale = local
+        configuration.setLayoutDirection(local)
+        resources.updateConfiguration(configuration, resources.displayMetrics)
+    }
+
+    fun initRxbusEvent() {
+        baseDisposable.addAll(
+            RxBus.listen(RxEvent.ChangeLanguageEvent::class.java).subscribe {
+                Log.d("BebasLogger", "change language: ${it.languageCode} & ${it.countryCode}")
+                onChangeLanguageEvent(languageCode = it.languageCode, countryCode = it.countryCode)
+            }
+        )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        baseDisposable.clear()
     }
 }
