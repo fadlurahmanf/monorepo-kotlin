@@ -7,7 +7,7 @@ import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface IdentityApi {
+interface IdentityWithoutGuestApi {
     @POST("guest/session/create")
     fun createGuestToken(
         @Body body: GenerateGuestTokenRequest

@@ -72,6 +72,7 @@ dependencies {
 
     implementation(project(":bebas_api"))
     implementation(project(":bebas_config"))
+    implementation(project(":bebas_main"))
     implementation(project(":bebas_onboarding"))
     implementation(project(":bebas_shared"))
     implementation(project(":bebas_ui"))

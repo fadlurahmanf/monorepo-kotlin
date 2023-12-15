@@ -9,7 +9,7 @@ import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface IdentityGuestTokenApi {
+interface IdentityGuestApi {
     @POST("auth/login")
     fun login(
         @Body body: LoginRequest
