@@ -5,7 +5,7 @@ import com.fadlurahmanf.bebas_api.data.dto.home.TransactionMenuResponse
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.GET
 
-interface ContentManagementApi {
+interface CmsApi {
     @GET("homepage/menu")
     fun getTransactionMenu(): Observable<BaseResponse<List<TransactionMenuResponse>>>
 }

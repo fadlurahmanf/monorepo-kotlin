@@ -2,7 +2,7 @@ package com.fadlurahmanf.bebas_onboarding.domain.repositories
 
 import android.content.Context
 import android.os.Build
-import com.fadlurahmanf.bebas_api.data.datasources.ContentManagementGuestRemoteDatasource
+import com.fadlurahmanf.bebas_api.data.datasources.CmsGuestRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.IdentityWithoutGuestRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.OnboardingGuestRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.ektp.EktpDataV2Request
@@ -40,7 +40,7 @@ import javax.inject.Inject
 class OnboardingRepositoryImpl @Inject constructor(
     private val context: Context,
     private val identityRemoteDatasource: IdentityWithoutGuestRemoteDatasource,
-    private val contentManagementGuestRemoteDatasource: ContentManagementGuestRemoteDatasource,
+    private val cmsGuestRemoteDatasource: CmsGuestRemoteDatasource,
     private val onboardingGuestRemoteDatasource: OnboardingGuestRemoteDatasource,
     private val bebasLocalDatasource: BebasLocalDatasource,
     private val cryptoRSARepository: CryptoRSARepository,
@@ -115,14 +115,14 @@ class OnboardingRepositoryImpl @Inject constructor(
         }
     }
 
-    fun getWelcomeBanner() = contentManagementGuestRemoteDatasource.getWelcomeBanner().map {
+    fun getWelcomeBanner() = cmsGuestRemoteDatasource.getWelcomeBanner().map {
         if (it.data == null) {
             throw BebasException.generalRC("BANNER_MISSING")
         }
         it.data!!
     }
 
-    fun getTNC() = contentManagementGuestRemoteDatasource.getTNC().map {
+    fun getTNC() = cmsGuestRemoteDatasource.getTNC().map {
         if (it.data == null) {
             throw BebasException.generalRC("TNC_MISSING")
         }

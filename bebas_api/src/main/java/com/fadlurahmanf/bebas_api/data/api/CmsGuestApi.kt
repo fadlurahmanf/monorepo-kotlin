@@ -7,7 +7,7 @@ import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.GET
 import retrofit2.http.Header
 
-interface ContentManagementGuestApi {
+interface CmsGuestApi {
     @GET("welcomepage/product")
     fun getWelcomeBanner(
         @Header("Accept-Language") lang: String

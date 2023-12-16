@@ -1,7 +1,7 @@
 package com.fadlurahmanf.bebas_main.domain.repositories
 
 import android.content.Context
-import com.fadlurahmanf.bebas_api.data.datasources.ContentManagementRemoteDatasource
+import com.fadlurahmanf.bebas_api.data.datasources.CmsRemoteDatasource
 import com.fadlurahmanf.bebas_main.R
 import com.fadlurahmanf.bebas_main.data.dto.menu.TransactionMenuModel
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
@@ -10,11 +10,11 @@ import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
     context: Context,
-    private val contentManagementRemoteDatasource: ContentManagementRemoteDatasource
+    private val cmsRemoteDatasource: CmsRemoteDatasource,
 ) {
 
     fun getTransactionMenu(): Observable<List<TransactionMenuModel>> {
-        return contentManagementRemoteDatasource.getTransactionMenu()
+        return cmsRemoteDatasource.getTransactionMenu()
             .map {
                 if (it.data == null) {
                     throw BebasException.generalRC("DATA_MISSING")
