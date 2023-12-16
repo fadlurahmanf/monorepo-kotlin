@@ -5,6 +5,7 @@ import com.fadlurahmanf.bebas_api.data.datasources.IdentityGuestRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.auth.LoginRequest
 import com.fadlurahmanf.bebas_api.data.dto.auth.LoginResponse
 import com.fadlurahmanf.bebas_config.presentation.BebasApplication
+import com.fadlurahmanf.bebas_shared.BebasShared
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
@@ -29,6 +30,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
             if (it.data?.accessToken == null || it.data?.refreshToken == null) {
                 throw BebasException.generalRC("TOKEN_MISSING")
             }
+            BebasShared.setAccessToken(it.data?.accessToken ?: "")
             it.data!!
         }
     }

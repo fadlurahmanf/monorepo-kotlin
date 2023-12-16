@@ -72,12 +72,12 @@ object BebasShared {
     private lateinit var openviduBaseUrl: String
     private lateinit var openviduHost: String
 
-    fun setOpenviduBaseUrl(url: String, host:String) {
+    fun setOpenviduBaseUrl(url: String, host: String) {
         if (!this::openviduBaseUrl.isInitialized) {
             openviduBaseUrl = url
         }
 
-        if (!this::openviduHost.isInitialized){
+        if (!this::openviduHost.isInitialized) {
             openviduHost = host
         }
     }
@@ -91,5 +91,15 @@ object BebasShared {
     }
 
     var openviduBasicHeader: String = "OPENVIDUAPP:QkFOS01BUzIwMjIK"
+
+    private lateinit var accessToken: String
+
+    fun setAccessToken(accessToken: String) {
+        this.accessToken = accessToken
+    }
+
+    fun getAccessToken(): String {
+        return accessToken
+    }
 }
 

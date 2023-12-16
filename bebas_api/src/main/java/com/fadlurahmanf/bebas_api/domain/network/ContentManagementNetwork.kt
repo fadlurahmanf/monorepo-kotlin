@@ -15,5 +15,7 @@ abstract class ContentManagementNetwork<T>(
     override fun okHttpClientBuilder(builder: OkHttpClient.Builder): OkHttpClient.Builder {
         return super.okHttpClientBuilder(builder)
             .addInterceptor(UserTokenInterceptor())
+            .addInterceptor(bodyLoggingInterceptor())
+            .addInterceptor(getChuckerInterceptor())
     }
 }

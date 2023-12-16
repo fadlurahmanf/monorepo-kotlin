@@ -12,7 +12,7 @@ class UserTokenInterceptor : Interceptor {
 
     private fun getRequest(request: Request): Request {
         return request.newBuilder()
-            .addHeader("Authorization", "Bearer ${BebasShared.getGuestToken()}")
+            .addHeader("Authorization", "Bearer ${BebasShared.getAccessToken()}")
             .build()
     }
 }

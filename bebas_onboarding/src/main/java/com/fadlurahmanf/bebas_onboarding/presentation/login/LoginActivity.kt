@@ -49,5 +49,8 @@ class LoginActivity : BaseOnboardingActivity<ActivityLoginBinding>(ActivityLogin
         binding.btnLogin.setOnClickListener {
             viewModel.login()
         }
+
+        // fake
+        viewModel.login()
     }
 }

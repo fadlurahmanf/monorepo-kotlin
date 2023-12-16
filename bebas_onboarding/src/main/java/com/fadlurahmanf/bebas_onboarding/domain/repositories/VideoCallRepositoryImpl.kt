@@ -5,7 +5,7 @@ import com.fadlurahmanf.bebas_api.data.dto.openvidu.ConnectionResponse
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
 
-class VideoCallRepository @Inject constructor(
+class VideoCallRepositoryImpl @Inject constructor(
     private val openviduDatasource: OpenviduDatasource
 ) {
     fun initializeConnection(sessionId: String): Observable<ConnectionResponse> {

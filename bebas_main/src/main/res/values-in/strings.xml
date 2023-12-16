@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="ok">Oke</string>
+    <string name="transfer">Transfer</string>
+    <string name="payment">Pembayaran</string>
+    <string name="purchase">Pembelian</string>
+    <string name="topup">Top Up</string>
+    <string name="cardless_withdrawal">Penarikan Tanpa Kartu</string>
+    <string name="others">Lainnya</string>
 </resources>

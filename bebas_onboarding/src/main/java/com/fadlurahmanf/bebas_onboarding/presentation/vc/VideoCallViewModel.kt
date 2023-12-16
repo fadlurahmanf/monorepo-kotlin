@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.data.dto.openvidu.ConnectionResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
-import com.fadlurahmanf.bebas_onboarding.domain.repositories.VideoCallRepository
+import com.fadlurahmanf.bebas_onboarding.domain.repositories.VideoCallRepositoryImpl
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -12,7 +12,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class VideoCallViewModel @Inject constructor(
-    private val videoCallRepository: VideoCallRepository
+    private val videoCallRepositoryImpl: VideoCallRepositoryImpl
 ) : BaseViewModel() {
 
     private val _initConnectionState = MutableLiveData<NetworkState<ConnectionResponse>>()
@@ -20,7 +20,7 @@ class VideoCallViewModel @Inject constructor(
 
     fun initializeConnection(sessionId: String) {
         _initConnectionState.value = NetworkState.LOADING
-        compositeDisposable().add(videoCallRepository.initializeConnection(sessionId)
+        compositeDisposable().add(videoCallRepositoryImpl.initializeConnection(sessionId)
                                       .subscribeOn(Schedulers.io())
                                       .observeOn(AndroidSchedulers.mainThread())
                                       .subscribe(
