@@ -6,6 +6,7 @@ import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.FavoriteContactModel
+import com.fadlurahmanf.bebas_transaction.data.dto.LatestTransactionModel
 import com.fadlurahmanf.bebas_transaction.data.state.PinFavoriteState
 import com.fadlurahmanf.bebas_transaction.domain.repositories.FavoriteRepositoryImpl
 import com.fadlurahmanf.bebas_transaction.domain.repositories.TransactionRepositoryImpl
@@ -18,6 +19,26 @@ class FavoriteViewModel @Inject constructor(
     private val favoriteRepositoryImpl: FavoriteRepositoryImpl,
     private val transactionRepositoryImpl: TransactionRepositoryImpl,
 ) : BaseViewModel() {
+
+    private val _latestState = MutableLiveData<NetworkState<List<LatestTransactionModel>>>()
+    val latestState: LiveData<NetworkState<List<LatestTransactionModel>>> = _latestState
+
+    fun getTransferLatest() {
+        _latestState.value = NetworkState.LOADING
+        baseDisposable.add(favoriteRepositoryImpl.getLatestTransfer()
+                               .subscribeOn(Schedulers.io())
+                               .observeOn(AndroidSchedulers.mainThread())
+                               .subscribe(
+                                   {
+                                       _latestState.value = NetworkState.SUCCESS(it)
+                                   },
+                                   {
+                                       _latestState.value =
+                                           NetworkState.FAILED(BebasException.fromThrowable(it))
+                                   },
+                                   {}
+                               ))
+    }
 
     private val _favoriteState = MutableLiveData<NetworkState<List<FavoriteContactModel>>>()
     val favoriteState: LiveData<NetworkState<List<FavoriteContactModel>>> = _favoriteState

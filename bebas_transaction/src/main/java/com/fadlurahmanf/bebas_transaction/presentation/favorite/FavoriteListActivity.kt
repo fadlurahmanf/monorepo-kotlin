@@ -11,16 +11,18 @@ import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.data.flow.transaction.FavoriteFlow
 import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.FavoriteContactModel
+import com.fadlurahmanf.bebas_transaction.data.dto.LatestTransactionModel
 import com.fadlurahmanf.bebas_transaction.data.state.PinFavoriteState
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityFavoriteListBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.FavoriteAdapter
+import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.LatestAdapter
 import com.fadlurahmanf.bebas_transaction.presentation.payment.TransferDetailActivity
 import javax.inject.Inject
 
 class FavoriteListActivity :
     BaseTransactionActivity<ActivityFavoriteListBinding>(ActivityFavoriteListBinding::inflate),
-    FavoriteAdapter.Callback {
+    FavoriteAdapter.Callback, LatestAdapter.Callback {
 
     @Inject
     lateinit var viewModel: FavoriteViewModel
@@ -30,6 +32,8 @@ class FavoriteListActivity :
         component.inject(this)
     }
 
+    private lateinit var latestAdapter: LatestAdapter
+    private val latests: ArrayList<LatestTransactionModel> = arrayListOf()
     private lateinit var favoriteAdapter: FavoriteAdapter
     private val favorites: ArrayList<FavoriteContactModel> = arrayListOf()
     private lateinit var pinnedFavoriteAdapter: FavoriteAdapter
@@ -46,10 +50,13 @@ class FavoriteListActivity :
         }
 
         favoriteFlow = enumValueOf<FavoriteFlow>(stringFavoriteFlow)
+        latestAdapter = LatestAdapter()
+        latestAdapter.setCallback(this)
         favoriteAdapter = FavoriteAdapter()
         favoriteAdapter.setCallback(this)
         pinnedFavoriteAdapter = FavoriteAdapter()
         pinnedFavoriteAdapter.setCallback(this)
+        binding.rvLatest.adapter = latestAdapter
         binding.rvFavorite.adapter = favoriteAdapter
         binding.rvPinnedFavorite.adapter = pinnedFavoriteAdapter
 
@@ -137,8 +144,33 @@ class FavoriteListActivity :
             }
         }
 
+        viewModel.latestState.observe(this) {
+            when (it) {
+                is NetworkState.FAILED -> {
+                    binding.llLatest.visibility = View.GONE
+                }
+
+                NetworkState.LOADING -> {
+                    binding.llLatest.visibility = View.GONE
+                }
+
+                is NetworkState.SUCCESS -> {
+                    latests.clear()
+                    latests.addAll(it.data)
+                    latestAdapter.setList(latests)
+
+                    binding.llLatest.visibility = View.VISIBLE
+                }
+
+                else -> {
+
+                }
+            }
+        }
+
         if (favoriteFlow == FavoriteFlow.TRANSACTION_MENU_TRANSFER) {
             viewModel.getTransferFavorite()
+            viewModel.getTransferLatest()
         }
     }
 
@@ -206,5 +238,9 @@ class FavoriteListActivity :
         } else {
             binding.llPinnedFavorites.visibility = View.GONE
         }
+    }
+
+    override fun onItemClicked(latest: LatestTransactionModel) {
+        viewModel.inquiryBankMas(latest.accountNumber)
     }
 }

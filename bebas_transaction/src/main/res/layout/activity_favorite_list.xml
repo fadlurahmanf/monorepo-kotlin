@@ -53,6 +53,31 @@
             android:paddingHorizontal="20dp">
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ll_latest"
+                android:visibility="visible"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Font.Text14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Terkini"
+                    android:textColor="@color/grey" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_latest"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_latest" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/ll_pinned_favorites"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

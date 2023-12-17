@@ -11,8 +11,8 @@
     <TextView
         android:id="@+id/initialAvatar"
         style="@style/Font.InitialFavorite"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
         android:background="@drawable/background_initial_favorite"
         android:gravity="center"

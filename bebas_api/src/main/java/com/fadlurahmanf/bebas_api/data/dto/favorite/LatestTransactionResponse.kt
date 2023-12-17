@@ -11,4 +11,6 @@ data class LatestTransactionResponse(
     val bankName: String? = null,
     @SerializedName("counterpartAccountNumber")
     val accountNumber: String? = null,
+    @SerializedName("counterPartAccountName")
+    val accountName: String? = null,
 )
