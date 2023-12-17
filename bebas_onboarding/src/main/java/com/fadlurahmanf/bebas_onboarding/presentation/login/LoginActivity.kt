@@ -32,7 +32,7 @@ class LoginActivity : BaseOnboardingActivity<ActivityLoginBinding>(ActivityLogin
                     dismissLoadingDialog()
                     val intent = Intent(
                         this,
-                        Class.forName("com.fadlurahmanf.bebas_main.presentation.home.HomeActivity")
+                        Class.forName("com.fadlurahmanf.bebas_transaction.presentation.favorite.FavoriteListActivity")
                     )
                     startActivity(intent)
                 }
