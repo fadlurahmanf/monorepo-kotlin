@@ -41,7 +41,6 @@ class FavoriteListActivity :
     override fun onBebasCreate(savedInstanceState: Bundle?) {
         setSupportActionBar(binding.toolbar)
 
-//        enumValueOf<OnboardingFlow>(value)
         val stringFavoriteFlow = intent.getStringExtra(FavoriteArgument.FAVORITE_FLOW)
 
         if (stringFavoriteFlow == null) {

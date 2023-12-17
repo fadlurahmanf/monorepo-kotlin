@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_ui.activity
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,9 @@ import com.fadlurahmanf.bebas_shared.RxBus
 import com.fadlurahmanf.bebas_shared.RxEvent
 import com.fadlurahmanf.bebas_ui.dialog.LoadingDialog
 import com.google.android.material.snackbar.Snackbar
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.Locale
 
 typealias BebasInflateActivity<VB> = (LayoutInflater) -> VB
@@ -82,8 +85,31 @@ abstract class BaseBebasActivity<VB : ViewBinding>(
             RxBus.listen(RxEvent.ChangeLanguageEvent::class.java).subscribe {
                 Log.d("BebasLogger", "change language: ${it.languageCode} & ${it.countryCode}")
                 onChangeLanguageEvent(languageCode = it.languageCode, countryCode = it.countryCode)
-            }
+            },
+            RxBus.listen(RxEvent.ResetTimerForceLogout::class.java).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe {
+                    Log.d("BebasLogger", "reset timer: ${it.expiresIn} & ${it.refreshExpiresIn}")
+                    resetTimer(it.refreshExpiresIn)
+                }
         )
+    }
+
+    private var forceLogoutTimer: CountDownTimer? = null
+
+    fun resetTimer(refreshExpiresInSecond: Long) {
+        forceLogoutTimer = object : CountDownTimer(refreshExpiresInSecond * 1000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val inSecond = millisUntilFinished / 1000
+                if (inSecond.toInt() % 10 == 0) {
+                    Log.d("BebasLogger", "on tick $inSecond")
+                }
+            }
+
+            override fun onFinish() {
+                Log.d("BebasLogger", "on finish")
+            }
+        }
+        forceLogoutTimer?.start()
     }
 
     override fun onDestroy() {

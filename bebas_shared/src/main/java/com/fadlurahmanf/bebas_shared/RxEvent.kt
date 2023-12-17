@@ -6,4 +6,9 @@ class RxEvent {
         val countryCode: String,
         val language: String
     )
+
+    data class ResetTimerForceLogout(
+        val expiresIn: Long,
+        val refreshExpiresIn: Long,
+    )
 }

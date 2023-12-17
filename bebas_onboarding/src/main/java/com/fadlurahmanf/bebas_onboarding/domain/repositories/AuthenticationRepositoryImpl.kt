@@ -1,11 +1,14 @@
 package com.fadlurahmanf.bebas_onboarding.domain.repositories
 
 import android.content.Context
+import android.util.Log
 import com.fadlurahmanf.bebas_api.data.datasources.IdentityGuestRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.auth.LoginRequest
 import com.fadlurahmanf.bebas_api.data.dto.auth.LoginResponse
 import com.fadlurahmanf.bebas_config.presentation.BebasApplication
 import com.fadlurahmanf.bebas_shared.BebasShared
+import com.fadlurahmanf.bebas_shared.RxBus
+import com.fadlurahmanf.bebas_shared.RxEvent
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
@@ -31,6 +34,12 @@ class AuthenticationRepositoryImpl @Inject constructor(
                 throw BebasException.generalRC("TOKEN_MISSING")
             }
             BebasShared.setAccessToken(it.data?.accessToken ?: "")
+            RxBus.publish(
+                RxEvent.ResetTimerForceLogout(
+                    expiresIn = it.data?.expiresIn ?: (60L * 3),
+                    refreshExpiresIn = it.data?.refreshExpiresIn ?: (60L * 5)
+                )
+            )
             it.data!!
         }
     }
