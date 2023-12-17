@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.otp
 
+import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.Spannable
@@ -38,7 +39,7 @@ class OtpVerificationActivity :
     private lateinit var phoneNumber: String
 
 
-    override fun setup() {
+    override fun onBebasCreate(savedInstanceState: Bundle?) {
         binding.btnVerifyOtp.setOnClickListener {
             if (getOTPText().length >= 6) {
                 viewModel.verifyOtp("111111", phoneNumber)

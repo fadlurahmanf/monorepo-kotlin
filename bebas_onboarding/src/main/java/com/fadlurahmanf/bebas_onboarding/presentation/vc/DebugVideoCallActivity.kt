@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation.vc
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Bundle
 import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_api.data.dto.openvidu.ConnectionResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
@@ -23,7 +24,7 @@ class DebugVideoCallActivity :
         component.inject(this)
     }
 
-    override fun setup() {
+    override fun onBebasCreate(savedInstanceState: Bundle?) {
         initViews()
 
         initObserver()

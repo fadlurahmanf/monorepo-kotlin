@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
-import com.fadlurahmanf.bebas_shared.BebasShared
 import com.fadlurahmanf.bebas_shared.RxBus
 import com.fadlurahmanf.bebas_shared.RxEvent
 import com.fadlurahmanf.bebas_ui.dialog.LoadingDialog
@@ -27,7 +26,7 @@ abstract class BaseBebasActivity<VB : ViewBinding>(
         super.onCreate(savedInstanceState)
         bindingView()
         initRxbusEvent()
-        setup()
+        onBebasCreate(savedInstanceState)
     }
 
     open fun bindingView() {
@@ -39,7 +38,7 @@ abstract class BaseBebasActivity<VB : ViewBinding>(
 
     abstract fun injectActivity()
 
-    abstract fun setup()
+    abstract fun onBebasCreate(savedInstanceState: Bundle?)
 
     private var loadingDialog: LoadingDialog? = null
     fun showLoadingDialog(isCancelable: Boolean = false) {

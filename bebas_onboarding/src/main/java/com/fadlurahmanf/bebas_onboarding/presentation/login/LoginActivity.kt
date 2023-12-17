@@ -1,11 +1,8 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
-import com.fadlurahmanf.bebas_onboarding.R
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityLoginBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import javax.inject.Inject
@@ -19,7 +16,7 @@ class LoginActivity : BaseOnboardingActivity<ActivityLoginBinding>(ActivityLogin
         component.inject(this)
     }
 
-    override fun setup() {
+    override fun onBebasCreate(savedInstanceState: Bundle?) {
         viewModel.loginState.observe(this) {
             when (it) {
                 is NetworkState.FAILED -> {

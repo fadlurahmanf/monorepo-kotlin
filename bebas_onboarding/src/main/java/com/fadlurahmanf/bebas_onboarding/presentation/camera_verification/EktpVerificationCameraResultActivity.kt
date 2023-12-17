@@ -3,6 +3,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation.camera_verification
 import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.Bundle
 import android.util.Base64
 import androidx.activity.result.contract.ActivityResultContracts
 import com.fadlurahmanf.bebas_onboarding.data.flow.EktpVerificationFormFlow
@@ -28,7 +29,7 @@ class EktpVerificationCameraResultActivity :
         component.inject(this)
     }
 
-    override fun setup() {
+    override fun onBebasCreate(savedInstanceState: Bundle?) {
         viewModel.initState.observe(this) {
             when (it) {
                 is InitEktpCameraResult.SuccessLoadData -> {

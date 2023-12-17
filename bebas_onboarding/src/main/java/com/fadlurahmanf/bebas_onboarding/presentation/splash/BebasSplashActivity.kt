@@ -1,11 +1,10 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.splash
 
 import android.content.Intent
+import android.os.Bundle
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityBebasSplashBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.login.LoginActivity
-import com.fadlurahmanf.bebas_onboarding.presentation.vc.DebugVideoCallActivity
-import com.fadlurahmanf.bebas_onboarding.presentation.welcome.WelcomeOnboardingActivity
 import javax.inject.Inject
 
 class BebasSplashActivity :
@@ -18,7 +17,7 @@ class BebasSplashActivity :
         component.inject(this)
     }
 
-    override fun setup() {
+    override fun onBebasCreate(savedInstanceState: Bundle?) {
         viewModel.state.observe(this) {
             when (it) {
                 is SplashState.SUCCESS -> {

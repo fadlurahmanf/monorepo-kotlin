@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation.email
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
@@ -13,7 +14,6 @@ import com.fadlurahmanf.bebas_onboarding.data.state.CheckIsEmailVerifyState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityEmailVerificationBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
-import java.util.Timer
 import javax.inject.Inject
 
 class EmailVerificationActivity :
@@ -32,7 +32,7 @@ class EmailVerificationActivity :
 
     private lateinit var email: String
 
-    override fun setup() {
+    override fun onBebasCreate(savedInstanceState: Bundle?) {
         val emailArg = intent.extras?.getString(EMAIL_ARG)
 
         if (emailArg == null) {

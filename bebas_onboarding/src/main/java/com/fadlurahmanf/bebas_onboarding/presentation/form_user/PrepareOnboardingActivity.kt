@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -12,7 +13,6 @@ import com.fadlurahmanf.bebas_onboarding.data.state.InitPrepareOnboardingState
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityPrepareOnboardingBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.camera_verification.EktpVerificationCameraActivity
-import com.fadlurahmanf.bebas_onboarding.presentation.welcome.TncActivity
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_ui.bottomsheet.FailedBottomsheet
 import javax.inject.Inject
@@ -27,7 +27,7 @@ class PrepareOnboardingActivity :
         component.inject(this)
     }
 
-    override fun setup() {
+    override fun onBebasCreate(savedInstanceState: Bundle?) {
         binding.btnNext.setOnClickListener {
             viewModel.updateIsFinishedPreparedOnBoarding(true)
             checkCameraPermissionAndGoToEktpCameraVerification()

@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.camera_verification
 
 import android.graphics.Bitmap
+import android.os.Bundle
 import android.util.Log
 import android.util.Size
 import android.view.View
@@ -162,7 +163,7 @@ class FaceVerificationActivity :
         component.inject(this)
     }
 
-    override fun setup() {}
+    override fun onBebasCreate(savedInstanceState: Bundle?) {}
 
     private fun switchCamera() {
         cameraSelector =

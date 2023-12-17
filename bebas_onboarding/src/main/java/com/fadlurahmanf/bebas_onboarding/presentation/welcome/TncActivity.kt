@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.welcome
 
 import android.content.Intent
+import android.os.Bundle
 import android.text.Html
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -11,7 +12,6 @@ import com.fadlurahmanf.bebas_onboarding.data.state.InitTncState
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityTncBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.form_user.InputPhoneEmailActivity
-import com.fadlurahmanf.bebas_onboarding.presentation.otp.OtpVerificationActivity
 import javax.inject.Inject
 
 class TncActivity : BaseOnboardingActivity<ActivityTncBinding>(ActivityTncBinding::inflate) {
@@ -23,7 +23,7 @@ class TncActivity : BaseOnboardingActivity<ActivityTncBinding>(ActivityTncBindin
         component.inject(this)
     }
 
-    override fun setup() {
+    override fun onBebasCreate(savedInstanceState: Bundle?) {
         binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
             viewModel.switchIsTncRead(isChecked)
         }

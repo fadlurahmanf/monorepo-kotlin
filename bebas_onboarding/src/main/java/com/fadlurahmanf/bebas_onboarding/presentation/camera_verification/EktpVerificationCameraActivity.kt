@@ -2,7 +2,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation.camera_verification
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.util.Base64
+import android.os.Bundle
 import android.util.Log
 import android.util.Size
 import android.view.View
@@ -20,7 +20,6 @@ import com.fadlurahmanf.bebas_shared.BebasSharedFake
 import com.fadlurahmanf.core_mlkit.domain.analyzer.ImageLabelerAnalyzer
 import com.fadlurahmanf.core_mlkit.external.CoreMlkitUtility
 import com.google.mlkit.vision.label.ImageLabel
-import java.io.ByteArrayOutputStream
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
@@ -167,7 +166,7 @@ class EktpVerificationCameraActivity :
         component.inject(this)
     }
 
-    override fun setup() {
+    override fun onBebasCreate(savedInstanceState: Bundle?) {
         viewModel.ocrState.observe(this) {
             when (it) {
                 is NetworkState.SUCCESS -> {

@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation.form_user
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.os.Bundle
 import android.text.Editable
 import android.util.Log
 import com.fadlurahmanf.bebas_onboarding.R
@@ -39,7 +40,7 @@ class EktpVerificationFormActivity :
         component.inject(this)
     }
 
-    override fun setup() {
+    override fun onBebasCreate(savedInstanceState: Bundle?) {
         flow = getFromFlow()
 
         if (flow == EktpVerificationFormFlow.UNKNOWN) {

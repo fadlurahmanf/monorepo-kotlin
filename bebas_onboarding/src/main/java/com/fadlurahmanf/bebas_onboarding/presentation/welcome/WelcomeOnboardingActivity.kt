@@ -3,6 +3,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation.welcome
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextPaint
@@ -41,7 +42,7 @@ class WelcomeOnboardingActivity :
     private lateinit var adapter: BannerAdapter
     private val banners: ArrayList<WelcomeBannerResponse> = arrayListOf()
 
-    override fun setup() {
+    override fun onBebasCreate(savedInstanceState: Bundle?) {
         setButtonText()
         setFooterText()
         initAction()

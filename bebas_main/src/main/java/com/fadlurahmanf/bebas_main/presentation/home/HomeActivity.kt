@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_main.presentation.home
 
+import android.os.Bundle
 import android.view.Menu
 import androidx.fragment.app.Fragment
 import com.fadlurahmanf.bebas_main.R
@@ -18,7 +19,7 @@ class HomeActivity : BaseMainActivity<ActivityHomeBinding>(ActivityHomeBinding::
         component.inject(this)
     }
 
-    override fun setup() {
+    override fun onBebasCreate(savedInstanceState: Bundle?) {
         loadFragment(homeFragment, "0", 0)
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {

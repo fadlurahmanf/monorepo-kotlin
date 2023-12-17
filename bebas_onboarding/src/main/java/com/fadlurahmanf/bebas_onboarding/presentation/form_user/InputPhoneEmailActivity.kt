@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation.form_user
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import android.text.Editable
 import androidx.activity.result.contract.ActivityResultContracts
 import com.fadlurahmanf.bebas_onboarding.R
@@ -28,7 +29,7 @@ class InputPhoneEmailActivity :
         component.inject(this)
     }
 
-    override fun setup() {
+    override fun onBebasCreate(savedInstanceState: Bundle?) {
         binding.etPhone.addTextChangedListener(object :
                                                    BebasMaskingEdittext.BebasMaskingEdittextTextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
