@@ -1,36 +1,20 @@
 package com.fadlurahmanf.core_network.domain.network
 
 import android.content.Context
-import android.util.Log
-import com.chuckerteam.chucker.api.ChuckerCollector
-import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.chuckerteam.chucker.api.RetentionManager
-import com.fadlurahmanf.core_network.domain.interceptor.CustomLoggingInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-abstract class CoreBaseNetwork<T>(var context: Context, var tagCustomLogging:String = "CoreNetworkLogger") {
+abstract class CoreBaseNetwork<T>(
+    context: Context,
+    tagCustomLogging: String = "CoreNetworkLogger"
+) : CoreBaseNetworkProvider(
+    context, tagCustomLogging
+) {
 
     var service: T? = null
-
-    fun bodyLoggingInterceptor(): CustomLoggingInterceptor {
-        return CustomLoggingInterceptor(tagCustomLogging).setLevel(CustomLoggingInterceptor.Level.BODY)
-    }
-
-    fun getChuckerInterceptor(): ChuckerInterceptor {
-        val collector = ChuckerCollector(
-            context = context,
-            showNotification = true,
-            retentionPeriod = RetentionManager.Period.ONE_HOUR
-        )
-        return ChuckerInterceptor.Builder(context).collector(collector)
-            .maxContentLength(Long.MAX_VALUE)
-            .alwaysReadResponseBody(true)
-            .build()
-    }
 
     open fun okHttpClientBuilder(builder: OkHttpClient.Builder): OkHttpClient.Builder {
         return builder

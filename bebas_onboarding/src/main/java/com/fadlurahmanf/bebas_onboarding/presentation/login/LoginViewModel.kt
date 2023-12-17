@@ -2,7 +2,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.fadlurahmanf.bebas_api.data.dto.auth.LoginResponse
+import com.fadlurahmanf.bebas_api.data.dto.auth.AuthResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.domain.repositories.AuthenticationRepositoryImpl
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
@@ -15,8 +15,8 @@ class LoginViewModel @Inject constructor(
     private val authenticationRepositoryImpl: AuthenticationRepositoryImpl
 ) : BaseViewModel() {
 
-    private val _loginState = MutableLiveData<NetworkState<LoginResponse>>()
-    val loginState: LiveData<NetworkState<LoginResponse>> = _loginState
+    private val _loginState = MutableLiveData<NetworkState<AuthResponse>>()
+    val loginState: LiveData<NetworkState<AuthResponse>> = _loginState
 
     fun login() {
         _loginState.value = NetworkState.LOADING

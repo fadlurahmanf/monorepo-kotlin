@@ -1,10 +1,9 @@
 package com.fadlurahmanf.bebas_onboarding.domain.repositories
 
 import android.content.Context
-import android.util.Log
 import com.fadlurahmanf.bebas_api.data.datasources.IdentityGuestRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.auth.LoginRequest
-import com.fadlurahmanf.bebas_api.data.dto.auth.LoginResponse
+import com.fadlurahmanf.bebas_api.data.dto.auth.AuthResponse
 import com.fadlurahmanf.bebas_config.presentation.BebasApplication
 import com.fadlurahmanf.bebas_shared.BebasShared
 import com.fadlurahmanf.bebas_shared.RxBus
@@ -20,7 +19,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
 
     fun logConsole() = (context.applicationContext as BebasApplication).logConsole
 
-    fun login(plainPassword: String): Observable<LoginResponse> {
+    fun login(plainPassword: String): Observable<AuthResponse> {
         val request = LoginRequest(
             nik = "3511333333333333",
             deviceId = "3caf1726e8a74121440b2daf15ec0c0efa4f85530afc77aaa7629a35a07a4a2e",

@@ -101,5 +101,15 @@ object BebasShared {
     fun getAccessToken(): String {
         return accessToken
     }
+
+    private lateinit var refreshToken: String
+
+    fun setRefreshToken(refreshToken: String) {
+        this.refreshToken = refreshToken
+    }
+
+    fun getRefreshToken(): String {
+        return refreshToken
+    }
 }
 

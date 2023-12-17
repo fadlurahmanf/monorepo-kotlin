@@ -13,6 +13,5 @@ abstract class IdentityWithoutGuestNetwork<T>(context: Context) : BebasBaseNetwo
     override fun okHttpClientBuilder(builder: OkHttpClient.Builder): OkHttpClient.Builder {
         return super.okHttpClientBuilder(builder)
             .addInterceptor(IdentityExceptionInterceptor(context))
-
     }
 }

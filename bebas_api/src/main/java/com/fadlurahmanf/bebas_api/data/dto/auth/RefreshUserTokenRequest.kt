@@ -1,5 +1,8 @@
 package com.fadlurahmanf.bebas_api.data.dto.auth
 
+import com.google.gson.annotations.SerializedName
+
 data class RefreshUserTokenRequest(
-    var token: String
+    @SerializedName("token")
+    var refreshToken: String
 )
