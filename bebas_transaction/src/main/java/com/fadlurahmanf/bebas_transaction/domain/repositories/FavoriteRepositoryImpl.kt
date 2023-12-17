@@ -21,9 +21,11 @@ class FavoriteRepositoryImpl @Inject constructor(
             val favorites = it.data!!
             favorites.map { favResp ->
                 FavoriteContactModel(
+                    id = favResp.id ?: "-",
                     nameInFavoriteContact = favResp.nameInFavorite ?: "-",
                     labelTypeOfFavorite = favResp.bankName ?: "-",
-                    accountNumber = favResp.bankAccountNumber ?: "-"
+                    accountNumber = favResp.bankAccountNumber ?: "-",
+                    isPinned = favResp.isPinned ?: false,
                 )
             }.toList()
         }

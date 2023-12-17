@@ -15,7 +15,7 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapseToolbarLayout"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="100dp"
             android:background="@color/white"
             app:collapsedTitleTextAppearance="@style/Font.AppBarTitle"
             app:contentScrim="@color/white"
@@ -52,161 +52,51 @@
             android:orientation="vertical"
             android:paddingHorizontal="20dp">
 
-            <TextView
-                android:id="@+id/tv_subtitle_header"
-                style="@style/Font.HeaderSubTitle"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/ll_pinned_favorites"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Mohon membaca informasi ini dengan seksama" />
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
 
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
+                <TextView
+                    style="@style/Font.Text14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Favorit Teratas"
+                    android:textColor="@color/grey" />
 
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_pinned_favorite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_favorite" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
-            <TextView
-                style="@style/Font.TncText"
-                android:text="@string/ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp" />
+                android:id="@+id/ll_favorites"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Font.Text14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Daftar Favorit"
+                    android:textColor="@color/grey" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_favorite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_favorite" />
+            </LinearLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

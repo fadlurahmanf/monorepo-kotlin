@@ -98,4 +98,22 @@
         <item name="android:fontFamily">@font/lexend_deca_regular</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+    <style name="Font.InitialFavorite">
+        <item name="android:fontFamily">@font/lexend_deca_bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Font.FavoriteLabel">
+        <item name="android:fontFamily">@font/lexend_deca_bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Font.SubFavoriteLabel">
+        <item name="android:fontFamily">@font/lexend_deca_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/light_grey</item>
+    </style>
 </resources>
