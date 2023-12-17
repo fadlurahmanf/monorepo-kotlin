@@ -5,16 +5,18 @@ import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.fadlurahmanf.bebas_transaction.R
+import com.fadlurahmanf.bebas_transaction.databinding.ActivityTransferConfirmationBinding
+import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 
 
-class TransferConfirmationActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_transfer_confirmation)
+class TransferConfirmationActivity :
+    BaseTransactionActivity<ActivityTransferConfirmationBinding>(ActivityTransferConfirmationBinding::inflate) {
+    override fun injectActivity() {
+        component.inject(this)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.favorite_menu, menu)
-        return super.onCreateOptionsMenu(menu)
+    override fun onBebasCreate(savedInstanceState: Bundle?) {
+        
     }
+
 }

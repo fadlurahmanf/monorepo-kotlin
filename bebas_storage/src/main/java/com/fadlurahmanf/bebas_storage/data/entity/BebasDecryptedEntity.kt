@@ -1,6 +1,6 @@
 package com.fadlurahmanf.bebas_storage.data.entity
 
-import com.fadlurahmanf.bebas_shared.data.flow.OnboardingFlow
+import com.fadlurahmanf.bebas_shared.data.flow.onboarding.OnboardingFlow
 
 data class BebasDecryptedEntity(
     var deviceId: String,

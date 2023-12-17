@@ -6,8 +6,8 @@ data class BankAccountResponse(
     var accountName: String? = null,
     @SerializedName("accountNo")
     var accountNumber: String? = null,
+    var productName: String? = null,
     var cardNumber: String? = null,
-    var balance: Double? = null,
-    @SerializedName("mainAccount")
-    var isMainAccount: Boolean = false
+    var onlineClearedBalance: Double? = null,
+    var workingBalance: Double? = null,
 )

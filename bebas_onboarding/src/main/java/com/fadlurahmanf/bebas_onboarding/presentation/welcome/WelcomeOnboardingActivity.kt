@@ -25,7 +25,7 @@ import com.fadlurahmanf.bebas_onboarding.data.state.InitWelcomeState
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityWelcomeOnboardingBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
 import com.fadlurahmanf.bebas_shared.BebasShared
-import com.fadlurahmanf.bebas_shared.data.flow.OnboardingFlow
+import com.fadlurahmanf.bebas_shared.data.flow.onboarding.OnboardingFlow
 import com.fadlurahmanf.bebas_ui.font.BebasFontTypeSpan
 import javax.inject.Inject
 

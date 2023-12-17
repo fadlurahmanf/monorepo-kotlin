@@ -1,16 +1,24 @@
 package com.fadlurahmanf.bebas_transaction.presentation.favorite
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.View
+import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
+import com.fadlurahmanf.bebas_shared.data.argument.transaction.FavoriteArgument
+import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.data.flow.onboarding.OnboardingFlow
+import com.fadlurahmanf.bebas_shared.data.flow.transaction.FavoriteFlow
 import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.FavoriteContactModel
 import com.fadlurahmanf.bebas_transaction.data.state.PinFavoriteState
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityFavoriteListBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.FavoriteAdapter
+import com.fadlurahmanf.bebas_transaction.presentation.payment.TransferConfirmationActivity
+import com.fadlurahmanf.bebas_ui.bottomsheet.FailedBottomsheet
 import javax.inject.Inject
 
 class FavoriteListActivity :
@@ -19,6 +27,8 @@ class FavoriteListActivity :
 
     @Inject
     lateinit var viewModel: FavoriteViewModel
+
+    lateinit var favoriteFlow: FavoriteFlow
     override fun injectActivity() {
         component.inject(this)
     }
@@ -31,6 +41,15 @@ class FavoriteListActivity :
     override fun onBebasCreate(savedInstanceState: Bundle?) {
         setSupportActionBar(binding.toolbar)
 
+//        enumValueOf<OnboardingFlow>(value)
+        val stringFavoriteFlow = intent.getStringExtra(FavoriteArgument.FAVORITE_FLOW)
+
+        if (stringFavoriteFlow == null) {
+            showForcedBackBottomsheet(BebasException.generalRC("UNKNOWN_FLOW"))
+            return
+        }
+
+        favoriteFlow = enumValueOf<FavoriteFlow>(stringFavoriteFlow)
         favoriteAdapter = FavoriteAdapter()
         favoriteAdapter.setCallback(this)
         pinnedFavoriteAdapter = FavoriteAdapter()
@@ -102,7 +121,34 @@ class FavoriteListActivity :
             }
         }
 
-        viewModel.getTransferFavorite()
+        viewModel.inquiryBankMasState.observe(this) {
+            when (it) {
+                is NetworkState.FAILED -> {
+                    dismissLoadingDialog()
+                    showFailedBottomsheet(it.exception)
+                }
+
+                NetworkState.LOADING -> {
+                    showLoadingDialog()
+                }
+
+                is NetworkState.SUCCESS -> {
+                    dismissLoadingDialog()
+                    goToTransferDetailAfterInquiry(it.data)
+                }
+
+                else -> {}
+            }
+        }
+
+        if (favoriteFlow == FavoriteFlow.TRANSACTION_MENU_TRANSFER) {
+            viewModel.getTransferFavorite()
+        }
+    }
+
+    private fun goToTransferDetailAfterInquiry(inquiryResult: InquiryBankResponse) {
+        val intent = Intent(this, TransferConfirmationActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -112,6 +158,10 @@ class FavoriteListActivity :
 
     override fun onPinClicked(isCurrentPinned: Boolean, favorite: FavoriteContactModel) {
         pinOrUnpinFavorite(isCurrentPinned, favorite)
+    }
+
+    override fun onItemClicked(favorite: FavoriteContactModel) {
+        viewModel.inquiryBankMas(favorite.accountNumber)
     }
 
     fun pinOrUnpinFavorite(isCurrentPinned: Boolean, favorite: FavoriteContactModel) {

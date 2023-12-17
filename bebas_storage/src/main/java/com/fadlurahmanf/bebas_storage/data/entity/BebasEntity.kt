@@ -2,7 +2,7 @@ package com.fadlurahmanf.bebas_storage.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.fadlurahmanf.bebas_shared.data.flow.OnboardingFlow
+import com.fadlurahmanf.bebas_shared.data.flow.onboarding.OnboardingFlow
 import com.fadlurahmanf.bebas_storage.data.constant.BebasDbConstant
 
 @Entity(tableName = BebasDbConstant.tMapp)

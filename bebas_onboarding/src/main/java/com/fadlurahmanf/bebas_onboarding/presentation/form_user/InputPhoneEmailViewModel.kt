@@ -3,14 +3,13 @@ package com.fadlurahmanf.bebas_onboarding.presentation.form_user
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_onboarding.data.state.InitInputPhoneAndEmailState
-import com.fadlurahmanf.bebas_shared.data.flow.OnboardingFlow
+import com.fadlurahmanf.bebas_shared.data.flow.onboarding.OnboardingFlow
 import com.fadlurahmanf.bebas_storage.domain.datasource.BebasLocalDatasource
 import com.fadlurahmanf.bebas_shared.state.EditTextFormState
 import com.fadlurahmanf.bebas_shared.validator.EmailValidator
 import com.fadlurahmanf.bebas_shared.validator.PhoneValidator
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.functions.Function
 import javax.inject.Inject
 
 class InputPhoneEmailViewModel @Inject constructor(

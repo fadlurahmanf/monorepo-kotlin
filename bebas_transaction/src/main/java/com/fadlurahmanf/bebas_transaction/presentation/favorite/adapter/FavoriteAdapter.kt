@@ -101,10 +101,16 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
         holder.pin.setOnClickListener {
             callback?.onPinClicked(favorite.isPinned, favorite)
         }
+
+        holder.itemView.setOnClickListener {
+            callback?.onItemClicked(favorite)
+        }
     }
 
     interface Callback {
         fun onPinClicked(isCurrentPinned: Boolean, favorite: FavoriteContactModel)
+
+        fun onItemClicked(favorite: FavoriteContactModel)
     }
 
 }

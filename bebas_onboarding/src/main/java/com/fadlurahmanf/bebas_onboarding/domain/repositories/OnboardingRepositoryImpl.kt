@@ -23,7 +23,7 @@ import com.fadlurahmanf.bebas_shared.RxEvent
 import com.fadlurahmanf.bebas_shared.data.dto.BebasAppLanguage
 import com.fadlurahmanf.bebas_shared.data.dto.EmailModel
 import com.fadlurahmanf.bebas_shared.data.dto.OtpModel
-import com.fadlurahmanf.bebas_shared.data.flow.OnboardingFlow
+import com.fadlurahmanf.bebas_shared.data.flow.onboarding.OnboardingFlow
 import com.fadlurahmanf.bebas_storage.data.entity.BebasEntity
 import com.fadlurahmanf.bebas_storage.domain.datasource.BebasLocalDatasource
 import com.fadlurahmanf.core_crypto.domain.repositories.CryptoRSARepository
