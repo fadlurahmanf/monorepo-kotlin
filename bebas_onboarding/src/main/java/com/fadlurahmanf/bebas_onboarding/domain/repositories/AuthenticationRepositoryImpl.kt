@@ -33,6 +33,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
                 throw BebasException.generalRC("TOKEN_MISSING")
             }
             BebasShared.setAccessToken(it.data?.accessToken ?: "")
+            BebasShared.setRefreshToken(it.data?.refreshToken ?: "")
             RxBus.publish(
                 RxEvent.ResetTimerForceLogout(
                     expiresIn = it.data?.expiresIn ?: (60L * 3),

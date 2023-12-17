@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_api.domain.authenticator
 
 import android.content.Context
+import android.util.Log
 import com.fadlurahmanf.bebas_api.data.api.IdentityGuestApi
 import com.fadlurahmanf.bebas_api.data.dto.auth.RefreshUserTokenRequest
 import com.fadlurahmanf.bebas_api.domain.interceptor.GuestTokenInterceptor
@@ -21,8 +22,9 @@ import java.util.concurrent.TimeUnit
 
 class UserTokenAuthenticator(
     context: Context
-) : Authenticator, CoreBaseNetworkProvider(context) {
-    override fun authenticate(route: Route?, response: Response): Request? {
+) : Authenticator, CoreBaseNetworkProvider(context, "BebasLoggerNetwork") {
+    override fun authenticate(route: Route?, response: Response): Request {
+        Log.d("BebasLoggerNetwork", "RETRY REQUEST BY REFRESH TOKEN")
         val refreshToken = BebasShared.getRefreshToken()
         val requestRefreshUserTokenRequest = RefreshUserTokenRequest(
             refreshToken = refreshToken
@@ -31,9 +33,11 @@ class UserTokenAuthenticator(
             identityApi().refreshUserToken(requestRefreshUserTokenRequest).execute()
         val currentRequest = response.request
         return if (refreshTokenResp.isSuccessful) {
+            Log.d("BebasLoggerNetwork", "RETRY REQUEST BY REFRESH TOKEN SUCCESS")
             val data = refreshTokenResp.body()?.data
             if (data?.accessToken != null && data.refreshToken != null) {
                 BebasShared.setAccessToken(data.accessToken ?: "")
+                BebasShared.setRefreshToken(data.refreshToken ?: "")
                 RxBus.publish(
                     RxEvent.ResetTimerForceLogout(
                         expiresIn = data.expiresIn ?: (60L * 3),
@@ -42,12 +46,14 @@ class UserTokenAuthenticator(
                 )
                 currentRequest.newBuilder().removeHeader("Authorization")
                     .addHeader("Authorization", "Bearer ${data.accessToken ?: "-"}")
+                    .removeHeader("R-Refresh-Access-Token")
                     .addHeader("R-Refresh-Access-Token", "true")
                     .build()
             } else {
                 currentRequest.newBuilder().build()
             }
         } else {
+            Log.d("BebasLoggerNetwork", "RETRY REQUEST BY REFRESH TOKEN FAILED")
             currentRequest.newBuilder().build()
         }
     }
@@ -59,7 +65,8 @@ class UserTokenAuthenticator(
                 .addInterceptor(bodyLoggingInterceptor())
                 .addInterceptor(getChuckerInterceptor())
                 .connectTimeout(300, TimeUnit.SECONDS)
-                .readTimeout(300, TimeUnit.SECONDS).writeTimeout(300, TimeUnit.SECONDS).build()
+                .readTimeout(300, TimeUnit.SECONDS)
+                .writeTimeout(300, TimeUnit.SECONDS).build()
         return Retrofit.Builder().baseUrl("${BebasShared.getBebasUrl()}identity-service/")
             .client(okHttpClientBuilder)
             .addConverterFactory(GsonConverterFactory.create())
