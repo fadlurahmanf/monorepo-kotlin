@@ -28,6 +28,11 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
         notifyItemInserted(favorites.size)
     }
 
+    fun removeModel(indexRemoved:Int) {
+        favorites.removeAt(indexRemoved)
+        notifyItemRemoved(indexRemoved)
+    }
+
     fun changeFavoriteModel(list: List<FavoriteContactModel>, indexChanged: Int) {
         this.favorites = ArrayList(list)
         notifyItemChanged(indexChanged)

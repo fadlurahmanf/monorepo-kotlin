@@ -83,7 +83,21 @@ class FavoriteListActivity :
 
     override fun onPinClicked(isCurrentPinned: Boolean, favorite: FavoriteContactModel) {
         if (isCurrentPinned) {
+            var indexFavorite: Int = -1
+            for (element in 0 until favorites.size) {
+                if (favorites[0].id == favorite.id) {
+                    indexFavorite = element
+                    break
+                }
+            }
 
+            if (indexFavorite != -1) {
+                pinnedFavorites.removeAt(indexFavorite)
+                pinnedFavoriteAdapter.removeModel(indexFavorite)
+
+                favorites[indexFavorite].isPinned = false
+                favoriteAdapter.changeFavoriteModel(favorites, indexFavorite)
+            }
         } else {
             val newFavorite = favorite.copy(isPinned = true)
             pinnedFavorites.add(newFavorite)
@@ -101,6 +115,13 @@ class FavoriteListActivity :
                 favorites[indexFavorite].isPinned = true
                 favoriteAdapter.changeFavoriteModel(favorites, indexFavorite)
             }
+        }
+
+
+        if (pinnedFavorites.isNotEmpty()) {
+            binding.llPinnedFavorites.visibility = View.VISIBLE
+        } else {
+            binding.llPinnedFavorites.visibility = View.GONE
         }
     }
 }
