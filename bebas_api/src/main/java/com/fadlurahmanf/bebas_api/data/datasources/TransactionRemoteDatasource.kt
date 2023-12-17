@@ -11,7 +11,7 @@ class TransactionRemoteDatasource @Inject constructor(
 ) : TransactionNetwork<TransactionApi>(context) {
     override fun getApi(): Class<TransactionApi> = TransactionApi::class.java
 
-    fun getBankAccounts() = networkService(30).getBankAccounts()
+    fun getBankAccounts() = networkService().getBankAccounts()
 
-    fun inquiryBankMas(request: InquiryBankMasRequest) = networkService(30).inquiryBankMas(request)
+    fun inquiryBankMas(request: InquiryBankMasRequest) = networkService().inquiryBankMas(request)
 }

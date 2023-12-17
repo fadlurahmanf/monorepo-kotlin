@@ -18,21 +18,21 @@ class OnboardingGuestRemoteDatasource @Inject constructor(
     override fun getApi(): Class<OobApi> = OobApi::class.java
 
     fun requestOtpAvailability(phoneNumber: String, deviceId: String) =
-        networkService(30).requestOtp(
+        networkService().requestOtp(
             OtpVerificationRequest(
                 phoneNumber, deviceId, false
             )
         )
 
     fun sendOtpVerification(phoneNumber: String, deviceId: String) =
-        networkService(30).requestOtp(
+        networkService().requestOtp(
             OtpVerificationRequest(
                 phoneNumber, deviceId, true
             )
         )
 
     fun verifyOtp(request: VerifyOtpRequest) =
-        networkService(30).verifyOtp(request)
+        networkService().verifyOtp(request)
 
     fun requestEmailAvailability(
         email: String,
@@ -44,7 +44,7 @@ class OnboardingGuestRemoteDatasource @Inject constructor(
          * */
         flowType: String
     ) =
-        networkService(30).requestEmail(
+        networkService().requestEmail(
             RequestEmailVerificationRequest(
                 email = email,
                 phoneNumber = phoneNumber,
@@ -65,7 +65,7 @@ class OnboardingGuestRemoteDatasource @Inject constructor(
          * */
         flowType: String
     ) =
-        networkService(30).requestEmail(
+        networkService().requestEmail(
             RequestEmailVerificationRequest(
                 email = email,
                 phoneNumber = phoneNumber,
@@ -77,14 +77,14 @@ class OnboardingGuestRemoteDatasource @Inject constructor(
         )
 
     fun checkEmailIsVerify(request: CheckEmailIsVerifyRequest) =
-        networkService(30).checkIsEmailVerify(request)
+        networkService().checkIsEmailVerify(request)
 
-    fun getOcrV2(bodyRequest: OcrRequest) = networkService(30).getOCRv2(bodyRequest)
-    fun saveEktpDataV2(ektpData: EktpDataV2Request) = networkService(30).saveEktpDataV2(ektpData)
+    fun getOcrV2(bodyRequest: OcrRequest) = networkService().getOCRv2(bodyRequest)
+    fun saveEktpDataV2(ektpData: EktpDataV2Request) = networkService().saveEktpDataV2(ektpData)
 
-    fun getProvinces() = networkService(30).getProvinces()
+    fun getProvinces() = networkService().getProvinces()
 
-    fun getCities(provinceId: String) = networkService(30).getCities(provinceId)
-    fun getSubDistricts(cityId: String) = networkService(30).getSubDistricts(cityId)
-    fun getWards(subDistrictId: String) = networkService(30).getWards(subDistrictId)
+    fun getCities(provinceId: String) = networkService().getCities(provinceId)
+    fun getSubDistricts(cityId: String) = networkService().getSubDistricts(cityId)
+    fun getWards(subDistrictId: String) = networkService().getWards(subDistrictId)
 }

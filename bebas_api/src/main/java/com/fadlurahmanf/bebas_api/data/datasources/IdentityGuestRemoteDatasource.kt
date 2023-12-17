@@ -13,9 +13,7 @@ class IdentityGuestRemoteDatasource @Inject constructor(
     IdentityGuestNetwork<IdentityGuestApi>(context) {
     override fun getApi(): Class<IdentityGuestApi> = IdentityGuestApi::class.java
 
-    fun login(request: LoginRequest) =
-        networkService(30).login(request)
+    fun login(request: LoginRequest) = networkService().login(request)
 
-    fun refreshToken(request: RefreshUserTokenRequest) =
-        networkService(30).refreshUserToken(request)
+    fun refreshToken(request: RefreshUserTokenRequest) = networkService().refreshUserToken(request)
 }

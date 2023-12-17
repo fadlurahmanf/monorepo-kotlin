@@ -16,7 +16,7 @@ class OpenviduDatasource @Inject constructor(
 
     fun createSession(sessionId: String): Observable<ConnectionResponse> {
         val request = ConnectionRequest()
-        return networkService(30).initializeConnection(
+        return networkService().initializeConnection(
             sessionId = sessionId,
             body = request
         )

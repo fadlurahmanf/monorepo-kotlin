@@ -20,11 +20,15 @@ abstract class CoreBaseNetwork<T>(
         return builder
     }
 
-    private fun provideClient(timeOut: Long): OkHttpClient {
+    open var connectTimeout: Long = 60L * 5
+    open var readTimeout: Long = 60L * 5
+    open var writeTimeout: Long = 60L * 5
+
+    private fun provideClient(): OkHttpClient {
         return okHttpClientBuilder(OkHttpClient.Builder())
-            .connectTimeout(timeOut, TimeUnit.SECONDS)
-            .readTimeout(timeOut, TimeUnit.SECONDS)
-            .writeTimeout(timeOut, TimeUnit.SECONDS)
+            .connectTimeout(connectTimeout, TimeUnit.SECONDS)
+            .readTimeout(readTimeout, TimeUnit.SECONDS)
+            .writeTimeout(writeTimeout, TimeUnit.SECONDS)
             .build()
     }
 
@@ -33,16 +37,16 @@ abstract class CoreBaseNetwork<T>(
         return Retrofit.Builder()
     }
 
-    private fun provideRetrofit(timeOut: Long): Retrofit {
+    private fun provideRetrofit(): Retrofit {
         return providesRetrofitBuilder().baseUrl(getBaseUrl())
-            .client(provideClient(timeOut))
+            .client(provideClient())
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
     }
 
-    open fun networkService(timeOut: Long): T {
-        val retrofit = provideRetrofit(timeOut)
+    open fun networkService(): T {
+        val retrofit = provideRetrofit()
         service = retrofit.create(getApi())
         return service!!
     }

@@ -1,9 +1,9 @@
 package com.fadlurahmanf.bebas_api.data.api
 
 import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoriteTransferResponse
+import com.fadlurahmanf.bebas_api.data.dto.favorite.LatestTransactionResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.PinFavoriteRequest
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
-import com.fadlurahmanf.bebas_api.data.dto.home.TransactionMenuResponse
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -17,4 +17,7 @@ interface CifApi {
     fun pinFavorite(
         @Body request: PinFavoriteRequest
     ): Observable<BaseResponse<Nothing>>
+
+    @GET("transaction-history/last-three-transactions")
+    fun getLatestTransactionTransfer(): Observable<BaseResponse<List<LatestTransactionResponse>>>
 }

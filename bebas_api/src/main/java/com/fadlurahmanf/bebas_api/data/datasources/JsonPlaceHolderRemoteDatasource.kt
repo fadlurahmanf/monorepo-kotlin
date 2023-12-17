@@ -11,5 +11,5 @@ class JsonPlaceHolderRemoteDatasource @Inject constructor(context: Context) :
 
     override fun getBaseUrl(): String = "https://jsonplaceholder.typicode.com/"
 
-    fun getListPost() = networkService(30).getListPost()
+    fun getListPost() = networkService().getListPost()
 }

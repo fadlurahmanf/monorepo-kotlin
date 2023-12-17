@@ -11,5 +11,5 @@ class IdentityWithoutGuestRemoteDatasource @Inject constructor(context: Context)
     override fun getApi(): Class<IdentityWithoutGuestApi> = IdentityWithoutGuestApi::class.java
 
     fun generateGuestToken(request: GenerateGuestTokenRequest) =
-        networkService(30).createGuestToken(request)
+        networkService().createGuestToken(request)
 }

@@ -11,8 +11,7 @@ class CmsGuestRemoteDatasource @Inject constructor(
     CmsGuestNetwork<CmsGuestApi>(context) {
     override fun getApi(): Class<CmsGuestApi> = CmsGuestApi::class.java
 
-    fun getWelcomeBanner() = networkService(30).getWelcomeBanner("id")
+    fun getWelcomeBanner() = networkService().getWelcomeBanner("id")
 
-    fun getTNC() =
-        networkService(30).getTNC("id")
+    fun getTNC() = networkService().getTNC("id")
 }
