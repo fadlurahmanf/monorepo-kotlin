@@ -28,7 +28,7 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
         notifyItemInserted(favorites.size)
     }
 
-    fun removeModel(indexRemoved:Int) {
+    fun removeModel(indexRemoved: Int) {
         favorites.removeAt(indexRemoved)
         notifyItemRemoved(indexRemoved)
     }
@@ -65,6 +65,18 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
         val favorite = favorites[position]
 
         holder.favoriteName.text = favorite.nameInFavoriteContact
+        if (favorite.nameInFavoriteContact.isNotEmpty()) {
+            if (favorite.nameInFavoriteContact.contains(" ")) {
+                val first = favorite.nameInFavoriteContact.split(" ").first().take(1)
+                val second = favorite.nameInFavoriteContact.split(" ")[1].take(1)
+
+                holder.initialAvatar.text = "$first$second"
+            } else {
+                holder.initialAvatar.text = favorite.nameInFavoriteContact.split("").first()
+            }
+        }
+
+        holder.subFavoriteLavel.text = "${favorite.labelTypeOfFavorite} • ${favorite.accountNumber}"
 
         if (favorite.isPinned) {
             holder.pin.setImageDrawable(

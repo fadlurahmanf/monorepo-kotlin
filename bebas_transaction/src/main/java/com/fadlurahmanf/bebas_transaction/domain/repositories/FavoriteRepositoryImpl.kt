@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_transaction.domain.repositories
 
 import android.content.Context
 import com.fadlurahmanf.bebas_api.data.datasources.CifRemoteDatasource
+import com.fadlurahmanf.bebas_api.data.dto.favorite.PinFavoriteRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.FavoriteContactModel
 import io.reactivex.rxjava3.core.Observable
@@ -28,6 +29,15 @@ class FavoriteRepositoryImpl @Inject constructor(
                     isPinned = favResp.isPinned ?: false,
                 )
             }.toList()
+        }
+    }
+
+    fun pinFavorite(id: String, isPinned: Boolean): Observable<Boolean> {
+        val request = PinFavoriteRequest(
+            id, isPinned
+        )
+        return cifRemoteDatasource.pinFavorite(request).map {
+            it.code == "200" && it.message == "SUCCESS"
         }
     }
 }

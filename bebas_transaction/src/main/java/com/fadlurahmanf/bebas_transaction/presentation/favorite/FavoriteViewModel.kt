@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.FavoriteContactModel
+import com.fadlurahmanf.bebas_transaction.data.state.PinFavoriteState
 import com.fadlurahmanf.bebas_transaction.domain.repositories.FavoriteRepositoryImpl
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -30,6 +31,39 @@ class FavoriteViewModel @Inject constructor(
                                    {
                                        _favoriteState.value =
                                            NetworkState.FAILED(BebasException.fromThrowable(it))
+                                   },
+                                   {}
+                               ))
+    }
+
+    private val _pinState = MutableLiveData<PinFavoriteState>()
+    val pinState: LiveData<PinFavoriteState> = _pinState
+    fun pinFavorite(id: String, isPinned: Boolean) {
+        _pinState.value = PinFavoriteState.LOADING
+        baseDisposable.add(favoriteRepositoryImpl.pinFavorite(id, isPinned)
+                               .subscribeOn(Schedulers.io())
+                               .observeOn(AndroidSchedulers.mainThread())
+                               .subscribe(
+                                   {
+                                       if (it) {
+                                           _pinState.value =
+                                               PinFavoriteState.SuccessPinned(isPinned)
+                                       } else {
+                                           _pinState.value =
+                                               PinFavoriteState.FAILED(
+                                                   BebasException.generalRC("FALSE_PINNED"),
+                                                   favoriteId = id,
+                                                   previousStatePinned = !isPinned
+                                               )
+                                       }
+                                   },
+                                   {
+                                       _pinState.value =
+                                           PinFavoriteState.FAILED(
+                                               BebasException.fromThrowable(it),
+                                               favoriteId = id,
+                                               previousStatePinned = !isPinned
+                                           )
                                    },
                                    {}
                                ))

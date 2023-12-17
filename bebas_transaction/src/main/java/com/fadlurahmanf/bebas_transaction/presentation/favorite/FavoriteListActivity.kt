@@ -7,6 +7,7 @@ import android.view.View
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.FavoriteContactModel
+import com.fadlurahmanf.bebas_transaction.data.state.PinFavoriteState
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityFavoriteListBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.FavoriteAdapter
@@ -37,6 +38,37 @@ class FavoriteListActivity :
         binding.rvFavorite.adapter = favoriteAdapter
         binding.rvPinnedFavorite.adapter = pinnedFavoriteAdapter
 
+        viewModel.pinState.observe(this) {
+            when (it) {
+                is PinFavoriteState.FAILED -> {
+                    var index = -1
+                    for (element in 0 until favorites.size) {
+                        if (favorites[element].id == it.favoriteId) {
+                            index = element
+                            break
+                        }
+                    }
+
+                    if (index != -1) {
+                        showSnackBarShort(binding.root, "Failed to Pin Favorite!")
+                        pinOrUnpinFavorite(it.previousStatePinned, favorites[index])
+                    }
+                }
+
+                is PinFavoriteState.SuccessPinned -> {
+                    if (it.isPinned) {
+                        showSnackBarShort(binding.root, "Successfully Pin Favorite!")
+                    } else {
+                        showSnackBarShort(binding.root, "Successfully Unpin Favorite!")
+                    }
+                }
+
+                else -> {
+
+                }
+            }
+        }
+
         viewModel.favoriteState.observe(this) {
             when (it) {
                 is NetworkState.SUCCESS -> {
@@ -48,9 +80,6 @@ class FavoriteListActivity :
                     pinnedFavorites.addAll(it.data.filter { model ->
                         model.isPinned
                     })
-                    pinnedFavorites.forEach {
-                        Log.d("BebasLogger", "TES PINNED FAVORITE: ${it}")
-                    }
                     pinnedFavoriteAdapter.setList(pinnedFavorites)
 
                     binding.llFavorites.visibility = View.VISIBLE
@@ -82,6 +111,10 @@ class FavoriteListActivity :
     }
 
     override fun onPinClicked(isCurrentPinned: Boolean, favorite: FavoriteContactModel) {
+        pinOrUnpinFavorite(isCurrentPinned, favorite)
+    }
+
+    fun pinOrUnpinFavorite(isCurrentPinned: Boolean, favorite: FavoriteContactModel) {
         if (isCurrentPinned) {
             var indexFavorite: Int = -1
             for (element in 0 until favorites.size) {
@@ -97,6 +130,8 @@ class FavoriteListActivity :
 
                 favorites[indexFavorite].isPinned = false
                 favoriteAdapter.changeFavoriteModel(favorites, indexFavorite)
+
+                viewModel.pinFavorite(favorites[indexFavorite].id, false)
             }
         } else {
             val newFavorite = favorite.copy(isPinned = true)
@@ -114,6 +149,8 @@ class FavoriteListActivity :
             if (indexFavorite != -1) {
                 favorites[indexFavorite].isPinned = true
                 favoriteAdapter.changeFavoriteModel(favorites, indexFavorite)
+
+                viewModel.pinFavorite(favorites[indexFavorite].id, true)
             }
         }
 
