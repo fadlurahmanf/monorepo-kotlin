@@ -3,4 +3,5 @@
     <color name="red">#FFCC0921</color>
 
     <color name="light_grey">#FFA1A1A1</color>
+    <color name="secondary_light_grey">#FFF1F2F2</color>
 </resources>

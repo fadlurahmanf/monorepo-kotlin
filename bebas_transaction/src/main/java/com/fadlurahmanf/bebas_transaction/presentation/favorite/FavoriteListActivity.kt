@@ -2,14 +2,12 @@ package com.fadlurahmanf.bebas_transaction.presentation.favorite
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.View
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.argument.transaction.FavoriteArgument
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
-import com.fadlurahmanf.bebas_shared.data.flow.onboarding.OnboardingFlow
 import com.fadlurahmanf.bebas_shared.data.flow.transaction.FavoriteFlow
 import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.FavoriteContactModel
@@ -17,8 +15,7 @@ import com.fadlurahmanf.bebas_transaction.data.state.PinFavoriteState
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityFavoriteListBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.FavoriteAdapter
-import com.fadlurahmanf.bebas_transaction.presentation.payment.TransferConfirmationActivity
-import com.fadlurahmanf.bebas_ui.bottomsheet.FailedBottomsheet
+import com.fadlurahmanf.bebas_transaction.presentation.payment.TransferDetailActivity
 import javax.inject.Inject
 
 class FavoriteListActivity :
@@ -146,7 +143,7 @@ class FavoriteListActivity :
     }
 
     private fun goToTransferDetailAfterInquiry(inquiryResult: InquiryBankResponse) {
-        val intent = Intent(this, TransferConfirmationActivity::class.java)
+        val intent = Intent(this, TransferDetailActivity::class.java)
         startActivity(intent)
     }
 

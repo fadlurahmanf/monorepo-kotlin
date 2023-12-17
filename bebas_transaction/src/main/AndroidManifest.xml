@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name=".presentation.payment.TransferConfirmationActivity"
+            android:name=".presentation.payment.TransferDetailActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.favorite.FavoriteListActivity"
