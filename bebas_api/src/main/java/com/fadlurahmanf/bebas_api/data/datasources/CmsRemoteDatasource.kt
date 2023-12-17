@@ -12,4 +12,6 @@ class CmsRemoteDatasource @Inject constructor(
     override fun getApi(): Class<CmsApi> = CmsApi::class.java
 
     fun getTransactionMenu() = networkService().getTransactionMenu()
+
+    fun getBankList() = networkService().getBankList()
 }

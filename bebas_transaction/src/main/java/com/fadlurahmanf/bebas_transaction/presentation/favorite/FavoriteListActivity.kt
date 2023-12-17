@@ -2,6 +2,8 @@ package com.fadlurahmanf.bebas_transaction.presentation.favorite
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.View
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
@@ -14,6 +16,7 @@ import com.fadlurahmanf.bebas_transaction.data.dto.FavoriteContactModel
 import com.fadlurahmanf.bebas_transaction.data.dto.LatestTransactionModel
 import com.fadlurahmanf.bebas_transaction.data.state.PinFavoriteState
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityFavoriteListBinding
+import com.fadlurahmanf.bebas_transaction.presentation.others.BankListActivity
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.FavoriteAdapter
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.LatestAdapter
@@ -172,6 +175,14 @@ class FavoriteListActivity :
             viewModel.getTransferFavorite()
             viewModel.getTransferLatest()
         }
+
+        Handler(Looper.getMainLooper()).postDelayed({
+                                                        val intent = Intent(
+                                                            this,
+                                                            BankListActivity::class.java
+                                                        )
+                                                        startActivity(intent)
+                                                    }, 3000)
     }
 
     private fun goToTransferDetailAfterInquiry(inquiryResult: InquiryBankResponse) {
