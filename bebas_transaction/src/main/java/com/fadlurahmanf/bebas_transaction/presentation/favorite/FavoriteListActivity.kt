@@ -20,7 +20,7 @@ import com.fadlurahmanf.bebas_transaction.presentation.others.BankListActivity
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.FavoriteAdapter
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.LatestAdapter
-import com.fadlurahmanf.bebas_transaction.presentation.payment.TransferDetailActivity
+import com.fadlurahmanf.bebas_transaction.presentation.transfer.TransferDetailActivity
 import javax.inject.Inject
 
 class FavoriteListActivity :

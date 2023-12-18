@@ -1,4 +1,4 @@
-package com.fadlurahmanf.bebas_transaction.presentation.payment
+package com.fadlurahmanf.bebas_transaction.presentation.transfer
 
 import android.os.Bundle
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityTransferDetailBinding

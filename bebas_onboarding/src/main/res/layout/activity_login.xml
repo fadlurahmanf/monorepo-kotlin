@@ -27,8 +27,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        app:hint="TES"
-        app:label="tes" />
+        android:inputType="text"
+        app:hint="Password"
+        app:label="Password" />
 
     <TextView
         style="@style/Font.Text12"

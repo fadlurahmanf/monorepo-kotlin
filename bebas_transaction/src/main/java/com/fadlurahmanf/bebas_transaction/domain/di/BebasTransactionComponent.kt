@@ -4,7 +4,7 @@ import android.content.Context
 import com.fadlurahmanf.bebas_storage.BebasStorageComponent
 import com.fadlurahmanf.bebas_transaction.presentation.others.BankListActivity
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.FavoriteListActivity
-import com.fadlurahmanf.bebas_transaction.presentation.payment.TransferDetailActivity
+import com.fadlurahmanf.bebas_transaction.presentation.transfer.TransferDetailActivity
 import com.fadlurahmanf.core_crypto.CoreCryptoComponent
 import com.fadlurahmanf.core_platform.CorePlatformComponent
 import dagger.BindsInstance
