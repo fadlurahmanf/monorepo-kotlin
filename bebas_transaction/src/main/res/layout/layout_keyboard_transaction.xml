@@ -12,6 +12,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_1"
             style="@style/Font.NominalKeyboard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -25,6 +26,7 @@
             android:background="@color/grey" />
 
         <TextView
+            android:id="@+id/tv_2"
             style="@style/Font.NominalKeyboard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -38,6 +40,7 @@
             android:background="@color/grey" />
 
         <TextView
+            android:id="@+id/tv_3"
             style="@style/Font.NominalKeyboard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -51,6 +54,7 @@
             android:background="@color/grey" />
 
         <ImageView
+            android:id="@+id/iv_unfocus"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -66,6 +70,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_4"
             style="@style/Font.NominalKeyboard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -79,6 +84,7 @@
             android:background="@color/grey" />
 
         <TextView
+            android:id="@+id/tv_5"
             style="@style/Font.NominalKeyboard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -92,6 +98,7 @@
             android:background="@color/grey" />
 
         <TextView
+            android:id="@+id/tv_6"
             style="@style/Font.NominalKeyboard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -105,6 +112,7 @@
             android:background="@color/grey" />
 
         <TextView
+            android:id="@+id/tv_clear"
             style="@style/Font.Text14"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -120,6 +128,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_7"
             style="@style/Font.NominalKeyboard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -133,6 +142,7 @@
             android:background="@color/grey" />
 
         <TextView
+            android:id="@+id/tv_8"
             style="@style/Font.NominalKeyboard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -146,6 +156,7 @@
             android:background="@color/grey" />
 
         <TextView
+            android:id="@+id/tv_9"
             style="@style/Font.NominalKeyboard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -159,6 +170,7 @@
             android:background="@color/grey" />
 
         <ImageView
+            android:id="@+id/iv_backspace"
             style="@style/Font.Text14"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -175,6 +187,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_0"
             style="@style/Font.NominalKeyboard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -188,6 +201,7 @@
             android:background="@color/grey" />
 
         <TextView
+            android:id="@+id/tv_000"
             style="@style/Font.NominalKeyboard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -214,6 +228,7 @@
             android:background="@color/grey" />
 
         <TextView
+            android:id="@+id/tv_done"
             style="@style/Font.Text14"
             android:layout_width="0dp"
             android:layout_height="match_parent"
