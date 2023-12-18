@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import com.fadlurahmanf.bebas_api.data.dto.transfer.BankResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
-import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityBankListBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.others.adapter.BankListAdapter
@@ -57,8 +56,12 @@ class BankListActivity :
     }
 
     private var destinationBankAccountBottomsheet: DestinationBankAccountBottomsheet? = null
-    override fun onItemClicked(latest: BankResponse) {
+    override fun onItemClicked(bank: BankResponse) {
         destinationBankAccountBottomsheet = DestinationBankAccountBottomsheet()
+        destinationBankAccountBottomsheet?.arguments = Bundle().apply {
+            putString(DestinationBankAccountBottomsheet.BANK_NAME, bank.nickName ?: "-")
+            putString(DestinationBankAccountBottomsheet.BANK_IMAGE, bank.image ?: "-")
+        }
         destinationBankAccountBottomsheet?.show(
             supportFragmentManager,
             DestinationBankAccountBottomsheet::class.java.simpleName

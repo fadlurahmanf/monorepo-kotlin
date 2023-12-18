@@ -72,7 +72,7 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
 
                 holder.initialAvatar.text = "$first$second"
             } else {
-                holder.initialAvatar.text = favorite.nameInFavoriteContact.split("").first()
+                holder.initialAvatar.text = favorite.nameInFavoriteContact.take(1)
             }
         }
 

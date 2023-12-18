@@ -53,7 +53,7 @@ class LatestAdapter : RecyclerView.Adapter<LatestAdapter.ViewHolder>() {
 
                 holder.initialAvatar.text = "$first$second"
             } else {
-                holder.initialAvatar.text = latest.name.split("").first()
+                holder.initialAvatar.text = latest.name.take(1)
             }
         }
 

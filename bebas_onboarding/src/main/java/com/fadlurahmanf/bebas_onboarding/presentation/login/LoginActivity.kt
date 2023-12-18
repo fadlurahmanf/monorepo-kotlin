@@ -55,7 +55,7 @@ class LoginActivity : BaseOnboardingActivity<ActivityLoginBinding>(ActivityLogin
             viewModel.login()
         }
 
-//        // fake
-//        viewModel.login()
+        // fake
+        viewModel.login()
     }
 }

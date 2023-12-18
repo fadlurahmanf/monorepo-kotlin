@@ -30,5 +30,12 @@ abstract class BaseBottomsheet<VB : ViewBinding>(
         setup()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initComponent()
+    }
+
+    open fun initComponent() {}
+
     abstract fun setup()
 }

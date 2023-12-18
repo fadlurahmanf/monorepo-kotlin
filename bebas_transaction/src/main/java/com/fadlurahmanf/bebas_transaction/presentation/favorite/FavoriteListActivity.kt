@@ -175,14 +175,6 @@ class FavoriteListActivity :
             viewModel.getTransferFavorite()
             viewModel.getTransferLatest()
         }
-
-        Handler(Looper.getMainLooper()).postDelayed({
-                                                        val intent = Intent(
-                                                            this,
-                                                            BankListActivity::class.java
-                                                        )
-                                                        startActivity(intent)
-                                                    }, 3000)
     }
 
     private fun goToTransferDetailAfterInquiry(inquiryResult: InquiryBankResponse) {
