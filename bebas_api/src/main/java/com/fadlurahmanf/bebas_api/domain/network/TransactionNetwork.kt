@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_api.domain.network
 
 import android.content.Context
 import com.fadlurahmanf.bebas_api.domain.authenticator.UserTokenAuthenticator
+import com.fadlurahmanf.bebas_api.domain.interceptor.TransactionExceptionInterceptor
 import com.fadlurahmanf.bebas_api.domain.interceptor.UserTokenInterceptor
 import com.fadlurahmanf.bebas_shared.BebasShared
 import okhttp3.OkHttpClient
@@ -18,6 +19,7 @@ abstract class TransactionNetwork<T>(
             .addInterceptor(UserTokenInterceptor())
             .addInterceptor(bodyLoggingInterceptor())
             .addInterceptor(getChuckerInterceptor())
+            .addInterceptor(TransactionExceptionInterceptor(context))
             .authenticator(UserTokenAuthenticator(context))
     }
 }

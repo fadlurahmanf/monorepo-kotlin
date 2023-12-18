@@ -1,68 +1,78 @@
 package com.fadlurahmanf.bebas_shared.data.exception
 
 import android.content.Context
-import android.util.Log
 import androidx.annotation.StringRes
 import com.fadlurahmanf.bebas_shared.R
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import java.io.IOException
-import java.lang.Exception
 
-open class BebasException(
-    open var httpStatusCode: Int? = null,
-    open var xrequestId: String? = null,
-    open var statusCode: String? = null,
-    @StringRes open var idRawTitle: Int? = null,
-    open var rawTitle: String? = null,
-    open var title: String? = null,
-    @StringRes open var idRawMessage: Int? = null,
-    open var rawMessage: String? = null,
+class TransactionException(
+    override var httpStatusCode: Int? = null,
+    override var xrequestId: String? = null,
+    override var statusCode: String? = null,
+    @StringRes override var idRawTitle: Int? = null,
+    override var rawTitle: String? = null,
+    override var title: String? = null,
+    @StringRes override var idRawMessage: Int? = null,
+    override var rawMessage: String? = null,
     override var message: String? = null,
-    open var defaultMessage: String? = null,
-    @StringRes open var idRawButtonText: Int? = R.string.ok,
-    open var buttonText: String? = null,
-) : IOException(rawMessage) {
+    override var defaultMessage: String? = null,
+    @StringRes override var idRawButtonText: Int? = R.string.ok,
+    override var buttonText: String? = null,
+) : BebasException(
+    httpStatusCode = httpStatusCode,
+    xrequestId = xrequestId,
+    statusCode = statusCode,
+    idRawTitle = idRawTitle,
+    rawTitle = rawTitle,
+    title = title,
+    idRawMessage = idRawMessage,
+    rawMessage = rawMessage,
+    message = message,
+    defaultMessage = defaultMessage,
+    idRawButtonText = idRawButtonText,
+    buttonText = buttonText
+) {
 
     companion object {
 
-        fun generalRC(rc: String, xRequestId: String? = null): BebasException {
-            return BebasException(
+        fun generalRC(rc: String, xRequestId: String? = null): TransactionException {
+            return TransactionException(
                 idRawTitle = R.string.oops,
                 xrequestId = xRequestId,
                 rawMessage = "ERROR_RC_$rc"
             )
         }
 
-        fun fromThrowable(throwable: Throwable): BebasException {
-            return if (throwable is BebasException) {
+        fun fromThrowable(throwable: Throwable): TransactionException {
+            return if (throwable is TransactionException) {
                 throwable
             } else {
-                BebasException(
+                TransactionException(
                     idRawTitle = R.string.oops,
                     rawMessage = throwable.message,
                 )
             }
         }
 
-        fun fromException(exception: Exception): BebasException {
-            return if (exception is BebasException) {
+        fun fromException(exception: Exception): TransactionException {
+            return if (exception is TransactionException) {
                 exception
             } else {
-                BebasException(rawMessage = exception.message)
+                TransactionException(rawMessage = exception.message)
             }
         }
     }
 
-    open fun toProperTitle(context: Context): String {
+    override fun toProperTitle(context: Context): String {
         return getTitle(context, idRawTitle, rawTitle, title)
     }
 
-    open fun toProperMessage(context: Context): String {
+    override fun toProperMessage(context: Context): String {
         return getMessage(context, idRawMessage, rawMessage, message, defaultMessage)
     }
 
-    open fun toProperButtonText(context: Context): String {
+    override fun toProperButtonText(context: Context): String {
         buttonText?.let {
             return it
         }
@@ -74,7 +84,7 @@ open class BebasException(
         return context.getString(R.string.ok)
     }
 
-    open fun getTitle(
+    override fun getTitle(
         context: Context,
         @StringRes idRaw: Int?,
         raw: String?,
@@ -113,7 +123,7 @@ open class BebasException(
         return "-"
     }
 
-    open fun getMessage(
+    override fun getMessage(
         context: Context,
         @StringRes idRaw: Int?,
         raw: String?,
@@ -149,6 +159,11 @@ open class BebasException(
                 return context.getString(identifierUppercase)
             }
 
+            if (r.contains("TRANSFER_REJECTION_CODE_")) {
+                val rc = r.split("TRANSFER_REJECTION_CODE_").last()
+                return context.getString(R.string.general_exception_desc, rc)
+            }
+
             if (r.contains("ERROR_RC_")) {
                 val rc = r.split("ERROR_RC_").last()
                 return context.getString(R.string.general_exception_desc, rc)
@@ -164,7 +179,7 @@ open class BebasException(
         return context.getString(R.string.general_exception_desc_wo_param)
     }
 
-    open fun toJson(): String? {
+    override fun toJson(): String? {
         val json = JsonObject()
         json.addProperty("httpStatusCode", httpStatusCode)
         json.addProperty("xrequestId", xrequestId)
