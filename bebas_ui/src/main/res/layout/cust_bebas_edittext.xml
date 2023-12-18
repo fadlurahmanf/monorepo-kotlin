@@ -43,6 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                android:theme="@style/EditTextTheme"
                 app:boxBackgroundMode="none"
                 app:boxStrokeWidth="0dp"
                 app:boxStrokeWidthFocused="0dp"
@@ -51,15 +52,18 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et"
                     style="@style/Font.EdittextV2Hint"
-                    android:textColor="@color/red"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
+                    android:cursorVisible="true"
                     android:hint="Hint"
                     android:maxLines="1"
                     android:paddingVertical="0dp"
                     android:paddingStart="0dp"
-                    android:paddingEnd="0dp" />
+                    android:paddingEnd="0dp"
+                    android:textColor="@color/red"
+                    android:textCursorDrawable="@drawable/edittext_cursor_color"
+                    android:theme="@style/EditTextTheme" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
     </LinearLayout>
