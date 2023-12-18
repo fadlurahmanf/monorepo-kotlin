@@ -212,23 +212,23 @@ class BebasMaskingEdittext(context: Context, attributeSet: AttributeSet) :
     private fun changeEditTextStyle() {
         if (editTextHasFocus && editTextLength() > 0) {
             label.visibility = View.VISIBLE
-            editText.setTextAppearance(this.context, R.style.Font_Edittext)
+            editText.setTextAppearance(this.context, R.style.Font_EdittextV2)
             editText.background = ContextCompat.getDrawable(this.context, R.color.white)
             llMain.background = ContextCompat.getDrawable(this.context, R.drawable.edittext_focused)
         } else if (editTextHasFocus && editTextLength() <= 0) {
             label.visibility = View.VISIBLE
-            editText.setTextAppearance(this.context, R.style.Font_EdittextHint)
+            editText.setTextAppearance(this.context, R.style.Font_EdittextV2Hint)
             editText.background = ContextCompat.getDrawable(this.context, R.color.white)
             llMain.background = ContextCompat.getDrawable(this.context, R.drawable.edittext_focused)
         } else if (editTextLength() > 0) {
             label.visibility = View.VISIBLE
-            editText.setTextAppearance(this.context, R.style.Font_Edittext)
+            editText.setTextAppearance(this.context, R.style.Font_EdittextV2)
             editText.background = ContextCompat.getDrawable(this.context, R.color.white)
             llMain.background =
                 ContextCompat.getDrawable(this.context, R.drawable.edittext_unfocused)
         } else if (editTextLength() <= 0) {
             label.visibility = View.GONE
-            editText.setTextAppearance(this.context, R.style.Font_EdittextHint)
+            editText.setTextAppearance(this.context, R.style.Font_EdittextV2Hint)
             editText.background = ContextCompat.getDrawable(this.context, R.color.white)
             llMain.background =
                 ContextCompat.getDrawable(this.context, R.drawable.edittext_unfocused)

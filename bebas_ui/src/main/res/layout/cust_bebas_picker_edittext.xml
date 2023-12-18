@@ -40,7 +40,7 @@
 
             <TextView
                 android:id="@+id/tv_answer"
-                style="@style/Font.Edittext"
+                style="@style/Font.EdittextV2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
@@ -48,7 +48,7 @@
 
             <TextView
                 android:id="@+id/tv_hint"
-                style="@style/Font.EdittextHint"
+                style="@style/Font.EdittextV2Hint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/edittext_hint"

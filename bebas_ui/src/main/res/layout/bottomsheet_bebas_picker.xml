@@ -18,7 +18,7 @@
 
         <EditText
             android:id="@+id/et_search"
-            style="@style/Font.EdittextHint"
+            style="@style/Font.EdittextV2Hint"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

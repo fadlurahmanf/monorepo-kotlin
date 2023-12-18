@@ -7,14 +7,14 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/ll_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/ll_main"
         android:background="@drawable/edittext_unfocused"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingHorizontal="10dp"
-        android:paddingVertical="15dp"
-        android:orientation="horizontal">
+        android:paddingVertical="15dp">
 
         <ImageView
             android:id="@+id/drawable_start"
@@ -50,7 +50,8 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et"
-                    style="@style/Font.EdittextHint"
+                    style="@style/Font.EdittextV2Hint"
+                    android:textColor="@color/red"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
@@ -65,12 +66,12 @@
 
     <TextView
         android:id="@+id/tv_error"
-        android:visibility="gone"
+        style="@style/Font.EdittextError"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="2dp"
         android:text="Error"
-        style="@style/Font.EdittextError"/>
+        android:visibility="gone" />
 
 </LinearLayout>

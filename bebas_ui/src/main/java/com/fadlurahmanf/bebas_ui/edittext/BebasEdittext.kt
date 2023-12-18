@@ -3,10 +3,12 @@ package com.fadlurahmanf.bebas_ui.edittext
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.TypedArray
+import android.os.Build
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -135,25 +137,25 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
     private fun changeEditTextStyle() {
         if (editTextHasFocus && editTextLength() > 0) {
             label.visibility = View.VISIBLE
-            editText.setTextAppearance(this.context, R.style.Font_Edittext)
+            editText.setTextAppearance(this.context, R.style.Font_EdittextV2)
             label.setTextAppearance(this.context, R.style.Font_EdittextLabel)
             editText.background = ContextCompat.getDrawable(this.context, R.color.white)
             llMain.background = ContextCompat.getDrawable(this.context, R.drawable.edittext_focused)
         } else if (editTextHasFocus && editTextLength() <= 0) {
             label.visibility = View.VISIBLE
-            editText.setTextAppearance(this.context, R.style.Font_EdittextHint)
+            editText.setTextAppearance(this.context, R.style.Font_EdittextV2Hint)
             label.setTextAppearance(this.context, R.style.Font_EdittextLabel)
             editText.background = ContextCompat.getDrawable(this.context, R.color.white)
             llMain.background = ContextCompat.getDrawable(this.context, R.drawable.edittext_focused)
         } else if (editTextLength() > 0) {
             label.visibility = View.VISIBLE
-            editText.setTextAppearance(this.context, R.style.Font_Edittext)
+            editText.setTextAppearance(this.context, R.style.Font_EdittextV2)
             editText.background = ContextCompat.getDrawable(this.context, R.color.white)
             llMain.background =
                 ContextCompat.getDrawable(this.context, R.drawable.edittext_unfocused)
         } else if (editTextLength() <= 0) {
             label.visibility = View.GONE
-            editText.setTextAppearance(this.context, R.style.Font_EdittextHint)
+            editText.setTextAppearance(this.context, R.style.Font_EdittextV2Hint)
             editText.background = ContextCompat.getDrawable(this.context, R.color.white)
             llMain.background =
                 ContextCompat.getDrawable(this.context, R.drawable.edittext_unfocused)
@@ -180,7 +182,7 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
                 ContextCompat.getDrawable(this.context, R.drawable.edittext_disabled)
             editText.background = ContextCompat.getDrawable(this.context, R.color.light_grey_20)
             label.setTextAppearance(this.context, R.style.Font_EdittextLabel_Disabled)
-            editText.setTextAppearance(this.context, R.style.Font_Edittext_Disabled)
+            editText.setTextAppearance(this.context, R.style.Font_EdittextV2_Disabled)
             drawableStart.imageTintList =
                 ColorStateList.valueOf(ContextCompat.getColor(this.context, R.color.black_opacity))
         } else {
