@@ -75,7 +75,7 @@ class BankListAdapter : RecyclerView.Adapter<BankListAdapter.ViewHolder>() {
     }
 
     interface Callback {
-        fun onItemClicked(latest: BankResponse)
+        fun onItemClicked(bank: BankResponse)
     }
 
 }
