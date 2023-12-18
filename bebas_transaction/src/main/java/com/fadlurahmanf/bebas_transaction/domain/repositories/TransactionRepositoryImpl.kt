@@ -2,10 +2,11 @@ package com.fadlurahmanf.bebas_transaction.domain.repositories
 
 import com.fadlurahmanf.bebas_api.data.datasources.CmsRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
-import com.fadlurahmanf.bebas_api.data.dto.InquiryBankMasRequest
+import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankMasRequest
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.BankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
+import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
@@ -48,6 +49,25 @@ class TransactionRepositoryImpl @Inject constructor(
                 destinationAccountNumber = destinationAccountNumber
             )
             transactionRemoteDatasource.inquiryBankMas(request).map { inqRes ->
+                if (inqRes.data == null) {
+                    throw BebasException.generalRC("INQ_00")
+                }
+                inqRes.data!!
+            }
+        }
+    }
+
+    fun inquiryOtherBank(
+        sknId: String,
+        destinationAccountNumber: String
+    ): Observable<InquiryBankResponse> {
+        return getMainBankAccount().flatMap { bankAccount ->
+            val request = InquiryOtherBankRequest(
+                sknId = sknId,
+                accountNumber = bankAccount.accountNumber ?: "-",
+                destinationAccountNumber = destinationAccountNumber
+            )
+            transactionRemoteDatasource.inquiryOtherBank(request).map { inqRes ->
                 if (inqRes.data == null) {
                     throw BebasException.generalRC("INQ_00")
                 }

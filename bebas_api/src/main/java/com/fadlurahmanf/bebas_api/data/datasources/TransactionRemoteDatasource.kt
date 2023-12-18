@@ -2,7 +2,8 @@ package com.fadlurahmanf.bebas_api.data.datasources
 
 import android.content.Context
 import com.fadlurahmanf.bebas_api.data.api.TransactionApi
-import com.fadlurahmanf.bebas_api.data.dto.InquiryBankMasRequest
+import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankMasRequest
+import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
 import com.fadlurahmanf.bebas_api.domain.network.TransactionNetwork
 import javax.inject.Inject
 
@@ -14,4 +15,6 @@ class TransactionRemoteDatasource @Inject constructor(
     fun getBankAccounts() = networkService().getBankAccounts()
 
     fun inquiryBankMas(request: InquiryBankMasRequest) = networkService().inquiryBankMas(request)
+
+    fun inquiryOtherBank(request: InquiryOtherBankRequest) = networkService().inquiryOtherBank(request)
 }

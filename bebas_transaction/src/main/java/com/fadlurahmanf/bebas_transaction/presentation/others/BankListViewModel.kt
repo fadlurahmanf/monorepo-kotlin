@@ -36,20 +36,40 @@ class BankListViewModel @Inject constructor(
                                ))
     }
 
-    private val _inquiryBankMasState = MutableLiveData<NetworkState<InquiryBankResponse>>()
-    val inquiryBankMasState: LiveData<NetworkState<InquiryBankResponse>> = _inquiryBankMasState
+    private val _inquiryBankState = MutableLiveData<NetworkState<InquiryBankResponse>>()
+    val inquiryBankState: LiveData<NetworkState<InquiryBankResponse>> = _inquiryBankState
 
     fun inquiryBankMas(destinationAccountNumber: String) {
-        _inquiryBankMasState.value = NetworkState.LOADING
+        _inquiryBankState.value = NetworkState.LOADING
         baseDisposable.add(transactionRepositoryImpl.inquiryBankMas(destinationAccountNumber)
                                .subscribeOn(Schedulers.io())
                                .observeOn(AndroidSchedulers.mainThread())
                                .subscribe(
                                    {
-                                       _inquiryBankMasState.value = NetworkState.SUCCESS(it)
+                                       _inquiryBankState.value = NetworkState.SUCCESS(it)
                                    },
                                    {
-                                       _inquiryBankMasState.value =
+                                       _inquiryBankState.value =
+                                           NetworkState.FAILED(BebasException.fromThrowable(it))
+                                   },
+                                   {}
+                               ))
+    }
+
+    fun inquiryOtherBank(sknId: String, destinationAccountNumber: String) {
+        _inquiryBankState.value = NetworkState.LOADING
+        baseDisposable.add(transactionRepositoryImpl.inquiryOtherBank(
+            sknId,
+            destinationAccountNumber
+        )
+                               .subscribeOn(Schedulers.io())
+                               .observeOn(AndroidSchedulers.mainThread())
+                               .subscribe(
+                                   {
+                                       _inquiryBankState.value = NetworkState.SUCCESS(it)
+                                   },
+                                   {
+                                       _inquiryBankState.value =
                                            NetworkState.FAILED(BebasException.fromThrowable(it))
                                    },
                                    {}

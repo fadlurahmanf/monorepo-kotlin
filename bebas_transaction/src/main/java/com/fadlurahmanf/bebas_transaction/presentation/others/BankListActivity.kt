@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class BankListActivity :
     BaseTransactionActivity<ActivityBankListBinding>(ActivityBankListBinding::inflate),
-    BankListAdapter.Callback, DestinationBankAccountBottomsheet.Callback {
+    BankListAdapter.Callback {
 
     @Inject
     lateinit var viewModel: BankListViewModel
@@ -56,7 +56,7 @@ class BankListActivity :
             }
         }
 
-        viewModel.inquiryBankMasState.observe(this) {
+        viewModel.inquiryBankState.observe(this) {
             when (it) {
                 is NetworkState.FAILED -> {
                     dismissLoadingDialog()
@@ -89,7 +89,17 @@ class BankListActivity :
     private var destinationBankAccountBottomsheet: DestinationBankAccountBottomsheet? = null
     override fun onItemClicked(bank: BankResponse) {
         destinationBankAccountBottomsheet = DestinationBankAccountBottomsheet()
-        destinationBankAccountBottomsheet?.setCallback(this)
+        destinationBankAccountBottomsheet?.setCallback(object :
+                                                           DestinationBankAccountBottomsheet.Callback {
+            override fun onNextClicked(dialog: Dialog?, accountBankNumber: String) {
+                super.onNextClicked(dialog, accountBankNumber)
+                if (bank.rtgsId == "BMSEIDJA" && bank.sknId == "5480300") {
+                    viewModel.inquiryBankMas(accountBankNumber)
+                } else {
+                    viewModel.inquiryOtherBank(bank.sknId ?: "-", accountBankNumber)
+                }
+            }
+        })
         destinationBankAccountBottomsheet?.arguments = Bundle().apply {
             putString(DestinationBankAccountBottomsheet.BANK_NAME, bank.nickName ?: "-")
             putString(DestinationBankAccountBottomsheet.BANK_IMAGE, bank.image ?: "-")
@@ -98,11 +108,6 @@ class BankListActivity :
             supportFragmentManager,
             DestinationBankAccountBottomsheet::class.java.simpleName
         )
-    }
-
-    override fun onNextClicked(dialog: Dialog?, accountBankNumber: String) {
-        super.onNextClicked(dialog, accountBankNumber)
-        viewModel.inquiryBankMas(accountBankNumber)
     }
 
 }

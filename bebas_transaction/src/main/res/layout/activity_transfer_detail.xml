@@ -52,97 +52,18 @@
             android:orientation="vertical"
             android:paddingHorizontal="20dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
-                android:background="@drawable/background_destination_account_transfer_detail"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:orientation="horizontal"
-                    android:padding="15dp">
-
-                    <TextView
-                        android:id="@+id/initialAvatar"
-                        style="@style/Font.InitialFavorite"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/background_initial_favorite"
-                        android:gravity="center"
-                        android:text="BA"
-                        android:textAllCaps="true" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginHorizontal="10dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tv_destination_account_name"
-                            style="@style/Font.Text14"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/lexend_deca_bold"
-                            android:text="Bank Account Name" />
-
-                        <View
-                            android:layout_width="wrap_content"
-                            android:layout_height="10dp" />
-
-                        <TextView
-                            android:id="@+id/tv_sub_favorite"
-                            style="@style/Font.Text14"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Label • 0987654321" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/iv_pin"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/round_star_border_24"
-                        app:tint="@color/light_grey" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/background_total_amount_transfer_detail"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="10dp">
-
-                    <TextView
-                        style="@style/Font.Text14"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lexend_deca_bold"
-                        android:text="Rp" />
-
-                    <TextView
-                        style="@style/Font.Text14"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/lexend_deca_semi_bold"
-                        android:text="Masukkan Nominal Transfer"
-                        android:textColor="@color/light_grey" />
-                </LinearLayout>
-            </LinearLayout>
+            <include
+                android:id="@+id/layout_input_nominal"
+                layout="@layout/layout_transfer_detail_input_nominal" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <com.fadlurahmanf.bebas_transaction.external.BebasKeyboardTransaction
+        android:id="@+id/keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

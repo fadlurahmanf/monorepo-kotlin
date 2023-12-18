@@ -1,9 +1,10 @@
 package com.fadlurahmanf.bebas_api.data.api
 
-import com.fadlurahmanf.bebas_api.data.dto.InquiryBankMasRequest
+import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankMasRequest
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
+import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -16,5 +17,10 @@ interface TransactionApi {
     @POST("transfer/inquiry/bank-mas")
     fun inquiryBankMas(
         @Body request: InquiryBankMasRequest
+    ): Observable<BaseResponse<InquiryBankResponse>>
+
+    @POST("transfer/inquiry/bank-lain")
+    fun inquiryOtherBank(
+        @Body request: InquiryOtherBankRequest
     ): Observable<BaseResponse<InquiryBankResponse>>
 }
