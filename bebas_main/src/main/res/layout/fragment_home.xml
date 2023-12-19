@@ -35,6 +35,7 @@
             </LinearLayout>
 
             <include
+                android:id="@+id/layout_bank_account"
                 layout="@layout/layout_home_bank_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

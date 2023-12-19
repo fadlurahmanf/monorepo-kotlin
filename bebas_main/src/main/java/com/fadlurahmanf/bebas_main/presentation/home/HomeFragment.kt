@@ -3,10 +3,12 @@ package com.fadlurahmanf.bebas_main.presentation.home
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
+import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_main.data.dto.menu.TransactionMenuModel
 import com.fadlurahmanf.bebas_main.databinding.FragmentHomeBinding
 import com.fadlurahmanf.bebas_main.presentation.BaseMainFragment
+import com.fadlurahmanf.bebas_main.presentation.home.adapter.BankAccountAdapter
 import com.fadlurahmanf.bebas_main.presentation.home.adapter.MenuAdapter
 import javax.inject.Inject
 
@@ -20,6 +22,9 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
     @Inject
     lateinit var viewModel: HomeFragmentViewModel
 
+    lateinit var bankAccountAdapter: BankAccountAdapter
+    private var bankAccounts: ArrayList<BankAccountResponse> = arrayListOf()
+
     lateinit var adapter: MenuAdapter
     private val menus: ArrayList<TransactionMenuModel> = arrayListOf()
 
@@ -31,6 +36,28 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+        }
+
+        viewModel.bankAccounts.observe(this) {
+            when (it) {
+                is NetworkState.SUCCESS -> {
+                    bankAccounts.clear()
+                    bankAccounts.addAll(it.data)
+                    bankAccountAdapter.setList(bankAccounts)
+                }
+
+                is NetworkState.FAILED -> {
+
+                }
+
+                is NetworkState.LOADING -> {
+
+                }
+
+                else -> {
+
+                }
+            }
         }
 
         viewModel.menuState.observe(this) {
@@ -57,6 +84,10 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
     }
 
     override fun onBebasViewCreated(view: View, savedInstanceState: Bundle?) {
+        bankAccountAdapter = BankAccountAdapter()
+        bankAccountAdapter.setList(bankAccounts)
+        binding.layoutBankAccount.vpBankAccount.adapter = bankAccountAdapter
+
         val layoutManager = GridLayoutManager(requireContext(), 4)
         adapter = MenuAdapter()
         adapter.setList(menus)
@@ -64,6 +95,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
         binding.rv.layoutManager = layoutManager
 
         viewModel.getMenus()
+        viewModel.getBankAccounts()
     }
 
     companion object {
