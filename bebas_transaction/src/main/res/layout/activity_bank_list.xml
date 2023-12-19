@@ -54,9 +54,32 @@
             android:paddingHorizontal="20dp">
 
             <LinearLayout
-                android:id="@+id/ll_other_bank"
+                android:id="@+id/ll_top_banks"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Font.Text14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bank yang umum digunakan"
+                    android:textColor="@color/grey" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_top_banks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_bank" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_other_banks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -67,7 +90,7 @@
                     android:textColor="@color/grey" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_bank_list"
+                    android:id="@+id/rv_other_banks"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

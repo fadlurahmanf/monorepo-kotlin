@@ -18,6 +18,7 @@ import com.fadlurahmanf.bebas_transaction.databinding.ActivityFavoriteListBindin
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.FavoriteAdapter
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.LatestAdapter
+import com.fadlurahmanf.bebas_transaction.presentation.others.BankListActivity
 import com.fadlurahmanf.bebas_transaction.presentation.transfer.TransferDetailActivity
 import javax.inject.Inject
 
@@ -48,6 +49,11 @@ class FavoriteListActivity :
         if (stringFavoriteFlow == null) {
             showForcedBackBottomsheet(BebasException.generalRC("UNKNOWN_FLOW"))
             return
+        }
+
+        binding.btnNewReceiver.setOnClickListener {
+            val intent = Intent(this, BankListActivity::class.java)
+            startActivity(intent)
         }
 
         favoriteFlow = enumValueOf<FavoriteFlow>(stringFavoriteFlow)

@@ -7,6 +7,7 @@ import android.view.View
 import com.fadlurahmanf.bebas_api.data.dto.transfer.BankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
+import com.fadlurahmanf.bebas_transaction.data.state.BankListState
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityBankListBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.others.adapter.BankListAdapter
@@ -25,29 +26,46 @@ class BankListActivity :
         component.inject(this)
     }
 
-    private lateinit var adapter: BankListAdapter
-    private val banks: ArrayList<BankResponse> = arrayListOf()
+    private lateinit var otherBanksAdapter: BankListAdapter
+    private val otherBanks: ArrayList<BankResponse> = arrayListOf()
+    private lateinit var topBanksAdapter: BankListAdapter
+    private val topBanks: ArrayList<BankResponse> = arrayListOf()
 
     override fun onBebasCreate(savedInstanceState: Bundle?) {
-        adapter = BankListAdapter()
-        adapter.setCallback(this)
-        binding.rvBankList.adapter = adapter
+        otherBanksAdapter = BankListAdapter()
+        otherBanksAdapter.setCallback(this)
+        topBanksAdapter = BankListAdapter()
+        topBanksAdapter.setCallback(this)
+        binding.rvOtherBanks.adapter = otherBanksAdapter
+        binding.rvTopBanks.adapter = topBanksAdapter
         viewModel.bankListState.observe(this) {
             when (it) {
-                is NetworkState.LOADING -> {
-                    binding.llOtherBank.visibility = View.GONE
+                is BankListState.LOADING -> {
+                    binding.llTopBanks.visibility = View.GONE
+                    binding.llOtherBanks.visibility = View.GONE
                 }
 
-                is NetworkState.FAILED -> {
-                    binding.llOtherBank.visibility = View.GONE
+                is BankListState.FAILED -> {
+                    binding.llTopBanks.visibility = View.GONE
+                    binding.llOtherBanks.visibility = View.GONE
                 }
 
-                is NetworkState.SUCCESS -> {
-                    banks.clear()
-                    banks.addAll(it.data)
-                    adapter.setList(banks)
+                is BankListState.SUCCESS -> {
+                    topBanks.clear()
+                    topBanks.addAll(it.topBanks)
+                    topBanksAdapter.setList(topBanks)
 
-                    binding.llOtherBank.visibility = View.VISIBLE
+                    otherBanks.clear()
+                    otherBanks.addAll(it.otherBanks)
+                    otherBanksAdapter.setList(otherBanks)
+
+                    if (topBanks.isNotEmpty()) {
+                        binding.llTopBanks.visibility = View.VISIBLE
+                    }
+
+                    if (otherBanks.isNotEmpty()) {
+                        binding.llOtherBanks.visibility = View.VISIBLE
+                    }
                 }
 
                 else -> {

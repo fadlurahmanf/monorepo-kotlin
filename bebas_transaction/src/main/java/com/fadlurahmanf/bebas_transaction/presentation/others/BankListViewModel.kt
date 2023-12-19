@@ -1,11 +1,13 @@
 package com.fadlurahmanf.bebas_transaction.presentation.others
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.data.dto.transfer.BankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_transaction.data.state.BankListState
 import com.fadlurahmanf.bebas_transaction.domain.repositories.TransactionRepositoryImpl
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -16,21 +18,30 @@ class BankListViewModel @Inject constructor(
     private val transactionRepositoryImpl: TransactionRepositoryImpl
 ) : BaseViewModel() {
 
-    private val _bankListState = MutableLiveData<NetworkState<List<BankResponse>>>()
-    val bankListState: LiveData<NetworkState<List<BankResponse>>> = _bankListState
+    private val _bankListState = MutableLiveData<BankListState>()
+    val bankListState: LiveData<BankListState> = _bankListState
 
     fun getBankList() {
-        _bankListState.value = NetworkState.LOADING
+        _bankListState.value = BankListState.LOADING
         baseDisposable.add(transactionRepositoryImpl.getBankList()
                                .subscribeOn(Schedulers.io())
                                .observeOn(AndroidSchedulers.mainThread())
                                .subscribe(
                                    {
-                                       _bankListState.value = NetworkState.SUCCESS(it)
+                                       val banks: ArrayList<BankResponse> = ArrayList(it)
+                                       Log.d("BebasLogger", "BANKS: ${banks.size}")
+                                       val otherBanks =
+                                           transactionRepositoryImpl.removeTopBanks(banks)
+                                       Log.d("BebasLogger", "OTHER BANKS: ${otherBanks.size}")
+                                       val topBanks = transactionRepositoryImpl.getTopBanks(banks)
+                                       Log.d("BebasLogger", "TOP BANKS: ${topBanks.size}")
+                                       _bankListState.value = BankListState.SUCCESS(
+                                           otherBanks, topBanks
+                                       )
                                    },
                                    {
                                        _bankListState.value =
-                                           NetworkState.FAILED(BebasException.fromThrowable(it))
+                                           BankListState.FAILED(BebasException.fromThrowable(it))
                                    },
                                    {}
                                ))

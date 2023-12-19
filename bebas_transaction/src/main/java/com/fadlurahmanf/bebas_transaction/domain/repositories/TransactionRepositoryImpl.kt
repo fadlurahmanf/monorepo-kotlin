@@ -2,9 +2,9 @@ package com.fadlurahmanf.bebas_transaction.domain.repositories
 
 import com.fadlurahmanf.bebas_api.data.datasources.CmsRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
-import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankMasRequest
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.BankResponse
+import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankMasRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
@@ -24,6 +24,26 @@ class TransactionRepositoryImpl @Inject constructor(
             it.data!!.sortedBy { bankResp ->
                 bankResp.nickName
             }
+        }
+    }
+
+    fun getTopBanks(banks: List<BankResponse>): List<BankResponse> {
+        return ArrayList(banks).filter {
+            (it.sknId == "0140397" || it.rtgsId == "CENAIDJA") // bca
+            || (it.sknId == "0090010" || it.rtgsId == "BNINIDJA") // bni
+            || (it.sknId == "0020307" || it.rtgsId == "BRINIDJA") // bri
+            || (it.sknId == "0080017" || it.rtgsId == "BMRIIDJA") // manidiri
+            || (it.sknId == "5480300" || it.rtgsId == "BMSEIDJA") // mas
+        }
+    }
+
+    fun removeTopBanks(banks: List<BankResponse>): List<BankResponse> {
+        return ArrayList(banks).filter {
+            !(it.sknId == "0140397" || it.rtgsId == "CENAIDJA") // bca
+            && !(it.sknId == "0090010" || it.rtgsId == "BNINIDJA") // bni
+            && !(it.sknId == "0020307" || it.rtgsId == "BRINIDJA") // bri
+            && !(it.sknId == "0080017" || it.rtgsId == "BMRIIDJA") // manidiri
+            && !(it.sknId == "5480300" || it.rtgsId == "BMSEIDJA") // mas
         }
     }
 

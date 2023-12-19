@@ -50,15 +50,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="20dp">
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="85dp">
 
             <LinearLayout
+                android:id="@+id/ll_latest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ll_latest"
-                android:visibility="visible"
                 android:layout_marginTop="10dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <TextView
                     style="@style/Font.Text14"
@@ -70,9 +71,9 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_latest"
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_latest" />
             </LinearLayout>
@@ -81,9 +82,10 @@
                 android:id="@+id/ll_pinned_favorites"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:layout_marginTop="10dp"
-                android:orientation="vertical">
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/Font.Text14"
@@ -102,12 +104,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_favorites"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ll_favorites"
-                android:visibility="gone"
                 android:layout_marginTop="10dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/Font.Text14"
@@ -127,5 +129,25 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/backgorund_button_bottom_layout"
+        android:elevation="50dp"
+        android:layout_marginHorizontal="1dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:translationZ="-25dp">
+
+        <com.fadlurahmanf.bebas_ui.button.BebasOutlinedButton
+            android:id="@+id/btn_new_receiver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="Penerima Baru" />
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
