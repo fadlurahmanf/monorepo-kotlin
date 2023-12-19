@@ -98,7 +98,7 @@ class FavoriteViewModel @Inject constructor(
                                                PinFavoriteState.FAILED(
                                                    BebasException.generalRC("FALSE_PINNED"),
                                                    favoriteId = id,
-                                                   previousStatePinned = !isPinned
+                                                   previousStatePinned = isPinned
                                                )
                                        }
                                    },
@@ -107,7 +107,7 @@ class FavoriteViewModel @Inject constructor(
                                            PinFavoriteState.FAILED(
                                                BebasException.fromThrowable(it),
                                                favoriteId = id,
-                                               previousStatePinned = !isPinned
+                                               previousStatePinned = isPinned
                                            )
                                    },
                                    {}

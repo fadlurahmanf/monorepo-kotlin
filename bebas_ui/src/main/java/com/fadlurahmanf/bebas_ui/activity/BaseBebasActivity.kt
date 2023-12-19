@@ -2,14 +2,22 @@ package com.fadlurahmanf.bebas_ui.activity
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.TypefaceSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.viewbinding.ViewBinding
 import com.fadlurahmanf.bebas_shared.RxBus
 import com.fadlurahmanf.bebas_shared.RxEvent
+import com.fadlurahmanf.bebas_ui.R
 import com.fadlurahmanf.bebas_ui.dialog.LoadingDialog
+import com.fadlurahmanf.bebas_ui.font.BebasFontTypeSpan
+import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -64,8 +72,37 @@ abstract class BaseBebasActivity<VB : ViewBinding>(
         snackbar.show()
     }
 
-    fun showSnackBarLong(view: View, message: String) {
-        val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+    fun showSnackBarErrorLong(view: View, message: String, anchorView: View) {
+        val ss = SpannableStringBuilder(message)
+        ss.setSpan(
+            BebasFontTypeSpan(
+                "",
+                ResourcesCompat.getFont(this, R.font.lexend_deca_regular)!!
+            ), 0, message.length, Spanned.SPAN_EXCLUSIVE_INCLUSIVE
+        )
+
+        val snackbar = Snackbar.make(view, ss, Snackbar.LENGTH_LONG)
+            .setAnchorView(anchorView)
+            .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+            .setBackgroundTint(ContextCompat.getColor(this, R.color.red))
+            .setTextColor(ContextCompat.getColor(this, R.color.white))
+        snackbar.show()
+    }
+
+    fun showSnackBarSuccessLong(view: View, message: String, anchorView: View) {
+        val ss = SpannableStringBuilder(message)
+        ss.setSpan(
+            BebasFontTypeSpan(
+                "",
+                ResourcesCompat.getFont(this, R.font.lexend_deca_regular)!!
+            ), 0, message.length, Spanned.SPAN_EXCLUSIVE_INCLUSIVE
+        )
+
+        val snackbar = Snackbar.make(view, ss, Snackbar.LENGTH_LONG)
+            .setAnchorView(anchorView)
+            .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+            .setBackgroundTint(ContextCompat.getColor(this, R.color.green))
+            .setTextColor(ContextCompat.getColor(this, R.color.white))
         snackbar.show()
     }
 

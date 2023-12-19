@@ -3,6 +3,7 @@ package com.fadlurahmanf.bebas_transaction.presentation.favorite
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
@@ -81,9 +82,14 @@ class FavoriteListActivity :
                     }
 
                     if (index != -1) {
-                        showSnackBarShort(binding.root, "Failed to Pin Favorite!")
-                        pinOrUnpinFavorite(it.previousStatePinned, favorites[index])
+                        setPinnedData(it.previousStatePinned, index)
                     }
+
+                    showSnackBarErrorLong(
+                        binding.root,
+                        message = "Failed to Pin Favorite!",
+                        binding.llButtonBottom
+                    )
                 }
 
                 is PinFavoriteState.SuccessPinned -> {
@@ -256,7 +262,39 @@ class FavoriteListActivity :
     }
 
     override fun onPinClicked(isCurrentPinned: Boolean, favorite: FavoriteContactModel) {
-        pinOrUnpinFavorite(isCurrentPinned, favorite)
+        if (isCurrentPinned) {
+            var indexFavorite: Int = -1
+            for (element in 0 until favorites.size) {
+                if (favorites[0].id == favorite.id) {
+                    indexFavorite = element
+                    break
+                }
+            }
+
+            if (indexFavorite != -1) {
+                setPinnedData(true, indexFavorite)
+                viewModel.pinFavorite(favorites[indexFavorite].id, false)
+            }
+        } else {
+            val newFavorite = favorite.copy(isPinned = true)
+            pinnedFavorites.add(newFavorite)
+            pinnedFavoriteAdapter.insertModel(newFavorite)
+
+            var indexFavorite: Int = -1
+            for (element in 0 until favorites.size) {
+                if (favorites[0].id == favorite.id) {
+                    indexFavorite = element
+                    break
+                }
+            }
+
+            if (indexFavorite != -1) {
+                setPinnedData(false, indexFavorite)
+                viewModel.pinFavorite(favorites[indexFavorite].id, true)
+            }
+        }
+
+
     }
 
     override fun onItemClicked(favorite: FavoriteContactModel) {
@@ -275,46 +313,17 @@ class FavoriteListActivity :
         }
     }
 
-    fun pinOrUnpinFavorite(isCurrentPinned: Boolean, favorite: FavoriteContactModel) {
+    private fun setPinnedData(isCurrentPinned: Boolean, indexFavorite: Int) {
         if (isCurrentPinned) {
-            var indexFavorite: Int = -1
-            for (element in 0 until favorites.size) {
-                if (favorites[0].id == favorite.id) {
-                    indexFavorite = element
-                    break
-                }
-            }
+            pinnedFavorites.removeAt(indexFavorite)
+            pinnedFavoriteAdapter.removeModel(indexFavorite)
 
-            if (indexFavorite != -1) {
-                pinnedFavorites.removeAt(indexFavorite)
-                pinnedFavoriteAdapter.removeModel(indexFavorite)
-
-                favorites[indexFavorite].isPinned = false
-                favoriteAdapter.changeFavoriteModel(favorites, indexFavorite)
-
-                viewModel.pinFavorite(favorites[indexFavorite].id, false)
-            }
+            favorites[indexFavorite].isPinned = false
+            favoriteAdapter.changeFavoriteModel(favorites, indexFavorite)
         } else {
-            val newFavorite = favorite.copy(isPinned = true)
-            pinnedFavorites.add(newFavorite)
-            pinnedFavoriteAdapter.insertModel(newFavorite)
-
-            var indexFavorite: Int = -1
-            for (element in 0 until favorites.size) {
-                if (favorites[0].id == favorite.id) {
-                    indexFavorite = element
-                    break
-                }
-            }
-
-            if (indexFavorite != -1) {
-                favorites[indexFavorite].isPinned = true
-                favoriteAdapter.changeFavoriteModel(favorites, indexFavorite)
-
-                viewModel.pinFavorite(favorites[indexFavorite].id, true)
-            }
+            favorites[indexFavorite].isPinned = true
+            favoriteAdapter.changeFavoriteModel(favorites, indexFavorite)
         }
-
 
         if (pinnedFavorites.isNotEmpty()) {
             binding.llPinnedFavorites.visibility = View.VISIBLE
