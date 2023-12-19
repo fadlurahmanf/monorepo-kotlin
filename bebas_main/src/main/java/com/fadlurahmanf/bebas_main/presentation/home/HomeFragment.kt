@@ -44,14 +44,19 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
                     bankAccounts.clear()
                     bankAccounts.addAll(it.data)
                     bankAccountAdapter.setList(bankAccounts)
+
+                    binding.layoutBankAccountShimmer.llMain.visibility = View.GONE
+                    binding.layoutBankAccount.llMain.visibility = View.VISIBLE
                 }
 
                 is NetworkState.FAILED -> {
-
+                    binding.layoutBankAccountShimmer.llMain.visibility = View.VISIBLE
+                    binding.layoutBankAccount.llMain.visibility = View.GONE
                 }
 
                 is NetworkState.LOADING -> {
-
+                    binding.layoutBankAccountShimmer.llMain.visibility = View.VISIBLE
+                    binding.layoutBankAccount.llMain.visibility = View.GONE
                 }
 
                 else -> {

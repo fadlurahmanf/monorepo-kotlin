@@ -26,11 +26,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingHorizontal="20dp">
+                android:paddingHorizontal="20dp"
+                android:paddingTop="20dp">
 
                 <ImageView
                     android:layout_width="120dp"
-                    android:layout_height="30dp"
+                    android:layout_height="60dp"
                     android:src="@drawable/il_logo_bebas" />
             </LinearLayout>
 
@@ -40,7 +41,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="10dp" />
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/layout_bank_account_shimmer"
+                layout="@layout/layout_home_bank_account_shimmer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp" />
 
             <LinearLayout
                 android:id="@+id/ll_menu"
@@ -51,7 +59,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    style="@style/Font.Text14"
+                    style="@style/Font.Text16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lexend_deca_bold"
