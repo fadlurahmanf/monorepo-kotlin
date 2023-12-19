@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.core.content.ContextCompat
+import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityTransferDetailBinding
 import com.fadlurahmanf.bebas_transaction.external.BebasKeyboardTransaction
@@ -16,8 +17,8 @@ class TransferDetailActivity :
         component.inject(this)
     }
 
-    private var isVisible = false
-    private var tvAmountIsAHint: Boolean = true
+    private var isKeyboardVisible = false
+    private var nominal: Long? = null
 
     override fun onBebasCreate(savedInstanceState: Bundle?) {
         Handler(Looper.getMainLooper()).postDelayed({
@@ -25,7 +26,7 @@ class TransferDetailActivity :
                                                     }, 500)
 
         binding.layoutInputNominal.llInputNominal.setOnClickListener {
-            if (isVisible) {
+            if (isKeyboardVisible) {
                 dismissKeyboardTransaction()
             } else {
                 openKeyboardTransaction()
@@ -34,38 +35,51 @@ class TransferDetailActivity :
 
         binding.keyboard.setOnClickKeyboard(object : BebasKeyboardTransaction.CallbackKeyboard {
             override fun onDigitClicked(digit: String) {
-                if (tvAmountIsAHint) {
-                    tvAmountIsAHint = false
-                    binding.layoutInputNominal.tvAmount.text = digit.toInt().toString()
+                if (nominal == null) {
+                    nominal = digit.toLong()
+                    binding.layoutInputNominal.tvAmount.text =
+                        (nominal ?: 0).toDouble().toRupiahFormat(useDecimal = false)
                 } else {
-                    val isCurrentTvAmountEmptyOrZero =
-                        binding.layoutInputNominal.tvAmount.text.isEmpty() || binding.layoutInputNominal.tvAmount.text.toString()
-                            .toInt() == 0
-                    if (isCurrentTvAmountEmptyOrZero && digit.toInt() == 0) {
+                    val isCurrentTvAmountZero = nominal?.toInt() == 0
+                    if (isCurrentTvAmountZero && digit.toInt() == 0) {
+                        nominal = 0
+                        binding.layoutInputNominal.tvAmount.text = "0"
                         return
-                    } else if (isCurrentTvAmountEmptyOrZero && digit.toInt() > 0) {
+                    } else if (isCurrentTvAmountZero && digit.toInt() > 0) {
+                        nominal = digit.toLong()
                         binding.layoutInputNominal.tvAmount.text = digit
                     } else {
-                        val currentText = binding.layoutInputNominal.tvAmount.text
-                        binding.layoutInputNominal.tvAmount.text = "$currentText$digit"
+                        nominal = "$nominal${digit}".toLong()
+                        binding.layoutInputNominal.tvAmount.text =
+                            nominal?.toDouble()?.toRupiahFormat(
+                                useDecimal = false
+                            )
                     }
                 }
                 updateStyleTvAmount()
             }
 
             override fun onClearClicked() {
-                if (!tvAmountIsAHint) {
-                    binding.layoutInputNominal.tvAmount.text = ""
+                if (nominal != null) {
+                    nominal = null
                     updateStyleTvAmount()
                 }
             }
 
             override fun onBackspaceClicked() {
-                if (!tvAmountIsAHint) {
+                if (nominal != null) {
                     if (binding.layoutInputNominal.tvAmount.text.isNotEmpty()) {
-                        val currentText = binding.layoutInputNominal.tvAmount.text.toString()
+                        val text = "$nominal".substring(0, nominal.toString().length - 1)
+                        if (text.isEmpty()) {
+                            nominal = null
+                        } else {
+                            nominal = text.toLong()
+                        }
                         binding.layoutInputNominal.tvAmount.text =
-                            currentText.substring(0, currentText.length - 1)
+                            nominal?.toDouble()?.toRupiahFormat(
+                                useDecimal = false
+                            )
+
                         updateStyleTvAmount()
                     }
                 }
@@ -78,7 +92,7 @@ class TransferDetailActivity :
     }
 
     private fun openKeyboardTransaction() {
-        isVisible = true
+        isKeyboardVisible = true
         binding.layoutInputNominal.llInputNominal.background = ContextCompat.getDrawable(
             this,
             R.drawable.background_total_amount_transfer_detail_active
@@ -87,7 +101,7 @@ class TransferDetailActivity :
     }
 
     private fun dismissKeyboardTransaction() {
-        isVisible = false
+        isKeyboardVisible = false
         binding.layoutInputNominal.llInputNominal.background = ContextCompat.getDrawable(
             this,
             R.drawable.background_total_amount_transfer_detail
@@ -96,8 +110,7 @@ class TransferDetailActivity :
     }
 
     fun updateStyleTvAmount() {
-        if (binding.layoutInputNominal.tvAmount.text.isEmpty()) {
-            tvAmountIsAHint = true
+        if (nominal == null) {
             binding.layoutInputNominal.tvAmount.text = getString(R.string.input_nominal_transfer)
             binding.layoutInputNominal.tvAmount.setTextColor(
                 ColorStateList.valueOf(
