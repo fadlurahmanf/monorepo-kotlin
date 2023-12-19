@@ -34,14 +34,14 @@ class LoginActivity : BaseOnboardingActivity<ActivityLoginBinding>(ActivityLogin
                     dismissLoadingDialog()
                     val intent = Intent(
                         this,
-                        Class.forName("com.fadlurahmanf.bebas_transaction.presentation.favorite.FavoriteListActivity")
+                        Class.forName("com.fadlurahmanf.bebas_main.presentation.home.HomeActivity")
                     )
-                    intent.apply {
-                        putExtra(
-                            FavoriteArgument.FAVORITE_FLOW,
-                            FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID.name
-                        )
-                    }
+//                    intent.apply {
+//                        putExtra(
+//                            FavoriteArgument.FAVORITE_FLOW,
+//                            FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID.name
+//                        )
+//                    }
                     startActivity(intent)
                 }
 

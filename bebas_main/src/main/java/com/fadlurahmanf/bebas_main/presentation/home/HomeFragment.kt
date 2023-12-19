@@ -32,13 +32,15 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
         viewModel.menuState.observe(this) {
             when (it) {
                 is NetworkState.SUCCESS -> {
-                    binding.rv.visibility = View.VISIBLE
                     menus.clear()
                     menus.addAll(it.data)
                     adapter.setList(menus)
+
+                    binding.rv.visibility = View.VISIBLE
                 }
 
                 is NetworkState.LOADING -> {

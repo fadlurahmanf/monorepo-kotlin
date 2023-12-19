@@ -8,5 +8,5 @@
     <color name="grey_opacity_20">#336B6B6B</color>
 
     <color name="color_primary">@color/red</color>
-    <color name="background_home_color">#F1F1F1</color>
+    <color name="background_home_color">#FAFAFA</color>
 </resources>
