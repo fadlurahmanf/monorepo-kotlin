@@ -9,6 +9,7 @@ import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PUT
+import retrofit2.http.Query
 
 interface CifApi {
     @GET("favorite")
@@ -24,4 +25,9 @@ interface CifApi {
 
     @GET("transaction-history/last-three-transactions")
     fun getLatestTransactionTransfer(): Observable<BaseResponse<List<LatestTransactionResponse>>>
+
+    @GET("transaction-history/last-three-transactions")
+    fun getLatestTransactionPLNPrePaid(
+        @Query("type") type: String = "Listrik"
+    ): Observable<BaseResponse<List<LatestTransactionResponse>>>
 }

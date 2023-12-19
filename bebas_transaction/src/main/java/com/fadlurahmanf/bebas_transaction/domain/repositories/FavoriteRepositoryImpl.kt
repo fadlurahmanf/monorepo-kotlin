@@ -14,8 +14,25 @@ class FavoriteRepositoryImpl @Inject constructor(
     private val cifRemoteDatasource: CifRemoteDatasource
 ) {
 
-    fun getLatestTransfer(): Observable<List<LatestTransactionModel>> {
+    fun getLatestTransactionTransfer(): Observable<List<LatestTransactionModel>> {
         return cifRemoteDatasource.getLatestTransactionTransfer().map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+
+            val latest = it.data!!
+            latest.map { latestResp ->
+                LatestTransactionModel(
+                    name = latestResp.accountName ?: "-",
+                    labelLatest = latestResp.bankName ?: "-",
+                    accountNumber = latestResp.accountNumber ?: "-"
+                )
+            }.toList()
+        }
+    }
+
+    fun getLatestTransactionPLNPrePaid(): Observable<List<LatestTransactionModel>> {
+        return cifRemoteDatasource.getLatestTransactionPLNPrePaid().map {
             if (it.data == null) {
                 throw BebasException.generalRC("DATA_MISSING")
             }

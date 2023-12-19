@@ -25,9 +25,19 @@ class FavoriteViewModel @Inject constructor(
     private val _latestState = MutableLiveData<NetworkState<List<LatestTransactionModel>>>()
     val latestState: LiveData<NetworkState<List<LatestTransactionModel>>> = _latestState
 
-    fun getTransferLatest() {
+    fun getTransferLatest(favoriteFlow: FavoriteFlow) {
         _latestState.value = NetworkState.LOADING
-        baseDisposable.add(favoriteRepositoryImpl.getLatestTransfer()
+        val observable: Observable<List<LatestTransactionModel>> = when (favoriteFlow) {
+            FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
+                favoriteRepositoryImpl.getLatestTransactionTransfer()
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID -> {
+                favoriteRepositoryImpl.getLatestTransactionPLNPrePaid()
+            }
+        }
+
+        baseDisposable.add(observable
                                .subscribeOn(Schedulers.io())
                                .observeOn(AndroidSchedulers.mainThread())
                                .subscribe(

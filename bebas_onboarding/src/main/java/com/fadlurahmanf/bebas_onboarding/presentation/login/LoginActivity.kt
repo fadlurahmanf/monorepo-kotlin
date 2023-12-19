@@ -39,7 +39,7 @@ class LoginActivity : BaseOnboardingActivity<ActivityLoginBinding>(ActivityLogin
                     intent.apply {
                         putExtra(
                             FavoriteArgument.FAVORITE_FLOW,
-                            FavoriteFlow.TRANSACTION_MENU_TRANSFER.name
+                            FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID.name
                         )
                     }
                     startActivity(intent)

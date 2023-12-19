@@ -111,8 +111,13 @@ class FavoriteListActivity :
                     })
                     pinnedFavoriteAdapter.setList(pinnedFavorites)
 
-                    binding.llFavorites.visibility = View.VISIBLE
-                    binding.llPinnedFavorites.visibility = View.VISIBLE
+                    if (pinnedFavorites.isNotEmpty()) {
+                        binding.llPinnedFavorites.visibility = View.VISIBLE
+                    }
+
+                    if (favorites.isNotEmpty()) {
+                        binding.llFavorites.visibility = View.VISIBLE
+                    }
                 }
 
                 is NetworkState.FAILED -> {
@@ -182,11 +187,7 @@ class FavoriteListActivity :
         }
 
         viewModel.getTransferFavorite(favoriteFlow)
-        if (favoriteFlow == FavoriteFlow.TRANSACTION_MENU_TRANSFER) {
-            viewModel.getTransferLatest()
-        } else if (favoriteFlow == FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID) {
-
-        }
+        viewModel.getTransferLatest(favoriteFlow)
     }
 
     private fun goToTransferDetailAfterInquiry(
@@ -221,11 +222,19 @@ class FavoriteListActivity :
     }
 
     override fun onItemClicked(favorite: FavoriteContactModel) {
-        viewModel.inquiryBankMas(
-            favorite.accountNumber,
-            isFromFavorite = true,
-            favoriteModel = favorite
-        )
+        when (favoriteFlow) {
+            FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
+                viewModel.inquiryBankMas(
+                    favorite.accountNumber,
+                    isFromFavorite = true,
+                    favoriteModel = favorite
+                )
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID -> {
+
+            }
+        }
     }
 
     fun pinOrUnpinFavorite(isCurrentPinned: Boolean, favorite: FavoriteContactModel) {
@@ -277,6 +286,18 @@ class FavoriteListActivity :
     }
 
     override fun onItemClicked(latest: LatestTransactionModel) {
-        viewModel.inquiryBankMas(latest.accountNumber, isFromLatest = true, latestModel = latest)
+        when (favoriteFlow) {
+            FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
+                viewModel.inquiryBankMas(
+                    latest.accountNumber,
+                    isFromLatest = true,
+                    latestModel = latest
+                )
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID -> {
+
+            }
+        }
     }
 }

@@ -16,4 +16,5 @@ class CifRemoteDatasource @Inject constructor(
 
     fun pinFavorite(request: PinFavoriteRequest) = networkService().pinFavorite(request)
     fun getLatestTransactionTransfer() = networkService().getLatestTransactionTransfer()
+    fun getLatestTransactionPLNPrePaid() = networkService().getLatestTransactionPLNPrePaid()
 }
