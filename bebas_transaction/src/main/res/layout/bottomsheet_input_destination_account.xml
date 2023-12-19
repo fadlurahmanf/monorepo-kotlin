@@ -20,6 +20,7 @@
         android:src="@drawable/baseline_close_24" />
 
     <TextView
+        android:id="@+id/tv_title_bottomsheet"
         style="@style/Font.Text16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,8 +30,8 @@
         android:text="Masukkan Rekening Tujuan" />
 
     <include
-        android:id="@+id/item_bank"
-        layout="@layout/item_bank"
+        android:id="@+id/item_identity"
+        layout="@layout/item_identity_transaction_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp" />

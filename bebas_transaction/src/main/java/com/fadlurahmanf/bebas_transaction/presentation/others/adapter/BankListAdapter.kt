@@ -30,8 +30,8 @@ class BankListAdapter : RecyclerView.Adapter<BankListAdapter.ViewHolder>() {
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val bankLogo = view.findViewById<ImageView>(R.id.iv_bank_logo)
-        val bankName = view.findViewById<TextView>(R.id.tv_bank_name)
+        val bankLogo = view.findViewById<ImageView>(R.id.iv_logo)
+        val bankName = view.findViewById<TextView>(R.id.tv_label)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -40,7 +40,7 @@ class BankListAdapter : RecyclerView.Adapter<BankListAdapter.ViewHolder>() {
         }
 
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_bank, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_identity_transaction_menu, parent, false)
         return ViewHolder(view)
     }
 

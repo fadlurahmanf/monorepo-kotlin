@@ -20,7 +20,7 @@
     <color name="color_primary">@color/red</color>
     <color name="color_primary_opacity_90">@color/red_opacity_90</color>
 
-    <color name="white_pressed_button">#FFCACACA</color>
+    <color name="white_pressed_button">#E6E6E6</color>
 
     <color name="edittext_hint">@color/grey_opacity_90</color>
 </resources>

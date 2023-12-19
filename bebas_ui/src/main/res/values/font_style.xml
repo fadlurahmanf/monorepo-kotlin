@@ -48,8 +48,8 @@
     </style>
 
     <style name="Font.OutlinedButton">
-        <item name="android:fontFamily">@font/lexend_deca_bold</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/lexend_deca_semi_bold</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 

@@ -8,7 +8,7 @@
     android:padding="10dp">
 
     <ImageView
-        android:id="@+id/iv_bank_logo"
+        android:id="@+id/iv_logo"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@color/white"
@@ -19,7 +19,7 @@
         android:textAllCaps="true" />
 
     <TextView
-        android:id="@+id/tv_bank_name"
+        android:id="@+id/tv_label"
         style="@style/Font.Text16"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

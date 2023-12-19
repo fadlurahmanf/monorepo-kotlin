@@ -28,7 +28,12 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
     private var errorTv: TextView
 
     var hintInput: String?
-    var labelInput: String?
+    private var labelInput: String?
+
+    fun setLabel(label: String) {
+        this.label.text = label
+    }
+
     var errorText: String? = null
     private var editTextHasFocus: Boolean = false
     private var fieldError: Boolean = false

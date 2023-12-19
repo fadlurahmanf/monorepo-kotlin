@@ -7,11 +7,11 @@ import android.view.View
 import com.fadlurahmanf.bebas_api.data.dto.transfer.BankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
+import com.fadlurahmanf.bebas_transaction.data.flow.InputDestinationAccountFlow
 import com.fadlurahmanf.bebas_transaction.data.state.BankListState
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityBankListBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.others.adapter.BankListAdapter
-import com.fadlurahmanf.bebas_transaction.presentation.transfer.DestinationBankAccountBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.transfer.TransferDetailActivity
 import javax.inject.Inject
 
@@ -104,27 +104,31 @@ class BankListActivity :
         startActivity(intent)
     }
 
-    private var destinationBankAccountBottomsheet: DestinationBankAccountBottomsheet? = null
+    private var inputDestinationAccountBottomsheet: InputDestinationAccountBottomsheet? = null
     override fun onItemClicked(bank: BankResponse) {
-        destinationBankAccountBottomsheet = DestinationBankAccountBottomsheet()
-        destinationBankAccountBottomsheet?.setCallback(object :
-                                                           DestinationBankAccountBottomsheet.Callback {
-            override fun onNextClicked(dialog: Dialog?, accountBankNumber: String) {
-                super.onNextClicked(dialog, accountBankNumber)
+        inputDestinationAccountBottomsheet = InputDestinationAccountBottomsheet()
+        inputDestinationAccountBottomsheet?.setCallback(object :
+                                                            InputDestinationAccountBottomsheet.Callback {
+            override fun onNextClicked(dialog: Dialog?, destinationAccount: String) {
+                super.onNextClicked(dialog, destinationAccount)
                 if (bank.rtgsId == "BMSEIDJA" && bank.sknId == "5480300") {
-                    viewModel.inquiryBankMas(accountBankNumber)
+                    viewModel.inquiryBankMas(destinationAccount)
                 } else {
-                    viewModel.inquiryOtherBank(bank.sknId ?: "-", accountBankNumber)
+                    viewModel.inquiryOtherBank(bank.sknId ?: "-", destinationAccount)
                 }
             }
         })
-        destinationBankAccountBottomsheet?.arguments = Bundle().apply {
-            putString(DestinationBankAccountBottomsheet.BANK_NAME, bank.nickName ?: "-")
-            putString(DestinationBankAccountBottomsheet.BANK_IMAGE, bank.image ?: "-")
+        inputDestinationAccountBottomsheet?.arguments = Bundle().apply {
+            putString(
+                InputDestinationAccountBottomsheet.FLOW,
+                InputDestinationAccountFlow.TRANSFER.name
+            )
+            putString(InputDestinationAccountBottomsheet.LABEL_NAME, bank.nickName ?: "-")
+            putString(InputDestinationAccountBottomsheet.IMAGE_LOGO_URL, bank.image ?: "-")
         }
-        destinationBankAccountBottomsheet?.show(
+        inputDestinationAccountBottomsheet?.show(
             supportFragmentManager,
-            DestinationBankAccountBottomsheet::class.java.simpleName
+            InputDestinationAccountBottomsheet::class.java.simpleName
         )
     }
 

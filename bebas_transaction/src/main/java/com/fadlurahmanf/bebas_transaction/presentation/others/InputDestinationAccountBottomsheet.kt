@@ -1,12 +1,15 @@
-package com.fadlurahmanf.bebas_transaction.presentation.transfer
+package com.fadlurahmanf.bebas_transaction.presentation.others
 
 import android.app.Dialog
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-import com.fadlurahmanf.bebas_transaction.databinding.BottomsheetDestinationBankAccountBinding
+import com.fadlurahmanf.bebas_transaction.R
+import com.fadlurahmanf.bebas_transaction.data.flow.InputDestinationAccountFlow
+import com.fadlurahmanf.bebas_transaction.databinding.BottomsheetInputDestinationAccountBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionBottomsheet
 import com.fadlurahmanf.bebas_ui.edittext.BebasEdittext
 import com.fadlurahmanf.bebas_ui.extension.dismissKeyboard
@@ -14,18 +17,22 @@ import com.fadlurahmanf.bebas_ui.extension.showKeyboard
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class DestinationBankAccountBottomsheet :
-    BaseTransactionBottomsheet<BottomsheetDestinationBankAccountBinding>(
-        BottomsheetDestinationBankAccountBinding::inflate
+class InputDestinationAccountBottomsheet :
+    BaseTransactionBottomsheet<BottomsheetInputDestinationAccountBinding>(
+        BottomsheetInputDestinationAccountBinding::inflate
     ), BebasEdittext.BebasEdittextTextWatcher {
     companion object {
-        const val BANK_IMAGE = "BANK_IMAGE"
-        const val BANK_NAME = "BANK_NAME"
+        const val FLOW = "FLOW"
+
+        const val IMAGE_LOGO_URL = "IMAGE_URL"
+        const val LABEL_NAME = "LABEL_NAME"
         const val INITIAL_DESTINATION_ACCOUNT = "INITIAL_DESTINATION_ACCOUNT"
     }
 
-    private var bankImage: String? = null
-    private var bankName: String? = null
+    private lateinit var flow: InputDestinationAccountFlow
+
+    private var imageUrl: String? = null
+    private var label: String? = null
     private var destinationAccountNumber: String? = null
 
     private var handler = Handler(Looper.getMainLooper())
@@ -38,16 +45,43 @@ class DestinationBankAccountBottomsheet :
 
     private lateinit var bottomsheetDialog: BottomSheetDialog
     override fun setup() {
-        bankImage = arguments?.getString(BANK_IMAGE)
-        bankName = arguments?.getString(BANK_NAME)
+        val stringFlow = arguments?.getString(FLOW) ?: return
+        flow = enumValueOf<InputDestinationAccountFlow>(stringFlow)
+
+        imageUrl = arguments?.getString(IMAGE_LOGO_URL)
+        label = arguments?.getString(LABEL_NAME)
         destinationAccountNumber = arguments?.getString(INITIAL_DESTINATION_ACCOUNT)
+
+        when (flow) {
+            InputDestinationAccountFlow.TRANSFER -> {
+                binding.tvTitleBottomsheet.text = "Masukkan Rekening Tujuan"
+                binding.etDestinationAccount.setLabel("Nomor Rekening")
+            }
+
+            InputDestinationAccountFlow.PLN_PREPAID -> {
+                binding.tvTitleBottomsheet.text = "Masukkan ID Pel/No. Meter"
+                binding.etDestinationAccount.setLabel("ID Pelanggan/No. Meter")
+            }
+        }
+
+        when (flow) {
+            InputDestinationAccountFlow.PLN_PREPAID -> {
+                binding.itemIdentity.tvLabel.text = "Token Listrik"
+                Glide.with(binding.itemIdentity.ivLogo)
+                    .load(ContextCompat.getDrawable(requireContext(), R.drawable.iv_logo_pln))
+                    .into(binding.itemIdentity.ivLogo)
+            }
+
+            else -> {
+                binding.itemIdentity.tvLabel.text = label ?: "-"
+                binding.etDestinationAccount.text = destinationAccountNumber ?: ""
+                Glide.with(binding.itemIdentity.ivLogo).load(Uri.parse(imageUrl ?: ""))
+                    .into(binding.itemIdentity.ivLogo)
+            }
+        }
 
         bottomsheetDialog = (dialog as BottomSheetDialog)
 
-        Glide.with(binding.itemBank.ivBankLogo).load(Uri.parse(bankImage ?: ""))
-            .into(binding.itemBank.ivBankLogo)
-        binding.itemBank.tvBankName.text = bankName ?: "-"
-        binding.etDestinationAccount.text = destinationAccountNumber ?: ""
 
         handler.postDelayed({
                                 binding.etDestinationAccount.requestFocus()
@@ -64,6 +98,10 @@ class DestinationBankAccountBottomsheet :
         bottomsheetDialog.behavior.isDraggable = false
 
         binding.etDestinationAccount.addTextChangedListener(this)
+
+        binding.ivBack.setOnClickListener {
+            dialog?.dismiss()
+        }
 
         binding.btnNext.setOnClickListener {
             binding.etDestinationAccount.clearFocus()
@@ -89,7 +127,7 @@ class DestinationBankAccountBottomsheet :
         verifyAccountNumberField()
     }
 
-    fun verifyAccountNumberField() {
+    private fun verifyAccountNumberField() {
         if (binding.etDestinationAccount.text.isEmpty()) {
             isCanTapNext = false
             binding.etDestinationAccount.setError("Nomor rekening dibutuhkan", fieldError = true)
@@ -106,7 +144,7 @@ class DestinationBankAccountBottomsheet :
     }
 
     interface Callback {
-        fun onNextClicked(dialog: Dialog?, accountBankNumber: String) {
+        fun onNextClicked(dialog: Dialog?, destinationAccount: String) {
             dialog?.dismiss()
         }
     }

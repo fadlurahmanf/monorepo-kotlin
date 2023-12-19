@@ -26,7 +26,7 @@ interface CifApi {
     @GET("transaction-history/last-three-transactions")
     fun getLatestTransactionTransfer(): Observable<BaseResponse<List<LatestTransactionResponse>>>
 
-    @GET("transaction-history/last-three-transactions")
+    @GET("transaction-history/prepaid/last-three-transactions")
     fun getLatestTransactionPLNPrePaid(
         @Query("type") type: String = "Listrik"
     ): Observable<BaseResponse<List<LatestTransactionResponse>>>

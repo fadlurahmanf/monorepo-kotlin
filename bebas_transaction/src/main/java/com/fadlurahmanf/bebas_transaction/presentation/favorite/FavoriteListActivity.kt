@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_transaction.presentation.favorite
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -12,6 +13,7 @@ import com.fadlurahmanf.bebas_shared.data.flow.transaction.FavoriteFlow
 import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.FavoriteContactModel
 import com.fadlurahmanf.bebas_transaction.data.dto.LatestTransactionModel
+import com.fadlurahmanf.bebas_transaction.data.flow.InputDestinationAccountFlow
 import com.fadlurahmanf.bebas_transaction.data.state.InquiryBankState
 import com.fadlurahmanf.bebas_transaction.data.state.PinFavoriteState
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityFavoriteListBinding
@@ -19,6 +21,7 @@ import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.FavoriteAdapter
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.LatestAdapter
 import com.fadlurahmanf.bebas_transaction.presentation.others.BankListActivity
+import com.fadlurahmanf.bebas_transaction.presentation.others.InputDestinationAccountBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.transfer.TransferDetailActivity
 import javax.inject.Inject
 
@@ -52,8 +55,7 @@ class FavoriteListActivity :
         }
 
         binding.btnNewReceiver.setOnClickListener {
-            val intent = Intent(this, BankListActivity::class.java)
-            startActivity(intent)
+            onNewReceiverClick()
         }
 
         favoriteFlow = enumValueOf<FavoriteFlow>(stringFavoriteFlow)
@@ -177,7 +179,9 @@ class FavoriteListActivity :
                     latests.addAll(it.data)
                     latestAdapter.setList(latests)
 
-                    binding.llLatest.visibility = View.VISIBLE
+                    if (latests.isNotEmpty()) {
+                        binding.llLatest.visibility = View.VISIBLE
+                    }
                 }
 
                 else -> {
@@ -188,6 +192,40 @@ class FavoriteListActivity :
 
         viewModel.getTransferFavorite(favoriteFlow)
         viewModel.getTransferLatest(favoriteFlow)
+    }
+
+    private fun onNewReceiverClick() {
+        when (favoriteFlow) {
+            FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
+                val intent = Intent(this, BankListActivity::class.java)
+                startActivity(intent)
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID -> {
+                showInputAccountBottomsheet()
+            }
+        }
+    }
+
+    private var inputAccountBottomsheet: InputDestinationAccountBottomsheet? = null
+    private fun showInputAccountBottomsheet() {
+        inputAccountBottomsheet = InputDestinationAccountBottomsheet()
+        inputAccountBottomsheet?.setCallback(object : InputDestinationAccountBottomsheet.Callback {
+            override fun onNextClicked(dialog: Dialog?, destinationAccount: String) {
+                super.onNextClicked(dialog, destinationAccount)
+
+            }
+        })
+        inputAccountBottomsheet?.arguments = Bundle().apply {
+            putString(
+                InputDestinationAccountBottomsheet.FLOW,
+                InputDestinationAccountFlow.PLN_PREPAID.name
+            )
+        }
+        inputAccountBottomsheet?.show(
+            supportFragmentManager,
+            InputDestinationAccountBottomsheet::class.java.simpleName
+        )
     }
 
     private fun goToTransferDetailAfterInquiry(
