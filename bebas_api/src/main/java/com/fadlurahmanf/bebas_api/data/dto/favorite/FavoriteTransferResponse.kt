@@ -4,8 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class FavoriteTransferResponse(
     val id: String? = null,
-    @SerializedName("aliasName")
-    val nameInFavorite: String? = null,
+    val aliasName: String? = null,
     val bankName: String? = null,
     @SerializedName("accountNumber")
     val bankAccountNumber: String? = null,

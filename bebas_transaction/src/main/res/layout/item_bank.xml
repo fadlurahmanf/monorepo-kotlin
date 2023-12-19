@@ -11,11 +11,10 @@
         android:id="@+id/iv_bank_logo"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:background="@color/white"
         android:layout_gravity="center"
-        android:background="@drawable/background_bank_logo"
         android:gravity="center"
-        android:padding="12dp"
-        android:scaleType="centerCrop"
+        android:padding="5dp"
         android:src="@drawable/round_account_balance_24"
         android:textAllCaps="true" />
 

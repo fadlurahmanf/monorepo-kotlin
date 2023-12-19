@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_api.data.api
 
+import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoritePLNPrePaidResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoriteTransferResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.LatestTransactionResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.PinFavoriteRequest
@@ -12,6 +13,9 @@ import retrofit2.http.PUT
 interface CifApi {
     @GET("favorite")
     fun getFavoriteTransfer(): Observable<BaseResponse<List<FavoriteTransferResponse>>>
+
+    @GET("favorite-prepaid/get-favorite")
+    fun getFavoritePLNPrePaid(): Observable<BaseResponse<List<FavoritePLNPrePaidResponse>>>
 
     @PUT("favorite/pin")
     fun pinFavorite(

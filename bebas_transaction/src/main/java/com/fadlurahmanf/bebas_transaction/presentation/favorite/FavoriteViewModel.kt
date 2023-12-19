@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.data.flow.transaction.FavoriteFlow
 import com.fadlurahmanf.bebas_transaction.data.dto.FavoriteContactModel
 import com.fadlurahmanf.bebas_transaction.data.dto.LatestTransactionModel
 import com.fadlurahmanf.bebas_transaction.data.state.InquiryBankState
@@ -12,6 +13,7 @@ import com.fadlurahmanf.bebas_transaction.domain.repositories.FavoriteRepository
 import com.fadlurahmanf.bebas_transaction.domain.repositories.TransactionRepositoryImpl
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -43,10 +45,19 @@ class FavoriteViewModel @Inject constructor(
     private val _favoriteState = MutableLiveData<NetworkState<List<FavoriteContactModel>>>()
     val favoriteState: LiveData<NetworkState<List<FavoriteContactModel>>> = _favoriteState
 
-    fun getTransferFavorite() {
+    fun getTransferFavorite(favoriteFlow: FavoriteFlow) {
         _favoriteState.value = NetworkState.LOADING
-        baseDisposable.add(favoriteRepositoryImpl.getFavoriteTransfer()
-                               .subscribeOn(Schedulers.io())
+        val observable: Observable<List<FavoriteContactModel>> = when (favoriteFlow) {
+            FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
+                favoriteRepositoryImpl.getFavoriteTransfer()
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID -> {
+                favoriteRepositoryImpl.getFavoritePLNPrePaid()
+            }
+        }
+
+        baseDisposable.add(observable.subscribeOn(Schedulers.io())
                                .observeOn(AndroidSchedulers.mainThread())
                                .subscribe(
                                    {

@@ -2,9 +2,7 @@ package com.fadlurahmanf.bebas_transaction.domain.repositories
 
 import android.content.Context
 import com.fadlurahmanf.bebas_api.data.datasources.CifRemoteDatasource
-import com.fadlurahmanf.bebas_api.data.dto.favorite.LatestTransactionResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.PinFavoriteRequest
-import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.FavoriteContactModel
 import com.fadlurahmanf.bebas_transaction.data.dto.LatestTransactionModel
@@ -43,10 +41,31 @@ class FavoriteRepositoryImpl @Inject constructor(
             favorites.map { favResp ->
                 FavoriteContactModel(
                     id = favResp.id ?: "-",
-                    nameInFavoriteContact = favResp.nameInFavorite ?: "-",
+                    nameInFavoriteContact = favResp.aliasName ?: "-",
                     labelTypeOfFavorite = favResp.bankName ?: "-",
                     accountNumber = favResp.bankAccountNumber ?: "-",
                     isPinned = favResp.isPinned ?: false,
+                    additionalTransferData = favResp
+                )
+            }.toList()
+        }
+    }
+
+    fun getFavoritePLNPrePaid(): Observable<List<FavoriteContactModel>> {
+        return cifRemoteDatasource.getFavoritePLNPrePaid().map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+
+            val favorites = it.data!!
+            favorites.map { favResp ->
+                FavoriteContactModel(
+                    id = favResp.id ?: "-",
+                    nameInFavoriteContact = favResp.aliasName ?: "-",
+                    labelTypeOfFavorite = favResp.aliasName ?: "-",
+                    accountNumber = favResp.accountNumber ?: "-",
+                    isPinned = favResp.isPinned ?: false,
+                    additionalPlnPrePaidData = favResp
                 )
             }.toList()
         }

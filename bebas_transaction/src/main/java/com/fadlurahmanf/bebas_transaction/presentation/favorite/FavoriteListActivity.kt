@@ -181,9 +181,11 @@ class FavoriteListActivity :
             }
         }
 
+        viewModel.getTransferFavorite(favoriteFlow)
         if (favoriteFlow == FavoriteFlow.TRANSACTION_MENU_TRANSFER) {
-            viewModel.getTransferFavorite()
             viewModel.getTransferLatest()
+        } else if (favoriteFlow == FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID) {
+
         }
     }
 

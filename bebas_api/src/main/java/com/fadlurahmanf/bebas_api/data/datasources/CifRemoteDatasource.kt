@@ -12,6 +12,7 @@ class CifRemoteDatasource @Inject constructor(
     override fun getApi(): Class<CifApi> = CifApi::class.java
 
     fun getFavoriteTransfer() = networkService().getFavoriteTransfer()
+    fun getFavoritePLNPrePaid() = networkService().getFavoritePLNPrePaid()
 
     fun pinFavorite(request: PinFavoriteRequest) = networkService().pinFavorite(request)
     fun getLatestTransactionTransfer() = networkService().getLatestTransactionTransfer()
