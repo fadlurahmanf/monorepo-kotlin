@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="red">#FFCC0921</color>
+    <color name="warm_red">#FFF7C6C6</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#FF000000</color>
     <color name="light_grey">#FFA1A1A1</color>
@@ -9,4 +10,5 @@
 
     <color name="color_primary">@color/red</color>
     <color name="background_home_color">#FAFAFA</color>
+    <color name="background_scrollbar">#E6E6E6</color>
 </resources>

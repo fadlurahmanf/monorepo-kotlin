@@ -2,6 +2,8 @@ package com.fadlurahmanf.bebas_main.domain.repositories
 
 import android.content.Context
 import com.fadlurahmanf.bebas_api.data.datasources.CmsRemoteDatasource
+import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
+import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_main.R
 import com.fadlurahmanf.bebas_main.data.dto.menu.TransactionMenuModel
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
@@ -11,6 +13,7 @@ import javax.inject.Inject
 class MainRepositoryImpl @Inject constructor(
     context: Context,
     private val cmsRemoteDatasource: CmsRemoteDatasource,
+    private val transactionRemoteDatasource: TransactionRemoteDatasource,
 ) {
 
     fun getTransactionMenu(): Observable<List<TransactionMenuModel>> {
@@ -84,5 +87,19 @@ class MainRepositoryImpl @Inject constructor(
                 )
                 menusModel
             }
+    }
+
+    fun getListBankAccount(): Observable<List<BankAccountResponse>> {
+        return transactionRemoteDatasource.getBankAccounts().map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+
+            if (it.data?.isEmpty() == true) {
+                throw BebasException.generalRC("MBA_00")
+            }
+            val bankAccounts = it.data!!
+            bankAccounts
+        }
     }
 }
