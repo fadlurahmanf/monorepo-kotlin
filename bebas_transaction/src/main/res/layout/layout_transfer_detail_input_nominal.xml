@@ -44,7 +44,7 @@
                 android:layout_height="10dp" />
 
             <TextView
-                android:id="@+id/tv_sub_favorite"
+                android:id="@+id/tv_sub_label"
                 style="@style/Font.Text14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

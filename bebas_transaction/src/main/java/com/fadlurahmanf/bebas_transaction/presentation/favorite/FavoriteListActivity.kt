@@ -2,8 +2,6 @@ package com.fadlurahmanf.bebas_transaction.presentation.favorite
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.Menu
 import android.view.View
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
@@ -14,9 +12,9 @@ import com.fadlurahmanf.bebas_shared.data.flow.transaction.FavoriteFlow
 import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.FavoriteContactModel
 import com.fadlurahmanf.bebas_transaction.data.dto.LatestTransactionModel
+import com.fadlurahmanf.bebas_transaction.data.state.InquiryBankState
 import com.fadlurahmanf.bebas_transaction.data.state.PinFavoriteState
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityFavoriteListBinding
-import com.fadlurahmanf.bebas_transaction.presentation.others.BankListActivity
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.FavoriteAdapter
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.LatestAdapter
@@ -129,18 +127,24 @@ class FavoriteListActivity :
 
         viewModel.inquiryBankMasState.observe(this) {
             when (it) {
-                is NetworkState.FAILED -> {
+                is InquiryBankState.FAILED -> {
                     dismissLoadingDialog()
                     showFailedBottomsheet(it.exception)
                 }
 
-                NetworkState.LOADING -> {
+                InquiryBankState.LOADING -> {
                     showLoadingDialog()
                 }
 
-                is NetworkState.SUCCESS -> {
+                is InquiryBankState.SUCCESS -> {
                     dismissLoadingDialog()
-                    goToTransferDetailAfterInquiry(it.data)
+                    goToTransferDetailAfterInquiry(
+                        it.result,
+                        it.isFromFavorite,
+                        it.favoriteModel,
+                        it.isFromLatest,
+                        it.latestModel
+                    )
                 }
 
                 else -> {}
@@ -177,8 +181,25 @@ class FavoriteListActivity :
         }
     }
 
-    private fun goToTransferDetailAfterInquiry(inquiryResult: InquiryBankResponse) {
+    private fun goToTransferDetailAfterInquiry(
+        inquiryResult: InquiryBankResponse,
+        fromFavorite: Boolean = false,
+        favoriteModel: FavoriteContactModel? = null,
+        fromLatest: Boolean = false,
+        latestModel: LatestTransactionModel? = null
+    ) {
         val intent = Intent(this, TransferDetailActivity::class.java)
+        intent.apply {
+            putExtra(TransferDetailActivity.IS_FAVORITE, fromFavorite)
+            putExtra(
+                TransferDetailActivity.DESTINATION_ACCOUNT_NAME,
+                favoriteModel?.nameInFavoriteContact ?: inquiryResult.destinationAccountName ?: "-"
+            )
+            putExtra(
+                TransferDetailActivity.SUB_LABEL,
+                "${favoriteModel?.labelTypeOfFavorite} • ${favoriteModel?.accountNumber}"
+            )
+        }
         startActivity(intent)
     }
 
@@ -192,7 +213,11 @@ class FavoriteListActivity :
     }
 
     override fun onItemClicked(favorite: FavoriteContactModel) {
-        viewModel.inquiryBankMas(favorite.accountNumber)
+        viewModel.inquiryBankMas(
+            favorite.accountNumber,
+            isFromFavorite = true,
+            favoriteModel = favorite
+        )
     }
 
     fun pinOrUnpinFavorite(isCurrentPinned: Boolean, favorite: FavoriteContactModel) {
@@ -244,6 +269,6 @@ class FavoriteListActivity :
     }
 
     override fun onItemClicked(latest: LatestTransactionModel) {
-        viewModel.inquiryBankMas(latest.accountNumber)
+        viewModel.inquiryBankMas(latest.accountNumber, isFromLatest = true, latestModel = latest)
     }
 }

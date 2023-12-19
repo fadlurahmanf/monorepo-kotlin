@@ -13,6 +13,17 @@ import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 
 class TransferDetailActivity :
     BaseTransactionActivity<ActivityTransferDetailBinding>(ActivityTransferDetailBinding::inflate) {
+
+    companion object {
+        const val IS_FAVORITE = "IS_FAVORITE"
+        const val DESTINATION_ACCOUNT_NAME = "DESTINATION_ACCOUNT_NAME"
+        const val SUB_LABEL = "SUB_LABEL"
+    }
+
+    var isFavorite: Boolean = false
+    var destinationAccountName: String = "-"
+    var subLabel: String = "-"
+
     override fun injectActivity() {
         component.inject(this)
     }
@@ -21,6 +32,23 @@ class TransferDetailActivity :
     private var nominal: Long? = null
 
     override fun onBebasCreate(savedInstanceState: Bundle?) {
+        isFavorite = intent.getBooleanExtra(IS_FAVORITE, false)
+        destinationAccountName = intent.getStringExtra(DESTINATION_ACCOUNT_NAME) ?: "-"
+        subLabel = intent.getStringExtra(SUB_LABEL) ?: "-"
+
+        binding.layoutInputNominal.tvDestinationAccountName.text = destinationAccountName
+        binding.layoutInputNominal.tvSubLabel.text = subLabel
+        if (isFavorite) {
+            var initial = "-"
+            if (destinationAccountName.contains(" ")) {
+                val first = destinationAccountName.split(" ").first().take(1)
+                val second = destinationAccountName.split(" ")[1].take(1)
+                binding.layoutInputNominal.initialAvatar.text = "$first$second"
+            } else {
+                binding.layoutInputNominal.initialAvatar.text = destinationAccountName.take(1)
+            }
+        }
+
         Handler(Looper.getMainLooper()).postDelayed({
                                                         dismissKeyboardTransaction()
                                                     }, 500)
@@ -89,6 +117,10 @@ class TransferDetailActivity :
                 dismissKeyboardTransaction()
             }
         })
+
+        binding.btnNext.setOnClickListener {
+
+        }
     }
 
     private fun openKeyboardTransaction() {
