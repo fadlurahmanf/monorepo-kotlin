@@ -3,16 +3,14 @@
     android:layout_width="70dp"
     android:layout_height="80dp"
     android:orientation="vertical"
-    android:gravity="center"
-    android:background="@color/white"
-    android:paddingHorizontal="5dp">
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/iv_menu"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
         android:layout_gravity="center"
-        android:src="@drawable/ic_menu_other" />
+        android:src="@drawable/ic_menu_transfer" />
 
     <TextView
         android:id="@+id/tv_menu_label"
@@ -20,8 +18,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:layout_marginHorizontal="3dp"
         android:layout_gravity="center"
-        android:gravity="center"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="@string/others"

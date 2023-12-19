@@ -5,6 +5,6 @@
     <string name="payment">Pembayaran</string>
     <string name="purchase">Pembelian</string>
     <string name="topup">Top Up</string>
-    <string name="cardless_withdrawal">Penarikan Tanpa Kartu</string>
+    <string name="cardless_withdrawal">Tarik Tunai</string>
     <string name="others">Lainnya</string>
 </resources>
