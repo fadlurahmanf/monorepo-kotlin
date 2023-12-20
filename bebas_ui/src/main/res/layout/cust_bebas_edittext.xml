@@ -51,19 +51,17 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et"
-                    style="@style/Font.EdittextV2Hint"
+                    style="@style/Font.EdittextV2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
+                    android:textColorHint="@color/grey"
                     android:cursorVisible="true"
                     android:hint="Hint"
                     android:maxLines="1"
                     android:paddingVertical="0dp"
                     android:paddingStart="0dp"
-                    android:paddingEnd="0dp"
-                    android:textColor="@color/red"
-                    android:textCursorDrawable="@drawable/edittext_cursor_color"
-                    android:theme="@style/EditTextTheme" />
+                    android:paddingEnd="0dp" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
     </LinearLayout>

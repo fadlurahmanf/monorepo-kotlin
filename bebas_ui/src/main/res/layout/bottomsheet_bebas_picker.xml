@@ -18,12 +18,12 @@
 
         <EditText
             android:id="@+id/et_search"
-            style="@style/Font.EdittextV2Hint"
+            style="@style/Font.EdittextV2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/white"
-            android:hint="TES" />
+            android:hint="HINT" />
 
         <ImageView
             android:layout_width="20dp"

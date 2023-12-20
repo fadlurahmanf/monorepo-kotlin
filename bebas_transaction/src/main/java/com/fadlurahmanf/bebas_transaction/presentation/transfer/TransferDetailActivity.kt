@@ -148,7 +148,7 @@ class TransferDetailActivity :
                 ColorStateList.valueOf(
                     ContextCompat.getColor(
                         this,
-                        R.color.light_grey
+                        R.color.grey
                     )
                 )
             )

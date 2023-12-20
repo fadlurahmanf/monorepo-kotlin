@@ -87,7 +87,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/lexend_deca_semi_bold"
             android:text="@string/input_nominal_transfer"
-            android:textColor="@color/light_grey" />
+            android:textColor="@color/grey" />
     </LinearLayout>
 
 </LinearLayout>
