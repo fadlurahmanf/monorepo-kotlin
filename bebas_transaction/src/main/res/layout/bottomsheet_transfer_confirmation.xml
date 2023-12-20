@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:paddingHorizontal="20dp"
     android:paddingVertical="20dp">
 
@@ -63,6 +64,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/background_outlined_border_grey"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="15dp">
+
+            <TextView
+                style="@style/Font.Text14"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Nominal Transfer"
+                android:textColor="@color/light_grey" />
+
+            <TextView
+                style="@style/Font.Text20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lexend_deca_bold"
+                android:text="Rp 175.000"
+                android:textColor="@color/grey" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/Font.Text14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/lexend_deca_bold"
+            android:text="Rincian" />
 
     </LinearLayout>
 

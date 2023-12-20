@@ -57,13 +57,23 @@
                 android:id="@+id/layout_input_nominal"
                 layout="@layout/layout_transfer_detail_input_nominal" />
 
+            <TextView
+                android:id="@+id/tv_error_nominal"
+                style="@style/Font.Text12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="error_text"
+                android:textColor="@color/error_text"
+                android:visibility="gone" />
+
             <com.fadlurahmanf.bebas_ui.edittext.BebasEdittext
                 android:id="@+id/et_notes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:hint="Catatan"
                 android:inputType="text"
+                app:hint="Catatan"
                 app:label="Catatan (opsional)" />
 
         </LinearLayout>

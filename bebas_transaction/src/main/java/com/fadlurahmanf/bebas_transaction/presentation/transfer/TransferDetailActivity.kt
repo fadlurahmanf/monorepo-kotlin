@@ -4,12 +4,15 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.R
+import com.fadlurahmanf.bebas_transaction.data.state.TransferDetailState
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityTransferDetailBinding
 import com.fadlurahmanf.bebas_transaction.external.BebasKeyboardTransaction
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
+import javax.inject.Inject
 
 class TransferDetailActivity :
     BaseTransactionActivity<ActivityTransferDetailBinding>(ActivityTransferDetailBinding::inflate) {
@@ -23,6 +26,9 @@ class TransferDetailActivity :
     var isFavorite: Boolean = false
     var destinationAccountName: String = "-"
     var subLabel: String = "-"
+
+    @Inject
+    lateinit var viewModel: TransferDetailViewModel
 
     override fun injectActivity() {
         component.inject(this)
@@ -118,10 +124,39 @@ class TransferDetailActivity :
             }
         })
 
-        binding.btnNext.setOnClickListener {
+        viewModel.transferState.observe(this) {
+            when (it) {
+                TransferDetailState.IDLE -> {
+                    binding.tvErrorNominal.visibility = View.GONE
+                }
 
+                is TransferDetailState.MinimumNominalTransferFailed -> {
+                    binding.tvErrorNominal.text = getString(
+                        R.string.minimum_transfer_nominal_is, it.minimum.toDouble().toRupiahFormat(
+                            useSymbol = false,
+                            useDecimal = false
+                        )
+                    )
+                    binding.tvErrorNominal.visibility = View.VISIBLE
+                    openKeyboardTransaction()
+                }
+
+                is TransferDetailState.SUCCESS -> {
+                    binding.tvErrorNominal.visibility = View.GONE
+                    showConfirmationBottomsheet()
+                }
+            }
+        }
+
+        binding.btnNext.setOnClickListener {
+            dismissKeyboardTransaction()
+            handler.postDelayed({
+                                    viewModel.verify(nominal ?: 0L)
+                                }, 250)
         }
     }
+
+    private var handler = Handler(Looper.getMainLooper())
 
     private fun openKeyboardTransaction() {
         isKeyboardVisible = true
@@ -162,6 +197,15 @@ class TransferDetailActivity :
                 )
             )
         }
+    }
+
+    private var bottomsheetTransferConfirmation: TransferConfirmationBottomsheet? = null
+    private fun showConfirmationBottomsheet() {
+        bottomsheetTransferConfirmation = TransferConfirmationBottomsheet()
+        bottomsheetTransferConfirmation?.show(
+            supportFragmentManager,
+            TransferConfirmationBottomsheet::class.java.simpleName
+        )
     }
 
 }
