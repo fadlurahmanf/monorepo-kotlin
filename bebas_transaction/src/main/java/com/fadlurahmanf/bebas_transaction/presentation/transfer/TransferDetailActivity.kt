@@ -29,12 +29,14 @@ class TransferDetailActivity :
         const val DESTINATION_ACCOUNT_NAME = "DESTINATION_ACCOUNT_NAME"
         const val DESTINATION_ACCOUNT_NUMBER = "DESTINATION_ACCOUNT_NUMBER"
         const val BANK_IMAGE_URL = "BANK_IMAGE_URL"
+        const val BANK_NAME = "BANK_NAME"
     }
 
     var isFavorite: Boolean = false
     var destinationAccountName: String = "-"
     var destinationAccountNumber: String = "-"
     var bankImageUrl: String? = null
+    var bankNickname: String = "-"
 
     lateinit var flow: TransferDetailFlow
 
@@ -62,9 +64,10 @@ class TransferDetailActivity :
         destinationAccountName = intent.getStringExtra(DESTINATION_ACCOUNT_NAME) ?: "-"
         destinationAccountNumber = intent.getStringExtra(DESTINATION_ACCOUNT_NUMBER) ?: "-"
         bankImageUrl = intent.getStringExtra(BANK_IMAGE_URL)
+        bankNickname = intent.getStringExtra(BANK_NAME) ?: "-"
 
         binding.layoutInputNominal.tvDestinationAccountName.text = destinationAccountName
-        binding.layoutInputNominal.tvSubLabel.text = destinationAccountNumber
+        binding.layoutInputNominal.tvSubLabel.text = "$bankNickname • $destinationAccountNumber"
 
         if (bankImageUrl != null && !isFavorite) {
             binding.layoutInputNominal.initialAvatar.visibility = View.GONE
@@ -249,8 +252,9 @@ class TransferDetailActivity :
             )
             putParcelable(
                 TransferConfirmationBottomsheet.ADDITIONAL_ARG, TransferConfirmationModel(
-                    realAccountName = "real",
-                    destinationAccountNumber = "acc nu",
+                    realAccountName = destinationAccountName,
+                    destinationAccountNumber = destinationAccountNumber,
+                    bankNickName = bankNickname,
                     nominal = (nominal ?: -1L).toDouble()
                 )
             )

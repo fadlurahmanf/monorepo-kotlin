@@ -123,6 +123,7 @@ class BankListActivity :
             destinationAccountNumber
         )
         intent.putExtra(TransferDetailActivity.BANK_IMAGE_URL, selectedBank.image)
+        intent.putExtra(TransferDetailActivity.BANK_NAME, selectedBank.nickName)
         startActivity(intent)
     }
 

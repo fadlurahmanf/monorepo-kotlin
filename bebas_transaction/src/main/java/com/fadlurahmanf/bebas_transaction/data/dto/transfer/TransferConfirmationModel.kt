@@ -8,5 +8,6 @@ data class TransferConfirmationModel(
     val realAccountName: String,
     val destinationAccountNumber: String,
     var imageLogoUrl: String? = null,
+    val bankNickName: String,
     val nominal: Double,
 ) : Parcelable

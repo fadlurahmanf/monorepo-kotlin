@@ -47,6 +47,16 @@ class TransactionRepositoryImpl @Inject constructor(
         }
     }
 
+    fun getBankAccounts(): Observable<List<BankAccountResponse>> {
+        return transactionRemoteDatasource.getBankAccounts().map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+
+            it.data!!
+        }
+    }
+
     fun getMainBankAccount(): Observable<BankAccountResponse> {
         return transactionRemoteDatasource.getBankAccounts().map {
             if (it.data == null) {

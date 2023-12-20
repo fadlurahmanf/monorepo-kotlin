@@ -44,6 +44,8 @@ class InputDestinationAccountBottomsheet :
     }
 
     private lateinit var bottomsheetDialog: BottomSheetDialog
+    override fun injectBottomsheet() {}
+
     override fun setup() {
         val stringFlow = arguments?.getString(FLOW) ?: return
         flow = enumValueOf<InputDestinationAccountFlow>(stringFlow)

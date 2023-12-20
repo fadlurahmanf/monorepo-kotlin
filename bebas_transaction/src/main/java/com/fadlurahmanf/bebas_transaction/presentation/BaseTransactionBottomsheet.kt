@@ -22,5 +22,8 @@ abstract class BaseTransactionBottomsheet<VB : ViewBinding>(inflate: BebasInflat
                 DaggerCorePlatformComponent.factory().create(),
                 DaggerBebasStorageComponent.factory().create(requireContext(), cryptoComponent)
             )
+        injectBottomsheet()
     }
+
+    abstract fun injectBottomsheet()
 }
