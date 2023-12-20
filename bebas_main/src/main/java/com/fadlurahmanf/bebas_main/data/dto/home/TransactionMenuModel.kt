@@ -1,4 +1,4 @@
-package com.fadlurahmanf.bebas_main.data.dto.menu
+package com.fadlurahmanf.bebas_main.data.dto.home
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

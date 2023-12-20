@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fadlurahmanf.bebas_main.R
-import com.fadlurahmanf.bebas_main.data.dto.menu.TransactionMenuModel
+import com.fadlurahmanf.bebas_main.data.dto.home.TransactionMenuModel
 
 class MenuAdapter : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
     lateinit var context: Context

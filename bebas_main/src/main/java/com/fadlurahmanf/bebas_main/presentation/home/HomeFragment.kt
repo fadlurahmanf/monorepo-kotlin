@@ -3,9 +3,9 @@ package com.fadlurahmanf.bebas_main.presentation.home
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
-import com.fadlurahmanf.bebas_main.data.dto.menu.TransactionMenuModel
+import com.fadlurahmanf.bebas_main.data.dto.home.HomeBankAccountModel
+import com.fadlurahmanf.bebas_main.data.dto.home.TransactionMenuModel
 import com.fadlurahmanf.bebas_main.databinding.FragmentHomeBinding
 import com.fadlurahmanf.bebas_main.presentation.BaseMainFragment
 import com.fadlurahmanf.bebas_main.presentation.home.adapter.BankAccountAdapter
@@ -23,7 +23,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
     lateinit var viewModel: HomeFragmentViewModel
 
     lateinit var bankAccountAdapter: BankAccountAdapter
-    private var bankAccounts: ArrayList<BankAccountResponse> = arrayListOf()
+    private var bankAccounts: ArrayList<HomeBankAccountModel> = arrayListOf()
 
     lateinit var adapter: MenuAdapter
     private val menus: ArrayList<TransactionMenuModel> = arrayListOf()

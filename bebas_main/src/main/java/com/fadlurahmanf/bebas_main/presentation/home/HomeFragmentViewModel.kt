@@ -4,7 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
-import com.fadlurahmanf.bebas_main.data.dto.menu.TransactionMenuModel
+import com.fadlurahmanf.bebas_main.data.dto.home.HomeBankAccountModel
+import com.fadlurahmanf.bebas_main.data.dto.home.TransactionMenuModel
 import com.fadlurahmanf.bebas_main.domain.repositories.MainRepositoryImpl
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
@@ -37,12 +38,12 @@ class HomeFragmentViewModel @Inject constructor(
     }
 
 
-    private val _bankAccounts = MutableLiveData<NetworkState<List<BankAccountResponse>>>()
-    val bankAccounts: LiveData<NetworkState<List<BankAccountResponse>>> = _bankAccounts
+    private val _bankAccounts = MutableLiveData<NetworkState<List<HomeBankAccountModel>>>()
+    val bankAccounts: LiveData<NetworkState<List<HomeBankAccountModel>>> = _bankAccounts
 
     fun getBankAccounts() {
         _bankAccounts.value = NetworkState.LOADING
-        baseDisposable.add(mainRepositoryImpl.getListBankAccount().subscribeOn(Schedulers.io())
+        baseDisposable.add(mainRepositoryImpl.getHomeBankAccounts().subscribeOn(Schedulers.io())
                                .observeOn(AndroidSchedulers.mainThread())
                                .subscribe(
                                    {
