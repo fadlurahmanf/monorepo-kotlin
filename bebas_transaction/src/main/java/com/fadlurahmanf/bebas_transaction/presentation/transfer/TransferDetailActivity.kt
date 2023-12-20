@@ -8,6 +8,8 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.R
+import com.fadlurahmanf.bebas_transaction.data.dto.transfer.TransferConfirmationModel
+import com.fadlurahmanf.bebas_transaction.data.flow.TransferConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.data.state.TransferDetailState
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityTransferDetailBinding
 import com.fadlurahmanf.bebas_transaction.external.BebasKeyboardTransaction
@@ -202,6 +204,20 @@ class TransferDetailActivity :
     private var bottomsheetTransferConfirmation: TransferConfirmationBottomsheet? = null
     private fun showConfirmationBottomsheet() {
         bottomsheetTransferConfirmation = TransferConfirmationBottomsheet()
+        bottomsheetTransferConfirmation?.arguments = Bundle().apply {
+            putString(
+                TransferConfirmationBottomsheet.FLOW,
+                TransferConfirmationFlow.TRANSFER_BETWEEN_BANK_MAS.name
+            )
+            putParcelable(
+                TransferConfirmationBottomsheet.ADDITIONAL_ARG, TransferConfirmationModel(
+                    realAccountName = "real",
+                    destinationAccountNumber = "acc nu",
+                    nominal = (nominal ?: -1L).toDouble()
+                )
+            )
+        }
+        
         bottomsheetTransferConfirmation?.show(
             supportFragmentManager,
             TransferConfirmationBottomsheet::class.java.simpleName

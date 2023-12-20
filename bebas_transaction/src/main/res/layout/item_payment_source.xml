@@ -18,7 +18,7 @@
             android:layout_height="45dp"
             android:background="@drawable/background_circle_bebas_logo"
             android:padding="10dp"
-            android:src="@drawable/il_logo_bebas" />
+            android:src="@drawable/il_logo_bebas_payment_source" />
 
         <LinearLayout
             android:layout_width="0dp"
