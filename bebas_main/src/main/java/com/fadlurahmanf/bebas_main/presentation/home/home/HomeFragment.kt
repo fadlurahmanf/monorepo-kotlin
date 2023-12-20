@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_main.data.dto.home.HomeBankAccountModel
@@ -132,6 +133,9 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
         promoAdapter = PromoAdapter()
         promoAdapter.setList(promos)
         binding.vpPromo.adapter = promoAdapter
+        binding.vpPromo.clipToPadding = false
+        binding.vpPromo.clipChildren = false
+        binding.vpPromo.offscreenPageLimit = 3
 
         viewModel.getMenus()
         viewModel.getBankAccounts()
