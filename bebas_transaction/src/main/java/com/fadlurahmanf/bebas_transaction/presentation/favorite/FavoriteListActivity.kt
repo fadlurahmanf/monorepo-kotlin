@@ -3,7 +3,6 @@ package com.fadlurahmanf.bebas_transaction.presentation.favorite
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.View
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
@@ -155,7 +154,7 @@ class FavoriteListActivity :
                     showLoadingDialog()
                 }
 
-                is InquiryBankState.SUCCESS -> {
+                is InquiryBankState.SuccessFromFavoriteActivity -> {
                     dismissLoadingDialog()
                     goToTransferDetailAfterInquiry(
                         it.result,
@@ -249,8 +248,8 @@ class FavoriteListActivity :
                 favoriteModel?.nameInFavoriteContact ?: inquiryResult.destinationAccountName ?: "-"
             )
             putExtra(
-                TransferDetailActivity.SUB_LABEL,
-                "${favoriteModel?.labelTypeOfFavorite} • ${favoriteModel?.accountNumber}"
+                TransferDetailActivity.DESTINATION_ACCOUNT_NUMBER,
+                favoriteModel?.accountNumber ?: "-"
             )
         }
         startActivity(intent)

@@ -12,6 +12,17 @@
         android:orientation="horizontal"
         android:padding="15dp">
 
+        <ImageView
+            android:id="@+id/iv_bank_logo"
+            style="@style/Font.InitialFavorite"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:gravity="center"
+            android:src="@drawable/il_logo_bebas_payment_source"
+            android:textAllCaps="true" />
+
         <TextView
             android:id="@+id/initialAvatar"
             style="@style/Font.InitialFavorite"
@@ -20,8 +31,9 @@
             android:layout_gravity="center"
             android:background="@drawable/background_initial_favorite"
             android:gravity="center"
-            android:text="BA"
-            android:textAllCaps="true" />
+            android:text="-"
+            android:textAllCaps="true"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="0dp"

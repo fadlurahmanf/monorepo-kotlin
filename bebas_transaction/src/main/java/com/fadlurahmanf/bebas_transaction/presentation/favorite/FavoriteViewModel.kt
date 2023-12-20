@@ -130,7 +130,7 @@ class FavoriteViewModel @Inject constructor(
                                .observeOn(AndroidSchedulers.mainThread())
                                .subscribe(
                                    {
-                                       _inquiryBankMasState.value = InquiryBankState.SUCCESS(
+                                       _inquiryBankMasState.value = InquiryBankState.SuccessFromFavoriteActivity(
                                            result = it,
                                            isFromFavorite = isFromFavorite,
                                            favoriteModel = favoriteModel,

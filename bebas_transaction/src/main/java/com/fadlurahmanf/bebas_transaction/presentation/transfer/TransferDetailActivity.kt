@@ -1,15 +1,19 @@
 package com.fadlurahmanf.bebas_transaction.presentation.transfer
 
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
+import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.transfer.TransferConfirmationModel
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferConfirmationFlow
+import com.fadlurahmanf.bebas_transaction.data.flow.TransferDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.state.TransferDetailState
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityTransferDetailBinding
 import com.fadlurahmanf.bebas_transaction.external.BebasKeyboardTransaction
@@ -20,14 +24,19 @@ class TransferDetailActivity :
     BaseTransactionActivity<ActivityTransferDetailBinding>(ActivityTransferDetailBinding::inflate) {
 
     companion object {
+        const val FLOW = "FLOW"
         const val IS_FAVORITE = "IS_FAVORITE"
         const val DESTINATION_ACCOUNT_NAME = "DESTINATION_ACCOUNT_NAME"
-        const val SUB_LABEL = "SUB_LABEL"
+        const val DESTINATION_ACCOUNT_NUMBER = "DESTINATION_ACCOUNT_NUMBER"
+        const val BANK_IMAGE_URL = "BANK_IMAGE_URL"
     }
 
     var isFavorite: Boolean = false
     var destinationAccountName: String = "-"
-    var subLabel: String = "-"
+    var destinationAccountNumber: String = "-"
+    var bankImageUrl: String? = null
+
+    lateinit var flow: TransferDetailFlow
 
     @Inject
     lateinit var viewModel: TransferDetailViewModel
@@ -40,14 +49,43 @@ class TransferDetailActivity :
     private var nominal: Long? = null
 
     override fun onBebasCreate(savedInstanceState: Bundle?) {
+        val stringFlow = intent.getStringExtra(FLOW)
+
+        if (stringFlow == null) {
+            showForcedBackBottomsheet(BebasException.generalRC("UNKNOWN_FLOW"))
+            return
+        }
+
+        flow = enumValueOf<TransferDetailFlow>(stringFlow)
+
         isFavorite = intent.getBooleanExtra(IS_FAVORITE, false)
         destinationAccountName = intent.getStringExtra(DESTINATION_ACCOUNT_NAME) ?: "-"
-        subLabel = intent.getStringExtra(SUB_LABEL) ?: "-"
+        destinationAccountNumber = intent.getStringExtra(DESTINATION_ACCOUNT_NUMBER) ?: "-"
+        bankImageUrl = intent.getStringExtra(BANK_IMAGE_URL)
 
         binding.layoutInputNominal.tvDestinationAccountName.text = destinationAccountName
-        binding.layoutInputNominal.tvSubLabel.text = subLabel
-        if (isFavorite) {
-            var initial = "-"
+        binding.layoutInputNominal.tvSubLabel.text = destinationAccountNumber
+
+        if (bankImageUrl != null && !isFavorite) {
+            binding.layoutInputNominal.initialAvatar.visibility = View.GONE
+            binding.layoutInputNominal.ivBankLogo.visibility = View.VISIBLE
+            Glide.with(binding.layoutInputNominal.ivBankLogo).load(Uri.parse(bankImageUrl))
+                .error(
+                    ContextCompat.getDrawable(
+                        applicationContext,
+                        R.drawable.il_bebas_grey_transaction
+                    )
+                )
+                .placeholder(
+                    ContextCompat.getDrawable(
+                        applicationContext,
+                        R.drawable.il_bebas_grey_transaction
+                    )
+                )
+                .into(binding.layoutInputNominal.ivBankLogo)
+        } else if (isFavorite) {
+            binding.layoutInputNominal.initialAvatar.visibility = View.VISIBLE
+            binding.layoutInputNominal.ivBankLogo.visibility = View.GONE
             if (destinationAccountName.contains(" ")) {
                 val first = destinationAccountName.split(" ").first().take(1)
                 val second = destinationAccountName.split(" ")[1].take(1)
@@ -217,7 +255,7 @@ class TransferDetailActivity :
                 )
             )
         }
-        
+
         bottomsheetTransferConfirmation?.show(
             supportFragmentManager,
             TransferConfirmationBottomsheet::class.java.simpleName
