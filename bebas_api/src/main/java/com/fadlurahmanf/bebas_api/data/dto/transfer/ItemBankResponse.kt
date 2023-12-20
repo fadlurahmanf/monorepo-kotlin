@@ -2,7 +2,7 @@ package com.fadlurahmanf.bebas_api.data.dto.transfer
 
 import com.google.gson.annotations.SerializedName
 
-data class BankResponse(
+data class ItemBankResponse(
     val sknId: String? = null,
     val rtgsId: String? = null,
     @SerializedName("bankName")

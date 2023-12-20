@@ -14,4 +14,5 @@ class CmsRemoteDatasource @Inject constructor(
     fun getTransactionMenu() = networkService().getTransactionMenu()
 
     fun getBankList() = networkService().getBankList()
+    fun getHomepagePromo() = networkService().getHomePagePromo()
 }

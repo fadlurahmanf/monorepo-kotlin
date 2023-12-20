@@ -1,8 +1,8 @@
-package com.fadlurahmanf.bebas_main.presentation.home
+package com.fadlurahmanf.bebas_main.presentation.home.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
+import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_main.data.dto.home.HomeBankAccountModel
 import com.fadlurahmanf.bebas_main.data.dto.home.TransactionMenuModel
@@ -53,6 +53,27 @@ class HomeFragmentViewModel @Inject constructor(
                                    },
                                    {
                                        _bankAccounts.value =
+                                           NetworkState.FAILED(BebasException.fromThrowable(it))
+                                   },
+                                   {}
+                               ))
+    }
+
+    private val _promosState = MutableLiveData<NetworkState<List<ItemPromoResponse>>>()
+    val promosState: LiveData<NetworkState<List<ItemPromoResponse>>> = _promosState
+
+    fun getPromos() {
+        _promosState.value = NetworkState.LOADING
+        baseDisposable.add(mainRepositoryImpl.getHomePagePromo().subscribeOn(Schedulers.io())
+                               .observeOn(AndroidSchedulers.mainThread())
+                               .subscribe(
+                                   {
+                                       _promosState.value = NetworkState.SUCCESS(
+                                           it
+                                       )
+                                   },
+                                   {
+                                       _promosState.value =
                                            NetworkState.FAILED(BebasException.fromThrowable(it))
                                    },
                                    {}

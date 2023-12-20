@@ -11,15 +11,15 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.fadlurahmanf.bebas_api.data.dto.transfer.BankResponse
+import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_transaction.R
 
 class BankListAdapter : RecyclerView.Adapter<BankListAdapter.ViewHolder>() {
     lateinit var context: Context
-    private var banks: ArrayList<BankResponse> = arrayListOf()
+    private var banks: ArrayList<ItemBankResponse> = arrayListOf()
     private var callback: Callback? = null
 
-    fun setList(list: List<BankResponse>) {
+    fun setList(list: List<ItemBankResponse>) {
         banks.clear()
         banks.addAll(list)
         notifyItemRangeInserted(0, list.size)
@@ -75,7 +75,7 @@ class BankListAdapter : RecyclerView.Adapter<BankListAdapter.ViewHolder>() {
     }
 
     interface Callback {
-        fun onItemClicked(bank: BankResponse)
+        fun onItemClicked(bank: ItemBankResponse)
     }
 
 }

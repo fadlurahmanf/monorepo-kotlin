@@ -3,7 +3,7 @@ package com.fadlurahmanf.bebas_transaction.domain.repositories
 import com.fadlurahmanf.bebas_api.data.datasources.CmsRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
-import com.fadlurahmanf.bebas_api.data.dto.transfer.BankResponse
+import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankMasRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
@@ -16,7 +16,7 @@ class TransactionRepositoryImpl @Inject constructor(
     private val cmsRemoteDatasource: CmsRemoteDatasource,
 ) {
 
-    fun getBankList(): Observable<List<BankResponse>> {
+    fun getBankList(): Observable<List<ItemBankResponse>> {
         return cmsRemoteDatasource.getBankList().map {
             if (it.data == null) {
                 throw BebasException.generalRC("DATA_MISSING")
@@ -27,7 +27,7 @@ class TransactionRepositoryImpl @Inject constructor(
         }
     }
 
-    fun getTopBanks(banks: List<BankResponse>): List<BankResponse> {
+    fun getTopBanks(banks: List<ItemBankResponse>): List<ItemBankResponse> {
         return ArrayList(banks).filter {
             (it.sknId == "0140397" || it.rtgsId == "CENAIDJA") // bca
             || (it.sknId == "0090010" || it.rtgsId == "BNINIDJA") // bni
@@ -37,7 +37,7 @@ class TransactionRepositoryImpl @Inject constructor(
         }
     }
 
-    fun removeTopBanks(banks: List<BankResponse>): List<BankResponse> {
+    fun removeTopBanks(banks: List<ItemBankResponse>): List<ItemBankResponse> {
         return ArrayList(banks).filter {
             !(it.sknId == "0140397" || it.rtgsId == "CENAIDJA") // bca
             && !(it.sknId == "0090010" || it.rtgsId == "BNINIDJA") // bni

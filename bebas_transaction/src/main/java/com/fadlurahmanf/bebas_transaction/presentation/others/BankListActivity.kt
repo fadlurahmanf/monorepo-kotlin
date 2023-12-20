@@ -4,7 +4,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.fadlurahmanf.bebas_api.data.dto.transfer.BankResponse
+import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_transaction.data.flow.InputDestinationAccountFlow
@@ -27,9 +27,9 @@ class BankListActivity :
     }
 
     private lateinit var otherBanksAdapter: BankListAdapter
-    private val otherBanks: ArrayList<BankResponse> = arrayListOf()
+    private val otherBanks: ArrayList<ItemBankResponse> = arrayListOf()
     private lateinit var topBanksAdapter: BankListAdapter
-    private val topBanks: ArrayList<BankResponse> = arrayListOf()
+    private val topBanks: ArrayList<ItemBankResponse> = arrayListOf()
 
     override fun onBebasCreate(savedInstanceState: Bundle?) {
         otherBanksAdapter = BankListAdapter()
@@ -105,7 +105,7 @@ class BankListActivity :
     }
 
     private var inputDestinationAccountBottomsheet: InputDestinationAccountBottomsheet? = null
-    override fun onItemClicked(bank: BankResponse) {
+    override fun onItemClicked(bank: ItemBankResponse) {
         inputDestinationAccountBottomsheet = InputDestinationAccountBottomsheet()
         inputDestinationAccountBottomsheet?.setCallback(object :
                                                             InputDestinationAccountBottomsheet.Callback {

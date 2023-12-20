@@ -3,7 +3,7 @@ package com.fadlurahmanf.bebas_transaction.presentation.others
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.fadlurahmanf.bebas_api.data.dto.transfer.BankResponse
+import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
@@ -28,7 +28,7 @@ class BankListViewModel @Inject constructor(
                                .observeOn(AndroidSchedulers.mainThread())
                                .subscribe(
                                    {
-                                       val banks: ArrayList<BankResponse> = ArrayList(it)
+                                       val banks: ArrayList<ItemBankResponse> = ArrayList(it)
                                        Log.d("BebasLogger", "BANKS: ${banks.size}")
                                        val otherBanks =
                                            transactionRepositoryImpl.removeTopBanks(banks)

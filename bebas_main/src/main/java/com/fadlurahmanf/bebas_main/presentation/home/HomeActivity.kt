@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.fadlurahmanf.bebas_main.R
 import com.fadlurahmanf.bebas_main.databinding.ActivityHomeBinding
 import com.fadlurahmanf.bebas_main.presentation.BaseMainActivity
+import com.fadlurahmanf.bebas_main.presentation.home.home.HomeFragment
 
 class HomeActivity : BaseMainActivity<ActivityHomeBinding>(ActivityHomeBinding::inflate) {
 

@@ -4,6 +4,7 @@ import android.content.Context
 import com.fadlurahmanf.bebas_api.data.datasources.CmsRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
+import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_main.R
 import com.fadlurahmanf.bebas_main.data.dto.home.HomeBankAccountModel
 import com.fadlurahmanf.bebas_main.data.dto.home.TransactionMenuModel
@@ -115,6 +116,15 @@ class MainRepositoryImpl @Inject constructor(
             }
             newList[0].isPinned = true
             newList
+        }
+    }
+
+    fun getHomePagePromo(): Observable<List<ItemPromoResponse>> {
+        return cmsRemoteDatasource.getHomepagePromo().map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+            it.data!!
         }
     }
 }

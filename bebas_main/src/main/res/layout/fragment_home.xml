@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_home_color"
-    tools:context=".presentation.home.HomeFragment">
+    tools:context=".presentation.home.home.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -103,41 +103,55 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_promo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:paddingHorizontal="20dp">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/Font.Text14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lexend_deca_bold"
+                            android:text="Promo Menarik" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            style="@style/Font.Text14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lexend_deca_regular"
+                            android:text="Lihat Semua"
+                            android:textColor="@color/red" />
+                    </LinearLayout>
+
                     <TextView
                         style="@style/Font.Text14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/lexend_deca_bold"
-                        android:text="Promo Menarik" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        style="@style/Font.Text14"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
                         android:fontFamily="@font/lexend_deca_regular"
-                        android:text="Lihat Semua"
-                        android:textColor="@color/red" />
-                </LinearLayout>
+                        android:text="Beragam promo yang bikin harimu makin asik " />
 
-                <TextView
-                    style="@style/Font.Text14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:fontFamily="@font/lexend_deca_regular"
-                    android:paddingHorizontal="20dp"
-                    android:text="Beragam promo yang bikin harimu makin asik " />
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/vp_promo"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="20dp" />
+                </LinearLayout>
 
             </LinearLayout>
         </ScrollView>
