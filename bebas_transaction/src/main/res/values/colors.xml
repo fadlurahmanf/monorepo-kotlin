@@ -4,7 +4,8 @@
 
     <color name="red">#FFCC0921</color>
 
-    <color name="grey">#FFA1A1A1</color>
+    <color name="grey">#FF2E2E2E</color>
+    <color name="border_grey">#FFE6E6E6</color>
     <color name="light_grey">#FFA1A1A1</color>
     <color name="secondary_light_grey">#FFF1F2F2</color>
 </resources>
