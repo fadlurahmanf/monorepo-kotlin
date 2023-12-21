@@ -1,8 +1,10 @@
 package com.fadlurahmanf.bebas_transaction.presentation.transfer
 
+import android.net.Uri
 import android.os.Build
 import android.view.View
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.R
@@ -10,6 +12,7 @@ import com.fadlurahmanf.bebas_transaction.data.dto.transfer.TransferConfirmation
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.BottomsheetTransferConfirmationBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionBottomsheet
+import com.fadlurahmanf.bebas_transaction.presentation.transfer.adapter.TransferConfirmationDetailAdapter
 import javax.inject.Inject
 
 class TransferConfirmationBottomsheet :
@@ -24,6 +27,9 @@ class TransferConfirmationBottomsheet :
 
     private lateinit var additinalArg: TransferConfirmationModel
     private var flow: TransferConfirmationFlow? = null
+
+    private lateinit var adapter: TransferConfirmationDetailAdapter
+    private val details: ArrayList<TransferConfirmationModel.Detail> = arrayListOf()
 
     @Inject
     lateinit var viewModel: TransferDetailViewModel
@@ -50,6 +56,19 @@ class TransferConfirmationBottomsheet :
         }
 
         additinalArg = arg
+        details.clear()
+        details.addAll(additinalArg.details)
+
+        adapter = TransferConfirmationDetailAdapter()
+        adapter.setList(details)
+        binding.rvDetails.adapter = adapter
+
+        if (details.isNotEmpty()) {
+            binding.llDetail.visibility = View.VISIBLE
+        } else {
+            binding.llDetail.visibility = View.GONE
+        }
+
 
         viewModel.selectedBankAccount.observe(this) {
             when (it) {
@@ -83,19 +102,22 @@ class TransferConfirmationBottomsheet :
             }
         }
 
-        when (flow) {
-            TransferConfirmationFlow.TRANSFER_BETWEEN_BANK_MAS -> {
-                binding.itemDestinationAccount.ivLogo.setImageDrawable(
+        if (additinalArg.imageLogoUrl != null) {
+            Glide.with(binding.itemDestinationAccount.ivLogo)
+                .load(Uri.parse(additinalArg.imageLogoUrl))
+                .placeholder(
                     ContextCompat.getDrawable(
                         requireContext(),
-                        R.drawable.il_logo_bebas_payment_source
+                        R.drawable.il_bebas_grey_transaction
                     )
                 )
-            }
-
-            else -> {
-
-            }
+                .error(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.il_bebas_grey_transaction
+                    )
+                )
+                .into(binding.itemDestinationAccount.ivLogo)
         }
 
         binding.itemDestinationAccount.tvAccountName.text = additinalArg.realAccountName

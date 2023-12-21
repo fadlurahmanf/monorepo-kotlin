@@ -244,6 +244,26 @@ class TransferDetailActivity :
 
     private var bottomsheetTransferConfirmation: TransferConfirmationBottomsheet? = null
     private fun showConfirmationBottomsheet() {
+        val details = arrayListOf<TransferConfirmationModel.Detail>()
+        details.add(
+            TransferConfirmationModel.Detail(
+                label = "Catatan",
+                value = binding.etNotes.text,
+            )
+        )
+        details.add(
+            TransferConfirmationModel.Detail(
+                label = "Biaya",
+                value = "Pindahbuku:Gratis",
+            )
+        )
+        details.add(
+            TransferConfirmationModel.Detail(
+                label = "Total",
+                value = nominal?.toDouble()?.toRupiahFormat(useSymbol = true) ?: "-",
+                valueStyle = R.style.Font_DetailValueBold
+            )
+        )
         bottomsheetTransferConfirmation = TransferConfirmationBottomsheet()
         bottomsheetTransferConfirmation?.arguments = Bundle().apply {
             putString(
@@ -254,8 +274,10 @@ class TransferDetailActivity :
                 TransferConfirmationBottomsheet.ADDITIONAL_ARG, TransferConfirmationModel(
                     realAccountName = destinationAccountName,
                     destinationAccountNumber = destinationAccountNumber,
+                    imageLogoUrl = bankImageUrl,
                     bankNickName = bankNickname,
-                    nominal = (nominal ?: -1L).toDouble()
+                    nominal = (nominal ?: -1L).toDouble(),
+                    details = details
                 )
             )
         }
