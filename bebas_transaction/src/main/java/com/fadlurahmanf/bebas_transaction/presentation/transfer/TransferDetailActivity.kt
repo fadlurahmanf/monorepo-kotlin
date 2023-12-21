@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_transaction.presentation.transfer
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
@@ -18,6 +19,7 @@ import com.fadlurahmanf.bebas_transaction.data.state.TransferDetailState
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityTransferDetailBinding
 import com.fadlurahmanf.bebas_transaction.external.BebasKeyboardTransaction
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
+import com.fadlurahmanf.bebas_transaction.presentation.pin.PinVerificationActivity
 import javax.inject.Inject
 
 class TransferDetailActivity :
@@ -197,6 +199,9 @@ class TransferDetailActivity :
                                     viewModel.verify(nominal ?: 0L)
                                 }, 250)
         }
+
+        val intent = Intent(this, PinVerificationActivity::class.java)
+        startActivity(intent)
     }
 
     private var handler = Handler(Looper.getMainLooper())
