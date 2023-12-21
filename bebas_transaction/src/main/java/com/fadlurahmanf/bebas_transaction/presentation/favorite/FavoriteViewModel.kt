@@ -122,7 +122,7 @@ class FavoriteViewModel @Inject constructor(
         isFromFavorite: Boolean = false,
         favoriteModel: FavoriteContactModel? = null,
         isFromLatest: Boolean = false,
-        latestModel: LatestTransactionModel? = null
+        latestModel: LatestTransactionModel? = null,
     ) {
         _inquiryBankMasState.value = InquiryBankState.LOADING
         baseDisposable.add(transactionRepositoryImpl.inquiryBankMas(destinationAccountNumber)
@@ -135,7 +135,8 @@ class FavoriteViewModel @Inject constructor(
                                            isFromFavorite = isFromFavorite,
                                            favoriteModel = favoriteModel,
                                            isFromLatest = isFromLatest,
-                                           latestModel = latestModel
+                                           latestModel = latestModel,
+                                           isInquiryBankMas = true
                                        )
                                    },
                                    {

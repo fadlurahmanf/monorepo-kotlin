@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.pin.PinVerificationActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingTop="20sp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.fadlurahmanf.bebas_ui.button.BebasBackButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            style="@style/Font.HeaderTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Verifikasi PIN" />
+
+        <TextView
+            style="@style/Font.HeaderSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Masukkan PIN Bebas kamu" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="20dp"/>
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/background_pin_filled" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="20dp"/>
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/background_pin_filled" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="20dp"/>
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/background_pin_filled" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="20dp"/>
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/background_pin_filled" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="20dp"/>
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/background_pin" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="20dp"/>
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/background_pin" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="20dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_1"
+                style="@style/Font.PinText"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_text_pin"
+                android:gravity="center"
+                android:text="1" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_2"
+                style="@style/Font.PinText"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_text_pin"
+                android:gravity="center"
+                android:text="2" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_3"
+                style="@style/Font.PinText"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_text_pin"
+                android:gravity="center"
+                android:text="3" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_4"
+                style="@style/Font.PinText"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_text_pin"
+                android:gravity="center"
+                android:text="4" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_5"
+                style="@style/Font.PinText"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_text_pin"
+                android:gravity="center"
+                android:text="5" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_6"
+                style="@style/Font.PinText"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_text_pin"
+                android:gravity="center"
+                android:text="6 " />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_7"
+                style="@style/Font.PinText"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_text_pin"
+                android:gravity="center"
+                android:text="7" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_8"
+                style="@style/Font.PinText"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_text_pin"
+                android:gravity="center"
+                android:text="8" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_9"
+                style="@style/Font.PinText"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_text_pin"
+                android:gravity="center"
+                android:text="9" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_forgot_pin"
+                style="@style/Font.PinText"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_text_pin"
+                android:fontFamily="@font/lexend_deca_semi_bold"
+                android:gravity="center"
+                android:text="Lupa \npin?"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_0"
+                style="@style/Font.PinText"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_text_pin"
+                android:gravity="center"
+                android:text="0" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/tv_delete"
+                style="@style/Font.PinText"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_circle_border_grey"
+                android:gravity="center"
+                android:padding="23dp"
+                android:src="@drawable/outline_backspace_24" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

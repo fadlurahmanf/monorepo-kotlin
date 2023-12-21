@@ -16,7 +16,7 @@
 
     <!-- Base application theme. -->
     <style name="BaseBebas.Camera">
-        <item name="android:statusBarColor" tools:targetApi="lollipop">@color/light_grey</item>
+        <item name="android:statusBarColor">@color/light_grey</item>
     </style>
 
     <style name="BaseBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">

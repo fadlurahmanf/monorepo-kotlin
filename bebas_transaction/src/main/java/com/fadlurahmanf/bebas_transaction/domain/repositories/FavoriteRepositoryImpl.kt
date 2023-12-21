@@ -25,7 +25,8 @@ class FavoriteRepositoryImpl @Inject constructor(
                 LatestTransactionModel(
                     name = latestResp.accountName ?: "-",
                     labelLatest = latestResp.bankName ?: "-",
-                    accountNumber = latestResp.accountNumber ?: "-"
+                    accountNumber = latestResp.accountNumber ?: "-",
+                    additionalTransferData = latestResp
                 )
             }.toList()
         }

@@ -14,6 +14,7 @@ import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.FavoriteContactModel
 import com.fadlurahmanf.bebas_transaction.data.dto.LatestTransactionModel
 import com.fadlurahmanf.bebas_transaction.data.flow.InputDestinationAccountFlow
+import com.fadlurahmanf.bebas_transaction.data.flow.TransferDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.state.InquiryBankState
 import com.fadlurahmanf.bebas_transaction.data.state.PinFavoriteState
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityFavoriteListBinding
@@ -157,11 +158,12 @@ class FavoriteListActivity :
                 is InquiryBankState.SuccessFromFavoriteActivity -> {
                     dismissLoadingDialog()
                     goToTransferDetailAfterInquiry(
-                        it.result,
-                        it.isFromFavorite,
-                        it.favoriteModel,
-                        it.isFromLatest,
-                        it.latestModel
+                        inquiryResult = it.result,
+                        fromFavorite = it.isFromFavorite,
+                        favoriteModel = it.favoriteModel,
+                        fromLatest = it.isFromLatest,
+                        latestModel = it.latestModel,
+                        isInquiryBankMas = it.isInquiryBankMas
                     )
                 }
 
@@ -238,10 +240,15 @@ class FavoriteListActivity :
         fromFavorite: Boolean = false,
         favoriteModel: FavoriteContactModel? = null,
         fromLatest: Boolean = false,
-        latestModel: LatestTransactionModel? = null
+        latestModel: LatestTransactionModel? = null,
+        isInquiryBankMas: Boolean = false
     ) {
         val intent = Intent(this, TransferDetailActivity::class.java)
         intent.apply {
+            putExtra(
+                TransferDetailActivity.FLOW,
+                if (isInquiryBankMas) TransferDetailFlow.TRANSFER_BETWEEN_BANK_MAS.name else TransferDetailFlow.TRANSFER_OTHER_BANK.name
+            )
             putExtra(TransferDetailActivity.IS_FAVORITE, fromFavorite)
             putExtra(
                 TransferDetailActivity.DESTINATION_ACCOUNT_NAME,
@@ -250,6 +257,11 @@ class FavoriteListActivity :
             putExtra(
                 TransferDetailActivity.DESTINATION_ACCOUNT_NUMBER,
                 favoriteModel?.accountNumber ?: "-"
+            )
+            putExtra(
+                TransferDetailActivity.BANK_NAME,
+                favoriteModel?.additionalTransferData?.bankName
+                    ?: latestModel?.additionalTransferData?.bankName ?: "-"
             )
         }
         startActivity(intent)
@@ -299,11 +311,15 @@ class FavoriteListActivity :
     override fun onItemClicked(favorite: FavoriteContactModel) {
         when (favoriteFlow) {
             FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
-                viewModel.inquiryBankMas(
-                    favorite.accountNumber,
-                    isFromFavorite = true,
-                    favoriteModel = favorite
-                )
+                if (favorite.additionalTransferData?.sknId == "5480300" || favorite.additionalTransferData?.rtgsId == "BMSEIDJA") {
+                    viewModel.inquiryBankMas(
+                        favorite.accountNumber,
+                        isFromFavorite = true,
+                        favoriteModel = favorite,
+                    )
+                } else {
+
+                }
             }
 
             FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID -> {

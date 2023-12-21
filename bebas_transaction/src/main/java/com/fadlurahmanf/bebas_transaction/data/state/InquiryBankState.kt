@@ -15,6 +15,7 @@ sealed class InquiryBankState {
         val favoriteModel: FavoriteContactModel? = null,
         val isFromLatest: Boolean = false,
         val latestModel: LatestTransactionModel? = null,
+        val isInquiryBankMas: Boolean = false,
     ) : InquiryBankState()
 
     data class SuccessFromBankListActivity(
