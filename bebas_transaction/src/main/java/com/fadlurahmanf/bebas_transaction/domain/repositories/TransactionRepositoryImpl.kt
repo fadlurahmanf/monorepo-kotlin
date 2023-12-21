@@ -105,4 +105,8 @@ class TransactionRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    fun postingTransferBankMas(){
+
+    }
 }

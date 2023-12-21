@@ -51,4 +51,6 @@
     <declare-styleable name="BebasPinKeyboard">
         <attr name="isForgotPasswordVisible" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="BebasPinBox" />
 </resources>

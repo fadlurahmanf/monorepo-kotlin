@@ -34,83 +34,27 @@
             android:text="Masukkan PIN Bebas kamu" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <View
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:layout_marginTop="40dp"
-        android:orientation="horizontal">
+        android:layout_weight="1" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_weight="2" />
+    <com.fadlurahmanf.bebas_ui.pin.BebasPinBox
+        android:id="@+id/bebas_pin_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-        <View
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/background_pin_filled" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_weight="1" />
-
-        <View
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/background_pin_filled" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_weight="1" />
-
-        <View
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/background_pin_filled" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_weight="1" />
-
-        <View
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/background_pin_filled" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_weight="1" />
-
-        <View
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/background_pin" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_weight="1" />
-
-        <View
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/background_pin" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_weight="2" />
-
-    </LinearLayout>
+    <TextView
+        style="@style/Font.Text14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="error_pin"
+        android:textColor="@color/red" />
 
     <View
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1" />
 

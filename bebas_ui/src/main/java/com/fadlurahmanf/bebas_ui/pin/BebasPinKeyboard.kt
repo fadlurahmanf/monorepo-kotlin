@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.TypedArray
 import android.util.AttributeSet
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -26,6 +27,7 @@ class BebasPinKeyboard(context: Context, attributeSet: AttributeSet) :
     private var tv9: TextView
     private var tv0: TextView
     private var tvForgotPin: TextView
+    private var ivDelete: ImageView
 
     private var isTv1Clicked: Boolean = false
     private var isTv2Clicked: Boolean = false
@@ -38,6 +40,7 @@ class BebasPinKeyboard(context: Context, attributeSet: AttributeSet) :
     private var isTv9Clicked: Boolean = false
     private var isTv0Clicked: Boolean = false
     private var isForgotPinClicked: Boolean = false
+    private var isDeletePinClicked: Boolean = false
 
     private var callback: Callback? = null
 
@@ -56,6 +59,7 @@ class BebasPinKeyboard(context: Context, attributeSet: AttributeSet) :
         tv9 = findViewById(R.id.tv_9)
         tv0 = findViewById(R.id.tv_0)
         tvForgotPin = findViewById(R.id.tv_forgot_pin)
+        ivDelete = findViewById(R.id.iv_delete)
 
         setup()
     }
@@ -252,6 +256,23 @@ class BebasPinKeyboard(context: Context, attributeSet: AttributeSet) :
             }
             false
         }
+
+        ivDelete.setOnClickListener {
+            callback?.onDeletePinClicked()
+        }
+
+        ivDelete.setOnTouchListener { v, event ->
+            if (!isDeletePinClicked && (event.action == 0 || event.action == 2)) {
+                isDeletePinClicked = true
+                updateDeletePinIsClickedOrNot(ivDelete, true)
+                return@setOnTouchListener false
+            } else if (isDeletePinClicked && event.action == 1) {
+                isDeletePinClicked = false
+                updateDeletePinIsClickedOrNot(ivDelete, false)
+                return@setOnTouchListener false
+            }
+            false
+        }
     }
 
     private fun updatePinIsClickedOrNot(textView: TextView, isClicked: Boolean) {
@@ -284,8 +305,25 @@ class BebasPinKeyboard(context: Context, attributeSet: AttributeSet) :
         }
     }
 
+    private fun updateDeletePinIsClickedOrNot(textView: ImageView, isClicked: Boolean) {
+        if (isClicked) {
+            textView.apply {
+                background =
+                    ContextCompat.getDrawable(context, R.drawable.background_circle_black)
+                imageTintList = ColorStateList.valueOf(resources.getColor(R.color.white))
+            }
+        } else {
+            textView.apply {
+                background =
+                    ContextCompat.getDrawable(context, R.drawable.background_circle_border_black)
+                imageTintList = ColorStateList.valueOf(resources.getColor(R.color.black))
+            }
+        }
+    }
+
     interface Callback {
         fun onPinClicked(pin: String)
         fun onForgotPinClicked()
+        fun onDeletePinClicked()
     }
 }
