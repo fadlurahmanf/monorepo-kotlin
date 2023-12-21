@@ -7,10 +7,15 @@ import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityPinVerificationBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_ui.pin.BebasPinKeyboard
+import javax.inject.Inject
 
 class PinVerificationActivity :
     BaseTransactionActivity<ActivityPinVerificationBinding>(ActivityPinVerificationBinding::inflate),
     BebasPinKeyboard.Callback {
+
+    @Inject
+    lateinit var viewModel: PinVerificationViewModel
+
     override fun injectActivity() {
         component.inject(this)
     }
@@ -25,6 +30,10 @@ class PinVerificationActivity :
         if (this.pin.length < 6) {
             this.pin += pin
             binding.bebasPinBox.pin = this.pin
+        }
+
+        if (this.pin.length == 6) {
+            viewModel.fundTransferBankMas()
         }
     }
 

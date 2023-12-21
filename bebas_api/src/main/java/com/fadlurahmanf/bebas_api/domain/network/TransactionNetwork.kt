@@ -17,9 +17,9 @@ abstract class TransactionNetwork<T>(
     override fun okHttpClientBuilder(builder: OkHttpClient.Builder): OkHttpClient.Builder {
         return super.okHttpClientBuilder(builder)
             .addInterceptor(UserTokenInterceptor())
-            .addInterceptor(bodyLoggingInterceptor())
-            .addInterceptor(getChuckerInterceptor())
             .addInterceptor(TransactionExceptionInterceptor(context))
             .authenticator(UserTokenAuthenticator(context))
+            .addInterceptor(bodyLoggingInterceptor())
+            .addInterceptor(getChuckerInterceptor())
     }
 }

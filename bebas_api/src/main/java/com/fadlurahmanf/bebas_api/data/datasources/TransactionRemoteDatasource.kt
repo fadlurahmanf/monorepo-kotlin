@@ -2,9 +2,12 @@ package com.fadlurahmanf.bebas_api.data.datasources
 
 import android.content.Context
 import com.fadlurahmanf.bebas_api.data.api.TransactionApi
+import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankMasRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
+import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
 import com.fadlurahmanf.bebas_api.domain.network.TransactionNetwork
+import org.json.JSONObject
 import javax.inject.Inject
 
 class TransactionRemoteDatasource @Inject constructor(
@@ -16,5 +19,10 @@ class TransactionRemoteDatasource @Inject constructor(
 
     fun inquiryBankMas(request: InquiryBankMasRequest) = networkService().inquiryBankMas(request)
 
-    fun inquiryOtherBank(request: InquiryOtherBankRequest) = networkService().inquiryOtherBank(request)
+    fun inquiryOtherBank(request: InquiryOtherBankRequest) =
+        networkService().inquiryOtherBank(request)
+
+    fun getChallengeCode(json: JSONObject) = networkService().generateChallengeCode(json)
+    fun fundTransferBankMAS(body: PostingRequest<FundTransferBankMASRequest>) =
+        networkService().fundTransferBankMAS(body)
 }
