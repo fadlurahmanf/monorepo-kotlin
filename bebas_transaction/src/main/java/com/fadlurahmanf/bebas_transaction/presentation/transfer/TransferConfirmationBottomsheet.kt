@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.R
-import com.fadlurahmanf.bebas_transaction.data.dto.transfer.TransferConfirmationModel
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferConfirmationArgument
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.BottomsheetTransferConfirmationBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionBottomsheet
@@ -25,11 +25,11 @@ class TransferConfirmationBottomsheet :
         const val FLOW = "FLOW"
     }
 
-    private lateinit var additinalArg: TransferConfirmationModel
+    private lateinit var additinalArg: TransferConfirmationArgument
     private var flow: TransferConfirmationFlow? = null
 
     private lateinit var adapter: TransferConfirmationDetailAdapter
-    private val details: ArrayList<TransferConfirmationModel.Detail> = arrayListOf()
+    private val details: ArrayList<TransferConfirmationArgument.Detail> = arrayListOf()
 
     @Inject
     lateinit var viewModel: TransferDetailViewModel
@@ -43,12 +43,12 @@ class TransferConfirmationBottomsheet :
 
         flow = enumValueOf<TransferConfirmationFlow>(stringFlow)
 
-        val arg: TransferConfirmationModel?
+        val arg: TransferConfirmationArgument?
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arg =
-                arguments?.getParcelable(ADDITIONAL_ARG, TransferConfirmationModel::class.java)
+                arguments?.getParcelable(ADDITIONAL_ARG, TransferConfirmationArgument::class.java)
         } else {
-            arg = arguments?.getParcelable<TransferConfirmationModel>(ADDITIONAL_ARG)
+            arg = arguments?.getParcelable<TransferConfirmationArgument>(ADDITIONAL_ARG)
         }
 
         if (arg == null) {

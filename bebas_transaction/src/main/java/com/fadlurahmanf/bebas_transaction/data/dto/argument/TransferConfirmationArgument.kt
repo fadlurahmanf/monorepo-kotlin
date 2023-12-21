@@ -1,11 +1,11 @@
-package com.fadlurahmanf.bebas_transaction.data.dto.transfer
+package com.fadlurahmanf.bebas_transaction.data.dto.argument
 
 import android.os.Parcelable
 import androidx.annotation.StyleRes
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class TransferConfirmationModel(
+data class TransferConfirmationArgument(
     val realAccountName: String,
     val destinationAccountNumber: String,
     var imageLogoUrl: String? = null,

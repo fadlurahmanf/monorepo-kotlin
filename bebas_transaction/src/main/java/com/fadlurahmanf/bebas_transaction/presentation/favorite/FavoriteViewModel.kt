@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.data.flow.transaction.FavoriteFlow
-import com.fadlurahmanf.bebas_transaction.data.dto.FavoriteContactModel
-import com.fadlurahmanf.bebas_transaction.data.dto.LatestTransactionModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.FavoriteContactModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.LatestTransactionModel
 import com.fadlurahmanf.bebas_transaction.data.state.InquiryBankState
 import com.fadlurahmanf.bebas_transaction.data.state.PinFavoriteState
 import com.fadlurahmanf.bebas_transaction.domain.repositories.FavoriteRepositoryImpl

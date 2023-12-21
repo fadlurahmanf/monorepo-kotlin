@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.fadlurahmanf.bebas_transaction.R
-import com.fadlurahmanf.bebas_transaction.data.dto.FavoriteContactModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.FavoriteContactModel
 
 class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
     lateinit var context: Context

@@ -111,5 +111,8 @@ object BebasShared {
     fun getRefreshToken(): String {
         return refreshToken
     }
+
+    var encodedPrivateKeyTransaction: String = "QG/ujHp6aTcDXPZAP6RjI6uQPlBhoNKgEp7ludgkUfwfvvDtkyxrN2NIpT/rkX04wyOdqB9SOwkJn3s+p+0O9w=="
+    var encodedPublicKeyTransaction: String = "H77w7ZMsazdjSKU/65F9OMMjnagfUjsJCZ97PqftDvc="
 }
 

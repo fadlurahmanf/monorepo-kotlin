@@ -4,8 +4,10 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferDetailArgument
 import com.fadlurahmanf.bebas_transaction.data.flow.InputDestinationAccountFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.state.BankListState
@@ -115,15 +117,14 @@ class BankListActivity :
             if (isInquiryBankMas) TransferDetailFlow.TRANSFER_BETWEEN_BANK_MAS.name else TransferDetailFlow.TRANSFER_BETWEEN_BANK_MAS.name
         )
         intent.putExtra(
-            TransferDetailActivity.DESTINATION_ACCOUNT_NAME,
-            data.destinationAccountName ?: "-"
+            TransferDetailActivity.ARGUMENT,
+            TransferDetailArgument(
+                isFavorite = false,
+                accountName = data.destinationAccountName ?: "",
+                accountNumber = destinationAccountNumber,
+                bankName = selectedBank.name ?: ""
+            )
         )
-        intent.putExtra(
-            TransferDetailActivity.DESTINATION_ACCOUNT_NUMBER,
-            destinationAccountNumber
-        )
-        intent.putExtra(TransferDetailActivity.BANK_IMAGE_URL, selectedBank.image)
-        intent.putExtra(TransferDetailActivity.BANK_NAME, selectedBank.nickName)
         startActivity(intent)
     }
 

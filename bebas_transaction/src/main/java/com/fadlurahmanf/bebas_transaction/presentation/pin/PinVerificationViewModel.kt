@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_transaction.presentation.pin
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
@@ -17,28 +18,32 @@ class PinVerificationViewModel @Inject constructor(
 
     private val _fundTransferState = MutableLiveData<NetworkState<FundTransferResponse>>()
     val fundTransferState: LiveData<NetworkState<FundTransferResponse>> = _fundTransferState
-    fun fundTransferBankMas() {
-        _fundTransferState.value = NetworkState.LOADING
-        baseDisposable.add(
-            transactionRepositoryImpl.postingTransferBankMas(
-                "100101211",
-                amountTransaction = 1200L,
-                notes = "tes",
-                destinationAccountNumber = "12191211",
-                destinationAccountName = "tes tes"
-            )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
-                        _fundTransferState.value = NetworkState.SUCCESS(it)
-                    },
-                    {
-                        _fundTransferState.value =
-                            NetworkState.FAILED(BebasException.fromThrowable(it))
-                    },
-                    {}
+    fun fundTransferBankMas(
+        plainPin: String,
+        fundTransferBankMASRequest: FundTransferBankMASRequest
+    ) {
+        try {
+            _fundTransferState.value = NetworkState.LOADING
+            baseDisposable.add(
+                transactionRepositoryImpl.postingTransferBankMas(
+                    plainPin = plainPin,
+                    fundTransferRequest = fundTransferBankMASRequest
                 )
-        )
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                        {
+                            _fundTransferState.value = NetworkState.SUCCESS(it)
+                        },
+                        {
+                            _fundTransferState.value =
+                                NetworkState.FAILED(BebasException.fromThrowable(it))
+                        },
+                        {}
+                    )
+            )
+        } catch (e: Throwable) {
+            _fundTransferState.value = NetworkState.FAILED(BebasException.fromThrowable(e))
+        }
     }
 }

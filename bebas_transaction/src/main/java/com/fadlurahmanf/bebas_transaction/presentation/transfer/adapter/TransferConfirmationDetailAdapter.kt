@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fadlurahmanf.bebas_transaction.R
-import com.fadlurahmanf.bebas_transaction.data.dto.transfer.TransferConfirmationModel
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferConfirmationArgument
 
 class TransferConfirmationDetailAdapter :
     RecyclerView.Adapter<TransferConfirmationDetailAdapter.ViewHolder>() {
     lateinit var context: Context
-    private var details: ArrayList<TransferConfirmationModel.Detail> = arrayListOf()
-    fun setList(list: List<TransferConfirmationModel.Detail>) {
+    private var details: ArrayList<TransferConfirmationArgument.Detail> = arrayListOf()
+    fun setList(list: List<TransferConfirmationArgument.Detail>) {
         details.clear()
         details.addAll(list)
         notifyItemRangeInserted(0, list.size)

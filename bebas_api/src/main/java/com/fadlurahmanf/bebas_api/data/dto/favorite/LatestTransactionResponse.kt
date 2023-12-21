@@ -1,7 +1,10 @@
 package com.fadlurahmanf.bebas_api.data.dto.favorite
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class LatestTransactionResponse(
     val id: String? = null,
     val userAccountId: String? = null,
@@ -13,4 +16,4 @@ data class LatestTransactionResponse(
     val accountNumber: String? = null,
     @SerializedName("counterPartAccountName")
     val accountName: String? = null,
-)
+) : Parcelable

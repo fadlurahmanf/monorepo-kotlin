@@ -11,8 +11,9 @@ import com.fadlurahmanf.bebas_shared.data.argument.transaction.FavoriteArgument
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.data.flow.transaction.FavoriteFlow
 import com.fadlurahmanf.bebas_transaction.R
-import com.fadlurahmanf.bebas_transaction.data.dto.FavoriteContactModel
-import com.fadlurahmanf.bebas_transaction.data.dto.LatestTransactionModel
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferDetailArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.FavoriteContactModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.LatestTransactionModel
 import com.fadlurahmanf.bebas_transaction.data.flow.InputDestinationAccountFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.state.InquiryBankState
@@ -249,19 +250,18 @@ class FavoriteListActivity :
                 TransferDetailActivity.FLOW,
                 if (isInquiryBankMas) TransferDetailFlow.TRANSFER_BETWEEN_BANK_MAS.name else TransferDetailFlow.TRANSFER_OTHER_BANK.name
             )
-            putExtra(TransferDetailActivity.IS_FAVORITE, fromFavorite)
             putExtra(
-                TransferDetailActivity.DESTINATION_ACCOUNT_NAME,
-                favoriteModel?.nameInFavoriteContact ?: inquiryResult.destinationAccountName ?: "-"
-            )
-            putExtra(
-                TransferDetailActivity.DESTINATION_ACCOUNT_NUMBER,
-                favoriteModel?.accountNumber ?: "-"
-            )
-            putExtra(
-                TransferDetailActivity.BANK_NAME,
-                favoriteModel?.additionalTransferData?.bankName
-                    ?: latestModel?.additionalTransferData?.bankName ?: "-"
+                TransferDetailActivity.ARGUMENT, TransferDetailArgument(
+                    isFavorite = fromFavorite,
+                    accountName = favoriteModel?.additionalTransferData?.bankName
+                        ?: latestModel?.additionalTransferData?.accountName ?: "",
+                    accountNumber = favoriteModel?.additionalTransferData?.bankAccountNumber
+                        ?: latestModel?.additionalTransferData?.accountNumber ?: "",
+                    bankName = favoriteModel?.additionalTransferData?.bankName
+                        ?: latestModel?.additionalTransferData?.bankName ?: "",
+                    favoriteResponse = favoriteModel?.additionalTransferData,
+                    latestTransactionResponse = latestModel?.additionalTransferData
+                )
             )
         }
         startActivity(intent)

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fadlurahmanf.bebas_transaction.R
-import com.fadlurahmanf.bebas_transaction.data.dto.LatestTransactionModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.LatestTransactionModel
 
 class LatestAdapter : RecyclerView.Adapter<LatestAdapter.ViewHolder>() {
     lateinit var context: Context

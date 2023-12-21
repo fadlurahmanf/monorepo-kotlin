@@ -4,8 +4,8 @@ import android.content.Context
 import com.fadlurahmanf.bebas_api.data.datasources.CifRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.favorite.PinFavoriteRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
-import com.fadlurahmanf.bebas_transaction.data.dto.FavoriteContactModel
-import com.fadlurahmanf.bebas_transaction.data.dto.LatestTransactionModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.FavoriteContactModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.LatestTransactionModel
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
 

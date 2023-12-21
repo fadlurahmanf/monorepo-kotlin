@@ -1,4 +1,4 @@
-package com.fadlurahmanf.bebas_transaction.data.dto
+package com.fadlurahmanf.bebas_transaction.data.dto.model.favorite
 
 import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoritePLNPrePaidResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoriteTransferResponse

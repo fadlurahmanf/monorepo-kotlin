@@ -3,16 +3,20 @@ package com.fadlurahmanf.bebas_transaction.presentation.transfer
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.R
-import com.fadlurahmanf.bebas_transaction.data.dto.transfer.TransferConfirmationModel
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferConfirmationArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferDetailArgument
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.state.TransferDetailState
@@ -27,20 +31,11 @@ class TransferDetailActivity :
 
     companion object {
         const val FLOW = "FLOW"
-        const val IS_FAVORITE = "IS_FAVORITE"
-        const val DESTINATION_ACCOUNT_NAME = "DESTINATION_ACCOUNT_NAME"
-        const val DESTINATION_ACCOUNT_NUMBER = "DESTINATION_ACCOUNT_NUMBER"
-        const val BANK_IMAGE_URL = "BANK_IMAGE_URL"
-        const val BANK_NAME = "BANK_NAME"
+        const val ARGUMENT = "ARGUMENT"
     }
 
-    var isFavorite: Boolean = false
-    var destinationAccountName: String = "-"
-    var destinationAccountNumber: String = "-"
-    var bankImageUrl: String? = null
-    var bankNickname: String = "-"
-
     lateinit var flow: TransferDetailFlow
+    lateinit var argument: TransferDetailArgument
 
     @Inject
     lateinit var viewModel: TransferDetailViewModel
@@ -60,21 +55,29 @@ class TransferDetailActivity :
             return
         }
 
+        val p0Arg = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(ARGUMENT, TransferDetailArgument::class.java)
+        } else {
+            intent.getParcelableExtra(ARGUMENT)
+        }
+
+        if (p0Arg == null) {
+            showForcedBackBottomsheet(BebasException.generalRC("ARG_MISSING"))
+            return
+        }
+
         flow = enumValueOf<TransferDetailFlow>(stringFlow)
+        argument = p0Arg
 
-        isFavorite = intent.getBooleanExtra(IS_FAVORITE, false)
-        destinationAccountName = intent.getStringExtra(DESTINATION_ACCOUNT_NAME) ?: "-"
-        destinationAccountNumber = intent.getStringExtra(DESTINATION_ACCOUNT_NUMBER) ?: "-"
-        bankImageUrl = intent.getStringExtra(BANK_IMAGE_URL)
-        bankNickname = intent.getStringExtra(BANK_NAME) ?: "-"
+        binding.layoutInputNominal.tvDestinationAccountName.text = argument.accountName
+        binding.layoutInputNominal.tvSubLabel.text =
+            "${argument.bankName} • ${argument.accountNumber}"
 
-        binding.layoutInputNominal.tvDestinationAccountName.text = destinationAccountName
-        binding.layoutInputNominal.tvSubLabel.text = "$bankNickname • $destinationAccountNumber"
-
-        if (bankImageUrl != null && !isFavorite) {
+        if (argument.bankImageUrl != null && !argument.isFavorite) {
             binding.layoutInputNominal.initialAvatar.visibility = View.GONE
             binding.layoutInputNominal.ivBankLogo.visibility = View.VISIBLE
-            Glide.with(binding.layoutInputNominal.ivBankLogo).load(Uri.parse(bankImageUrl))
+            Glide.with(binding.layoutInputNominal.ivBankLogo)
+                .load(Uri.parse(argument.bankImageUrl!!))
                 .error(
                     ContextCompat.getDrawable(
                         applicationContext,
@@ -88,15 +91,15 @@ class TransferDetailActivity :
                     )
                 )
                 .into(binding.layoutInputNominal.ivBankLogo)
-        } else if (isFavorite) {
+        } else if (argument.isFavorite) {
             binding.layoutInputNominal.initialAvatar.visibility = View.VISIBLE
             binding.layoutInputNominal.ivBankLogo.visibility = View.GONE
-            if (destinationAccountName.contains(" ")) {
-                val first = destinationAccountName.split(" ").first().take(1)
-                val second = destinationAccountName.split(" ")[1].take(1)
+            if (argument.accountName.contains(" ")) {
+                val first = argument.accountName.split(" ").first().take(1)
+                val second = argument.accountName.split(" ")[1].take(1)
                 binding.layoutInputNominal.initialAvatar.text = "$first$second"
             } else {
-                binding.layoutInputNominal.initialAvatar.text = destinationAccountName.take(1)
+                binding.layoutInputNominal.initialAvatar.text = argument.accountName.take(1)
             }
         }
 
@@ -201,6 +204,24 @@ class TransferDetailActivity :
         }
 
         val intent = Intent(this, PinVerificationActivity::class.java)
+        intent.apply {
+            putExtra(
+                PinVerificationActivity.PIN_VERIFICATION_ARGUMENT, PinVerificationArgument(
+                    fundTransferBankMAS = FundTransferBankMASRequest(
+                        accountNumber = "1001938181",
+                        destinationAccountName = argument.favoriteResponse?.aliasName
+                            ?: argument.latestTransactionResponse?.accountName ?: "",
+                        destinationAccountNumber = argument.favoriteResponse?.bankAccountNumber
+                            ?: argument.latestTransactionResponse?.accountNumber ?: "",
+                        amountTransaction = 20000,
+                        notes = "TES AJA",
+                        ip = "0.0.0.0",
+                        latitude = 0.0,
+                        longitude = 0.0
+                    )
+                )
+            )
+        }
         startActivity(intent)
     }
 
@@ -249,21 +270,21 @@ class TransferDetailActivity :
 
     private var bottomsheetTransferConfirmation: TransferConfirmationBottomsheet? = null
     private fun showConfirmationBottomsheet() {
-        val details = arrayListOf<TransferConfirmationModel.Detail>()
+        val details = arrayListOf<TransferConfirmationArgument.Detail>()
         details.add(
-            TransferConfirmationModel.Detail(
+            TransferConfirmationArgument.Detail(
                 label = "Catatan",
                 value = binding.etNotes.text,
             )
         )
         details.add(
-            TransferConfirmationModel.Detail(
+            TransferConfirmationArgument.Detail(
                 label = "Biaya",
                 value = "Pindahbuku:Gratis",
             )
         )
         details.add(
-            TransferConfirmationModel.Detail(
+            TransferConfirmationArgument.Detail(
                 label = "Total",
                 value = nominal?.toDouble()?.toRupiahFormat(useSymbol = true) ?: "-",
                 valueStyle = R.style.Font_DetailValueBold
@@ -275,16 +296,16 @@ class TransferDetailActivity :
                 TransferConfirmationBottomsheet.FLOW,
                 TransferConfirmationFlow.TRANSFER_BETWEEN_BANK_MAS.name
             )
-            putParcelable(
-                TransferConfirmationBottomsheet.ADDITIONAL_ARG, TransferConfirmationModel(
-                    realAccountName = destinationAccountName,
-                    destinationAccountNumber = destinationAccountNumber,
-                    imageLogoUrl = bankImageUrl,
-                    bankNickName = bankNickname,
-                    nominal = (nominal ?: -1L).toDouble(),
-                    details = details
-                )
-            )
+//            putParcelable(
+//                TransferConfirmationBottomsheet.ADDITIONAL_ARG, TransferConfirmationArgument(
+//                    realAccountName = destinationAccountName,
+//                    destinationAccountNumber = destinationAccountNumber,
+//                    imageLogoUrl = bankImageUrl,
+//                    bankNickName = bankNickname,
+//                    nominal = (nominal ?: -1L).toDouble(),
+//                    details = details
+//                )
+//            )
         }
 
         bottomsheetTransferConfirmation?.show(

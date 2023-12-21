@@ -20,6 +20,7 @@ import javax.inject.Inject
 class TransactionRepositoryImpl @Inject constructor(
     private val transactionRemoteDatasource: TransactionRemoteDatasource,
     private val cmsRemoteDatasource: CmsRemoteDatasource,
+    private val cryptoTransactionRepositoryImpl: CryptoTransactionRepositoryImpl,
 ) {
 
     fun getBankList(): Observable<List<ItemBankResponse>> {
@@ -122,23 +123,10 @@ class TransactionRepositoryImpl @Inject constructor(
     }
 
     fun postingTransferBankMas(
-        accountNumber: String,
-        amountTransaction: Long,
-        notes: String,
-        destinationAccountName: String,
-        destinationAccountNumber: String,
+        plainPin: String,
+        fundTransferRequest: FundTransferBankMASRequest
     ): Observable<FundTransferResponse> {
         val timeStamp = System.currentTimeMillis().toString()
-        val fundTransferRequest = FundTransferBankMASRequest(
-            accountNumber = accountNumber,
-            destinationAccountName = destinationAccountName,
-            destinationAccountNumber = destinationAccountNumber,
-            notes = notes,
-            amountTransaction = amountTransaction,
-            ip = "0",
-            latitude = 0.0,
-            longitude = 0.0
-        )
         val challengeCodeRequest = GenerateChallengeCodeRequest<FundTransferBankMASRequest>(
             data = fundTransferRequest,
             timestamp = timeStamp,
@@ -152,6 +140,9 @@ class TransactionRepositoryImpl @Inject constructor(
         val json = JSONObject()
         challengeCodeRequest.serializeToMap().entries.forEach {
             json.put(it.key, it.value)
+        }
+        if (!cryptoTransactionRepositoryImpl.verifyPin(plainPin)) {
+            throw BebasException.generalRC("INCORRECT_PIN")
         }
         return generateChallengeCode(json).flatMap {
             transactionRemoteDatasource.fundTransferBankMAS(body).map {

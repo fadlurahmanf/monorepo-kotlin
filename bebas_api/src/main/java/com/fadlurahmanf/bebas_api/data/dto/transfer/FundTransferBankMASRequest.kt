@@ -1,5 +1,9 @@
 package com.fadlurahmanf.bebas_api.data.dto.transfer
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class FundTransferBankMASRequest(
     val accountNumber: String,
     val amountTransaction: Long,
@@ -9,4 +13,4 @@ data class FundTransferBankMASRequest(
     val ip: String,
     val latitude: Double,
     val longitude: Double,
-)
+) : Parcelable
