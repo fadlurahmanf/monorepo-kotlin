@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_transaction.domain.repositories
 
+import android.util.Log
 import com.fadlurahmanf.bebas_api.data.datasources.CmsRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
@@ -12,9 +13,8 @@ import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
-import com.fadlurahmanf.bebas_shared.extension.serializeToMap
+import com.google.gson.Gson
 import io.reactivex.rxjava3.core.Observable
-import org.json.JSONObject
 import javax.inject.Inject
 
 class TransactionRepositoryImpl @Inject constructor(
@@ -113,8 +113,8 @@ class TransactionRepositoryImpl @Inject constructor(
         }
     }
 
-    fun generateChallengeCode(json: JSONObject): Observable<String> {
-        return transactionRemoteDatasource.getChallengeCode(json).map {
+    fun generateChallengeCode(request: GenerateChallengeCodeRequest<FundTransferBankMASRequest>): Observable<String> {
+        return transactionRemoteDatasource.getChallengeCode(request).map {
             if (it.data == null) {
                 throw BebasException.generalRC("CC_00")
             }
@@ -126,30 +126,45 @@ class TransactionRepositoryImpl @Inject constructor(
         plainPin: String,
         fundTransferRequest: FundTransferBankMASRequest
     ): Observable<FundTransferResponse> {
-        val timeStamp = System.currentTimeMillis().toString()
-        val challengeCodeRequest = GenerateChallengeCodeRequest<FundTransferBankMASRequest>(
-            data = fundTransferRequest,
-            timestamp = timeStamp,
-            type = "Antar Rekening"
-        )
-        val body = PostingRequest<FundTransferBankMASRequest>(
-            data = fundTransferRequest,
-            signature = "asaa",
-            timestamp = timeStamp
-        )
-        val json = JSONObject()
-        challengeCodeRequest.serializeToMap().entries.forEach {
-            json.put(it.key, it.value)
-        }
         if (!cryptoTransactionRepositoryImpl.verifyPin(plainPin)) {
             throw BebasException.generalRC("INCORRECT_PIN")
         }
-        return generateChallengeCode(json).flatMap {
-            transactionRemoteDatasource.fundTransferBankMAS(body).map {
-                if (it.data == null) {
+        val timestamp = System.currentTimeMillis().toString()
+        val challengeCodeRequest = GenerateChallengeCodeRequest<FundTransferBankMASRequest>(
+            data = fundTransferRequest,
+            t1ransactionType = "Antar Rekening",
+            timestamp = timestamp,
+        )
+        Log.d("BebasLogger", "TES_1: $challengeCodeRequest")
+        return generateChallengeCode(challengeCodeRequest).flatMap {
+            val fundTransferString = Gson().toJson(fundTransferRequest)
+            val signature = cryptoTransactionRepositoryImpl.generateSignature(
+                plainJsonString = fundTransferString,
+                timestamp = timestamp,
+                challengeCode = it
+            )
+            Log.d("BebasLogger", "SIGNATURE: $signature")
+            val unsign = "$fundTransferString|$timestamp|$it"
+            Log.d(
+                "BebasLogger",
+                "IS SIGNATURE VERIFY: ${
+                    cryptoTransactionRepositoryImpl.verifySignature(
+                        unsign,
+                        signature
+                    )
+                }"
+            )
+            val body = PostingRequest<FundTransferBankMASRequest>(
+                data = fundTransferRequest,
+                signature = signature,
+                timestamp = timestamp
+            )
+            Log.d("BebasLogger", "BODY: $body")
+            transactionRemoteDatasource.fundTransferBankMAS(body).map { fundResp ->
+                if (fundResp.data == null) {
                     throw BebasException.generalRC("FT_00")
                 }
-                it.data!!
+                fundResp.data!!
             }
         }
     }

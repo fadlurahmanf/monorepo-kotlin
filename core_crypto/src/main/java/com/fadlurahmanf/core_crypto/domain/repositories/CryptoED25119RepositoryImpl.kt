@@ -1,5 +1,6 @@
 package com.fadlurahmanf.core_crypto.domain.repositories
 
+import android.os.Build
 import com.fadlurahmanf.core_crypto.data.dto.model.CryptoKey
 import com.fadlurahmanf.core_crypto.external.helper.BaseCrypto
 import org.bouncycastle.crypto.generators.Ed25519KeyPairGenerator
@@ -8,6 +9,7 @@ import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters
 import org.bouncycastle.crypto.params.Ed25519PublicKeyParameters
 import org.bouncycastle.crypto.signers.Ed25519Signer
 import java.security.SecureRandom
+import java.util.Base64
 
 class CryptoED25119RepositoryImpl : BaseCrypto(), CryptoED25119Repository {
     override fun generateKey(): CryptoKey {

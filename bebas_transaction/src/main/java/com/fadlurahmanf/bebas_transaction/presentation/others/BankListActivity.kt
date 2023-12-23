@@ -120,9 +120,11 @@ class BankListActivity :
             TransferDetailActivity.ARGUMENT,
             TransferDetailArgument(
                 isFavorite = false,
-                accountName = data.destinationAccountName ?: "",
+                accountName = data.destinationAccountName ?: "-",
+                realAccountName = data.destinationAccountName ?: "-",
                 accountNumber = destinationAccountNumber,
-                bankName = selectedBank.name ?: ""
+                bankImageUrl = selectedBank.image,
+                bankName = selectedBank.name ?: "-"
             )
         )
         startActivity(intent)

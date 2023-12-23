@@ -208,13 +208,11 @@ class TransferDetailActivity :
             putExtra(
                 PinVerificationActivity.PIN_VERIFICATION_ARGUMENT, PinVerificationArgument(
                     fundTransferBankMAS = FundTransferBankMASRequest(
-                        accountNumber = "1001938181",
-                        destinationAccountName = argument.favoriteResponse?.aliasName
-                            ?: argument.latestTransactionResponse?.accountName ?: "",
-                        destinationAccountNumber = argument.favoriteResponse?.bankAccountNumber
-                            ?: argument.latestTransactionResponse?.accountNumber ?: "",
+                        accountNumber = "1001934356",
+                        destinationAccountName = argument.realAccountName,
+                        destinationAccountNumber = argument.accountNumber,
                         amountTransaction = 20000,
-                        notes = "TES AJA",
+                        description = "TES AJA",
                         ip = "0.0.0.0",
                         latitude = 0.0,
                         longitude = 0.0

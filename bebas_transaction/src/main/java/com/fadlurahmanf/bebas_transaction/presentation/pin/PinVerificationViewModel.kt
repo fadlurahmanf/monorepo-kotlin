@@ -22,28 +22,24 @@ class PinVerificationViewModel @Inject constructor(
         plainPin: String,
         fundTransferBankMASRequest: FundTransferBankMASRequest
     ) {
-        try {
-            _fundTransferState.value = NetworkState.LOADING
-            baseDisposable.add(
-                transactionRepositoryImpl.postingTransferBankMas(
-                    plainPin = plainPin,
-                    fundTransferRequest = fundTransferBankMASRequest
-                )
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                        {
-                            _fundTransferState.value = NetworkState.SUCCESS(it)
-                        },
-                        {
-                            _fundTransferState.value =
-                                NetworkState.FAILED(BebasException.fromThrowable(it))
-                        },
-                        {}
-                    )
+        _fundTransferState.value = NetworkState.LOADING
+        baseDisposable.add(
+            transactionRepositoryImpl.postingTransferBankMas(
+                plainPin = plainPin,
+                fundTransferRequest = fundTransferBankMASRequest
             )
-        } catch (e: Throwable) {
-            _fundTransferState.value = NetworkState.FAILED(BebasException.fromThrowable(e))
-        }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        _fundTransferState.value = NetworkState.SUCCESS(it)
+                    },
+                    {
+                        _fundTransferState.value =
+                            NetworkState.FAILED(BebasException.fromThrowable(it))
+                    },
+                    {}
+                )
+        )
     }
 }

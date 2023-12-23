@@ -10,10 +10,12 @@ import kotlinx.parcelize.Parcelize
 data class TransferDetailArgument(
     var isFavorite: Boolean,
     var accountName: String,
+    var realAccountName: String,
     var accountNumber: String,
     var bankImageUrl: String? = null,
-    var bankName: String,
-
-    var favoriteResponse: FavoriteTransferResponse? = null,
-    var latestTransactionResponse: LatestTransactionResponse? = null,
-) : Parcelable
+    var bankName: String
+) : Parcelable {
+    data class FundTransferBankMAS(
+        val sknId: String = ""
+    )
+}

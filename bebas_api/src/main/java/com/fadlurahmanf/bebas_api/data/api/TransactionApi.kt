@@ -5,6 +5,7 @@ import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferResponse
+import com.fadlurahmanf.bebas_api.data.dto.transfer.GenerateChallengeCodeRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
@@ -30,7 +31,7 @@ interface TransactionApi {
 
     @POST("verification/challenge-code")
     fun generateChallengeCode(
-        @Body json: JSONObject
+        @Body request: GenerateChallengeCodeRequest<FundTransferBankMASRequest>
     ): Observable<BaseResponse<String>>
 
     @POST("transfer/posting/bank-mas")

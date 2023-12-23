@@ -253,14 +253,13 @@ class FavoriteListActivity :
             putExtra(
                 TransferDetailActivity.ARGUMENT, TransferDetailArgument(
                     isFavorite = fromFavorite,
-                    accountName = favoriteModel?.additionalTransferData?.bankName
-                        ?: latestModel?.additionalTransferData?.accountName ?: "",
-                    accountNumber = favoriteModel?.additionalTransferData?.bankAccountNumber
-                        ?: latestModel?.additionalTransferData?.accountNumber ?: "",
+                    accountName = favoriteModel?.additionalTransferData?.aliasName
+                        ?: latestModel?.additionalTransferData?.accountName ?: "-",
+                    accountNumber = favoriteModel?.accountNumber ?: latestModel?.accountNumber
+                    ?: "-",
+                    realAccountName = inquiryResult.destinationAccountName ?: "-",
                     bankName = favoriteModel?.additionalTransferData?.bankName
-                        ?: latestModel?.additionalTransferData?.bankName ?: "",
-                    favoriteResponse = favoriteModel?.additionalTransferData,
-                    latestTransactionResponse = latestModel?.additionalTransferData
+                        ?: latestModel?.additionalTransferData?.bankName ?: "-",
                 )
             )
         }
