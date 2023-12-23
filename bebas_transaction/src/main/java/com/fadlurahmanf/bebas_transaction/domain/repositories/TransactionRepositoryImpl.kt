@@ -132,10 +132,9 @@ class TransactionRepositoryImpl @Inject constructor(
         val timestamp = System.currentTimeMillis().toString()
         val challengeCodeRequest = GenerateChallengeCodeRequest<FundTransferBankMASRequest>(
             data = fundTransferRequest,
-            t1ransactionType = "Antar Rekening",
+            transactionType = "Antar Rekening",
             timestamp = timestamp,
         )
-        Log.d("BebasLogger", "TES_1: $challengeCodeRequest")
         return generateChallengeCode(challengeCodeRequest).flatMap {
             val fundTransferString = Gson().toJson(fundTransferRequest)
             val signature = cryptoTransactionRepositoryImpl.generateSignature(
@@ -143,28 +142,16 @@ class TransactionRepositoryImpl @Inject constructor(
                 timestamp = timestamp,
                 challengeCode = it
             )
-            Log.d("BebasLogger", "SIGNATURE: $signature")
-            val unsign = "$fundTransferString|$timestamp|$it"
-            Log.d(
-                "BebasLogger",
-                "IS SIGNATURE VERIFY: ${
-                    cryptoTransactionRepositoryImpl.verifySignature(
-                        unsign,
-                        signature
-                    )
-                }"
-            )
             val body = PostingRequest<FundTransferBankMASRequest>(
                 data = fundTransferRequest,
                 signature = signature,
                 timestamp = timestamp
             )
-            Log.d("BebasLogger", "BODY: $body")
-            transactionRemoteDatasource.fundTransferBankMAS(body).map { fundResp ->
-                if (fundResp.data == null) {
+            transactionRemoteDatasource.fundTransferBankMAS(body).map { resp ->
+                if (resp.data == null) {
                     throw BebasException.generalRC("FT_00")
                 }
-                fundResp.data!!
+                resp.data!!
             }
         }
     }
