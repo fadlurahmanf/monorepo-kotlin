@@ -27,6 +27,6 @@ class TransactionRemoteDatasource @Inject constructor(
     fun getChallengeCode(request: GenerateChallengeCodeRequest<FundTransferBankMASRequest>) =
         networkService().generateChallengeCode(request)
 
-    fun fundTransferBankMAS(@Body body: PostingRequest<FundTransferBankMASRequest>) =
+    fun fundTransferBankMAS(body: PostingRequest<FundTransferBankMASRequest>) =
         networkService().fundTransferBankMAS(body)
 }

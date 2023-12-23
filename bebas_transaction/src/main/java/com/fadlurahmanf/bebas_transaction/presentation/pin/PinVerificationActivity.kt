@@ -57,7 +57,7 @@ class PinVerificationActivity :
                 }
 
                 is NetworkState.LOADING -> {
-                    dismissLoadingDialog()
+                    showLoadingDialog()
                 }
 
                 is NetworkState.SUCCESS -> {

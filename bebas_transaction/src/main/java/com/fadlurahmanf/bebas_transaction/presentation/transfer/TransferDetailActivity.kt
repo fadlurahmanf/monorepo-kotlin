@@ -211,7 +211,7 @@ class TransferDetailActivity :
                         accountNumber = "1001934356",
                         destinationAccountName = argument.realAccountName,
                         destinationAccountNumber = argument.accountNumber,
-                        amountTransaction = 20000,
+                        amountTransaction = 10000,
                         description = "TES AJA",
                         ip = "0.0.0.0",
                         latitude = 0.0,
