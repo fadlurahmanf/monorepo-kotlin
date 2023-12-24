@@ -100,8 +100,10 @@
     </style>
 
     <style name="Font.DialogLoadingText">
-        <item name="android:fontFamily">@font/lexend_deca_regular</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/lexend_deca_bold</item>
+        <item name="android:letterSpacing">0.5</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Font.InitialFavorite">
