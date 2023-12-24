@@ -3,6 +3,7 @@ package com.fadlurahmanf.bebas_main.presentation.notification.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
@@ -11,7 +12,6 @@ import com.fadlurahmanf.bebas_main.R
 import com.fadlurahmanf.bebas_main.presentation.notification.NotificationInformationFragment
 import com.fadlurahmanf.bebas_main.presentation.notification.NotificationTransactionFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-
 
 class NotificationTabAdapter(
     private val context: Context,
@@ -34,11 +34,15 @@ class NotificationTabAdapter(
     }
 
     fun getTabView(position: Int): View {
-        val v: View = LayoutInflater.from(context).inflate(R.layout.layout_tab_with_badge, null)
-//        val tv = v.findViewById<View>(R.id.textView) as TextView
-//        tv.setText(tabTitles.get(position))
-//        val img = v.findViewById<View>(R.id.imgView) as ImageView
-//        img.setImageResource(imageResId.get(position))
+        val v: View =
+            LayoutInflater.from(context).inflate(R.layout.layout_tab_with_badge, null, false)
+        val title = v.findViewById<TextView>(R.id.tv_tab_title)
+        title.text = when (position) {
+            1 -> "Informasi"
+            else -> {
+                "Transaksi"
+            }
+        }
         return v
     }
 }

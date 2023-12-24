@@ -1,5 +1,11 @@
 package com.fadlurahmanf.bebas_shared.extension
 
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
+
 fun String.maskPhoneNumber(): String {
     if (startsWith("08")) {
         val newChar = replaceFirst("08", "+628")
@@ -25,5 +31,16 @@ fun String.maskPhoneNumber(): String {
         return newString
     } else {
         return this
+    }
+}
+
+
+fun String.utcToLocal(): Date? {
+    try {
+        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
+        parser.timeZone = TimeZone.getTimeZone("UTC")
+        return parser.parse(this)
+    } catch (e: Throwable) {
+        return null
     }
 }
