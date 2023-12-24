@@ -51,141 +51,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="20dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_subtitle_header"
-                style="@style/Font.HeaderSubTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mohon membaca informasi ini dengan seksama" />
-
-            <TextView
-
-                style="@style/Font.TncText"
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp"
-                android:text="Text\n\nText" />
+                app:tabSelectedTextColor="@color/red"
+                app:tabTextColor="@color/blue" />
 
-            <TextView
-
-                style="@style/Font.TncText"
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp"
-                android:text="Text\n\nText" />
+                android:orientation="vertical" />
 
-            <TextView
-
-                style="@style/Font.TncText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp"
-                android:text="Text\n\nText" />
-
-            <TextView
-
-                style="@style/Font.TncText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp"
-                android:text="Text\n\nText" />
-
-            <TextView
-
-                style="@style/Font.TncText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp"
-                android:text="Text\n\nText" />
-
-            <TextView
-
-                style="@style/Font.TncText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp"
-                android:text="Text\n\nText" />
-
-            <TextView
-
-                style="@style/Font.TncText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp"
-                android:text="Text\n\nText" />
-
-            <TextView
-
-                style="@style/Font.TncText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp"
-                android:text="Text\n\nText" />
-
-            <TextView
-
-                style="@style/Font.TncText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp"
-                android:text="Text\n\nText" />
-
-            <TextView
-
-                style="@style/Font.TncText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp"
-                android:text="Text\n\nText" />
-
-            <TextView
-
-                style="@style/Font.TncText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp"
-                android:text="Text\n\nText" />
-
-            <TextView
-
-                style="@style/Font.TncText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp"
-                android:text="Text\n\nText" />
-
-            <TextView
-
-                style="@style/Font.TncText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp"
-                android:text="Text\n\nText" />
-
-            <TextView
-
-                style="@style/Font.TncText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingHorizontal="30dp"
-                android:text="Text\n\nText" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
