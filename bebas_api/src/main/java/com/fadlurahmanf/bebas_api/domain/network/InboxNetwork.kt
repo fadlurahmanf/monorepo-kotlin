@@ -6,11 +6,11 @@ import com.fadlurahmanf.bebas_api.domain.interceptor.UserTokenInterceptor
 import com.fadlurahmanf.bebas_shared.BebasShared
 import okhttp3.OkHttpClient
 
-abstract class CmsNetwork<T>(
+abstract class InboxNetwork<T>(
     context: Context,
 ) : BebasBaseNetwork<T>(context) {
     override fun getBaseUrl(): String {
-        return "${BebasShared.getBebasUrl()}content-management-service/"
+        return "${BebasShared.getBebasUrl()}inbox-service/"
     }
 
     override fun okHttpClientBuilder(builder: OkHttpClient.Builder): OkHttpClient.Builder {

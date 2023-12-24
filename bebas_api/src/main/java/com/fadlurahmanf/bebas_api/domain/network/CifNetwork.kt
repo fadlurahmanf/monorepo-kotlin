@@ -16,8 +16,8 @@ abstract class CifNetwork<T>(
     override fun okHttpClientBuilder(builder: OkHttpClient.Builder): OkHttpClient.Builder {
         return super.okHttpClientBuilder(builder)
             .addInterceptor(UserTokenInterceptor())
+            .authenticator(UserTokenAuthenticator(context))
             .addInterceptor(bodyLoggingInterceptor())
             .addInterceptor(getChuckerInterceptor())
-            .authenticator(UserTokenAuthenticator(context))
     }
 }

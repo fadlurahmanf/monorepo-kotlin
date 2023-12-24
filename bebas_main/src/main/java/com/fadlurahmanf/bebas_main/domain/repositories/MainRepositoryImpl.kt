@@ -2,8 +2,11 @@ package com.fadlurahmanf.bebas_main.domain.repositories
 
 import android.content.Context
 import com.fadlurahmanf.bebas_api.data.datasources.CmsRemoteDatasource
+import com.fadlurahmanf.bebas_api.data.datasources.InboxRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
+import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
+import com.fadlurahmanf.bebas_api.data.dto.notification.NotificationResponse
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_main.R
 import com.fadlurahmanf.bebas_main.data.dto.home.HomeBankAccountModel
@@ -16,6 +19,7 @@ class MainRepositoryImpl @Inject constructor(
     context: Context,
     private val cmsRemoteDatasource: CmsRemoteDatasource,
     private val transactionRemoteDatasource: TransactionRemoteDatasource,
+    private val inboxRemoteDatasource: InboxRemoteDatasource,
 ) {
 
     fun getTransactionMenu(): Observable<List<TransactionMenuModel>> {
@@ -121,6 +125,15 @@ class MainRepositoryImpl @Inject constructor(
 
     fun getHomePagePromo(): Observable<List<ItemPromoResponse>> {
         return cmsRemoteDatasource.getHomepagePromo().map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+            it.data!!
+        }
+    }
+
+    fun getTransactionNotification(page: Int): Observable<NotificationResponse> {
+        return inboxRemoteDatasource.getTransactionNotification(page = page).map {
             if (it.data == null) {
                 throw BebasException.generalRC("DATA_MISSING")
             }
