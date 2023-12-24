@@ -3,11 +3,12 @@ package com.fadlurahmanf.bebas_api.data.datasources
 import android.content.Context
 import com.fadlurahmanf.bebas_api.data.api.InboxApi
 import com.fadlurahmanf.bebas_api.domain.network.CifNetwork
+import com.fadlurahmanf.bebas_api.domain.network.InboxNetwork
 import javax.inject.Inject
 
 class InboxRemoteDatasource @Inject constructor(
     context: Context
-) : CifNetwork<InboxApi>(context) {
+) : InboxNetwork<InboxApi>(context) {
     override fun getApi(): Class<InboxApi> = InboxApi::class.java
 
     fun getTransactionNotification(

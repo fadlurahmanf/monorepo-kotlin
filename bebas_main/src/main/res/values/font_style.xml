@@ -66,4 +66,16 @@
         <item name="android:fontFamily">@font/lexend_deca_regular</item>
         <item name="android:textSize">13sp</item>
     </style>
+
+    <style name="Font.InboxHeaderMessage">
+        <item name="android:fontFamily">@font/lexend_deca_semi_bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Font.InboxBodyMessage">
+        <item name="android:fontFamily">@font/lexend_deca_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
 </resources>

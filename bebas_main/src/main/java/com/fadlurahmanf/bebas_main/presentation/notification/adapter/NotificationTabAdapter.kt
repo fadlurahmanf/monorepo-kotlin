@@ -10,6 +10,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.fadlurahmanf.bebas_main.R
 import com.fadlurahmanf.bebas_main.presentation.notification.NotificationInformationFragment
 import com.fadlurahmanf.bebas_main.presentation.notification.NotificationTransactionFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 class NotificationTabAdapter(
@@ -19,6 +20,7 @@ class NotificationTabAdapter(
 ) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
+    @ExperimentalCoroutinesApi
     val transactionFragment = NotificationTransactionFragment()
     val informationFragment = NotificationInformationFragment()
 

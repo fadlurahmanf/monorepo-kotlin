@@ -8,6 +8,7 @@ import com.fadlurahmanf.bebas_main.presentation.BaseMainActivity
 import com.fadlurahmanf.bebas_main.presentation.notification.adapter.NotificationTabAdapter
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 class NotificationActivity :
     BaseMainActivity<ActivityNotificationBinding>(ActivityNotificationBinding::inflate) {

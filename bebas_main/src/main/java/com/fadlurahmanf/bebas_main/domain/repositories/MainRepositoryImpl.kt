@@ -13,6 +13,7 @@ import com.fadlurahmanf.bebas_main.data.dto.home.HomeBankAccountModel
 import com.fadlurahmanf.bebas_main.data.dto.home.TransactionMenuModel
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
@@ -132,7 +133,7 @@ class MainRepositoryImpl @Inject constructor(
         }
     }
 
-    fun getTransactionNotification(page: Int): Observable<NotificationResponse> {
+    fun getTransactionNotification(page: Int): Single<NotificationResponse> {
         return inboxRemoteDatasource.getTransactionNotification(page = page).map {
             if (it.data == null) {
                 throw BebasException.generalRC("DATA_MISSING")
