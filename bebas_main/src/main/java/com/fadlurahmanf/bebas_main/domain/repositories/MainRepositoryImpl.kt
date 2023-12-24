@@ -141,4 +141,11 @@ class MainRepositoryImpl @Inject constructor(
             it.data!!
         }
     }
+
+    fun getDetailTransaction(transactionId: String, transactionType: String): Observable<String> {
+        return transactionRemoteDatasource.getTransactionDetail(transactionId, transactionType)
+            .map {
+                ""
+            }
+    }
 }

@@ -57,6 +57,7 @@ class NotificationTransactionPagingSource @Inject constructor(
                     bodyMessage = content.bodyMessage ?: "-",
                     time = (content.transactionDate ?: "").utcToLocal()?.formatNotification()
                         ?: "-",
+                    additionalData = content
                 )
             },
             prevKey = prevKey,

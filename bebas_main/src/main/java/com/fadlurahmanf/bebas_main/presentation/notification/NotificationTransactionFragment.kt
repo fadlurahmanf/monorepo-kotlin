@@ -3,6 +3,7 @@ package com.fadlurahmanf.bebas_main.presentation.notification
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import com.fadlurahmanf.bebas_main.data.dto.notification.NotificationModel
 import com.fadlurahmanf.bebas_main.databinding.FragmentNotificationTransactionBinding
 import com.fadlurahmanf.bebas_main.presentation.BaseMainFragment
 import com.fadlurahmanf.bebas_main.presentation.notification.adapter.NotificationPagingAdapter
@@ -15,7 +16,7 @@ private const val ARG_PARAM2 = "param2"
 @ExperimentalCoroutinesApi
 class NotificationTransactionFragment : BaseMainFragment<FragmentNotificationTransactionBinding>(
     FragmentNotificationTransactionBinding::inflate
-) {
+), NotificationPagingAdapter.CallBack {
     private var param1: String? = null
     private var param2: String? = null
 
@@ -39,6 +40,7 @@ class NotificationTransactionFragment : BaseMainFragment<FragmentNotificationTra
         }
 
         adapter = NotificationPagingAdapter()
+        adapter.setCallBack(this)
         binding.rv.adapter = adapter
 
 
@@ -58,5 +60,12 @@ class NotificationTransactionFragment : BaseMainFragment<FragmentNotificationTra
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onClicked(notification: NotificationModel) {
+        viewModel.getTransactionDetail(
+            notification.additionalData?.transactionId ?: "-",
+            notification.additionalData?.transactionType ?: "-"
+        )
     }
 }

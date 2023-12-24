@@ -20,9 +20,9 @@ class NotificationPagingAdapter :
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val header:TextView = view.findViewById(R.id.tv_header)
-        val body:TextView = view.findViewById(R.id.tv_body)
-        val date:TextView = view.findViewById(R.id.tv_date)
+        val header: TextView = view.findViewById(R.id.tv_header)
+        val body: TextView = view.findViewById(R.id.tv_body)
+        val date: TextView = view.findViewById(R.id.tv_date)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -30,6 +30,12 @@ class NotificationPagingAdapter :
         holder.header.text = notification?.titleMessage ?: "-"
         holder.body.text = notification?.bodyMessage ?: "-"
         holder.date.text = notification?.time ?: "-"
+
+        holder.itemView.setOnClickListener {
+            if (notification != null) {
+                callBack?.onClicked(notification)
+            }
+        }
     }
 
     override fun onCreateViewHolder(
@@ -59,6 +65,6 @@ class NotificationPagingAdapter :
     }
 
     interface CallBack {
-        fun onClicked()
+        fun onClicked(notification: NotificationModel)
     }
 }

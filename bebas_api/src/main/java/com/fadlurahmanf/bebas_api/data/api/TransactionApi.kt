@@ -15,6 +15,7 @@ import org.json.JSONObject
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface TransactionApi {
     @GET("customer-info/bank-account")
@@ -39,4 +40,10 @@ interface TransactionApi {
     fun fundTransferBankMAS(
         @Body json: JsonObject
     ): Observable<BaseResponse<FundTransferResponse>>
+
+    @GET("transaction/{transactionId}/type/{transactionType}")
+    fun getTransactionDetail(
+        @Path("transactionId") transactionId:String,
+        @Path("transactionType") transactionType:String,
+    ): Observable<BaseResponse<Nothing>>
 }

@@ -27,4 +27,7 @@ class TransactionRemoteDatasource @Inject constructor(
 
     fun fundTransferBankMAS(json: JsonObject) =
         networkService().fundTransferBankMAS(json)
+
+    fun getTransactionDetail(transactionId: String, transactionType: String) =
+        networkService().getTransactionDetail(transactionId, transactionType)
 }

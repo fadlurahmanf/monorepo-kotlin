@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 class NotificationViewModel @Inject constructor(
     private val mainRepositoryImpl: MainRepositoryImpl,
-    private val transactionPagingSource: NotificationTransactionPagingSource
+    private val transactionPagingSource: NotificationTransactionPagingSource,
 ) : BaseViewModel() {
 
     private val _notificationState = MutableLiveData<PagingData<NotificationModel>>()
@@ -52,5 +52,18 @@ class NotificationViewModel @Inject constructor(
                 transactionPagingSource
             }
         ).flowable
+    }
+
+    fun getTransactionDetail(transactionId:String, transactionType:String) {
+        baseDisposable.add(mainRepositoryImpl.getDetailTransaction(transactionId, transactionType)
+                               .subscribeOn(Schedulers.io())
+                               .observeOn(AndroidSchedulers.mainThread())
+                               .subscribe(
+                                   {
+
+                                   },
+                                   {},
+                                   {}
+                               ))
     }
 }
