@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_main.presentation.home.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -14,6 +15,7 @@ import com.fadlurahmanf.bebas_main.presentation.BaseMainFragment
 import com.fadlurahmanf.bebas_main.presentation.home.adapter.BankAccountAdapter
 import com.fadlurahmanf.bebas_main.presentation.home.adapter.MenuAdapter
 import com.fadlurahmanf.bebas_main.presentation.home.adapter.PromoAdapter
+import com.fadlurahmanf.bebas_main.presentation.notification.NotificationActivity
 import javax.inject.Inject
 
 private const val ARG_PARAM1 = "param1"
@@ -120,6 +122,14 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
     }
 
     override fun onBebasViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.itemNotificationBell.cNotificationBell.setOnClickListener {
+            val intent = Intent(
+                requireContext(),
+                NotificationActivity::class.java
+            )
+            startActivity(intent)
+        }
+
         bankAccountAdapter = BankAccountAdapter()
         bankAccountAdapter.setList(bankAccounts)
         binding.layoutBankAccount.vpBankAccount.adapter = bankAccountAdapter

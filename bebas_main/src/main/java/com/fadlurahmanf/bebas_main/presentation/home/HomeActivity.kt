@@ -1,18 +1,14 @@
 package com.fadlurahmanf.bebas_main.presentation.home
 
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.Menu
+import android.view.View
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.fadlurahmanf.bebas_main.R
 import com.fadlurahmanf.bebas_main.databinding.ActivityHomeBinding
 import com.fadlurahmanf.bebas_main.presentation.BaseMainActivity
 import com.fadlurahmanf.bebas_main.presentation.home.home.HomeFragment
-import com.fadlurahmanf.bebas_main.presentation.notification.NotificationActivity
-import com.fadlurahmanf.bebas_shared.data.argument.transaction.FavoriteArgument
-import com.fadlurahmanf.bebas_shared.data.flow.transaction.FavoriteFlow
 
 class HomeActivity : BaseMainActivity<ActivityHomeBinding>(ActivityHomeBinding::inflate) {
 
@@ -42,13 +38,8 @@ class HomeActivity : BaseMainActivity<ActivityHomeBinding>(ActivityHomeBinding::
             }
         }
 
-        Handler(Looper.getMainLooper()).postDelayed({
-                                                        val intent = Intent(
-                                                            this,
-                                                            NotificationActivity::class.java
-                                                        )
-                                                        startActivity(intent)
-                                                    }, 1500)
+        setStatusBarTextColor(true)
+        setStatusBarColor()
     }
 
     private fun loadFragment(fragment: Fragment, tag: String, position: Int) {
@@ -71,5 +62,15 @@ class HomeActivity : BaseMainActivity<ActivityHomeBinding>(ActivityHomeBinding::
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.bottom_nav_menu, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    fun setStatusBarTextColor(isLight: Boolean) {
+        val windowInsetController = ViewCompat.getWindowInsetsController(window.decorView)
+        windowInsetController?.isAppearanceLightStatusBars = isLight
+    }
+
+    fun setStatusBarColor() {
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        window.statusBarColor = resources.getColor(R.color.background_home_color)
     }
 }
