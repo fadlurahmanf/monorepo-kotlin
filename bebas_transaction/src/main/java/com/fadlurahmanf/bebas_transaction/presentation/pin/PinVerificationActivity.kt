@@ -1,15 +1,17 @@
 package com.fadlurahmanf.bebas_transaction.presentation.pin
 
+import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
-import com.fadlurahmanf.bebas_transaction.R
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.InvoiceTransactionArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
+import com.fadlurahmanf.bebas_transaction.data.flow.InvoiceTransactionFlow
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityPinVerificationBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
+import com.fadlurahmanf.bebas_transaction.presentation.invoice.InvoiceTransactionActivity
 import com.fadlurahmanf.bebas_ui.pin.BebasPinKeyboard
 import javax.inject.Inject
 
@@ -62,6 +64,7 @@ class PinVerificationActivity :
 
                 is NetworkState.SUCCESS -> {
                     dismissLoadingDialog()
+                    goToInvoice(it.data)
                 }
 
                 else -> {
@@ -69,6 +72,23 @@ class PinVerificationActivity :
                 }
             }
         }
+    }
+
+    private fun goToInvoice(data: FundTransferResponse) {
+        val intent = Intent(this, InvoiceTransactionActivity::class.java)
+        intent.putExtra(
+            InvoiceTransactionActivity.FLOW,
+            InvoiceTransactionFlow.FUND_TRANSFER_BANK_MAS.name
+        )
+        intent.putExtra(
+            InvoiceTransactionActivity.ARGUMENT, InvoiceTransactionArgument(
+                statusTransaction = "SUCCESS",
+                transactionId = data.transactionId ?: "-",
+                isFavorite = false,
+                isFavoriteEnabled = false
+            )
+        )
+        startActivity(intent)
     }
 
     private var pin: String = ""

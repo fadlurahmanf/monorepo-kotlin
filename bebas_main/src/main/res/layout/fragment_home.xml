@@ -38,7 +38,7 @@
                     <ImageView
                         android:layout_width="120dp"
                         android:layout_height="60dp"
-                        android:src="@drawable/il_logo_bebas" />
+                        android:src="@drawable/il_bebas_home" />
 
                     <View
                         android:layout_width="0dp"

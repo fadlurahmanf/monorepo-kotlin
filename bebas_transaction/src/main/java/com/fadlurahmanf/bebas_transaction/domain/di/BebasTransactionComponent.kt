@@ -4,6 +4,7 @@ import android.content.Context
 import com.fadlurahmanf.bebas_storage.BebasStorageComponent
 import com.fadlurahmanf.bebas_transaction.presentation.others.BankListActivity
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.FavoriteListActivity
+import com.fadlurahmanf.bebas_transaction.presentation.invoice.InvoiceTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.pin.PinVerificationActivity
 import com.fadlurahmanf.bebas_transaction.presentation.transfer.TransferConfirmationBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.transfer.TransferDetailActivity
@@ -35,6 +36,7 @@ interface BebasTransactionComponent {
     fun inject(activity: BankListActivity)
     fun inject(activity: TransferDetailActivity)
     fun inject(activity: PinVerificationActivity)
+    fun inject(activity: InvoiceTransactionActivity)
 
     // bottomsheet
     fun inject(botttomsheet: TransferConfirmationBottomsheet)

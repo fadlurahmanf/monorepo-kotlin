@@ -9,6 +9,7 @@ import com.fadlurahmanf.bebas_api.data.dto.transfer.GenerateChallengeCodeRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
+import com.google.gson.JsonObject
 import io.reactivex.rxjava3.core.Observable
 import org.json.JSONObject
 import retrofit2.http.Body
@@ -36,6 +37,6 @@ interface TransactionApi {
 
     @POST("transfer/posting/bank-mas")
     fun fundTransferBankMAS(
-        @Body request: PostingRequest<FundTransferBankMASRequest>
+        @Body json: JsonObject
     ): Observable<BaseResponse<FundTransferResponse>>
 }

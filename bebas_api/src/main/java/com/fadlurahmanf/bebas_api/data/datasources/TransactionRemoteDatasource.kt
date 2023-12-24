@@ -6,10 +6,8 @@ import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.GenerateChallengeCodeRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankMasRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
-import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
 import com.fadlurahmanf.bebas_api.domain.network.TransactionNetwork
-import org.json.JSONObject
-import retrofit2.http.Body
+import com.google.gson.JsonObject
 import javax.inject.Inject
 
 class TransactionRemoteDatasource @Inject constructor(
@@ -27,6 +25,6 @@ class TransactionRemoteDatasource @Inject constructor(
     fun getChallengeCode(request: GenerateChallengeCodeRequest<FundTransferBankMASRequest>) =
         networkService().generateChallengeCode(request)
 
-    fun fundTransferBankMAS(body: PostingRequest<FundTransferBankMASRequest>) =
-        networkService().fundTransferBankMAS(body)
+    fun fundTransferBankMAS(json: JsonObject) =
+        networkService().fundTransferBankMAS(json)
 }

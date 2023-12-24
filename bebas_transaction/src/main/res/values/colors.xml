@@ -4,6 +4,9 @@
 
     <color name="red">#FFCC0921</color>
 
+    <color name="tertiary">#FF85D196</color>
+    <color name="tertiary_10">#1A85D196</color>
+
 
     <color name="error_text">@color/red</color>
     <color name="grey">#858585</color>

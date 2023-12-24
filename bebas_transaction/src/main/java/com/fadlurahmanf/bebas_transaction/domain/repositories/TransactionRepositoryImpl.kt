@@ -13,8 +13,11 @@ import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.extension.serializeToMap
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import io.reactivex.rxjava3.core.Observable
+import org.json.JSONObject
 import javax.inject.Inject
 
 class TransactionRepositoryImpl @Inject constructor(
@@ -147,7 +150,7 @@ class TransactionRepositoryImpl @Inject constructor(
                 signature = signature,
                 timestamp = timestamp
             )
-            transactionRemoteDatasource.fundTransferBankMAS(body).map { resp ->
+            transactionRemoteDatasource.fundTransferBankMAS(Gson().toJsonTree(body).asJsonObject).map { resp ->
                 if (resp.data == null) {
                     throw BebasException.generalRC("FT_00")
                 }

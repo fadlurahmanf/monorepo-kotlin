@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_transaction.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.viewbinding.ViewBinding
@@ -106,6 +107,50 @@ abstract class BaseTransactionActivity<VB : ViewBinding>(inflate: BebasInflateAc
         callback: FailedBottomsheet.Callback = object : FailedBottomsheet.Callback {
             override fun onButtonClicked() {
                 dismissFailedBottomsheet()
+                finish()
+            }
+        },
+    ) {
+        Log.e("BebasLogger", "ForcedBackBottomsheet ${exception.rawMessage}")
+        if (isFailedBottomsheetOpen) {
+            dismissFailedBottomsheet()
+        }
+        isFailedBottomsheetOpen = true
+        val bundle = Bundle()
+        bundle.apply {
+            putString(
+                FailedBottomsheet.TITLE_TEXT,
+                exception.toProperTitle(this@BaseTransactionActivity)
+            )
+            putString(
+                FailedBottomsheet.MESSAGE_TEXT,
+                exception.toProperMessage(this@BaseTransactionActivity)
+            )
+            putString(
+                FailedBottomsheet.BUTTON_TEXT,
+                exception.toProperButtonText(this@BaseTransactionActivity)
+            )
+            putBoolean(FailedBottomsheet.IS_DIALOG_CANCELABLE, false)
+        }
+        failedBottomsheet = FailedBottomsheet()
+        failedBottomsheet?.arguments = bundle
+        if (callback != null) {
+            failedBottomsheet?.setCallback(callback)
+        }
+        failedBottomsheet?.show(supportFragmentManager, FailedBottomsheet::class.java.simpleName)
+    }
+
+    fun showForcedHomeBottomsheet(
+        exception: BebasException,
+        callback: FailedBottomsheet.Callback = object : FailedBottomsheet.Callback {
+            override fun onButtonClicked() {
+                dismissFailedBottomsheet()
+                val intent = Intent(
+                    this@BaseTransactionActivity,
+                    Class.forName("com.fadlurahmanf.bebas_main.presentation.home.HomeActivity")
+                )
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
                 finish()
             }
         },

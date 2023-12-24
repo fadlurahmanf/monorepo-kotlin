@@ -4,5 +4,8 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 data class FundTransferResponse(
-    val transactionId: String,
+    var transactionId: String? = null,
+    var correlationId: String? = null,
+    var referenceCode: String? = null,
+    var transactionDateTime: String? = null,
 )
