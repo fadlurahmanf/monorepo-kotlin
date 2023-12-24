@@ -1,12 +1,18 @@
 package com.fadlurahmanf.bebas_main.presentation.home
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import androidx.fragment.app.Fragment
 import com.fadlurahmanf.bebas_main.R
 import com.fadlurahmanf.bebas_main.databinding.ActivityHomeBinding
 import com.fadlurahmanf.bebas_main.presentation.BaseMainActivity
 import com.fadlurahmanf.bebas_main.presentation.home.home.HomeFragment
+import com.fadlurahmanf.bebas_main.presentation.notification.NotificationActivity
+import com.fadlurahmanf.bebas_shared.data.argument.transaction.FavoriteArgument
+import com.fadlurahmanf.bebas_shared.data.flow.transaction.FavoriteFlow
 
 class HomeActivity : BaseMainActivity<ActivityHomeBinding>(ActivityHomeBinding::inflate) {
 
@@ -35,10 +41,18 @@ class HomeActivity : BaseMainActivity<ActivityHomeBinding>(ActivityHomeBinding::
                 }
             }
         }
+
+        Handler(Looper.getMainLooper()).postDelayed({
+                                                        val intent = Intent(
+                                                            this,
+                                                            NotificationActivity::class.java
+                                                        )
+                                                        startActivity(intent)
+                                                    }, 1500)
     }
 
     private fun loadFragment(fragment: Fragment, tag: String, position: Int) {
-        if(activeIndexFragment == position) return
+        if (activeIndexFragment == position) return
         val existingFragment = fragmentManager.findFragmentByTag(tag)
 
         if (existingFragment?.isAdded == true && activeFragment != null) {

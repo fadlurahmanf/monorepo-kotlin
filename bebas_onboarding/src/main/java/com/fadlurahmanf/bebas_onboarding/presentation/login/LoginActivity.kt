@@ -32,17 +32,11 @@ class LoginActivity : BaseOnboardingActivity<ActivityLoginBinding>(ActivityLogin
 
                 is NetworkState.SUCCESS -> {
                     dismissLoadingDialog()
-                    // FAKE - HARUSNYA LOGIN
                     val intent = Intent(
                         this,
-                        Class.forName("com.fadlurahmanf.bebas_transaction.presentation.favorite.FavoriteListActivity")
+                        Class.forName("com.fadlurahmanf.bebas_main.presentation.home.HomeActivity")
                     )
-                    intent.apply {
-                        putExtra(
-                            FavoriteArgument.FAVORITE_FLOW,
-                            FavoriteFlow.TRANSACTION_MENU_TRANSFER.name
-                        )
-                    }
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                 }
 
