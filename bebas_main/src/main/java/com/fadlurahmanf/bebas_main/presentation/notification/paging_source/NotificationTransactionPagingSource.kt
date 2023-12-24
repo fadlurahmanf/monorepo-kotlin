@@ -16,7 +16,7 @@ class NotificationTransactionPagingSource @Inject constructor(
     private val mainRepositoryImpl: MainRepositoryImpl
 ) : RxPagingSource<Int, NotificationModel>() {
 
-    var page = 0
+    var defaultPage = 0
 
     override fun getRefreshKey(state: PagingState<Int, NotificationModel>): Int? {
         Log.d("BebasLogger", "REFRESH KEY SINI ${state.anchorPosition}")
@@ -27,21 +27,23 @@ class NotificationTransactionPagingSource @Inject constructor(
     }
 
     override fun loadSingle(params: LoadParams<Int>): Single<LoadResult<Int, NotificationModel>> {
+        val page = params.key ?: defaultPage
         return mainRepositoryImpl.getTransactionNotification(
             page = page,
         ).subscribeOn(Schedulers.io()).map { resp ->
-            page++
-            toLoadSuccess(resp)
+            toLoadSuccess(resp, page)
         }.onErrorReturn {
             toLoadError(it)
         }
     }
 
-    private fun toLoadSuccess(response: NotificationResponse): LoadResult<Int, NotificationModel> {
-//        val prevKey = if (page <= 0) 0 else page - 1
+    private fun toLoadSuccess(
+        response: NotificationResponse,
+        key: Int
+    ): LoadResult<Int, NotificationModel> {
+        Log.d("BebasLogger", "KEY: $key")
         val prevKey = null
-        val nextKey = if (response.isLast == null || response.isLast == false) page else null
-//        val nextKey = if (response.isLast == null || response.isLast == false) page else null
+        val nextKey = if (response.isLast != true) key + 1 else null
         Log.d("BebasLogger", "PREV: $prevKey")
         Log.d("BebasLogger", "NEXT: $nextKey")
         return LoadResult.Page(
