@@ -152,6 +152,22 @@ class TransactionRepositoryImpl @Inject constructor(
         }
     }
 
+    fun inquiryPulsaDataReturnModel(
+        phoneNumber: String
+    ): Observable<InquiryResultModel> {
+        val request = InquiryPulsaDataRequest(
+            phoneNumber = phoneNumber
+        )
+        return transactionRemoteDatasource.inquiryPulsaData(request).map { inqRes ->
+            if (inqRes.data == null) {
+                throw BebasException.generalRC("INQ_00")
+            }
+            InquiryResultModel(
+                inquiryPulsaData = inqRes.data!!
+            )
+        }
+    }
+
     fun generateChallengeCode(request: GenerateChallengeCodeRequest<FundTransferBankMASRequest>): Observable<String> {
         return transactionRemoteDatasource.getChallengeCode(request).map {
             if (it.data == null) {

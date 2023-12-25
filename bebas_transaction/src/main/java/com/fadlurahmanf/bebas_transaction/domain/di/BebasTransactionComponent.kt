@@ -6,6 +6,7 @@ import com.fadlurahmanf.bebas_transaction.presentation.others.BankListActivity
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.FavoriteListActivity
 import com.fadlurahmanf.bebas_transaction.presentation.invoice.InvoiceTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.pin.PinVerificationActivity
+import com.fadlurahmanf.bebas_transaction.presentation.ppob.PaymentDetailActivity
 import com.fadlurahmanf.bebas_transaction.presentation.transfer.TransferConfirmationBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.transfer.TransferDetailActivity
 import com.fadlurahmanf.core_crypto.CoreCryptoComponent
@@ -37,6 +38,7 @@ interface BebasTransactionComponent {
     fun inject(activity: TransferDetailActivity)
     fun inject(activity: PinVerificationActivity)
     fun inject(activity: InvoiceTransactionActivity)
+    fun inject(activity: PaymentDetailActivity)
 
     // bottomsheet
     fun inject(botttomsheet: TransferConfirmationBottomsheet)

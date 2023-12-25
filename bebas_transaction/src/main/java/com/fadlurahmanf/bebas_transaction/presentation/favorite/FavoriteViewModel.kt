@@ -143,7 +143,7 @@ class FavoriteViewModel @Inject constructor(
 
             is InquiryRequestModel.InquiryPulsaData -> {
                 disposableModel =
-                    transactionRepositoryImpl.inquiryBankMasReturnModel("XXX")
+                    transactionRepositoryImpl.inquiryPulsaDataReturnModel(inquiryRequestModel.phoneNumber)
             }
         }
         _inquiryState.value = InquiryState.LOADING
