@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_main.data.dto.model.home.HomeBankAccountModel
-import com.fadlurahmanf.bebas_main.data.dto.model.home.TransactionMenuModel
+import com.fadlurahmanf.bebas_main.data.dto.model.home.ProductTransactionMenuModel
 import com.fadlurahmanf.bebas_main.databinding.FragmentHomeBinding
 import com.fadlurahmanf.bebas_main.presentation.BaseMainFragment
 import com.fadlurahmanf.bebas_main.presentation.home.adapter.BankAccountAdapter
@@ -34,7 +34,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
     private var bankAccounts: ArrayList<HomeBankAccountModel> = arrayListOf()
 
     lateinit var menuAdapter: MenuAdapter
-    private val menus: ArrayList<TransactionMenuModel> = arrayListOf()
+    private val menus: ArrayList<ProductTransactionMenuModel> = arrayListOf()
 
     override fun injectFragment() {
         component.inject(this)
@@ -164,7 +164,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
     }
 
     private var transactionMenuBottomsheet: ProductTransactionBottomsheet? = null
-    override fun onTransactionMenuClicked(menuModel: TransactionMenuModel) {
+    override fun onTransactionMenuClicked(menuModel: ProductTransactionMenuModel) {
         transactionMenuBottomsheet?.dismiss()
         transactionMenuBottomsheet = null
         transactionMenuBottomsheet = ProductTransactionBottomsheet()

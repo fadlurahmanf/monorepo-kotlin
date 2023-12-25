@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_main.data.dto.model.home.HomeBankAccountModel
-import com.fadlurahmanf.bebas_main.data.dto.model.home.TransactionMenuModel
+import com.fadlurahmanf.bebas_main.data.dto.model.home.ProductTransactionMenuModel
 import com.fadlurahmanf.bebas_main.domain.repositories.MainRepositoryImpl
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
@@ -17,8 +17,8 @@ class HomeFragmentViewModel @Inject constructor(
     private val mainRepositoryImpl: MainRepositoryImpl
 ) : BaseViewModel() {
 
-    private val _menuState = MutableLiveData<NetworkState<List<TransactionMenuModel>>>()
-    val menuState: LiveData<NetworkState<List<TransactionMenuModel>>> = _menuState
+    private val _menuState = MutableLiveData<NetworkState<List<ProductTransactionMenuModel>>>()
+    val menuState: LiveData<NetworkState<List<ProductTransactionMenuModel>>> = _menuState
 
     fun getMenus() {
         baseDisposable.add(mainRepositoryImpl.getTransactionMenu().subscribeOn(Schedulers.io())

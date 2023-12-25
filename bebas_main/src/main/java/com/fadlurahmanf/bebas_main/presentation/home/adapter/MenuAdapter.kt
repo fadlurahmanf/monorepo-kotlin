@@ -10,18 +10,18 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fadlurahmanf.bebas_main.R
-import com.fadlurahmanf.bebas_main.data.dto.model.home.TransactionMenuModel
+import com.fadlurahmanf.bebas_main.data.dto.model.home.ProductTransactionMenuModel
 
 class MenuAdapter : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
     lateinit var context: Context
-    private val menus: ArrayList<TransactionMenuModel> = arrayListOf()
+    private val menus: ArrayList<ProductTransactionMenuModel> = arrayListOf()
     private var callback: Callback? = null
 
     fun setCallback(callback: Callback) {
         this.callback = callback
     }
 
-    fun setList(list: List<TransactionMenuModel>) {
+    fun setList(list: List<ProductTransactionMenuModel>) {
         menus.clear()
         menus.addAll(list)
         notifyItemRangeInserted(0, list.size)
@@ -33,11 +33,9 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
         if (!::context.isInitialized) {
             context = parent.context
         }
-
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_transaction_menu, parent, false)
         return ViewHolder(view)
@@ -48,8 +46,8 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val menu = menus[position]
 
-        holder.label.text = context.getString(menu.menuLabel)
-        Glide.with(holder.image).load(ContextCompat.getDrawable(context, menu.imageMenu))
+        holder.label.text = context.getString(menu.productMenuLabel)
+        Glide.with(holder.image).load(ContextCompat.getDrawable(context, menu.productImageMenu))
             .into(holder.image)
 
         holder.itemView.setOnClickListener {
@@ -58,6 +56,6 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
     }
 
     interface Callback {
-        fun onTransactionMenuClicked(menuModel: TransactionMenuModel)
+        fun onTransactionMenuClicked(menuModel: ProductTransactionMenuModel)
     }
 }

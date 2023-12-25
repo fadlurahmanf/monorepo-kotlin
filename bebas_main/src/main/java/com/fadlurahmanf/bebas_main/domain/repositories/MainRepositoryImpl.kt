@@ -5,12 +5,11 @@ import com.fadlurahmanf.bebas_api.data.datasources.CmsRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.InboxRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
-import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.notification.NotificationResponse
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_main.R
 import com.fadlurahmanf.bebas_main.data.dto.model.home.HomeBankAccountModel
-import com.fadlurahmanf.bebas_main.data.dto.model.home.TransactionMenuModel
+import com.fadlurahmanf.bebas_main.data.dto.model.home.ProductTransactionMenuModel
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -23,7 +22,7 @@ class MainRepositoryImpl @Inject constructor(
     private val inboxRemoteDatasource: InboxRemoteDatasource,
 ) {
 
-    fun getTransactionMenu(): Observable<List<TransactionMenuModel>> {
+    fun getTransactionMenu(): Observable<List<ProductTransactionMenuModel>> {
         return cmsRemoteDatasource.getTransactionMenu()
             .map {
                 if (it.data == null) {
@@ -31,65 +30,65 @@ class MainRepositoryImpl @Inject constructor(
                 }
 
                 val menus = it.data!!
-                val menusModel = ArrayList<TransactionMenuModel>()
+                val menusModel = ArrayList<ProductTransactionMenuModel>()
                 menus.forEach { menuResp ->
                     when (menuResp.menuId) {
                         "TRANSFER" -> {
                             menusModel.add(
-                                TransactionMenuModel(
-                                    menuId = menuResp.menuId ?: "-",
-                                    menuLabel = R.string.transfer,
-                                    imageMenu = R.drawable.ic_menu_transfer
+                                ProductTransactionMenuModel(
+                                    productMenuId = menuResp.menuId ?: "-",
+                                    productMenuLabel = R.string.transfer,
+                                    productImageMenu = R.drawable.ic_menu_transfer
                                 )
                             )
                         }
 
                         "PAYMENT" -> {
                             menusModel.add(
-                                TransactionMenuModel(
-                                    menuId = menuResp.menuId ?: "-",
-                                    menuLabel = R.string.payment,
-                                    imageMenu = R.drawable.ic_menu_payment
+                                ProductTransactionMenuModel(
+                                    productMenuId = menuResp.menuId ?: "-",
+                                    productMenuLabel = R.string.payment,
+                                    productImageMenu = R.drawable.ic_menu_payment
                                 )
                             )
                         }
 
                         "PURCHASE" -> {
                             menusModel.add(
-                                TransactionMenuModel(
-                                    menuId = menuResp.menuId ?: "-",
-                                    menuLabel = R.string.purchase,
-                                    imageMenu = R.drawable.ic_menu_purchase
+                                ProductTransactionMenuModel(
+                                    productMenuId = menuResp.menuId ?: "-",
+                                    productMenuLabel = R.string.purchase,
+                                    productImageMenu = R.drawable.ic_menu_purchase
                                 )
                             )
                         }
 
                         "TOPUP" -> {
                             menusModel.add(
-                                TransactionMenuModel(
-                                    menuId = menuResp.menuId ?: "-",
-                                    menuLabel = R.string.topup,
-                                    imageMenu = R.drawable.ic_menu_topup
+                                ProductTransactionMenuModel(
+                                    productMenuId = menuResp.menuId ?: "-",
+                                    productMenuLabel = R.string.topup,
+                                    productImageMenu = R.drawable.ic_menu_topup
                                 )
                             )
                         }
 
                         "CARDLESS_WD" -> {
                             menusModel.add(
-                                TransactionMenuModel(
-                                    menuId = menuResp.menuId ?: "-",
-                                    menuLabel = R.string.cardless_withdrawal,
-                                    imageMenu = R.drawable.ic_menu_transfer
+                                ProductTransactionMenuModel(
+                                    productMenuId = menuResp.menuId ?: "-",
+                                    productMenuLabel = R.string.cardless_withdrawal,
+                                    productImageMenu = R.drawable.ic_menu_transfer
                                 )
                             )
                         }
                     }
                 }
                 menusModel.add(
-                    TransactionMenuModel(
-                        menuId = "OTHERS",
-                        menuLabel = R.string.others,
-                        imageMenu = R.drawable.ic_menu_other
+                    ProductTransactionMenuModel(
+                        productMenuId = "OTHERS",
+                        productMenuLabel = R.string.others,
+                        productImageMenu = R.drawable.ic_menu_other
                     )
                 )
                 menusModel
