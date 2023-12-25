@@ -30,3 +30,8 @@ fun Date.formatNotification(): String {
         return "-"
     }
 }
+
+fun Date.formatInvoiceTransaction(): String {
+    val simpleDateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault())
+    return "${simpleDateFormat.format(this)} WIB"
+}

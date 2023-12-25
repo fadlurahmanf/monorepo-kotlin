@@ -54,7 +54,7 @@ class PinVerificationActivity :
         viewModel.totalPinAttemptState.observe(this) {
             when (it) {
                 is NetworkState.SUCCESS -> {
-                    if ((it.data.attemptCount?:0) > 0){
+                    if ((it.data.attemptCount ?: 0) > 0) {
                         binding.ivPinKeyboard
                     }
                 }
@@ -101,7 +101,8 @@ class PinVerificationActivity :
                 statusTransaction = "SUCCESS",
                 transactionId = data.transactionId ?: "-",
                 isFavorite = false,
-                isFavoriteEnabled = false
+                isFavoriteEnabled = false,
+                transactionDate = data.transactionDateTime ?: "-"
             )
         )
         startActivity(intent)

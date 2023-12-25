@@ -5,10 +5,11 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class InvoiceTransactionArgument(
+    val transactionId: String,
     var statusTransaction: String,
-    var transactionId: String,
+    var transactionDate: String,
     var isFavorite: Boolean,
-    var isFavoriteEnabled: Boolean,
+    val isFavoriteEnabled: Boolean,
     var additionalTransfer: Transfer? = null
 ) : Parcelable {
     @Parcelize

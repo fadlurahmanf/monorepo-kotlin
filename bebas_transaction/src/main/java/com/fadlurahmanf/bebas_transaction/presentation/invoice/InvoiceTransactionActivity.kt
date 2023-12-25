@@ -3,7 +3,14 @@ package com.fadlurahmanf.bebas_transaction.presentation.invoice
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.View
+import android.view.animation.Animation
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.extension.formatInvoiceTransaction
+import com.fadlurahmanf.bebas_shared.extension.formatNotification
+import com.fadlurahmanf.bebas_shared.extension.utcToLocal
 import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.InvoiceTransactionArgument
 import com.fadlurahmanf.bebas_transaction.data.flow.InvoiceTransactionFlow
@@ -47,8 +54,14 @@ class InvoiceTransactionActivity :
 
         argument = p0Arg
 
+        binding.tvTransactionId.text = "ID Transaksi: ${argument.transactionId}"
+        binding.tvTransactionDate.text =
+            argument.transactionDate.utcToLocal()?.formatInvoiceTransaction() ?: "-"
 
-
+        Handler(Looper.getMainLooper()).postDelayed({
+                                                        binding.llStatus.animate()
+                                                            .translationY(binding.llStatus.height.toFloat())
+                                                    }, 3000)
     }
 
 }
