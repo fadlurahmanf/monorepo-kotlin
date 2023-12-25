@@ -17,6 +17,7 @@ import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferConfirmationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferDetailArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.result.TransferConfirmationResult
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.state.TransferDetailState
@@ -24,10 +25,12 @@ import com.fadlurahmanf.bebas_transaction.databinding.ActivityTransferDetailBind
 import com.fadlurahmanf.bebas_transaction.external.BebasKeyboardTransaction
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.pin.PinVerificationActivity
+import com.fadlurahmanf.bebas_ui.extension.clearFocusAndDismissKeyboard
 import javax.inject.Inject
 
 class TransferDetailActivity :
-    BaseTransactionActivity<ActivityTransferDetailBinding>(ActivityTransferDetailBinding::inflate) {
+    BaseTransactionActivity<ActivityTransferDetailBinding>(ActivityTransferDetailBinding::inflate),
+    TransferConfirmationBottomsheet.Callback {
 
     companion object {
         const val FLOW = "FLOW"
@@ -45,6 +48,7 @@ class TransferDetailActivity :
     }
 
     private var isKeyboardVisible = false
+    private var isNotesFocus = false
     private var nominal: Long? = null
 
     override fun onBebasCreate(savedInstanceState: Bundle?) {
@@ -112,6 +116,7 @@ class TransferDetailActivity :
                 dismissKeyboardTransaction()
             } else {
                 openKeyboardTransaction()
+                binding.etNotes.clearFocusAndDismissKeyboard()
             }
         }
 
@@ -196,31 +201,22 @@ class TransferDetailActivity :
             }
         }
 
-        binding.btnNext.setOnClickListener {
-            dismissKeyboardTransaction()
-            handler.postDelayed({
-                                    viewModel.verify(nominal ?: 0L)
-                                }, 250)
+        binding.etNotes.setOnFocusChangeListener { v, hasFocus ->
+            if (!isNotesFocus) {
+                isNotesFocus = true
+                dismissKeyboardTransaction()
+            } else if (!hasFocus) {
+                isNotesFocus = false
+            }
         }
 
-        val intent = Intent(this, PinVerificationActivity::class.java)
-        intent.apply {
-            putExtra(
-                PinVerificationActivity.PIN_VERIFICATION_ARGUMENT, PinVerificationArgument(
-                    fundTransferBankMAS = FundTransferBankMASRequest(
-                        accountNumber = "1001934356",
-                        destinationAccountName = argument.realAccountName,
-                        destinationAccountNumber = argument.accountNumber,
-                        amountTransaction = 10000,
-                        description = "TES AJA",
-                        ip = "0.0.0.0",
-                        latitude = 0.0,
-                        longitude = 0.0
-                    )
-                )
-            )
+        binding.btnNext.setOnClickListener {
+            dismissKeyboardTransaction()
+            binding.etNotes.clearFocusAndDismissKeyboard()
+            handler.postDelayed({
+                                    viewModel.verifyMinimumInputNominal(nominal ?: 0L)
+                                }, 250)
         }
-        startActivity(intent)
     }
 
     private var handler = Handler(Looper.getMainLooper())
@@ -289,27 +285,56 @@ class TransferDetailActivity :
             )
         )
         bottomsheetTransferConfirmation = TransferConfirmationBottomsheet()
+        bottomsheetTransferConfirmation?.setCallback(this)
         bottomsheetTransferConfirmation?.arguments = Bundle().apply {
             putString(
                 TransferConfirmationBottomsheet.FLOW,
                 TransferConfirmationFlow.TRANSFER_BETWEEN_BANK_MAS.name
             )
-//            putParcelable(
-//                TransferConfirmationBottomsheet.ADDITIONAL_ARG, TransferConfirmationArgument(
-//                    realAccountName = destinationAccountName,
-//                    destinationAccountNumber = destinationAccountNumber,
-//                    imageLogoUrl = bankImageUrl,
-//                    bankNickName = bankNickname,
-//                    nominal = (nominal ?: -1L).toDouble(),
-//                    details = details
-//                )
-//            )
+            putParcelable(
+                TransferConfirmationBottomsheet.ADDITIONAL_ARG, TransferConfirmationArgument(
+                    realAccountName = argument.realAccountName,
+                    destinationAccountNumber = argument.accountNumber,
+                    imageLogoUrl = argument.bankImageUrl,
+                    bankNickName = argument.bankName,
+                    nominal = nominal ?: -1L,
+                    details = details
+                )
+            )
         }
 
         bottomsheetTransferConfirmation?.show(
             supportFragmentManager,
             TransferConfirmationBottomsheet::class.java.simpleName
         )
+    }
+
+    override fun onButtonConfirmationClicked(result: TransferConfirmationResult) {
+        when (flow) {
+            TransferDetailFlow.TRANSFER_BETWEEN_BANK_MAS -> {
+                val intent = Intent(this, PinVerificationActivity::class.java)
+                intent.apply {
+                    putExtra(
+                        PinVerificationActivity.PIN_VERIFICATION_ARGUMENT, PinVerificationArgument(
+                            fundTransferBankMAS = FundTransferBankMASRequest(
+                                accountNumber = result.selectedAccountNumber,
+                                destinationAccountName = argument.accountName,
+                                destinationAccountNumber = argument.accountNumber,
+                                amountTransaction = (nominal ?: -1L),
+                                description = binding.etNotes.text,
+                                ip = "0.0.0.0",
+                                latitude = 0.0,
+                                longitude = 0.0
+                            )
+                        )
+                    )
+                }
+                startActivity(intent)
+            }
+
+            TransferDetailFlow.TRANSFER_OTHER_BANK -> {
+            }
+        }
     }
 
 }

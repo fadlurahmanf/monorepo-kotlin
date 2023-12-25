@@ -2,17 +2,24 @@ package com.fadlurahmanf.bebas_transaction.presentation.transfer
 
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.R
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferConfirmationArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.result.TransferConfirmationResult
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.BottomsheetTransferConfirmationBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.transfer.adapter.TransferConfirmationDetailAdapter
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import javax.inject.Inject
 
 class TransferConfirmationBottomsheet :
@@ -25,7 +32,13 @@ class TransferConfirmationBottomsheet :
         const val FLOW = "FLOW"
     }
 
-    private lateinit var additinalArg: TransferConfirmationArgument
+    private var callback: Callback? = null
+
+    fun setCallback(callback: Callback) {
+        this.callback = callback
+    }
+
+    private lateinit var argument: TransferConfirmationArgument
     private var flow: TransferConfirmationFlow? = null
 
     private lateinit var adapter: TransferConfirmationDetailAdapter
@@ -33,6 +46,8 @@ class TransferConfirmationBottomsheet :
 
     @Inject
     lateinit var viewModel: TransferDetailViewModel
+
+    private lateinit var bottomsheetDialog: BottomSheetDialog
 
     override fun injectBottomsheet() {
         component.inject(this)
@@ -55,9 +70,15 @@ class TransferConfirmationBottomsheet :
             return
         }
 
-        additinalArg = arg
+        bottomsheetDialog = (dialog as BottomSheetDialog)
+        Handler(Looper.getMainLooper()).postDelayed({
+                                                        bottomsheetDialog.behavior.state =
+                                                            BottomSheetBehavior.STATE_EXPANDED
+                                                    }, 1000)
+
+        argument = arg
         details.clear()
-        details.addAll(additinalArg.details)
+        details.addAll(argument.details)
 
         adapter = TransferConfirmationDetailAdapter()
         adapter.setList(details)
@@ -70,7 +91,7 @@ class TransferConfirmationBottomsheet :
         }
 
 
-        viewModel.selectedBankAccount.observe(this) {
+        viewModel.selectedBankAccountState.observe(this) {
             when (it) {
                 is NetworkState.FAILED -> {
                     binding.lItemPaymentSourceShimmer.visibility = View.VISIBLE
@@ -102,9 +123,11 @@ class TransferConfirmationBottomsheet :
             }
         }
 
-        if (additinalArg.imageLogoUrl != null) {
+        if (argument.imageLogoUrl != null) {
+            binding.itemDestinationAccount.ivLogo.visibility = View.VISIBLE
+            binding.itemDestinationAccount.initialAvatar.visibility = View.GONE
             Glide.with(binding.itemDestinationAccount.ivLogo)
-                .load(Uri.parse(additinalArg.imageLogoUrl))
+                .load(Uri.parse(argument.imageLogoUrl))
                 .placeholder(
                     ContextCompat.getDrawable(
                         requireContext(),
@@ -118,15 +141,45 @@ class TransferConfirmationBottomsheet :
                     )
                 )
                 .into(binding.itemDestinationAccount.ivLogo)
+        } else {
+            binding.itemDestinationAccount.ivLogo.visibility = View.GONE
+            binding.itemDestinationAccount.initialAvatar.visibility = View.VISIBLE
+            if (argument.realAccountName.contains(" ")) {
+                val first = argument.realAccountName.split(" ").first().take(1)
+                val second = argument.realAccountName.split(" ")[1].take(1)
+                binding.itemDestinationAccount.initialAvatar.text = "$first$second"
+            } else {
+                binding.itemDestinationAccount.initialAvatar.text = argument.realAccountName.take(1)
+            }
         }
 
-        binding.itemDestinationAccount.tvAccountName.text = additinalArg.realAccountName
+        binding.itemDestinationAccount.tvAccountName.text = argument.realAccountName
         binding.itemDestinationAccount.tvSavingTypeAndAccountNumber.text =
-            "MAS Saving • ${additinalArg.destinationAccountNumber}"
+            "Bank ${argument.bankNickName} • ${argument.destinationAccountNumber}"
         binding.tvNominal.text =
-            additinalArg.nominal.toRupiahFormat(useSymbol = true, useDecimal = false)
+            argument.nominal.toDouble().toRupiahFormat(useSymbol = true, useDecimal = false)
 
         viewModel.getBankAccounts()
 
+        binding.btnNext.setOnClickListener {
+            when (flow) {
+                TransferConfirmationFlow.TRANSFER_BETWEEN_BANK_MAS -> {
+                    callback?.onButtonConfirmationClicked(
+                        result = TransferConfirmationResult(
+                            selectedAccountNumber = viewModel.selectedBankAccount?.accountNumber
+                                ?: "-",
+                        )
+                    )
+                }
+
+                else -> {
+
+                }
+            }
+        }
+    }
+
+    interface Callback {
+        fun onButtonConfirmationClicked(result: TransferConfirmationResult)
     }
 }

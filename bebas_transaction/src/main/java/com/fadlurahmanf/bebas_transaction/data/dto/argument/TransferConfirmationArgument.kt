@@ -10,7 +10,7 @@ data class TransferConfirmationArgument(
     val destinationAccountNumber: String,
     var imageLogoUrl: String? = null,
     val bankNickName: String,
-    val nominal: Double,
+    val nominal: Long,
     val details: ArrayList<Detail> = arrayListOf()
 ) : Parcelable {
     @Parcelize

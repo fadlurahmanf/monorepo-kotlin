@@ -23,7 +23,7 @@ class TransferDetailViewModel @Inject constructor(
     private val _transferState = MutableLiveData<TransferDetailState>()
     val transferState: LiveData<TransferDetailState> = _transferState
 
-    fun verify(nominal: Long) {
+    fun verifyMinimumInputNominal(nominal: Long) {
         _transferState.value = TransferDetailState.IDLE
         if (nominal < MINIMUM_TRANSFER) {
             _transferState.value =
@@ -33,33 +33,34 @@ class TransferDetailViewModel @Inject constructor(
         }
     }
 
-    private val _selectedBankAccount = MutableLiveData<NetworkState<BankAccountResponse>>()
-    val selectedBankAccount: LiveData<NetworkState<BankAccountResponse>> =
-        _selectedBankAccount
+    private val _selectedBankAccountState = MutableLiveData<NetworkState<BankAccountResponse>>()
+    val selectedBankAccountState: LiveData<NetworkState<BankAccountResponse>> =
+        _selectedBankAccountState
 
-    private val _bankAccountsState = MutableLiveData<List<BankAccountResponse>>()
-    private val bankAccountsState: LiveData<List<BankAccountResponse>> =
-        _bankAccountsState
+    var selectedBankAccount: BankAccountResponse? = null
+    val bankAccounts: ArrayList<BankAccountResponse> = arrayListOf()
 
     fun getBankAccounts() {
-        _selectedBankAccount.value = NetworkState.LOADING
+        _selectedBankAccountState.value = NetworkState.LOADING
         baseDisposable.add(transactionRepositoryImpl.getBankAccounts()
                                .subscribeOn(Schedulers.io())
                                .observeOn(AndroidSchedulers.mainThread())
                                .subscribe(
                                    {
                                        if (it.isNotEmpty()) {
-                                           _selectedBankAccount.value =
+                                           _selectedBankAccountState.value =
                                                NetworkState.SUCCESS(it.first())
-                                           _bankAccountsState.value = it
+                                           selectedBankAccount = it.first()
+                                           bankAccounts.clear()
+                                           bankAccounts.addAll(it)
                                        } else {
-                                           _selectedBankAccount.value = NetworkState.FAILED(
+                                           _selectedBankAccountState.value = NetworkState.FAILED(
                                                BebasException.generalRC("AC_01")
                                            )
                                        }
                                    },
                                    {
-                                       _selectedBankAccount.value =
+                                       _selectedBankAccountState.value =
                                            NetworkState.FAILED(BebasException.fromThrowable(it))
                                    },
                                    {}

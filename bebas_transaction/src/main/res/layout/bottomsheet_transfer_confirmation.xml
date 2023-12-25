@@ -138,6 +138,13 @@
                 tools:listitem="@layout/item_label_value" />
         </LinearLayout>
 
+        <com.fadlurahmanf.bebas_ui.button.BebasRoundedButton
+            android:id="@+id/btn_next"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="Lanjut" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

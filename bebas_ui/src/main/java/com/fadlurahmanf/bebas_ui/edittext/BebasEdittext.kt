@@ -233,4 +233,7 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
         fun afterTextChanged(s: Editable?)
     }
 
+    override fun setOnFocusChangeListener(l: OnFocusChangeListener?) {
+        editText.onFocusChangeListener = l
+    }
 }
