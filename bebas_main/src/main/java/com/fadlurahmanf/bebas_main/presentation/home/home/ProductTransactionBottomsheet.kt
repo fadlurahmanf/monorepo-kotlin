@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_main.presentation.home.home
 
+import android.content.Intent
 import android.os.Build
 import androidx.recyclerview.widget.GridLayoutManager
 import com.fadlurahmanf.bebas_main.R
@@ -9,11 +10,13 @@ import com.fadlurahmanf.bebas_main.data.dto.model.home.ProductTransactionMenuMod
 import com.fadlurahmanf.bebas_main.databinding.BottomsheetProductTransactionBinding
 import com.fadlurahmanf.bebas_main.presentation.home.adapter.ProductTransactionMenuAdapter
 import com.fadlurahmanf.bebas_main.presentation.home.adapter.SubProductTransactionMenuAdapter
+import com.fadlurahmanf.bebas_shared.data.argument.transaction.FavoriteArgumentConstant
+import com.fadlurahmanf.bebas_shared.data.flow.transaction.FavoriteFlow
 import com.fadlurahmanf.bebas_ui.bottomsheet.BaseBottomsheet
 
 class ProductTransactionBottomsheet :
     BaseBottomsheet<BottomsheetProductTransactionBinding>(BottomsheetProductTransactionBinding::inflate),
-    ProductTransactionMenuAdapter.Callback {
+    ProductTransactionMenuAdapter.Callback, SubProductTransactionMenuAdapter.Callback {
 
     companion object {
         const val ARGUMENT = "ARGUMENT"
@@ -63,6 +66,7 @@ class ProductTransactionBottomsheet :
 
         val gridLm = GridLayoutManager(requireContext(), 4)
         subProductTransactionMenuAdapter = SubProductTransactionMenuAdapter()
+        subProductTransactionMenuAdapter.setCallback(this)
         subProductTransactionMenuAdapter.setList(subProductTransactionMenu)
         binding.rvSubProduct.adapter = subProductTransactionMenuAdapter
         binding.rvSubProduct.layoutManager = gridLm
@@ -76,6 +80,14 @@ class ProductTransactionBottomsheet :
                 subProductImageMenu = R.drawable.ic_subproduct_tokenlistrik,
                 productTransactionMenu = productTransactionMenu.firstOrNull {
                     it.productMenuId == "PURCHASE"
+                } ?: othersMenu
+            ),
+            SubProductTransactionMenuModel(
+                subProductMenuId = "FUND_TRANSFER",
+                subProductMenuLabel = R.string.fund_transfer,
+                subProductImageMenu = R.drawable.ic_subproduct_transferbank,
+                productTransactionMenu = productTransactionMenu.firstOrNull {
+                    it.productMenuId == "TRANSFER"
                 } ?: othersMenu
             )
         )
@@ -135,5 +147,33 @@ class ProductTransactionBottomsheet :
         subProductTransactionMenuAdapter.removeAll()
         generateSubProductTransactionMenuBasedOnSelectedProductTransactionMenu()
         subProductTransactionMenuAdapter.setList(subProductTransactionMenu)
+    }
+
+    override fun onTransactionMenuClicked(menuModel: SubProductTransactionMenuModel) {
+        when (menuModel.subProductMenuId) {
+            "FUND_TRANSFER" -> {
+                val intent = Intent(
+                    requireContext(),
+                    Class.forName("com.fadlurahmanf.bebas_transaction.presentation.favorite.FavoriteListActivity")
+                )
+                intent.putExtra(
+                    FavoriteArgumentConstant.FAVORITE_FLOW,
+                    FavoriteFlow.TRANSACTION_MENU_TRANSFER.name
+                )
+                startActivity(intent)
+            }
+
+            "PREPAID_PLN" -> {
+                val intent = Intent(
+                    requireContext(),
+                    Class.forName("com.fadlurahmanf.bebas_transaction.presentation.favorite.FavoriteListActivity")
+                )
+                intent.putExtra(
+                    FavoriteArgumentConstant.FAVORITE_FLOW,
+                    FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID.name
+                )
+                startActivity(intent)
+            }
+        }
     }
 }

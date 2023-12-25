@@ -7,7 +7,7 @@ import android.view.Menu
 import android.view.View
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
-import com.fadlurahmanf.bebas_shared.data.argument.transaction.FavoriteArgument
+import com.fadlurahmanf.bebas_shared.data.argument.transaction.FavoriteArgumentConstant
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.data.flow.transaction.FavoriteFlow
 import com.fadlurahmanf.bebas_transaction.R
@@ -49,7 +49,7 @@ class FavoriteListActivity :
     override fun onBebasCreate(savedInstanceState: Bundle?) {
         setSupportActionBar(binding.toolbar)
 
-        val stringFavoriteFlow = intent.getStringExtra(FavoriteArgument.FAVORITE_FLOW)
+        val stringFavoriteFlow = intent.getStringExtra(FavoriteArgumentConstant.FAVORITE_FLOW)
 
         if (stringFavoriteFlow == null) {
             showForcedBackBottomsheet(BebasException.generalRC("UNKNOWN_FLOW"))
