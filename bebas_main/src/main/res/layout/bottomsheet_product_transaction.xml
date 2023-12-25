@@ -28,12 +28,13 @@
             android:text="Transaki" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_product_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_label_transaction_menu" />
+            tools:listitem="@layout/item_transaction_menu_label" />
 
     </LinearLayout>
 

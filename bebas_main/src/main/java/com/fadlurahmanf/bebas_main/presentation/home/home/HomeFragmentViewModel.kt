@@ -20,11 +20,15 @@ class HomeFragmentViewModel @Inject constructor(
     private val _menuState = MutableLiveData<NetworkState<List<ProductTransactionMenuModel>>>()
     val menuState: LiveData<NetworkState<List<ProductTransactionMenuModel>>> = _menuState
 
+    val menus = arrayListOf<ProductTransactionMenuModel>()
+
     fun getMenus() {
         baseDisposable.add(mainRepositoryImpl.getTransactionMenu().subscribeOn(Schedulers.io())
                                .observeOn(AndroidSchedulers.mainThread())
                                .subscribe(
                                    {
+                                       menus.clear()
+                                       menus.addAll(it)
                                        _menuState.value = NetworkState.SUCCESS(
                                            it
                                        )

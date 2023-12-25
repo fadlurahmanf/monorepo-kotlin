@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_main"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="10dp"
-    android:id="@+id/ll_main"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingHorizontal="10dp">
 
     <TextView
         android:id="@+id/tv_label"
         style="@style/Font.Text14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_item_label_transaction_menu"
+        android:background="@drawable/background_item_transaction_menu_label_selected"
         android:fontFamily="@font/lexend_deca_bold"
         android:paddingHorizontal="20dp"
         android:paddingVertical="5dp"

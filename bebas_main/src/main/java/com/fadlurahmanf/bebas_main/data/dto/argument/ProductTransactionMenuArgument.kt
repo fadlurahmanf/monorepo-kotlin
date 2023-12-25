@@ -6,5 +6,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ProductTransactionMenuArgument(
-    var transactionMenus: List<ProductTransactionMenuModel>
+    val selectedProductMenuId: String,
+    val transactionMenus: List<ProductTransactionMenuModel>
 ) : Parcelable

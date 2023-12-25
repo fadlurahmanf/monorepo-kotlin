@@ -10,4 +10,5 @@ data class ProductTransactionMenuModel(
     var productMenuId: String,
     @StringRes var productMenuLabel: Int,
     @DrawableRes var productImageMenu: Int,
+    var isSelected: Boolean = false
 ) : Parcelable

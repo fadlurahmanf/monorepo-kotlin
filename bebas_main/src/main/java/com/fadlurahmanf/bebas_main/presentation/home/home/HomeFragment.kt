@@ -6,12 +6,13 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
+import com.fadlurahmanf.bebas_main.data.dto.argument.ProductTransactionMenuArgument
 import com.fadlurahmanf.bebas_main.data.dto.model.home.HomeBankAccountModel
 import com.fadlurahmanf.bebas_main.data.dto.model.home.ProductTransactionMenuModel
 import com.fadlurahmanf.bebas_main.databinding.FragmentHomeBinding
 import com.fadlurahmanf.bebas_main.presentation.BaseMainFragment
 import com.fadlurahmanf.bebas_main.presentation.home.adapter.BankAccountAdapter
-import com.fadlurahmanf.bebas_main.presentation.home.adapter.MenuAdapter
+import com.fadlurahmanf.bebas_main.presentation.home.adapter.ProductTransactionMenuAdapter
 import com.fadlurahmanf.bebas_main.presentation.home.adapter.PromoAdapter
 import com.fadlurahmanf.bebas_main.presentation.notification.NotificationActivity
 import javax.inject.Inject
@@ -20,7 +21,7 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate),
-    MenuAdapter.Callback {
+    ProductTransactionMenuAdapter.Callback {
     private var param1: String? = null
     private var param2: String? = null
 
@@ -33,7 +34,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
     lateinit var bankAccountAdapter: BankAccountAdapter
     private var bankAccounts: ArrayList<HomeBankAccountModel> = arrayListOf()
 
-    lateinit var menuAdapter: MenuAdapter
+    lateinit var productTransactionMenuAdapter: ProductTransactionMenuAdapter
     private val menus: ArrayList<ProductTransactionMenuModel> = arrayListOf()
 
     override fun injectFragment() {
@@ -102,7 +103,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
                 is NetworkState.SUCCESS -> {
                     menus.clear()
                     menus.addAll(it.data)
-                    menuAdapter.setList(menus)
+                    productTransactionMenuAdapter.setList(menus)
 
                     binding.rv.visibility = View.VISIBLE
                 }
@@ -134,11 +135,13 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
         binding.layoutBankAccount.vpBankAccount.adapter = bankAccountAdapter
 
         val layoutManager = GridLayoutManager(requireContext(), 4)
-        menuAdapter = MenuAdapter()
-        menuAdapter.setCallback(this)
-        menuAdapter.setList(menus)
+        productTransactionMenuAdapter = ProductTransactionMenuAdapter(
+            type = ProductTransactionMenuAdapter.Type.HOME_PRODUCT_TRANSACTION_MENU
+        )
+        productTransactionMenuAdapter.setCallback(this)
+        productTransactionMenuAdapter.setList(menus)
         binding.rv.layoutManager = layoutManager
-        binding.rv.adapter = menuAdapter
+        binding.rv.adapter = productTransactionMenuAdapter
 
         promoAdapter = PromoAdapter()
         promoAdapter.setList(promos)
@@ -168,6 +171,14 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
         transactionMenuBottomsheet?.dismiss()
         transactionMenuBottomsheet = null
         transactionMenuBottomsheet = ProductTransactionBottomsheet()
+        transactionMenuBottomsheet?.arguments = Bundle().apply {
+            putParcelable(
+                ProductTransactionBottomsheet.ARGUMENT, ProductTransactionMenuArgument(
+                    selectedProductMenuId = menuModel.productMenuId,
+                    transactionMenus = viewModel.menus
+                )
+            )
+        }
         transactionMenuBottomsheet?.show(
             requireActivity().supportFragmentManager,
             ProductTransactionBottomsheet::class.java.simpleName
