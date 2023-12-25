@@ -8,7 +8,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.rxjava3.flowable
-import com.fadlurahmanf.bebas_main.data.dto.notification.NotificationModel
+import com.fadlurahmanf.bebas_main.data.dto.model.notification.NotificationModel
 import com.fadlurahmanf.bebas_main.domain.repositories.MainRepositoryImpl
 import com.fadlurahmanf.bebas_main.presentation.notification.paging_source.NotificationTransactionPagingSource
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel

@@ -9,7 +9,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.fadlurahmanf.bebas_main.R
-import com.fadlurahmanf.bebas_main.data.dto.notification.NotificationModel
+import com.fadlurahmanf.bebas_main.data.dto.model.notification.NotificationModel
 
 class NotificationPagingAdapter :
     PagingDataAdapter<NotificationModel, NotificationPagingAdapter.ViewHolder>(DiffUtilCallBack()) {

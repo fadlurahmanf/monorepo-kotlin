@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.paging.PagingState
 import androidx.paging.rxjava3.RxPagingSource
 import com.fadlurahmanf.bebas_api.data.dto.notification.NotificationResponse
-import com.fadlurahmanf.bebas_main.data.dto.notification.NotificationModel
+import com.fadlurahmanf.bebas_main.data.dto.model.notification.NotificationModel
 import com.fadlurahmanf.bebas_main.domain.repositories.MainRepositoryImpl
 import com.fadlurahmanf.bebas_shared.extension.formatNotification
 import com.fadlurahmanf.bebas_shared.extension.formatToEktpForm

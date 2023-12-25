@@ -3,7 +3,7 @@ package com.fadlurahmanf.bebas_main.presentation.notification
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import com.fadlurahmanf.bebas_main.data.dto.notification.NotificationModel
+import com.fadlurahmanf.bebas_main.data.dto.model.notification.NotificationModel
 import com.fadlurahmanf.bebas_main.databinding.FragmentNotificationTransactionBinding
 import com.fadlurahmanf.bebas_main.presentation.BaseMainFragment
 import com.fadlurahmanf.bebas_main.presentation.notification.adapter.NotificationPagingAdapter

@@ -1,4 +1,4 @@
-package com.fadlurahmanf.bebas_main.data.dto.home
+package com.fadlurahmanf.bebas_main.data.dto.model.home
 
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 

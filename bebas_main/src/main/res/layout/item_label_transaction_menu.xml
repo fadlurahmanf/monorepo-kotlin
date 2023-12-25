@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="10dp"
+    android:id="@+id/ll_main"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tv_label"
+        style="@style/Font.Text14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_item_label_transaction_menu"
+        android:fontFamily="@font/lexend_deca_bold"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="5dp"
+        android:text="Label"
+        android:textColor="@color/white" />
+</LinearLayout>

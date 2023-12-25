@@ -8,6 +8,8 @@
     <color name="grey">#FF6B6B6B</color>
     <color name="grey_opacity_20">#336B6B6B</color>
 
+    <color name="orange">#FF4B00</color>
+
     <color name="color_primary">@color/red</color>
     <color name="background_home_color">#FAFAFA</color>
     <color name="background_scrollbar">#E6E6E6</color>

@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.fadlurahmanf.bebas_main.R
-import com.fadlurahmanf.bebas_main.data.dto.home.HomeBankAccountModel
+import com.fadlurahmanf.bebas_main.data.dto.model.home.HomeBankAccountModel
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 
 class BankAccountAdapter : RecyclerView.Adapter<BankAccountAdapter.ViewHolder>() {

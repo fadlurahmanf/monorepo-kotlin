@@ -7,4 +7,6 @@
     <string name="topup">Top Up</string>
     <string name="cardless_withdrawal">Tarik Tunai</string>
     <string name="others">Lainnya</string>
+    <string name="electricity_denom">Token Listrik</string>
+    <string name="fund_transfer">Transfer</string>
 </resources>

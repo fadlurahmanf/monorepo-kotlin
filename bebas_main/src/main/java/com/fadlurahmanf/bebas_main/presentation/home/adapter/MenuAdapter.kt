@@ -10,11 +10,16 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fadlurahmanf.bebas_main.R
-import com.fadlurahmanf.bebas_main.data.dto.home.TransactionMenuModel
+import com.fadlurahmanf.bebas_main.data.dto.model.home.TransactionMenuModel
 
 class MenuAdapter : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
     lateinit var context: Context
     private val menus: ArrayList<TransactionMenuModel> = arrayListOf()
+    private var callback: Callback? = null
+
+    fun setCallback(callback: Callback) {
+        this.callback = callback
+    }
 
     fun setList(list: List<TransactionMenuModel>) {
         menus.clear()
@@ -44,6 +49,15 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
         val menu = menus[position]
 
         holder.label.text = context.getString(menu.menuLabel)
-        Glide.with(holder.image).load(ContextCompat.getDrawable(context, menu.imageMenu)).into(holder.image)
+        Glide.with(holder.image).load(ContextCompat.getDrawable(context, menu.imageMenu))
+            .into(holder.image)
+
+        holder.itemView.setOnClickListener {
+            callback?.onTransactionMenuClicked(menu)
+        }
+    }
+
+    interface Callback {
+        fun onTransactionMenuClicked(menuModel: TransactionMenuModel)
     }
 }

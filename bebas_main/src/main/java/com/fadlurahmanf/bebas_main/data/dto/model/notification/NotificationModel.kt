@@ -1,4 +1,4 @@
-package com.fadlurahmanf.bebas_main.data.dto.notification
+package com.fadlurahmanf.bebas_main.data.dto.model.notification
 
 import com.fadlurahmanf.bebas_api.data.dto.notification.NotificationResponse
 

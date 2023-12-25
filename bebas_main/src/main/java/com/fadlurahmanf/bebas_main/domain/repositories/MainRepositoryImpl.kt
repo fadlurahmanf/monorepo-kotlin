@@ -9,8 +9,8 @@ import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.notification.NotificationResponse
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_main.R
-import com.fadlurahmanf.bebas_main.data.dto.home.HomeBankAccountModel
-import com.fadlurahmanf.bebas_main.data.dto.home.TransactionMenuModel
+import com.fadlurahmanf.bebas_main.data.dto.model.home.HomeBankAccountModel
+import com.fadlurahmanf.bebas_main.data.dto.model.home.TransactionMenuModel
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single

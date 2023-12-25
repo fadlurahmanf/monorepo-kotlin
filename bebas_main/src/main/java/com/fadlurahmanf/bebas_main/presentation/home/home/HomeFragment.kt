@@ -2,14 +2,12 @@ package com.fadlurahmanf.bebas_main.presentation.home.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
-import com.fadlurahmanf.bebas_main.data.dto.home.HomeBankAccountModel
-import com.fadlurahmanf.bebas_main.data.dto.home.TransactionMenuModel
+import com.fadlurahmanf.bebas_main.data.dto.model.home.HomeBankAccountModel
+import com.fadlurahmanf.bebas_main.data.dto.model.home.TransactionMenuModel
 import com.fadlurahmanf.bebas_main.databinding.FragmentHomeBinding
 import com.fadlurahmanf.bebas_main.presentation.BaseMainFragment
 import com.fadlurahmanf.bebas_main.presentation.home.adapter.BankAccountAdapter
@@ -21,7 +19,8 @@ import javax.inject.Inject
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
+class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate),
+    MenuAdapter.Callback {
     private var param1: String? = null
     private var param2: String? = null
 
@@ -136,6 +135,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
 
         val layoutManager = GridLayoutManager(requireContext(), 4)
         menuAdapter = MenuAdapter()
+        menuAdapter.setCallback(this)
         menuAdapter.setList(menus)
         binding.rv.layoutManager = layoutManager
         binding.rv.adapter = menuAdapter
@@ -161,5 +161,16 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    private var transactionMenuBottomsheet: ProductTransactionBottomsheet? = null
+    override fun onTransactionMenuClicked(menuModel: TransactionMenuModel) {
+        transactionMenuBottomsheet?.dismiss()
+        transactionMenuBottomsheet = null
+        transactionMenuBottomsheet = ProductTransactionBottomsheet()
+        transactionMenuBottomsheet?.show(
+            requireActivity().supportFragmentManager,
+            ProductTransactionBottomsheet::class.java.simpleName
+        )
     }
 }

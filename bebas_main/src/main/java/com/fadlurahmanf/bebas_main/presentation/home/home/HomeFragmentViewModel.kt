@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
-import com.fadlurahmanf.bebas_main.data.dto.home.HomeBankAccountModel
-import com.fadlurahmanf.bebas_main.data.dto.home.TransactionMenuModel
+import com.fadlurahmanf.bebas_main.data.dto.model.home.HomeBankAccountModel
+import com.fadlurahmanf.bebas_main.data.dto.model.home.TransactionMenuModel
 import com.fadlurahmanf.bebas_main.domain.repositories.MainRepositoryImpl
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
