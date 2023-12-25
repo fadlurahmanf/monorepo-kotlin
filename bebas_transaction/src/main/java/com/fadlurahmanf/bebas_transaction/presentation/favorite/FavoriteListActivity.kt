@@ -1,11 +1,16 @@
 package com.fadlurahmanf.bebas_transaction.presentation.favorite
 
+import android.Manifest
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.Menu
 import android.view.View
-import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.argument.transaction.FavoriteArgumentConstant
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
@@ -27,6 +32,7 @@ import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.LatestAd
 import com.fadlurahmanf.bebas_transaction.presentation.others.BankListActivity
 import com.fadlurahmanf.bebas_transaction.presentation.others.InputDestinationAccountBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.transfer.TransferDetailActivity
+import com.fadlurahmanf.bebas_ui.bottomsheet.FailedBottomsheet
 import javax.inject.Inject
 
 class FavoriteListActivity :
@@ -67,14 +73,20 @@ class FavoriteListActivity :
         when (favoriteFlow) {
             FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
                 binding.toolbar.title = "Transfer Favorit"
+                binding.tvBtnNewReceiver.text = "Penerima Baru"
+                binding.ivButtonNewReceiver.setImageResource(R.drawable.outline_person_add_alt_1_24)
             }
 
             FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID -> {
                 binding.toolbar.title = "Nomor Pelanggan Favorit"
+                binding.tvBtnNewReceiver.text = "Penerima Baru"
+                binding.ivButtonNewReceiver.setImageResource(R.drawable.outline_person_add_alt_1_24)
             }
 
             FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {
-                binding.toolbar.title = "Nonor Ponsel Favorit"
+                binding.toolbar.title = "Nomor Ponsel Favorit"
+                binding.tvBtnNewReceiver.text = "Nomor Ponsel Baru"
+                binding.ivButtonNewReceiver.setImageResource(R.drawable.round_phonelink_ring_24)
             }
         }
 
@@ -218,6 +230,17 @@ class FavoriteListActivity :
         viewModel.getTransferLatest(favoriteFlow)
     }
 
+    private val permissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            if (it) {
+                goToPpobPaymentDetailScreen()
+            }
+        }
+
+    private fun goToPpobPaymentDetailScreen() {
+
+    }
+
     private fun onNewReceiverClick() {
         when (favoriteFlow) {
             FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
@@ -230,7 +253,35 @@ class FavoriteListActivity :
             }
 
             FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {
+                when (ContextCompat.checkSelfPermission(
+                    this.applicationContext,
+                    Manifest.permission.READ_CONTACTS
+                )) {
+                    PackageManager.PERMISSION_GRANTED -> {
+                        goToPpobPaymentDetailScreen()
+                    }
 
+                    PackageManager.PERMISSION_DENIED -> {
+                        showFailedBottomsheet(
+                            exception = BebasException(
+                                title = "Information",
+                                message = "Permission Contact",
+                                buttonText = "Open Settings"
+                            ),
+                            callback = object : FailedBottomsheet.Callback {
+                                override fun onButtonClicked() {
+                                    dismissFailedBottomsheet()
+                                    goToAppPermission()
+                                }
+
+                            }
+                        )
+                    }
+
+                    else -> {
+                        permissionLauncher.launch(Manifest.permission.CAMERA)
+                    }
+                }
             }
         }
     }

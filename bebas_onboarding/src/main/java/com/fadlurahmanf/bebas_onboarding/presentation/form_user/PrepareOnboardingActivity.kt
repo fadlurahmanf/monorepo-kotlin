@@ -83,7 +83,7 @@ class PrepareOnboardingActivity :
                     callback = object : FailedBottomsheet.Callback {
                         override fun onButtonClicked() {
                             dismissFailedBottomsheet()
-                            goToCameraPermission()
+                            goToAppPermission()
                         }
 
                     }
@@ -98,13 +98,6 @@ class PrepareOnboardingActivity :
 
     private fun goToEktpCameraVerification() {
         val intent = Intent(this, EktpVerificationCameraActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun goToCameraPermission() {
-        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-        val uri = Uri.fromParts("package", packageName, null)
-        intent.data = uri
         startActivity(intent)
     }
 }

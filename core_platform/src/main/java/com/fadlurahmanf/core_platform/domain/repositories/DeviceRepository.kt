@@ -4,7 +4,9 @@ import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import com.fadlurahmanf.core_platform.data.dto.model.BebasContactModel
 import com.fadlurahmanf.core_platform.external.helper.CoreBiometric
+import io.reactivex.rxjava3.core.Observable
 
 interface DeviceRepository {
     fun randomUUID(): String
@@ -39,4 +41,8 @@ interface DeviceRepository {
         context: Context,
         callback: CoreBiometric.AuthenticateM1Callback
     )
+
+    fun getContacts(
+        context: Context
+    ): Observable<List<BebasContactModel>>
 }

@@ -1,5 +1,7 @@
 package com.fadlurahmanf.core_platform.domain.repositories
 
+import android.content.ContentResolver
+import android.content.ContentUris
 import android.content.Context
 import android.hardware.biometrics.BiometricManager
 import android.hardware.biometrics.BiometricManager.BIOMETRIC_SUCCESS
@@ -7,13 +9,16 @@ import android.hardware.biometrics.BiometricPrompt
 import android.hardware.fingerprint.FingerprintManager
 import android.os.Build
 import android.os.CancellationSignal
+import android.provider.ContactsContract
 import android.provider.Settings.Secure
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import androidx.fragment.app.Fragment
+import com.fadlurahmanf.core_platform.data.dto.model.BebasContactModel
 import androidx.biometric.BiometricPrompt as XBiometricPrompt
 import com.fadlurahmanf.core_platform.external.helper.CoreBiometric
+import io.reactivex.rxjava3.core.Observable
 import java.util.UUID
 
 class DeviceRepositoryImpl : DeviceRepository {
@@ -21,6 +26,7 @@ class DeviceRepositoryImpl : DeviceRepository {
     override fun randomUUID(): String {
         return UUID.randomUUID().toString()
     }
+
     override fun deviceID(context: Context): String {
         return Secure.getString(context.contentResolver, Secure.ANDROID_ID)
     }
@@ -165,5 +171,70 @@ class DeviceRepositoryImpl : DeviceRepository {
                 callback.onAuthenticationSuccess(result)
             }
         }, null)
+    }
+
+    override fun getContacts(context: Context): Observable<List<BebasContactModel>> {
+        return Observable.create<List<BebasContactModel>> { emitter ->
+            val contacts = arrayListOf<BebasContactModel>()
+            val contentResolver: ContentResolver = context.contentResolver
+            val cursor =
+                contentResolver.query(
+                    ContactsContract.Contacts.CONTENT_URI,
+                    null,
+                    null,
+                    null,
+                    "display_name ASC"
+                )
+            if (cursor != null && cursor.count > 0) {
+                while (cursor.moveToNext()) {
+                    val idIndex = cursor.getColumnIndex(ContactsContract.Contacts._ID)
+                    val id =
+                        cursor.getString(idIndex)
+                    val hasPhoneNumberIndex =
+                        cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)
+                    if (hasPhoneNumberIndex > 0) {
+                        if (cursor.getInt(hasPhoneNumberIndex) > 0) {
+                            val cursorInfo = contentResolver.query(
+                                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                                null,
+                                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                                arrayOf(id),
+                                null
+                            )
+                            val person =
+                                ContentUris.withAppendedId(
+                                    ContactsContract.Contacts.CONTENT_URI,
+                                    id.toLong()
+                                )
+                            while (cursorInfo != null && cursorInfo.moveToNext()) {
+                                val ringIndex =
+                                    cursor.getColumnIndex(ContactsContract.Contacts.CUSTOM_RINGTONE)
+                                val ring =
+                                    cursor.getString(ringIndex)
+                                val nameIndex =
+                                    cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
+                                val name =
+                                    cursor.getString(nameIndex)
+                                val mobileNumberIndex =
+                                    cursorInfo.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                                val mobileNumber =
+                                    cursorInfo.getString(mobileNumberIndex)
+                                contacts.add(
+                                    BebasContactModel(
+                                        name = name,
+                                        phoneNumber = mobileNumber
+                                    )
+                                )
+                            }
+                            cursorInfo?.close()
+                        }
+                    }
+                }
+            }
+            cursor?.close()
+
+            emitter.onNext(contacts)
+            emitter.onComplete()
+        }
     }
 }

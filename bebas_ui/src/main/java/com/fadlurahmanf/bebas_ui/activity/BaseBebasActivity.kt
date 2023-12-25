@@ -1,7 +1,10 @@
 package com.fadlurahmanf.bebas_ui.activity
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.provider.Settings
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.TypefaceSpan
@@ -152,5 +155,12 @@ abstract class BaseBebasActivity<VB : ViewBinding>(
     override fun onDestroy() {
         super.onDestroy()
         baseDisposable.clear()
+    }
+
+    open fun goToAppPermission() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", packageName, null)
+        intent.data = uri
+        startActivity(intent)
     }
 }

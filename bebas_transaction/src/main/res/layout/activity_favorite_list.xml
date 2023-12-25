@@ -131,10 +131,10 @@
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
+        android:id="@+id/ll_button_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:id="@+id/ll_button_bottom"
         android:layout_marginHorizontal="1dp"
         android:background="@drawable/backgorund_button_bottom_layout"
         android:elevation="50dp"
@@ -154,14 +154,16 @@
             android:paddingVertical="15dp">
 
             <TextView
+                android:id="@+id/tv_btn_new_receiver"
                 style="@style/Font.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
                 android:fontFamily="@font/lexend_deca_extra_bold"
-                android:text="Penerima Baru" />
+                android:text="Penerima Baru"
+                android:textSize="14sp" />
 
             <ImageView
+                android:id="@+id/iv_button_new_receiver"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginStart="5dp"
