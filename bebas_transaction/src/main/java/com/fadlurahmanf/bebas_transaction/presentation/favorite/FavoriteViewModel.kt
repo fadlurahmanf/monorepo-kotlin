@@ -7,7 +7,9 @@ import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.data.flow.transaction.FavoriteFlow
 import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.FavoriteContactModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.LatestTransactionModel
-import com.fadlurahmanf.bebas_transaction.data.state.InquiryBankState
+import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.InquiryRequestModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.InquiryResultModel
+import com.fadlurahmanf.bebas_transaction.data.state.InquiryState
 import com.fadlurahmanf.bebas_transaction.data.state.PinFavoriteState
 import com.fadlurahmanf.bebas_transaction.domain.repositories.FavoriteRepositoryImpl
 import com.fadlurahmanf.bebas_transaction.domain.repositories.TransactionRepositoryImpl
@@ -71,7 +73,7 @@ class FavoriteViewModel @Inject constructor(
             }
 
             FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {
-                favoriteRepositoryImpl.getFavoritePLNPrePaid()
+                favoriteRepositoryImpl.getFavoritePulsaPrePaid()
             }
         }
 
@@ -122,34 +124,45 @@ class FavoriteViewModel @Inject constructor(
                                ))
     }
 
-    private val _inquiryBankMasState = MutableLiveData<InquiryBankState>()
-    val inquiryBankMasState: LiveData<InquiryBankState> = _inquiryBankMasState
+    private val _inquiryState = MutableLiveData<InquiryState>()
+    val inquiryState: LiveData<InquiryState> = _inquiryState
 
-    fun inquiryBankMas(
-        destinationAccountNumber: String,
+    fun inquiry(
+        inquiryRequestModel: InquiryRequestModel,
         isFromFavorite: Boolean = false,
         favoriteModel: FavoriteContactModel? = null,
         isFromLatest: Boolean = false,
         latestModel: LatestTransactionModel? = null,
     ) {
-        _inquiryBankMasState.value = InquiryBankState.LOADING
-        baseDisposable.add(transactionRepositoryImpl.inquiryBankMas(destinationAccountNumber)
-                               .subscribeOn(Schedulers.io())
+        val disposableModel: Observable<InquiryResultModel>
+        when (inquiryRequestModel) {
+            is InquiryRequestModel.InquiryBankMas -> {
+                disposableModel =
+                    transactionRepositoryImpl.inquiryBankMasReturnModel(inquiryRequestModel.destinationAccountNumber)
+            }
+
+            is InquiryRequestModel.InquiryPulsaData -> {
+                disposableModel =
+                    transactionRepositoryImpl.inquiryBankMasReturnModel("XXX")
+            }
+        }
+        _inquiryState.value = InquiryState.LOADING
+        baseDisposable.add(disposableModel.subscribeOn(Schedulers.io())
                                .observeOn(AndroidSchedulers.mainThread())
                                .subscribe(
                                    {
-                                       _inquiryBankMasState.value = InquiryBankState.SuccessFromFavoriteActivity(
-                                           result = it,
-                                           isFromFavorite = isFromFavorite,
-                                           favoriteModel = favoriteModel,
-                                           isFromLatest = isFromLatest,
-                                           latestModel = latestModel,
-                                           isInquiryBankMas = true
-                                       )
+                                       _inquiryState.value =
+                                           InquiryState.SuccessFromFavoriteActivity(
+                                               result = it,
+                                               isFromFavorite = isFromFavorite,
+                                               favoriteModel = favoriteModel,
+                                               isFromLatest = isFromLatest,
+                                               latestModel = latestModel,
+                                           )
                                    },
                                    {
-                                       _inquiryBankMasState.value =
-                                           InquiryBankState.FAILED(BebasException.fromThrowable(it))
+                                       _inquiryState.value =
+                                           InquiryState.FAILED(BebasException.fromThrowable(it))
                                    },
                                    {}
                                ))

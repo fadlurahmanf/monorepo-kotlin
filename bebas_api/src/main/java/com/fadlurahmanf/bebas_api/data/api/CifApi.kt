@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_api.data.api
 
 import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoritePLNPrePaidResponse
+import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoritePulsaPrePaidResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoriteTransferResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.LatestTransactionResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.PinFavoriteRequest
@@ -17,6 +18,11 @@ interface CifApi {
 
     @GET("favorite-prepaid/get-favorite")
     fun getFavoritePLNPrePaid(): Observable<BaseResponse<List<FavoritePLNPrePaidResponse>>>
+
+    @GET("favorite-pulsa/get-favorite")
+    fun getFavoritePulsaPrePaid(
+        @Query("prepaidCategory") category: String = "prepaidCategory"
+    ): Observable<BaseResponse<List<FavoritePulsaPrePaidResponse>>>
 
     @PUT("favorite/pin")
     fun pinFavorite(

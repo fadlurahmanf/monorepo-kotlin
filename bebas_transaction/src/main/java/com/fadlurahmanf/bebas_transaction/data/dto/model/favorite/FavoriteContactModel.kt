@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_transaction.data.dto.model.favorite
 
 import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoritePLNPrePaidResponse
+import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoritePulsaPrePaidResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoriteTransferResponse
 
 data class FavoriteContactModel(
@@ -12,4 +13,5 @@ data class FavoriteContactModel(
 
     var additionalTransferData: FavoriteTransferResponse? = null,
     var additionalPlnPrePaidData: FavoritePLNPrePaidResponse? = null,
+    var additionalPulsaPrePaidData: FavoritePulsaPrePaidResponse? = null,
 )

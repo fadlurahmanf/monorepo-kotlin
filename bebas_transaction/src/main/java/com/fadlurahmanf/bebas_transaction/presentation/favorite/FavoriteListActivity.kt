@@ -14,9 +14,11 @@ import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferDetailArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.FavoriteContactModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.LatestTransactionModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.InquiryRequestModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.InquiryResultModel
 import com.fadlurahmanf.bebas_transaction.data.flow.InputDestinationAccountFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferDetailFlow
-import com.fadlurahmanf.bebas_transaction.data.state.InquiryBankState
+import com.fadlurahmanf.bebas_transaction.data.state.InquiryState
 import com.fadlurahmanf.bebas_transaction.data.state.PinFavoriteState
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityFavoriteListBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
@@ -56,11 +58,26 @@ class FavoriteListActivity :
             return
         }
 
+        favoriteFlow = enumValueOf<FavoriteFlow>(stringFavoriteFlow)
+
         binding.btnNewReceiver.setOnClickListener {
             onNewReceiverClick()
         }
 
-        favoriteFlow = enumValueOf<FavoriteFlow>(stringFavoriteFlow)
+        when (favoriteFlow) {
+            FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
+                binding.toolbar.title = "Transfer Favorit"
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID -> {
+                binding.toolbar.title = "Nomor Pelanggan Favorit"
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {
+                binding.toolbar.title = "Nonor Ponsel Favorit"
+            }
+        }
+
         latestAdapter = LatestAdapter()
         latestAdapter.setCallback(this)
         favoriteAdapter = FavoriteAdapter()
@@ -145,18 +162,18 @@ class FavoriteListActivity :
             }
         }
 
-        viewModel.inquiryBankMasState.observe(this) {
+        viewModel.inquiryState.observe(this) {
             when (it) {
-                is InquiryBankState.FAILED -> {
+                is InquiryState.FAILED -> {
                     dismissLoadingDialog()
                     showFailedBottomsheet(it.exception)
                 }
 
-                InquiryBankState.LOADING -> {
+                InquiryState.LOADING -> {
                     showLoadingDialog()
                 }
 
-                is InquiryBankState.SuccessFromFavoriteActivity -> {
+                is InquiryState.SuccessFromFavoriteActivity -> {
                     dismissLoadingDialog()
                     goToTransferDetailAfterInquiry(
                         inquiryResult = it.result,
@@ -164,7 +181,6 @@ class FavoriteListActivity :
                         favoriteModel = it.favoriteModel,
                         fromLatest = it.isFromLatest,
                         latestModel = it.latestModel,
-                        isInquiryBankMas = it.isInquiryBankMas
                     )
                 }
 
@@ -241,33 +257,47 @@ class FavoriteListActivity :
     }
 
     private fun goToTransferDetailAfterInquiry(
-        inquiryResult: InquiryBankResponse,
+        inquiryResult: InquiryResultModel,
         fromFavorite: Boolean = false,
         favoriteModel: FavoriteContactModel? = null,
         fromLatest: Boolean = false,
         latestModel: LatestTransactionModel? = null,
-        isInquiryBankMas: Boolean = false
     ) {
-        val intent = Intent(this, TransferDetailActivity::class.java)
-        intent.apply {
-            putExtra(
-                TransferDetailActivity.FLOW,
-                if (isInquiryBankMas) TransferDetailFlow.TRANSFER_BETWEEN_BANK_MAS.name else TransferDetailFlow.TRANSFER_OTHER_BANK.name
-            )
-            putExtra(
-                TransferDetailActivity.ARGUMENT, TransferDetailArgument(
-                    isFavorite = fromFavorite,
-                    accountName = favoriteModel?.additionalTransferData?.aliasName
-                        ?: latestModel?.additionalTransferData?.accountName ?: "-",
-                    accountNumber = favoriteModel?.accountNumber ?: latestModel?.accountNumber
-                    ?: "-",
-                    realAccountName = inquiryResult.destinationAccountName ?: "-",
-                    bankName = favoriteModel?.additionalTransferData?.bankName
-                        ?: latestModel?.additionalTransferData?.bankName ?: "-",
-                )
-            )
+        when (favoriteFlow) {
+            FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
+                val isInquiryBankMas = inquiryResult.inquiryTransferBank?.isInquiryBankMas == true
+                val intent = Intent(this, TransferDetailActivity::class.java)
+                intent.apply {
+                    putExtra(
+                        TransferDetailActivity.FLOW,
+                        if (isInquiryBankMas) TransferDetailFlow.TRANSFER_BETWEEN_BANK_MAS.name else TransferDetailFlow.TRANSFER_OTHER_BANK.name
+                    )
+                    putExtra(
+                        TransferDetailActivity.ARGUMENT, TransferDetailArgument(
+                            isFavorite = fromFavorite,
+                            accountName = favoriteModel?.additionalTransferData?.aliasName
+                                ?: latestModel?.additionalTransferData?.accountName ?: "-",
+                            accountNumber = favoriteModel?.accountNumber
+                                ?: latestModel?.accountNumber
+                                ?: "-",
+                            realAccountName = inquiryResult.inquiryTransferBank?.inquiryBank?.destinationAccountName
+                                ?: "-",
+                            bankName = favoriteModel?.additionalTransferData?.bankName
+                                ?: latestModel?.additionalTransferData?.bankName ?: "-",
+                        )
+                    )
+                }
+                startActivity(intent)
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID -> {
+
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {
+
+            }
         }
-        startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -315,8 +345,10 @@ class FavoriteListActivity :
         when (favoriteFlow) {
             FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
                 if (favorite.additionalTransferData?.sknId == "5480300" || favorite.additionalTransferData?.rtgsId == "BMSEIDJA") {
-                    viewModel.inquiryBankMas(
-                        favorite.accountNumber,
+                    viewModel.inquiry(
+                        InquiryRequestModel.InquiryBankMas(
+                            destinationAccountNumber = favorite.accountNumber
+                        ),
                         isFromFavorite = true,
                         favoriteModel = favorite,
                     )
@@ -330,7 +362,13 @@ class FavoriteListActivity :
             }
 
             FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {
-
+                viewModel.inquiry(
+                    InquiryRequestModel.InquiryPulsaData(
+                        phoneNumber = favorite.accountNumber
+                    ),
+                    isFromFavorite = true,
+                    favoriteModel = favorite,
+                )
             }
         }
     }
@@ -357,8 +395,10 @@ class FavoriteListActivity :
     override fun onItemClicked(latest: LatestTransactionModel) {
         when (favoriteFlow) {
             FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
-                viewModel.inquiryBankMas(
-                    latest.accountNumber,
+                viewModel.inquiry(
+                    InquiryRequestModel.InquiryBankMas(
+                        destinationAccountNumber = latest.accountNumber
+                    ),
                     isFromLatest = true,
                     latestModel = latest
                 )
@@ -369,7 +409,13 @@ class FavoriteListActivity :
             }
 
             FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {
-
+                viewModel.inquiry(
+                    InquiryRequestModel.InquiryPulsaData(
+                        phoneNumber = latest.accountNumber
+                    ),
+                    isFromLatest = true,
+                    latestModel = latest
+                )
             }
         }
     }

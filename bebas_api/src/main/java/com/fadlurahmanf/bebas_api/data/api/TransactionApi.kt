@@ -8,6 +8,8 @@ import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.GenerateChallengeCodeRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
+import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryPulsaDataRequest
+import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryPulsaDataResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
 import com.google.gson.JsonObject
 import io.reactivex.rxjava3.core.Observable
@@ -31,6 +33,11 @@ interface TransactionApi {
         @Body request: InquiryOtherBankRequest
     ): Observable<BaseResponse<InquiryBankResponse>>
 
+    @POST("mobile-provider/check-provider")
+    fun inquiryPulsaData(
+        @Body request: InquiryPulsaDataRequest
+    ): Observable<BaseResponse<InquiryPulsaDataResponse>>
+
     @POST("verification/challenge-code")
     fun generateChallengeCode(
         @Body request: GenerateChallengeCodeRequest<FundTransferBankMASRequest>
@@ -43,7 +50,7 @@ interface TransactionApi {
 
     @GET("transaction/{transactionId}/type/{transactionType}")
     fun getTransactionDetail(
-        @Path("transactionId") transactionId:String,
-        @Path("transactionType") transactionType:String,
+        @Path("transactionId") transactionId: String,
+        @Path("transactionType") transactionType: String,
     ): Observable<BaseResponse<Nothing>>
 }

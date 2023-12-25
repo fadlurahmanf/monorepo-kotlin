@@ -4,14 +4,13 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferDetailArgument
 import com.fadlurahmanf.bebas_transaction.data.flow.InputDestinationAccountFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.state.BankListState
-import com.fadlurahmanf.bebas_transaction.data.state.InquiryBankState
+import com.fadlurahmanf.bebas_transaction.data.state.InquiryState
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityBankListBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.others.adapter.BankListAdapter
@@ -75,18 +74,18 @@ class BankListActivity :
             }
         }
 
-        viewModel.inquiryBankState.observe(this) {
+        viewModel.inquiryState.observe(this) {
             when (it) {
-                is InquiryBankState.FAILED -> {
+                is InquiryState.FAILED -> {
                     dismissLoadingDialog()
                     showFailedBottomsheet(it.exception)
                 }
 
-                InquiryBankState.LOADING -> {
+                InquiryState.LOADING -> {
                     showLoadingDialog()
                 }
 
-                is InquiryBankState.SuccessFromBankListActivity -> {
+                is InquiryState.SuccessFromListActivity -> {
                     dismissLoadingDialog()
                     goToTransferDetailAfterInquiry(
                         data = it.result,

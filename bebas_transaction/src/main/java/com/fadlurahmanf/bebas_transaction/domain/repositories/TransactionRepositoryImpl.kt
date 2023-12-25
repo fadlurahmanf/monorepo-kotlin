@@ -11,9 +11,12 @@ import com.fadlurahmanf.bebas_api.data.dto.transfer.GenerateChallengeCodeRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankMasRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
+import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryPulsaDataRequest
+import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryPulsaDataResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.InquiryResultModel
 import com.google.gson.Gson
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
@@ -96,6 +99,26 @@ class TransactionRepositoryImpl @Inject constructor(
         }
     }
 
+    fun inquiryBankMasReturnModel(destinationAccountNumber: String): Observable<InquiryResultModel> {
+        return getMainBankAccount().flatMap { bankAccount ->
+            val request = InquiryBankMasRequest(
+                accountNumber = bankAccount.accountNumber ?: "-",
+                destinationAccountNumber = destinationAccountNumber
+            )
+            transactionRemoteDatasource.inquiryBankMas(request).map { inqRes ->
+                if (inqRes.data == null) {
+                    throw BebasException.generalRC("INQ_00")
+                }
+                InquiryResultModel(
+                    inquiryTransferBank = InquiryResultModel.InquiryTransferBank(
+                        inquiryBank = inqRes.data!!,
+                        isInquiryBankMas = true,
+                    )
+                )
+            }
+        }
+    }
+
     fun inquiryOtherBank(
         sknId: String,
         destinationAccountNumber: String
@@ -112,6 +135,20 @@ class TransactionRepositoryImpl @Inject constructor(
                 }
                 inqRes.data!!
             }
+        }
+    }
+
+    fun inquiryPulsaData(
+        phoneNumber: String
+    ): Observable<InquiryPulsaDataResponse> {
+        val request = InquiryPulsaDataRequest(
+            phoneNumber = phoneNumber
+        )
+        return transactionRemoteDatasource.inquiryPulsaData(request).map { inqRes ->
+            if (inqRes.data == null) {
+                throw BebasException.generalRC("INQ_00")
+            }
+            inqRes.data!!
         }
     }
 

@@ -6,6 +6,7 @@ import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.GenerateChallengeCodeRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankMasRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
+import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryPulsaDataRequest
 import com.fadlurahmanf.bebas_api.domain.network.TransactionNetwork
 import com.google.gson.JsonObject
 import javax.inject.Inject
@@ -18,6 +19,8 @@ class TransactionRemoteDatasource @Inject constructor(
     fun getBankAccounts() = networkService().getBankAccounts()
 
     fun inquiryBankMas(request: InquiryBankMasRequest) = networkService().inquiryBankMas(request)
+    fun inquiryPulsaData(request: InquiryPulsaDataRequest) =
+        networkService().inquiryPulsaData(request)
 
     fun inquiryOtherBank(request: InquiryOtherBankRequest) =
         networkService().inquiryOtherBank(request)

@@ -13,6 +13,7 @@ class CifRemoteDatasource @Inject constructor(
 
     fun getFavoriteTransfer() = networkService().getFavoriteTransfer()
     fun getFavoritePLNPrePaid() = networkService().getFavoritePLNPrePaid()
+    fun getFavoritePulsaPrePaid() = networkService().getFavoritePulsaPrePaid()
 
     fun pinFavorite(request: PinFavoriteRequest) = networkService().pinFavorite(request)
     fun getLatestTransactionTransfer() = networkService().getLatestTransactionTransfer()
