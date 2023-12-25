@@ -1,26 +1,25 @@
 package com.fadlurahmanf.bebas_transaction.domain.repositories
 
-import android.util.Log
 import com.fadlurahmanf.bebas_api.data.datasources.CmsRemoteDatasource
+import com.fadlurahmanf.bebas_api.data.datasources.IdentityRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
+import com.fadlurahmanf.bebas_api.data.dto.pin.PinAttemptResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.GenerateChallengeCodeRequest
-import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankMasRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
+import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
-import com.fadlurahmanf.bebas_shared.extension.serializeToMap
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import io.reactivex.rxjava3.core.Observable
-import org.json.JSONObject
 import javax.inject.Inject
 
 class TransactionRepositoryImpl @Inject constructor(
+    private val identityRemoteDatasource: IdentityRemoteDatasource,
     private val transactionRemoteDatasource: TransactionRemoteDatasource,
     private val cmsRemoteDatasource: CmsRemoteDatasource,
     private val cryptoTransactionRepositoryImpl: CryptoTransactionRepositoryImpl,
@@ -150,12 +149,22 @@ class TransactionRepositoryImpl @Inject constructor(
                 signature = signature,
                 timestamp = timestamp
             )
-            transactionRemoteDatasource.fundTransferBankMAS(Gson().toJsonTree(body).asJsonObject).map { resp ->
-                if (resp.data == null) {
-                    throw BebasException.generalRC("FT_00")
+            transactionRemoteDatasource.fundTransferBankMAS(Gson().toJsonTree(body).asJsonObject)
+                .map { resp ->
+                    if (resp.data == null) {
+                        throw BebasException.generalRC("FT_00")
+                    }
+                    resp.data!!
                 }
-                resp.data!!
+        }
+    }
+
+    fun getTotalPinAttempt(): Observable<PinAttemptResponse> {
+        return identityRemoteDatasource.getTotalPinAttempt().map { resp ->
+            if (resp.data == null) {
+                throw BebasException.generalRC("TP_00")
             }
+            resp.data!!
         }
     }
 }

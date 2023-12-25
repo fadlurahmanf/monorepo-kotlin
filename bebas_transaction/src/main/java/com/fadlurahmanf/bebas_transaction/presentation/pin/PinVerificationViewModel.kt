@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_transaction.presentation.pin
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.fadlurahmanf.bebas_api.data.dto.pin.PinAttemptResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
@@ -41,5 +42,24 @@ class PinVerificationViewModel @Inject constructor(
                     {}
                 )
         )
+    }
+
+    private val _totalPinAttemptState = MutableLiveData<NetworkState<PinAttemptResponse>>()
+    val totalPinAttemptState: LiveData<NetworkState<PinAttemptResponse>> = _totalPinAttemptState
+    fun getTotalPinAttempt() {
+        _totalPinAttemptState.value = NetworkState.LOADING
+        baseDisposable.add(transactionRepositoryImpl.getTotalPinAttempt()
+                               .subscribeOn(Schedulers.io())
+                               .observeOn(AndroidSchedulers.mainThread())
+                               .subscribe(
+                                   {
+                                       _totalPinAttemptState.value = NetworkState.SUCCESS(it)
+                                   },
+                                   {
+                                       _totalPinAttemptState.value =
+                                           NetworkState.FAILED(BebasException.fromThrowable(it))
+                                   },
+                                   {}
+                               ))
     }
 }

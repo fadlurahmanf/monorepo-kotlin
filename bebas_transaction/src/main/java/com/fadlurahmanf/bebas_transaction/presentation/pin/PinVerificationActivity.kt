@@ -51,6 +51,20 @@ class PinVerificationActivity :
 
         binding.ivPinKeyboard.setCallback(this)
 
+        viewModel.totalPinAttemptState.observe(this) {
+            when (it) {
+                is NetworkState.SUCCESS -> {
+                    if ((it.data.attemptCount?:0) > 0){
+                        binding.ivPinKeyboard
+                    }
+                }
+
+                else -> {
+
+                }
+            }
+        }
+
         viewModel.fundTransferState.observe(this) {
             when (it) {
                 is NetworkState.FAILED -> {
@@ -72,6 +86,8 @@ class PinVerificationActivity :
                 }
             }
         }
+
+        viewModel.getTotalPinAttempt()
     }
 
     private fun goToInvoice(data: FundTransferResponse) {

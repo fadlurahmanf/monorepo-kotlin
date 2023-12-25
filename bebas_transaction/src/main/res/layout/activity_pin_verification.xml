@@ -61,6 +61,7 @@
     <com.fadlurahmanf.bebas_ui.pin.BebasPinKeyboard
         android:id="@+id/iv_pin_keyboard"
         android:layout_width="match_parent"
+        app:isForgotPasswordVisible="false"
         android:layout_height="wrap_content" />
 
     <View

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.TypedArray
 import android.util.AttributeSet
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -44,9 +45,14 @@ class BebasPinKeyboard(context: Context, attributeSet: AttributeSet) :
 
     private var callback: Callback? = null
 
+    private var isForgotPinVisible: Boolean = false
+
     init {
         inflate(context, R.layout.layout_pin_keyboard, this)
         attributes = context.obtainStyledAttributes(attributeSet, R.styleable.BebasPinKeyboard)
+
+        isForgotPinVisible =
+            attributes.getBoolean(R.styleable.BebasPinKeyboard_isForgotPasswordVisible, false)
 
         tv1 = findViewById(R.id.tv_1)
         tv2 = findViewById(R.id.tv_2)
@@ -272,6 +278,17 @@ class BebasPinKeyboard(context: Context, attributeSet: AttributeSet) :
                 return@setOnTouchListener false
             }
             false
+        }
+
+        setForgotPin(isForgotPinVisible)
+    }
+
+    private fun setForgotPin(isVisible: Boolean) {
+        isForgotPinVisible = isVisible
+        if (isForgotPinVisible) {
+            tvForgotPin.visibility = View.VISIBLE
+        } else {
+            tvForgotPin.visibility = View.INVISIBLE
         }
     }
 
