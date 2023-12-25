@@ -9,4 +9,5 @@
     <string name="others">Lainnya</string>
     <string name="electricity_denom">Token Listrik</string>
     <string name="fund_transfer">Transfer Bank</string>
+    <string name="credit_and_package">Pulsa &amp; Data</string>
 </resources>

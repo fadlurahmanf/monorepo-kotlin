@@ -212,6 +212,10 @@ class FavoriteListActivity :
             FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID -> {
                 showInputAccountBottomsheet()
             }
+
+            FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {
+
+            }
         }
     }
 
@@ -324,6 +328,10 @@ class FavoriteListActivity :
             FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID -> {
 
             }
+
+            FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {
+
+            }
         }
     }
 
@@ -357,6 +365,10 @@ class FavoriteListActivity :
             }
 
             FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID -> {
+
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {
 
             }
         }

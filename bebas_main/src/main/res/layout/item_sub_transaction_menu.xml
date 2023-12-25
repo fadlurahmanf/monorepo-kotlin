@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="95dp"
-    android:layout_height="75dp"
+    android:layout_height="90dp"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -22,7 +22,7 @@
         android:layout_marginTop="5dp"
         android:ellipsize="end"
         android:fontFamily="@font/lexend_deca_semi_bold"
-        android:maxLines="1"
+        android:maxLines="3"
         android:text="Token Listrik"
         android:textAlignment="center" />
 

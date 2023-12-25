@@ -54,6 +54,8 @@ class ProductTransactionBottomsheet :
                 isSelected = it.productMenuId == bottomsheetArgument.selectedProductMenuId
             )
         })
+        binding.tvSelectedMenuLabel.text =
+            getString(selectedProductTransactionMenu?.productMenuLabel ?: -1)
 
         productTransactionMenuAdapter = ProductTransactionMenuAdapter(
             type = ProductTransactionMenuAdapter.Type.BOTTOMSHEET_TRANSACTION_MENU_LABEL
@@ -78,6 +80,14 @@ class ProductTransactionBottomsheet :
                 subProductMenuId = "PREPAID_PLN",
                 subProductMenuLabel = R.string.electricity_denom,
                 subProductImageMenu = R.drawable.ic_subproduct_tokenlistrik,
+                productTransactionMenu = productTransactionMenu.firstOrNull {
+                    it.productMenuId == "PURCHASE"
+                } ?: othersMenu
+            ),
+            SubProductTransactionMenuModel(
+                subProductMenuId = "PULSA_DATA",
+                subProductMenuLabel = R.string.credit_and_package,
+                subProductImageMenu = R.drawable.ic_subproduct_pulsadata,
                 productTransactionMenu = productTransactionMenu.firstOrNull {
                     it.productMenuId == "PURCHASE"
                 } ?: othersMenu
@@ -109,6 +119,9 @@ class ProductTransactionBottomsheet :
             return
         }
         selectedProductTransactionMenu = menuModel
+
+        binding.tvSelectedMenuLabel.text =
+            getString(selectedProductTransactionMenu?.productMenuLabel ?: -1)
 
         // get selected data and adapter to change is selected to false
         var selectedIndex = -1
@@ -171,6 +184,18 @@ class ProductTransactionBottomsheet :
                 intent.putExtra(
                     FavoriteArgumentConstant.FAVORITE_FLOW,
                     FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID.name
+                )
+                startActivity(intent)
+            }
+
+            "PULSA_DATA" -> {
+                val intent = Intent(
+                    requireContext(),
+                    Class.forName("com.fadlurahmanf.bebas_transaction.presentation.favorite.FavoriteListActivity")
+                )
+                intent.putExtra(
+                    FavoriteArgumentConstant.FAVORITE_FLOW,
+                    FavoriteFlow.TRANSACTION_MENU_PULSA_DATA.name
                 )
                 startActivity(intent)
             }

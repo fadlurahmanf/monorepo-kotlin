@@ -35,6 +35,10 @@ class FavoriteViewModel @Inject constructor(
             FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID -> {
                 favoriteRepositoryImpl.getLatestTransactionPLNPrePaid()
             }
+
+            FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {
+                favoriteRepositoryImpl.getLatestTransactionPLNPrePaid()
+            }
         }
 
         baseDisposable.add(observable
@@ -63,6 +67,10 @@ class FavoriteViewModel @Inject constructor(
             }
 
             FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID -> {
+                favoriteRepositoryImpl.getFavoritePLNPrePaid()
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {
                 favoriteRepositoryImpl.getFavoritePLNPrePaid()
             }
         }

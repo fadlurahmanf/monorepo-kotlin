@@ -8,4 +8,5 @@
     <string name="others">Others</string>
     <string name="electricity_denom">Electricity Denom</string>
     <string name="fund_transfer">Fund Transfer</string>
+    <string name="credit_and_package">Credit &amp; Package</string>
 </resources>

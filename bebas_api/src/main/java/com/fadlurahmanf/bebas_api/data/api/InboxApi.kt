@@ -12,7 +12,7 @@ interface InboxApi {
     fun getNotification(
         @Query("type") type: String,
         @Query("page") page: Int,
-        @Query("size") size: Int = 5,
+        @Query("size") size: Int = 20,
         @Query("startDate") startDate: String? = null,
         @Query("endDate") endDate: String? = null,
         @Query("searchText") searchText: String? = null,

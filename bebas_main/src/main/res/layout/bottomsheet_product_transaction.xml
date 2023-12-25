@@ -31,14 +31,15 @@
             android:id="@+id/rv_product_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_transaction_menu_label" />
 
         <TextView
             android:id="@+id/tv_selected_menu_label"
-            style="@style/Font.Text14"
+            style="@style/Font.Text16"
+            android:fontFamily="@font/lexend_deca_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -49,7 +50,7 @@
             android:id="@+id/rv_sub_product"
             android:layout_width="match_parent"
             android:layout_height="500dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:listitem="@layout/item_transaction_menu" />
