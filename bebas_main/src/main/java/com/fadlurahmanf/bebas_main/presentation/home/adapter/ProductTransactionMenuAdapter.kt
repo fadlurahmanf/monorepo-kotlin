@@ -38,6 +38,10 @@ class ProductTransactionMenuAdapter(
         notifyItemRangeInserted(0, list.size)
     }
 
+    fun changeData(menuModel: ProductTransactionMenuModel, index: Int) {
+        notifyItemChanged(index, menuModel)
+    }
+
     inner class HomeProductViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val image = view.findViewById<ImageView>(R.id.iv_menu)
         val label = view.findViewById<TextView>(R.id.tv_menu_label)
@@ -115,6 +119,6 @@ class ProductTransactionMenuAdapter(
     }
 
     interface Callback {
-        fun onTransactionMenuClicked(menuModel: ProductTransactionMenuModel) {}
+        fun onTransactionMenuClicked(menuModel: ProductTransactionMenuModel)
     }
 }

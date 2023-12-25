@@ -12,7 +12,8 @@ import com.fadlurahmanf.bebas_main.presentation.home.adapter.SubProductTransacti
 import com.fadlurahmanf.bebas_ui.bottomsheet.BaseBottomsheet
 
 class ProductTransactionBottomsheet :
-    BaseBottomsheet<BottomsheetProductTransactionBinding>(BottomsheetProductTransactionBinding::inflate) {
+    BaseBottomsheet<BottomsheetProductTransactionBinding>(BottomsheetProductTransactionBinding::inflate),
+    ProductTransactionMenuAdapter.Callback {
 
     companion object {
         const val ARGUMENT = "ARGUMENT"
@@ -54,6 +55,7 @@ class ProductTransactionBottomsheet :
         productTransactionMenuAdapter = ProductTransactionMenuAdapter(
             type = ProductTransactionMenuAdapter.Type.BOTTOMSHEET_TRANSACTION_MENU_LABEL
         )
+        productTransactionMenuAdapter.setCallback(this)
         productTransactionMenuAdapter.setList(productTransactionMenu)
         binding.rvProductMenu.adapter = productTransactionMenuAdapter
 
@@ -89,4 +91,49 @@ class ProductTransactionBottomsheet :
         productMenuLabel = R.string.others,
         productImageMenu = R.drawable.ic_menu_other
     )
+
+    override fun onTransactionMenuClicked(menuModel: ProductTransactionMenuModel) {
+        if (menuModel.productMenuId == selectedProductTransactionMenu?.productMenuId) {
+            return
+        }
+        selectedProductTransactionMenu = menuModel
+
+        // get selected data and adapter to change is selected to false
+        var selectedIndex = -1
+        for (i in 0 until productTransactionMenu.size) {
+            if (productTransactionMenu[i].isSelected) {
+                productTransactionMenu[i].isSelected = false
+                selectedIndex = i
+                break
+            }
+        }
+        if (selectedIndex >= 0) {
+            productTransactionMenuAdapter.changeData(
+                productTransactionMenu[selectedIndex],
+                selectedIndex
+            )
+        }
+
+        // get selected data and adapter to change is selected to true
+        selectedIndex = -1
+        for (i in 0 until productTransactionMenu.size) {
+            if (productTransactionMenu[i].productMenuId == selectedProductTransactionMenu?.productMenuId) {
+                productTransactionMenu[i].isSelected = true
+                selectedIndex = i
+                break
+            }
+        }
+
+        if (selectedIndex >= 0) {
+            productTransactionMenuAdapter.changeData(
+                productTransactionMenu[selectedIndex],
+                selectedIndex
+            )
+        }
+
+        subProductTransactionMenu.clear()
+        subProductTransactionMenuAdapter.removeAll()
+        generateSubProductTransactionMenuBasedOnSelectedProductTransactionMenu()
+        subProductTransactionMenuAdapter.setList(subProductTransactionMenu)
+    }
 }

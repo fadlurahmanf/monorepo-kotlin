@@ -29,6 +29,12 @@ class SubProductTransactionMenuAdapter(
         notifyItemRangeInserted(0, list.size)
     }
 
+    fun removeAll() {
+        val menuSize = menus.size
+        menus.clear()
+        notifyItemRangeRemoved(0, menuSize)
+    }
+
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val image = view.findViewById<ImageView>(R.id.iv_menu)
         val label = view.findViewById<TextView>(R.id.tv_menu_label)
@@ -42,7 +48,7 @@ class SubProductTransactionMenuAdapter(
             context = parent.context
         }
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_transaction_menu, parent, false)
+            .inflate(R.layout.item_sub_transaction_menu, parent, false)
         return ViewHolder(view)
     }
 
