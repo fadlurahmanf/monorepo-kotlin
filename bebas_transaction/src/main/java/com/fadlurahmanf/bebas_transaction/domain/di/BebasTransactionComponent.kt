@@ -5,6 +5,7 @@ import com.fadlurahmanf.bebas_storage.BebasStorageComponent
 import com.fadlurahmanf.bebas_transaction.presentation.others.BankListActivity
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.FavoriteListActivity
 import com.fadlurahmanf.bebas_transaction.presentation.invoice.InvoiceTransactionActivity
+import com.fadlurahmanf.bebas_transaction.presentation.others.ContactListBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.pin.PinVerificationActivity
 import com.fadlurahmanf.bebas_transaction.presentation.ppob.PaymentDetailActivity
 import com.fadlurahmanf.bebas_transaction.presentation.transfer.TransferConfirmationBottomsheet
@@ -42,4 +43,5 @@ interface BebasTransactionComponent {
 
     // bottomsheet
     fun inject(botttomsheet: TransferConfirmationBottomsheet)
+    fun inject(botttomsheet: ContactListBottomsheet)
 }

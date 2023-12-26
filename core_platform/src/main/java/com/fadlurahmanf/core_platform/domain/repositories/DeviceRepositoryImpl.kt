@@ -219,12 +219,15 @@ class DeviceRepositoryImpl : DeviceRepository {
                                     cursorInfo.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
                                 val mobileNumber =
                                     cursorInfo.getString(mobileNumberIndex)
-                                contacts.add(
-                                    BebasContactModel(
-                                        name = name,
-                                        phoneNumber = mobileNumber
+                                // avoid gojek
+                                if (name != "Gojek ✅") {
+                                    contacts.add(
+                                        BebasContactModel(
+                                            name = name,
+                                            phoneNumber = mobileNumber
+                                        )
                                     )
-                                )
+                                }
                             }
                             cursorInfo?.close()
                         }

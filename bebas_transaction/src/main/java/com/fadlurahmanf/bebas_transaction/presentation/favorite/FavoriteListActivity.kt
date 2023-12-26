@@ -4,9 +4,7 @@ import android.Manifest
 import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import android.view.Menu
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -30,6 +28,7 @@ import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.FavoriteAdapter
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.LatestAdapter
 import com.fadlurahmanf.bebas_transaction.presentation.others.BankListActivity
+import com.fadlurahmanf.bebas_transaction.presentation.others.ContactListBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.others.InputDestinationAccountBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.transfer.TransferDetailActivity
 import com.fadlurahmanf.bebas_ui.bottomsheet.FailedBottomsheet
@@ -230,15 +229,20 @@ class FavoriteListActivity :
         viewModel.getTransferLatest(favoriteFlow)
     }
 
-    private val permissionLauncher =
+    private val contactPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) {
-                goToPpobPaymentDetailScreen()
+                showContactListBottomsheet()
             }
         }
 
-    private fun goToPpobPaymentDetailScreen() {
-
+    private var contactListBottomsheet: ContactListBottomsheet? = null
+    private fun showContactListBottomsheet() {
+        contactListBottomsheet = ContactListBottomsheet()
+        contactListBottomsheet?.show(
+            supportFragmentManager,
+            ContactListBottomsheet::class.java.simpleName
+        )
     }
 
     private fun onNewReceiverClick() {
@@ -258,7 +262,7 @@ class FavoriteListActivity :
                     Manifest.permission.READ_CONTACTS
                 )) {
                     PackageManager.PERMISSION_GRANTED -> {
-                        goToPpobPaymentDetailScreen()
+                        showContactListBottomsheet()
                     }
 
                     PackageManager.PERMISSION_DENIED -> {
@@ -279,7 +283,7 @@ class FavoriteListActivity :
                     }
 
                     else -> {
-                        permissionLauncher.launch(Manifest.permission.CAMERA)
+                        contactPermissionLauncher.launch(Manifest.permission.CAMERA)
                     }
                 }
             }

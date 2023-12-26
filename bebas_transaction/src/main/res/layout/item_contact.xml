@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_initial_avatar"
+            style="@style/Font.Text14"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/background_initial_contact"
+            android:fontFamily="@font/lexend_deca_bold"
+            android:gravity="center"
+            android:text="TT"
+            android:textColor="@color/grey" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_contact_name"
+                style="@style/Font.Text14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lexend_deca_regular"
+                android:text="Contact Name"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_contact_phone_number"
+                style="@style/Font.Text14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:fontFamily="@font/lexend_deca_regular"
+                android:text="081XXXXXXXXXX"
+                android:textColor="@color/grey" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/light_grey" />
+</LinearLayout>
