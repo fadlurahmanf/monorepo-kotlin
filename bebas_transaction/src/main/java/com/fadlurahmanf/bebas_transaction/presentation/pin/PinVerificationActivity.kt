@@ -9,6 +9,7 @@ import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.InvoiceTransactionArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
 import com.fadlurahmanf.bebas_transaction.data.flow.InvoiceTransactionFlow
+import com.fadlurahmanf.bebas_transaction.data.flow.PinVerificationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityPinVerificationBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.invoice.InvoiceTransactionActivity
@@ -20,10 +21,12 @@ class PinVerificationActivity :
     BebasPinKeyboard.Callback {
 
     companion object {
-        const val PIN_VERIFICATION_ARGUMENT = "PIN_VERIFICATION_ARGUMENT"
+        const val ARGUMENT = "ARGUMENT"
+        const val FLOW = "FLOW"
     }
 
-    lateinit var argument: PinVerificationArgument
+    private lateinit var argument: PinVerificationArgument
+    private lateinit var flow: PinVerificationFlow
 
     @Inject
     lateinit var viewModel: PinVerificationViewModel
@@ -33,13 +36,22 @@ class PinVerificationActivity :
     }
 
     override fun onBebasCreate(savedInstanceState: Bundle?) {
+        val stringFlow = intent.getStringExtra(FLOW)
+
+        if (stringFlow == null) {
+            showForcedBackBottomsheet(BebasException.generalRC("UNKNOWN_FLOW"))
+            return
+        }
+
+        flow = enumValueOf(stringFlow)
+
         val p0Arg = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(
-                PIN_VERIFICATION_ARGUMENT,
+                ARGUMENT,
                 PinVerificationArgument::class.java
             )
         } else {
-            intent.getParcelableExtra(PIN_VERIFICATION_ARGUMENT)
+            intent.getParcelableExtra(ARGUMENT)
         }
 
         if (p0Arg == null) {
@@ -117,7 +129,14 @@ class PinVerificationActivity :
         }
 
         if (this.pin.length == 6) {
-            viewModel.fundTransferBankMas(this.pin, argument.fundTransferBankMAS!!)
+            when(flow){
+                PinVerificationFlow.TRANSFER_BETWEEN_BANK_MAS -> {
+                    viewModel.fundTransferBankMas(this.pin, argument.fundTransferBankMAS!!)
+                }
+                PinVerificationFlow.POSTING_PULSA_PREPAID -> {
+                    viewModel.fundTransferBankMas(this.pin, argument.fundTransferBankMAS!!)
+                }
+            }
         }
     }
 

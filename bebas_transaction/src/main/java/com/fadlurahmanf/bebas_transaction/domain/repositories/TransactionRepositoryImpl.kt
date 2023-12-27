@@ -5,6 +5,7 @@ import com.fadlurahmanf.bebas_api.data.datasources.IdentityRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_api.data.dto.pin.PinAttemptResponse
+import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingPulsaPrePaidRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PulsaDenomResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferResponse
@@ -194,9 +195,9 @@ class TransactionRepositoryImpl @Inject constructor(
             timestamp = timestamp,
         )
         return generateChallengeCode(Gson().toJsonTree(challengeCodeRequest).asJsonObject).flatMap {
-            val fundTransferString = Gson().toJson(fundTransferRequest)
+            val fundTransferRequestString = Gson().toJson(fundTransferRequest)
             val signature = cryptoTransactionRepositoryImpl.generateSignature(
-                plainJsonString = fundTransferString,
+                plainJsonString = fundTransferRequestString,
                 timestamp = timestamp,
                 challengeCode = it
             )
@@ -250,4 +251,40 @@ class TransactionRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    fun postingPulsaPrePaid(
+        plainPin: String,
+        pulsaPrePaidRequest: PostingPulsaPrePaidRequest
+    ): Observable<FundTransferResponse> {
+        if (!cryptoTransactionRepositoryImpl.verifyPin(plainPin)) {
+            throw BebasException.generalRC("INCORRECT_PIN")
+        }
+        val timestamp = System.currentTimeMillis().toString()
+        val challengeCodeRequest = GenerateChallengeCodeRequest<PostingPulsaPrePaidRequest>(
+            data = pulsaPrePaidRequest,
+            transactionType = "Antar Rekening",
+            timestamp = timestamp,
+        )
+        return generateChallengeCode(Gson().toJsonTree(challengeCodeRequest).asJsonObject).flatMap {
+            val pulsaPrePaidRequestString = Gson().toJson(pulsaPrePaidRequest)
+            val signature = cryptoTransactionRepositoryImpl.generateSignature(
+                plainJsonString = pulsaPrePaidRequestString,
+                timestamp = timestamp,
+                challengeCode = it
+            )
+            val body = PostingRequest<PostingPulsaPrePaidRequest>(
+                data = pulsaPrePaidRequest,
+                signature = signature,
+                timestamp = timestamp
+            )
+            transactionRemoteDatasource.postingPulsaPrePaid(Gson().toJsonTree(body).asJsonObject)
+                .map { resp ->
+                    if (resp.data == null) {
+                        throw BebasException.generalRC("FT_00")
+                    }
+                    resp.data!!
+                }
+        }
+    }
+
 }

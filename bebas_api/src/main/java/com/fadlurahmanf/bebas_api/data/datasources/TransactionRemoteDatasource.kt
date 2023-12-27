@@ -33,4 +33,7 @@ class TransactionRemoteDatasource @Inject constructor(
 
     fun getPulsaDenom(provider: String) =
         networkService().getDenomPulsa(provider)
+
+    fun postingPulsaPrePaid(json: JsonObject) =
+        networkService().postingPulsaPrePaid(json)
 }

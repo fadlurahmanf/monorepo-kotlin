@@ -51,4 +51,9 @@ interface TransactionApi {
     fun getDenomPulsa(
         @Query("provider") provider: String,
     ): Observable<BaseResponse<List<PulsaDenomResponse>>>
+
+    @POST("pulsa/posting/pre-paid")
+    fun postingPulsaPrePaid(
+        @Body json: JsonObject
+    ): Observable<BaseResponse<FundTransferResponse>>
 }

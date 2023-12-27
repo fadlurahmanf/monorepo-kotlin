@@ -315,7 +315,7 @@ class TransferDetailActivity :
                 val intent = Intent(this, PinVerificationActivity::class.java)
                 intent.apply {
                     putExtra(
-                        PinVerificationActivity.PIN_VERIFICATION_ARGUMENT, PinVerificationArgument(
+                        PinVerificationActivity.ARGUMENT, PinVerificationArgument(
                             fundTransferBankMAS = FundTransferBankMASRequest(
                                 accountNumber = result.selectedAccountNumber,
                                 destinationAccountName = argument.accountName,
