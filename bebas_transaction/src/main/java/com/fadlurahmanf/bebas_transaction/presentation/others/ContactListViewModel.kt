@@ -21,7 +21,7 @@ class ContactListViewModel @Inject constructor(
 
     fun getListContact(context: Context) {
         _contacts.value = NetworkState.LOADING
-        baseDisposable.add(deviceRepository.getContacts(context)
+        baseDisposable.add(deviceRepository.getContactsWithIndicator(context)
                                .subscribeOn(Schedulers.io())
                                .observeOn(AndroidSchedulers.mainThread())
                                .subscribe(

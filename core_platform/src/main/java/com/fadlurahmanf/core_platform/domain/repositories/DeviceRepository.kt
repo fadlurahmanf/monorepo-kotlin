@@ -45,4 +45,8 @@ interface DeviceRepository {
     fun getContacts(
         context: Context
     ): Observable<List<BebasContactModel>>
+
+    fun getContactsWithIndicator(
+        context: Context
+    ): Observable<List<BebasContactModel>>
 }

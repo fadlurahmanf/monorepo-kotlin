@@ -240,4 +240,27 @@ class DeviceRepositoryImpl : DeviceRepository {
             emitter.onComplete()
         }
     }
+
+    override fun getContactsWithIndicator(context: Context): Observable<List<BebasContactModel>> {
+        return getContacts(context).map { contacts ->
+            val newList = arrayListOf<BebasContactModel>()
+            val listAlphabet = arrayListOf<String>()
+            for (element in contacts) {
+                val initial = element.name.take(1)
+                if (!listAlphabet.contains(initial)) {
+                    listAlphabet.add(initial)
+                    newList.add(
+                        BebasContactModel(
+                            name = initial,
+                            phoneNumber = initial,
+                            type = 0
+                        )
+                    )
+                } else {
+                    newList.add(element)
+                }
+            }
+            newList
+        }
+    }
 }
