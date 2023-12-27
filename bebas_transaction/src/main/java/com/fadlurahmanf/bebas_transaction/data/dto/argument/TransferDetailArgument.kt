@@ -9,6 +9,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class TransferDetailArgument(
     var isFavorite: Boolean,
+    var isFavoriteEnabled: Boolean = false,
     var accountName: String,
     var realAccountName: String,
     var accountNumber: String,

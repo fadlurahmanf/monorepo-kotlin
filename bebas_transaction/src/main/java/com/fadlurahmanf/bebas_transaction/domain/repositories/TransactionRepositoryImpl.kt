@@ -144,7 +144,7 @@ class TransactionRepositoryImpl @Inject constructor(
         val request = InquiryPulsaDataRequest(
             phoneNumber = phoneNumber
         )
-        return transactionRemoteDatasource.inquiryPulsaData(request).map { inqRes ->
+        return cmsRemoteDatasource.inquiryPulsaData(request).map { inqRes ->
             if (inqRes.data == null) {
                 throw BebasException.generalRC("INQ_00")
             }
@@ -158,7 +158,7 @@ class TransactionRepositoryImpl @Inject constructor(
         val request = InquiryPulsaDataRequest(
             phoneNumber = phoneNumber
         )
-        return transactionRemoteDatasource.inquiryPulsaData(request).map { inqRes ->
+        return cmsRemoteDatasource.inquiryPulsaData(request).map { inqRes ->
             if (inqRes.data == null) {
                 throw BebasException.generalRC("INQ_00")
             }

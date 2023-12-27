@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_identity_ppob_detail"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:padding="15dp">
+
+        <ImageView
+            android:id="@+id/iv_ppob_logo"
+            style="@style/Font.InitialFavorite"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/background_circle_white"
+            android:gravity="center"
+            android:padding="10dp"
+            android:src="@drawable/il_bebas_grey_transaction" />
+
+        <TextView
+            android:id="@+id/tv_initial_avatar"
+            style="@style/Font.InitialFavorite"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/background_initial_favorite"
+            android:gravity="center"
+            android:text="-"
+            android:textAllCaps="true"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_label_identity"
+                style="@style/Font.Text14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lexend_deca_bold"
+                android:text="PPOB Identity Name" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="10dp" />
+
+            <TextView
+                android:id="@+id/tv_identity_sub_label"
+                style="@style/Font.Text14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PPOBLabel • XXXXXXX" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_favorite"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:src="@drawable/round_star_border_24"
+            app:tint="@color/light_grey" />
+    </LinearLayout>
+
+</LinearLayout>

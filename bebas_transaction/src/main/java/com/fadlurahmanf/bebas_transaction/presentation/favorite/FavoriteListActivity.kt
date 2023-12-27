@@ -14,12 +14,14 @@ import com.fadlurahmanf.bebas_shared.data.argument.transaction.FavoriteArgumentC
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.data.flow.transaction.FavoriteFlow
 import com.fadlurahmanf.bebas_transaction.R
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.PaymentDetailArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferDetailArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.FavoriteContactModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.LatestTransactionModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.InquiryRequestModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.InquiryResultModel
 import com.fadlurahmanf.bebas_transaction.data.flow.InputDestinationAccountFlow
+import com.fadlurahmanf.bebas_transaction.data.flow.PaymentDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.state.InquiryState
 import com.fadlurahmanf.bebas_transaction.data.state.PinFavoriteState
@@ -30,6 +32,7 @@ import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.LatestAd
 import com.fadlurahmanf.bebas_transaction.presentation.others.BankListActivity
 import com.fadlurahmanf.bebas_transaction.presentation.others.ContactListBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.others.InputDestinationAccountBottomsheet
+import com.fadlurahmanf.bebas_transaction.presentation.ppob.PaymentDetailActivity
 import com.fadlurahmanf.bebas_transaction.presentation.transfer.TransferDetailActivity
 import com.fadlurahmanf.bebas_ui.bottomsheet.FailedBottomsheet
 import com.fadlurahmanf.core_platform.data.dto.model.BebasContactModel
@@ -352,7 +355,20 @@ class FavoriteListActivity :
             }
 
             FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {
-
+                val intent = Intent(this, PaymentDetailActivity::class.java)
+                intent.apply {
+                    putExtra(PaymentDetailActivity.FLOW, PaymentDetailFlow.PULSA_DATA.name)
+                    putExtra(
+                        PaymentDetailActivity.ARGUMENT, PaymentDetailArgument(
+                            isFavorite = false,
+                            isFavoriteEnabled = true,
+                            labelIdentity = inquiryResult.inquiryPulsaData?.providerName ?: "-",
+                            subLabelIdentity = inquiryResult.inquiryPulsaData?.phoneNumber ?: "-",
+                            ppobImageUrl = inquiryResult.inquiryPulsaData?.imageProvider
+                        )
+                    )
+                }
+                startActivity(intent)
             }
         }
     }
