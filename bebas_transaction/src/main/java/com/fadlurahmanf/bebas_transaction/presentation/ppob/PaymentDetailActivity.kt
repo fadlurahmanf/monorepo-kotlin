@@ -9,6 +9,8 @@ import com.fadlurahmanf.bebas_transaction.data.dto.argument.PaymentDetailArgumen
 import com.fadlurahmanf.bebas_transaction.data.flow.PaymentDetailFlow
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityPaymentDetailBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
+import com.fadlurahmanf.bebas_transaction.presentation.ppob.pulsa_data.PulsaDataTabAdapter
+import com.google.android.material.tabs.TabLayoutMediator
 import javax.inject.Inject
 
 class PaymentDetailActivity :
@@ -22,8 +24,11 @@ class PaymentDetailActivity :
     private lateinit var argument: PaymentDetailArgument
     private lateinit var flow: PaymentDetailFlow
 
+    private lateinit var adapter: PulsaDataTabAdapter
+
     @Inject
     lateinit var viewModel: PaymentDetailViewModel
+
 
     override fun injectActivity() {
         component.inject(this)
@@ -53,6 +58,15 @@ class PaymentDetailActivity :
         argument = p0Arg
 
         setupIdentityPPOB()
+
+        adapter = PulsaDataTabAdapter(applicationContext, supportFragmentManager, lifecycle)
+
+        binding.vp.adapter = adapter
+        supportActionBar?.elevation = 0f
+
+        TabLayoutMediator(binding.tabLayout, binding.vp) { tab, position ->
+            tab.customView = adapter.getTabView(position)
+        }.attach()
     }
 
     private fun setupIdentityPPOB() {

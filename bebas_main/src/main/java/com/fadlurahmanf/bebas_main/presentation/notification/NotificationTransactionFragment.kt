@@ -13,7 +13,6 @@ import javax.inject.Inject
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-@ExperimentalCoroutinesApi
 class NotificationTransactionFragment : BaseMainFragment<FragmentNotificationTransactionBinding>(
     FragmentNotificationTransactionBinding::inflate
 ), NotificationPagingAdapter.CallBack {
