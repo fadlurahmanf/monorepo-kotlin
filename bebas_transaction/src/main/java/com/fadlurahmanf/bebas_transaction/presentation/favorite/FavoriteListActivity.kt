@@ -32,11 +32,12 @@ import com.fadlurahmanf.bebas_transaction.presentation.others.ContactListBottoms
 import com.fadlurahmanf.bebas_transaction.presentation.others.InputDestinationAccountBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.transfer.TransferDetailActivity
 import com.fadlurahmanf.bebas_ui.bottomsheet.FailedBottomsheet
+import com.fadlurahmanf.core_platform.data.dto.model.BebasContactModel
 import javax.inject.Inject
 
 class FavoriteListActivity :
     BaseTransactionActivity<ActivityFavoriteListBinding>(ActivityFavoriteListBinding::inflate),
-    FavoriteAdapter.Callback, LatestAdapter.Callback {
+    FavoriteAdapter.Callback, LatestAdapter.Callback, ContactListBottomsheet.Callback {
 
     @Inject
     lateinit var viewModel: FavoriteViewModel
@@ -239,6 +240,7 @@ class FavoriteListActivity :
     private var contactListBottomsheet: ContactListBottomsheet? = null
     private fun showContactListBottomsheet() {
         contactListBottomsheet = ContactListBottomsheet()
+        contactListBottomsheet?.setCallback(this)
         contactListBottomsheet?.show(
             supportFragmentManager,
             ContactListBottomsheet::class.java.simpleName
@@ -473,5 +475,9 @@ class FavoriteListActivity :
                 )
             }
         }
+    }
+
+    override fun onContactClicked(contact: BebasContactModel) {
+        viewModel.inquiry(InquiryRequestModel.InquiryPulsaData(phoneNumber = contact.phoneNumber))
     }
 }

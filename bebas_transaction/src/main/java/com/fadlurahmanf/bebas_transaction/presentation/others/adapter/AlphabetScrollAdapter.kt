@@ -78,10 +78,10 @@ class AlphabetScrollAdapter : RecyclerView.Adapter<AlphabetScrollAdapter.ViewHol
 
         holder.alphabet.text = alphabet
 
-        holder.itemView.setOnTouchListener { v, event ->
-            callback?.onAlphabetTouched(v, event, alphabet)
-            return@setOnTouchListener false
-        }
+//        holder.itemView.setOnTouchListener { v, event ->
+//            callback?.onAlphabetTouched(v, event, alphabet)
+//            return@setOnTouchListener true
+//        }
     }
 
     interface Callback {

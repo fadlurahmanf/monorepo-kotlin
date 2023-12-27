@@ -44,6 +44,15 @@
             android:text="Pulsa &amp; Data" />
     </LinearLayout>
 
+    <com.fadlurahmanf.bebas_ui.edittext.BebasEdittext
+        android:id="@+id/et_name_or_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:inputType="text"
+        app:hint="Nama/Nomor Ponsel"
+        app:label="Masukkan Nama/Nomor Ponsel" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,10 +70,10 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_alphabet"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:nestedScrollingEnabled="true"
+            android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_alphabet_scroll" />
     </LinearLayout>

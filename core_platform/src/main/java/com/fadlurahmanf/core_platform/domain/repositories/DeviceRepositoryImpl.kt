@@ -224,7 +224,9 @@ class DeviceRepositoryImpl : DeviceRepository {
                                     contacts.add(
                                         BebasContactModel(
                                             name = name,
-                                            phoneNumber = mobileNumber
+                                            nameHtml = name,
+                                            phoneNumber = mobileNumber,
+                                            phoneNumberHtml = mobileNumber
                                         )
                                     )
                                 }
@@ -252,7 +254,9 @@ class DeviceRepositoryImpl : DeviceRepository {
                     newList.add(
                         BebasContactModel(
                             name = initial,
+                            nameHtml = initial,
                             phoneNumber = initial,
+                            phoneNumberHtml = initial,
                             type = 0
                         )
                     )
