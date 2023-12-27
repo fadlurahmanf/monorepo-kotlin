@@ -9,15 +9,17 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.fadlurahmanf.bebas_transaction.R
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.PulsaDataArgument
 
 class PulsaDataTabAdapter(
     private val context: Context,
+    pulsaDataArgument: PulsaDataArgument,
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle
 ) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
-    val pulsaFragment = PulsaDenomFragment()
+    val pulsaFragment = PulsaDenomFragment.newInstance(pulsaDataArgument)
     val paketDataFragment = PaketDataDenomFragment()
 
     override fun getItemCount(): Int = 2

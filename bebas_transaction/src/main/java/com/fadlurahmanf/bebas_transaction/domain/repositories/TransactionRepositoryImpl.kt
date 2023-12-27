@@ -5,6 +5,7 @@ import com.fadlurahmanf.bebas_api.data.datasources.IdentityRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_api.data.dto.pin.PinAttemptResponse
+import com.fadlurahmanf.bebas_api.data.dto.ppob.PulsaDenomResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.GenerateChallengeCodeRequest
@@ -214,6 +215,18 @@ class TransactionRepositoryImpl @Inject constructor(
 
     fun getTotalPinAttempt(): Observable<PinAttemptResponse> {
         return identityRemoteDatasource.getTotalPinAttempt().map { resp ->
+            if (resp.data == null) {
+                throw BebasException.generalRC("TP_00")
+            }
+            resp.data!!
+        }
+    }
+
+    fun getPulsaDenom(
+        provider: String,
+        providerImage: String? = null
+    ): Observable<List<PulsaDenomResponse>> {
+        return transactionRemoteDatasource.getPulsaDenom(provider).map { resp ->
             if (resp.data == null) {
                 throw BebasException.generalRC("TP_00")
             }

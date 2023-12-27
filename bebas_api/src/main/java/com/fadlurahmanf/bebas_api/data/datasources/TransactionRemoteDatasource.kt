@@ -30,4 +30,7 @@ class TransactionRemoteDatasource @Inject constructor(
 
     fun getTransactionDetail(transactionId: String, transactionType: String) =
         networkService().getTransactionDetail(transactionId, transactionType)
+
+    fun getPulsaDenom(provider: String) =
+        networkService().getDenomPulsa(provider)
 }

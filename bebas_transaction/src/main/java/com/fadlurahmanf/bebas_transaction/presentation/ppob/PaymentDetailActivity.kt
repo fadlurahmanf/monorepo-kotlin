@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PaymentDetailArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.PulsaDataArgument
 import com.fadlurahmanf.bebas_transaction.data.flow.PaymentDetailFlow
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityPaymentDetailBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
@@ -59,14 +60,22 @@ class PaymentDetailActivity :
 
         setupIdentityPPOB()
 
-        adapter = PulsaDataTabAdapter(applicationContext, supportFragmentManager, lifecycle)
+        if (flow == PaymentDetailFlow.PULSA_DATA) {
+            adapter = PulsaDataTabAdapter(
+                applicationContext,
+                PulsaDataArgument(
+                    providerImage = argument.additionalPulsaData?.providerImage,
+                    providerName = argument.additionalPulsaData?.providerName ?: "-"
+                ), supportFragmentManager, lifecycle
+            )
 
-        binding.vp.adapter = adapter
-        supportActionBar?.elevation = 0f
+            binding.vp.adapter = adapter
+            supportActionBar?.elevation = 0f
 
-        TabLayoutMediator(binding.tabLayout, binding.vp) { tab, position ->
-            tab.customView = adapter.getTabView(position)
-        }.attach()
+            TabLayoutMediator(binding.tabLayout, binding.vp) { tab, position ->
+                tab.customView = adapter.getTabView(position)
+            }.attach()
+        }
     }
 
     private fun setupIdentityPPOB() {

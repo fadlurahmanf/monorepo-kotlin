@@ -10,8 +10,11 @@ data class PaymentDetailArgument(
     var labelIdentity: String,
     var subLabelIdentity: String,
     var ppobImageUrl: String? = null,
+    var additionalPulsaData: AdditionalPulsaDataArgument? = null,
 ) : Parcelable {
-    data class FundTransferBankMAS(
-        val sknId: String = ""
-    )
+    @Parcelize
+    data class AdditionalPulsaDataArgument(
+        val providerImage: String? = null,
+        val providerName: String,
+    ) : Parcelable
 }

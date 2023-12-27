@@ -364,7 +364,11 @@ class FavoriteListActivity :
                             isFavoriteEnabled = true,
                             labelIdentity = inquiryResult.inquiryPulsaData?.providerName ?: "-",
                             subLabelIdentity = inquiryResult.inquiryPulsaData?.phoneNumber ?: "-",
-                            ppobImageUrl = inquiryResult.inquiryPulsaData?.imageProvider
+                            ppobImageUrl = inquiryResult.inquiryPulsaData?.imageProvider,
+                            additionalPulsaData = PaymentDetailArgument.AdditionalPulsaDataArgument(
+                                providerName = inquiryResult.inquiryPulsaData?.providerName ?: "",
+                                providerImage = inquiryResult.inquiryPulsaData?.imageProvider
+                            )
                         )
                     )
                 }

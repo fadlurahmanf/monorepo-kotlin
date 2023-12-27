@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_api.data.api
 
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
+import com.fadlurahmanf.bebas_api.data.dto.ppob.PulsaDenomResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.GenerateChallengeCodeRequest
@@ -14,6 +15,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface TransactionApi {
     @GET("customer-info/bank-account")
@@ -44,4 +46,9 @@ interface TransactionApi {
         @Path("transactionId") transactionId: String,
         @Path("transactionType") transactionType: String,
     ): Observable<BaseResponse<Nothing>>
+
+    @GET("pulsa/denom")
+    fun getDenomPulsa(
+        @Query("provider") provider: String,
+    ): Observable<BaseResponse<List<PulsaDenomResponse>>>
 }
