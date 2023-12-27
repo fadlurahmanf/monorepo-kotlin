@@ -20,6 +20,7 @@ import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PulsaDenomModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.InquiryResultModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.PostingPinVerificationResultModel
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import io.reactivex.rxjava3.core.Observable
@@ -184,7 +185,7 @@ class TransactionRepositoryImpl @Inject constructor(
     fun postingTransferBankMas(
         plainPin: String,
         fundTransferRequest: FundTransferBankMASRequest
-    ): Observable<FundTransferResponse> {
+    ): Observable<PostingPinVerificationResultModel> {
         if (!cryptoTransactionRepositoryImpl.verifyPin(plainPin)) {
             throw BebasException.generalRC("INCORRECT_PIN")
         }
@@ -211,7 +212,9 @@ class TransactionRepositoryImpl @Inject constructor(
                     if (resp.data == null) {
                         throw BebasException.generalRC("FT_00")
                     }
-                    resp.data!!
+                    PostingPinVerificationResultModel(
+                        tranferBankMas = resp.data!!
+                    )
                 }
         }
     }
@@ -255,7 +258,7 @@ class TransactionRepositoryImpl @Inject constructor(
     fun postingPulsaPrePaid(
         plainPin: String,
         pulsaPrePaidRequest: PostingPulsaPrePaidRequest
-    ): Observable<FundTransferResponse> {
+    ): Observable<PostingPinVerificationResultModel> {
         if (!cryptoTransactionRepositoryImpl.verifyPin(plainPin)) {
             throw BebasException.generalRC("INCORRECT_PIN")
         }
@@ -282,7 +285,9 @@ class TransactionRepositoryImpl @Inject constructor(
                     if (resp.data == null) {
                         throw BebasException.generalRC("FT_00")
                     }
-                    resp.data!!
+                    PostingPinVerificationResultModel(
+                        pulsaPrePaid = resp.data!!
+                    )
                 }
         }
     }

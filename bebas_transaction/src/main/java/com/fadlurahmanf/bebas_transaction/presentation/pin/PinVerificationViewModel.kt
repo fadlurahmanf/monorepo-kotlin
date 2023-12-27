@@ -7,6 +7,8 @@ import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.PostingPinVerificationRequestModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.PostingPinVerificationResultModel
 import com.fadlurahmanf.bebas_transaction.domain.repositories.TransactionRepositoryImpl
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -17,19 +19,33 @@ class PinVerificationViewModel @Inject constructor(
     private val transactionRepositoryImpl: TransactionRepositoryImpl
 ) : BaseViewModel() {
 
-    private val _fundTransferState = MutableLiveData<NetworkState<FundTransferResponse>>()
-    val fundTransferState: LiveData<NetworkState<FundTransferResponse>> = _fundTransferState
-    fun fundTransferBankMas(
+    private val _fundTransferState =
+        MutableLiveData<NetworkState<PostingPinVerificationResultModel>>()
+    val fundTransferState: LiveData<NetworkState<PostingPinVerificationResultModel>> =
+        _fundTransferState
+
+    fun postingPinVerification(
         plainPin: String,
-        fundTransferBankMASRequest: FundTransferBankMASRequest
+        request: PostingPinVerificationRequestModel
     ) {
         _fundTransferState.value = NetworkState.LOADING
+        val disposable = when (request) {
+            is PostingPinVerificationRequestModel.FundTranfeerBankMas -> {
+                transactionRepositoryImpl.postingTransferBankMas(
+                    plainPin,
+                    request.fundTransferBankMASRequest
+                )
+            }
+
+            is PostingPinVerificationRequestModel.PostingPulsaPrePaid -> {
+                transactionRepositoryImpl.postingPulsaPrePaid(
+                    plainPin,
+                    request.postingPulsaPrePaidRequest
+                )
+            }
+        }
         baseDisposable.add(
-            transactionRepositoryImpl.postingTransferBankMas(
-                plainPin = plainPin,
-                fundTransferRequest = fundTransferBankMASRequest
-            )
-                .subscribeOn(Schedulers.io())
+            disposable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {

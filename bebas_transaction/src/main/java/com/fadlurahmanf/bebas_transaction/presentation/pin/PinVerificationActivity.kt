@@ -8,6 +8,8 @@ import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.InvoiceTransactionArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.PostingPinVerificationRequestModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.PostingPinVerificationResultModel
 import com.fadlurahmanf.bebas_transaction.data.flow.InvoiceTransactionFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.PinVerificationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityPinVerificationBinding
@@ -102,22 +104,35 @@ class PinVerificationActivity :
         viewModel.getTotalPinAttempt()
     }
 
-    private fun goToInvoice(data: FundTransferResponse) {
-        val intent = Intent(this, InvoiceTransactionActivity::class.java)
-        intent.putExtra(
-            InvoiceTransactionActivity.FLOW,
-            InvoiceTransactionFlow.FUND_TRANSFER_BANK_MAS.name
-        )
-        intent.putExtra(
-            InvoiceTransactionActivity.ARGUMENT, InvoiceTransactionArgument(
-                statusTransaction = "SUCCESS",
-                transactionId = data.transactionId ?: "-",
-                isFavorite = false,
-                isFavoriteEnabled = false,
-                transactionDate = data.transactionDateTime ?: "-"
-            )
-        )
-        startActivity(intent)
+    private fun goToInvoice(result: PostingPinVerificationResultModel) {
+        when (flow) {
+            PinVerificationFlow.TRANSFER_BETWEEN_BANK_MAS -> {
+                val intent = Intent(this, InvoiceTransactionActivity::class.java)
+                intent.putExtra(
+                    InvoiceTransactionActivity.FLOW,
+                    InvoiceTransactionFlow.FUND_TRANSFER_BANK_MAS.name
+                )
+                intent.putExtra(
+                    InvoiceTransactionActivity.ARGUMENT, InvoiceTransactionArgument(
+                        statusTransaction = "SUCCESS",
+                        transactionId = result.tranferBankMas?.transactionId ?: "-",
+                        isFavorite = false,
+                        isFavoriteEnabled = false,
+                        transactionDate = result.tranferBankMas?.transactionDateTime ?: "-"
+                    )
+                )
+                startActivity(intent)
+            }
+
+            PinVerificationFlow.POSTING_PULSA_PREPAID -> {
+                val intent = Intent(this, InvoiceTransactionActivity::class.java)
+                intent.putExtra(
+                    InvoiceTransactionActivity.FLOW,
+                    InvoiceTransactionFlow.PULSA_PREPAID.name
+                )
+                startActivity(intent)
+            }
+        }
     }
 
     private var pin: String = ""
@@ -129,12 +144,22 @@ class PinVerificationActivity :
         }
 
         if (this.pin.length == 6) {
-            when(flow){
+            when (flow) {
                 PinVerificationFlow.TRANSFER_BETWEEN_BANK_MAS -> {
-                    viewModel.fundTransferBankMas(this.pin, argument.fundTransferBankMAS!!)
+                    viewModel.postingPinVerification(
+                        plainPin = this.pin,
+                        request = PostingPinVerificationRequestModel.FundTranfeerBankMas(
+                            fundTransferBankMASRequest = argument.fundTransferBankMAS!!
+                        )
+                    )
                 }
+
                 PinVerificationFlow.POSTING_PULSA_PREPAID -> {
-                    viewModel.fundTransferBankMas(this.pin, argument.fundTransferBankMAS!!)
+                    viewModel.postingPinVerification(
+                        this.pin, request = PostingPinVerificationRequestModel.PostingPulsaPrePaid(
+                            postingPulsaPrePaidRequest = argument.pulsaPrePaidRequest!!
+                        )
+                    )
                 }
             }
         }

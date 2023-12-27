@@ -18,6 +18,7 @@ import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgum
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferConfirmationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferDetailArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.result.TransferConfirmationResult
+import com.fadlurahmanf.bebas_transaction.data.flow.PinVerificationFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.state.TransferDetailState
@@ -314,6 +315,10 @@ class TransferDetailActivity :
             TransferDetailFlow.TRANSFER_BETWEEN_BANK_MAS -> {
                 val intent = Intent(this, PinVerificationActivity::class.java)
                 intent.apply {
+                    putExtra(
+                        PinVerificationActivity.FLOW,
+                        PinVerificationFlow.TRANSFER_BETWEEN_BANK_MAS.name
+                    )
                     putExtra(
                         PinVerificationActivity.ARGUMENT, PinVerificationArgument(
                             fundTransferBankMAS = FundTransferBankMASRequest(
