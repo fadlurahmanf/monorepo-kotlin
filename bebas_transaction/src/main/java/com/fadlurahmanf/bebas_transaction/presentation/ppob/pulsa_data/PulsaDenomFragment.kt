@@ -1,22 +1,28 @@
 package com.fadlurahmanf.bebas_transaction.presentation.ppob.pulsa_data
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
+import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingPulsaPrePaidRequest
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PulsaDataArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PulsaDenomModel
+import com.fadlurahmanf.bebas_transaction.data.flow.PinVerificationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.FragmentPulsaDenomBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionFragment
+import com.fadlurahmanf.bebas_transaction.presentation.pin.PinVerificationActivity
 import javax.inject.Inject
 
 
 private const val PULSA_DATA_ARGUMENT = "PULSA_DATA_ARGUMENT"
 
 class PulsaDenomFragment :
-    BaseTransactionFragment<FragmentPulsaDenomBinding>(FragmentPulsaDenomBinding::inflate) {
+    BaseTransactionFragment<FragmentPulsaDenomBinding>(FragmentPulsaDenomBinding::inflate),
+    PulsaDenomAdapter.Callback {
 
     @Inject
     lateinit var viewModel: PulsaDataViewModel
@@ -53,6 +59,7 @@ class PulsaDenomFragment :
 
         val gm = GridLayoutManager(requireContext(), 2)
         adapter = PulsaDenomAdapter()
+        adapter.setCallback(this)
         adapter.setList(denoms)
         binding.rv.adapter = adapter
         binding.rv.layoutManager = gm
@@ -91,5 +98,33 @@ class PulsaDenomFragment :
                     putParcelable(PULSA_DATA_ARGUMENT, arg)
                 }
             }
+    }
+
+    override fun onDenomClicked(model: PulsaDenomModel) {
+        val intent = Intent(requireContext(), PinVerificationActivity::class.java)
+        intent.apply {
+            putExtra(
+                PinVerificationActivity.FLOW,
+                PinVerificationFlow.POSTING_PULSA_PREPAID.name
+            )
+            putExtra(
+                PinVerificationActivity.ARGUMENT, PinVerificationArgument(
+                    pulsaPrePaidRequest = PostingPulsaPrePaidRequest(
+                        accountName = "BEBASDEV",
+                        accountNumber = "1001934356",
+                        amount = model.total,
+                        billerCode = model.pulsaDenomResponse?.billerCode ?: "",
+                        ip = "0.0.0.0",
+                        latitude = 0.0,
+                        longitude = 0.0,
+                        phoneNumber = argument.phoneNumber,
+                        productCode = model.pulsaDenomResponse?.productCode ?: "",
+                        providerName = argument.providerName,
+                        transactionFee = model.pulsaDenomResponse?.adminFee ?: -1.0
+                    )
+                )
+            )
+        }
+        startActivity(intent)
     }
 }

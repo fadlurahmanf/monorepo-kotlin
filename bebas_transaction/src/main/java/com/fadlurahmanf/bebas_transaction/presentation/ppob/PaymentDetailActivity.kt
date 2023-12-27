@@ -3,6 +3,7 @@ package com.fadlurahmanf.bebas_transaction.presentation.ppob
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import com.bumptech.glide.Glide
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PaymentDetailArgument
@@ -65,7 +66,8 @@ class PaymentDetailActivity :
                 applicationContext,
                 PulsaDataArgument(
                     providerImage = argument.additionalPulsaData?.providerImage,
-                    providerName = argument.additionalPulsaData?.providerName ?: "-"
+                    providerName = argument.additionalPulsaData?.providerName ?: "-",
+                    phoneNumber = argument.additionalPulsaData?.phoneNumber ?: "-"
                 ), supportFragmentManager, lifecycle
             )
 
@@ -75,6 +77,8 @@ class PaymentDetailActivity :
             TabLayoutMediator(binding.tabLayout, binding.vp) { tab, position ->
                 tab.customView = adapter.getTabView(position)
             }.attach()
+
+            binding.btnNext.visibility = View.GONE
         }
     }
 

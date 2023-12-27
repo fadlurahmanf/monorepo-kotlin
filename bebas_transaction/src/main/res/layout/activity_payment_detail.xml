@@ -71,4 +71,14 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <com.fadlurahmanf.bebas_ui.button.BebasRoundedButton
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="20dp"
+        android:visibility="visible"
+        app:text="Lanjut" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

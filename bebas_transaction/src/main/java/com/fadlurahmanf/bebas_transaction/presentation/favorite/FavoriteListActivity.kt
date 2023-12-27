@@ -367,7 +367,8 @@ class FavoriteListActivity :
                             ppobImageUrl = inquiryResult.inquiryPulsaData?.imageProvider,
                             additionalPulsaData = PaymentDetailArgument.AdditionalPulsaDataArgument(
                                 providerName = inquiryResult.inquiryPulsaData?.providerName ?: "",
-                                providerImage = inquiryResult.inquiryPulsaData?.imageProvider
+                                providerImage = inquiryResult.inquiryPulsaData?.imageProvider,
+                                phoneNumber = inquiryResult.inquiryPulsaData?.phoneNumber ?: ""
                             )
                         )
                     )

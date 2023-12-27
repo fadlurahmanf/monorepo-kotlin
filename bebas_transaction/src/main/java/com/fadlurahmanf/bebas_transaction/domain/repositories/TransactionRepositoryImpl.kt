@@ -105,22 +105,13 @@ class TransactionRepositoryImpl @Inject constructor(
     }
 
     fun inquiryBankMasReturnModel(destinationAccountNumber: String): Observable<InquiryResultModel> {
-        return getMainBankAccount().flatMap { bankAccount ->
-            val request = InquiryBankMasRequest(
-                accountNumber = bankAccount.accountNumber ?: "-",
-                destinationAccountNumber = destinationAccountNumber
-            )
-            transactionRemoteDatasource.inquiryBankMas(request).map { inqRes ->
-                if (inqRes.data == null) {
-                    throw BebasException.generalRC("INQ_00")
-                }
-                InquiryResultModel(
-                    inquiryTransferBank = InquiryResultModel.InquiryTransferBank(
-                        inquiryBank = inqRes.data!!,
-                        isInquiryBankMas = true,
-                    )
+        return inquiryBankMas(destinationAccountNumber).map { inqRes ->
+            InquiryResultModel(
+                inquiryTransferBank = InquiryResultModel.InquiryTransferBank(
+                    inquiryBank = inqRes,
+                    isInquiryBankMas = true,
                 )
-            }
+            )
         }
     }
 
@@ -146,8 +137,12 @@ class TransactionRepositoryImpl @Inject constructor(
     fun inquiryPulsaData(
         phoneNumber: String
     ): Observable<InquiryPulsaDataResponse> {
+        var formattedPhoneNumber = phoneNumber.replace("+", "").replace(" ", "").replace("-", "")
+        if (formattedPhoneNumber.startsWith("628")) {
+            formattedPhoneNumber = formattedPhoneNumber.replaceFirst("628", "08")
+        }
         val request = InquiryPulsaDataRequest(
-            phoneNumber = phoneNumber
+            phoneNumber = formattedPhoneNumber
         )
         return cmsRemoteDatasource.inquiryPulsaData(request).map { inqRes ->
             if (inqRes.data == null) {
@@ -160,15 +155,9 @@ class TransactionRepositoryImpl @Inject constructor(
     fun inquiryPulsaDataReturnModel(
         phoneNumber: String
     ): Observable<InquiryResultModel> {
-        val request = InquiryPulsaDataRequest(
-            phoneNumber = phoneNumber
-        )
-        return cmsRemoteDatasource.inquiryPulsaData(request).map { inqRes ->
-            if (inqRes.data == null) {
-                throw BebasException.generalRC("INQ_00")
-            }
+        return inquiryPulsaData(phoneNumber).map { inqRes ->
             InquiryResultModel(
-                inquiryPulsaData = inqRes.data!!
+                inquiryPulsaData = inqRes
             )
         }
     }

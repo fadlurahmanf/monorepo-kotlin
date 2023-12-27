@@ -72,11 +72,6 @@ class ContactListBottomsheet :
             }
 
             override fun afterTextChanged(s: Editable?) {
-//                val oldList: List<BebasContactModel> = contacts
-//                var newList: List<BebasContactModel> = arrayListOf()
-//                newList = oldList.filter {
-//                    it.name.lowercase().contains(s.toString().lowercase())
-//                }
                 contactListAdapter.refreshListByKeyword(s.toString())
             }
         })

@@ -6,5 +6,6 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class PulsaDataArgument(
     var providerName: String,
-    var providerImage: String? = null
+    var providerImage: String? = null,
+    var phoneNumber: String,
 ) : Parcelable

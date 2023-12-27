@@ -52,7 +52,7 @@ interface TransactionApi {
         @Query("provider") provider: String,
     ): Observable<BaseResponse<List<PulsaDenomResponse>>>
 
-    @POST("pulsa/posting/pre-paid")
+    @POST("pulsa/posting/prepaid")
     fun postingPulsaPrePaid(
         @Body json: JsonObject
     ): Observable<BaseResponse<FundTransferResponse>>
