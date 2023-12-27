@@ -3,8 +3,11 @@ package com.fadlurahmanf.bebas_transaction.presentation.ppob.pulsa_data
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
+import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PulsaDataArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PulsaDenomModel
 import com.fadlurahmanf.bebas_transaction.databinding.FragmentPulsaDenomBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionFragment
 import javax.inject.Inject
@@ -19,6 +22,8 @@ class PulsaDenomFragment :
     lateinit var viewModel: PulsaDataViewModel
 
     lateinit var argument: PulsaDataArgument
+    private lateinit var adapter: PulsaDenomAdapter
+    private val denoms: ArrayList<PulsaDenomModel> = arrayListOf()
 
     override fun injectFragment() {
         component.inject(this)
@@ -46,7 +51,36 @@ class PulsaDenomFragment :
             return
         }
 
-        viewModel.getPulsaDenom(argument.providerName)
+        val gm = GridLayoutManager(requireContext(), 2)
+        adapter = PulsaDenomAdapter()
+        adapter.setList(denoms)
+        binding.rv.adapter = adapter
+        binding.rv.layoutManager = gm
+
+        viewModel.pulsaDenomState.observe(this) {
+            when (it) {
+                is NetworkState.FAILED -> {
+
+                }
+
+                is NetworkState.LOADING -> {
+
+                }
+
+                is NetworkState.SUCCESS -> {
+                    denoms.clear()
+                    denoms.addAll(it.data)
+                    adapter.setList(denoms)
+                }
+
+                else -> {
+
+                }
+            }
+        }
+
+
+        viewModel.getPulsaDenom(argument.providerName, argument.providerImage)
     }
 
     companion object {

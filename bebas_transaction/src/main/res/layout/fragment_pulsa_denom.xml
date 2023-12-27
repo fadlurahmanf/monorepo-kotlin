@@ -5,10 +5,17 @@
     android:layout_height="match_parent"
     tools:context=".presentation.ppob.pulsa_data.PulsaDenomFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="HALO PULSA" />
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:listitem="@layout/item_pulsa_denom" />
+    </LinearLayout>
 
 </FrameLayout>

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PulsaDenomResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PulsaDenomModel
 import com.fadlurahmanf.bebas_transaction.domain.repositories.TransactionRepositoryImpl
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -15,12 +16,12 @@ class PulsaDataViewModel @Inject constructor(
     private val transactionRepositoryImpl: TransactionRepositoryImpl
 ) : BaseViewModel() {
 
-    private val _pulsaDenomState = MutableLiveData<NetworkState<List<PulsaDenomResponse>>>()
-    val pulsaDenomState: LiveData<NetworkState<List<PulsaDenomResponse>>> = _pulsaDenomState
+    private val _pulsaDenomState = MutableLiveData<NetworkState<List<PulsaDenomModel>>>()
+    val pulsaDenomState: LiveData<NetworkState<List<PulsaDenomModel>>> = _pulsaDenomState
 
-    fun getPulsaDenom(provider: String) {
+    fun getPulsaDenom(provider: String, providerImage: String? = null) {
         _pulsaDenomState.value = NetworkState.LOADING
-        baseDisposable.add(transactionRepositoryImpl.getPulsaDenom(provider)
+        baseDisposable.add(transactionRepositoryImpl.getPulsaDenomModel(provider, providerImage)
                                .subscribeOn(Schedulers.io())
                                .observeOn(AndroidSchedulers.mainThread())
                                .subscribe(

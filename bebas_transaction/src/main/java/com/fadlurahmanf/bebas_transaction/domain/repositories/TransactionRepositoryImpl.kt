@@ -17,6 +17,7 @@ import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryPulsaDataResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PulsaDenomModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.InquiryResultModel
 import com.google.gson.Gson
 import io.reactivex.rxjava3.core.Observable
@@ -223,14 +224,29 @@ class TransactionRepositoryImpl @Inject constructor(
     }
 
     fun getPulsaDenom(
-        provider: String,
-        providerImage: String? = null
+        provider: String
     ): Observable<List<PulsaDenomResponse>> {
         return transactionRemoteDatasource.getPulsaDenom(provider).map { resp ->
             if (resp.data == null) {
                 throw BebasException.generalRC("TP_00")
             }
             resp.data!!
+        }
+    }
+
+    fun getPulsaDenomModel(
+        provider: String,
+        providerImage: String? = null
+    ): Observable<List<PulsaDenomModel>> {
+        return getPulsaDenom(provider).map { denoms ->
+            denoms.map { denom ->
+                PulsaDenomModel(
+                    total = (denom.nominal ?: -1.0) + (denom.adminFee ?: -1.0),
+                    denom = denom.nominal ?: -1.0,
+                    providerImage = providerImage,
+                    pulsaDenomResponse = denom
+                )
+            }
         }
     }
 }
