@@ -20,6 +20,7 @@ import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PulsaDenomModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.InquiryResultModel
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
 
@@ -170,8 +171,8 @@ class TransactionRepositoryImpl @Inject constructor(
         }
     }
 
-    fun generateChallengeCode(request: GenerateChallengeCodeRequest<FundTransferBankMASRequest>): Observable<String> {
-        return transactionRemoteDatasource.getChallengeCode(request).map {
+    fun generateChallengeCode(json: JsonObject): Observable<String> {
+        return transactionRemoteDatasource.getChallengeCode(json).map {
             if (it.data == null) {
                 throw BebasException.generalRC("CC_00")
             }
@@ -192,7 +193,7 @@ class TransactionRepositoryImpl @Inject constructor(
             transactionType = "Antar Rekening",
             timestamp = timestamp,
         )
-        return generateChallengeCode(challengeCodeRequest).flatMap {
+        return generateChallengeCode(Gson().toJsonTree(challengeCodeRequest).asJsonObject).flatMap {
             val fundTransferString = Gson().toJson(fundTransferRequest)
             val signature = cryptoTransactionRepositoryImpl.generateSignature(
                 plainJsonString = fundTransferString,

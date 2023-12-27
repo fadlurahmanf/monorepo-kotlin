@@ -33,7 +33,7 @@ interface TransactionApi {
 
     @POST("verification/challenge-code")
     fun generateChallengeCode(
-        @Body request: GenerateChallengeCodeRequest<FundTransferBankMASRequest>
+        @Body json: JsonObject
     ): Observable<BaseResponse<String>>
 
     @POST("transfer/posting/bank-mas")

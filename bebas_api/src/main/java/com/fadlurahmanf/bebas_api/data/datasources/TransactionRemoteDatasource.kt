@@ -22,8 +22,8 @@ class TransactionRemoteDatasource @Inject constructor(
     fun inquiryOtherBank(request: InquiryOtherBankRequest) =
         networkService().inquiryOtherBank(request)
 
-    fun getChallengeCode(request: GenerateChallengeCodeRequest<FundTransferBankMASRequest>) =
-        networkService().generateChallengeCode(request)
+    fun getChallengeCode(json: JsonObject) =
+        networkService().generateChallengeCode(json)
 
     fun fundTransferBankMAS(json: JsonObject) =
         networkService().fundTransferBankMAS(json)
