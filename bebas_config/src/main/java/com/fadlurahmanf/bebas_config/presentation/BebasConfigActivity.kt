@@ -22,6 +22,11 @@ class BebasConfigActivity : AppCompatActivity() {
 
 
         when (flavor) {
+            "retail" -> {
+                BebasShared.setBebasUrl("https://api.bankmas.my.id/")
+                BebasShared.setOpenviduBaseUrl("https://vc.bankmas.my.id/", "vc.bankmas.my.id")
+            }
+
             "dev" -> {
                 BebasShared.setBebasUrl("https://api.bankmas.my.id/")
                 BebasShared.setOpenviduBaseUrl("https://vc.bankmas.my.id/", "vc.bankmas.my.id")

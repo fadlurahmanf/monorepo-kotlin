@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.viewbinding.ViewBinding
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_config.presentation.BebasApplication
+import com.fadlurahmanf.bebas_fcm.domain.di.DaggerBebasFcmComponent
 import com.fadlurahmanf.bebas_onboarding.R
 import com.fadlurahmanf.bebas_onboarding.domain.di.BebasOnboardingComponent
 import com.fadlurahmanf.bebas_onboarding.domain.di.DaggerBebasOnboardingComponent
@@ -21,11 +22,13 @@ abstract class BaseOnboardingActivity<VB : ViewBinding>(inflate: BebasInflateAct
     lateinit var component: BebasOnboardingComponent
     override fun initComponent() {
         val cryptoComponent = DaggerCoreCryptoComponent.factory().create()
+        val bebasFcmComponent = DaggerBebasFcmComponent.factory().create(applicationContext)
         component = DaggerBebasOnboardingComponent.factory()
             .create(
                 applicationContext,
                 cryptoComponent,
                 DaggerCorePlatformComponent.factory().create(),
+                bebasFcmComponent,
                 DaggerBebasStorageComponent.factory().create(applicationContext, cryptoComponent)
             )
     }

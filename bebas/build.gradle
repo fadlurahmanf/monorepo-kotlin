@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -31,6 +33,11 @@ android {
 
     flavorDimensions "app"
     productFlavors {
+        retail {
+            applicationId "id.co.bebas.retail.dev"
+            dimension "app"
+        }
+
         dev {
             applicationIdSuffix ".dev"
             dimension "app"
@@ -67,11 +74,15 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+
     implementation(project(":core_mlkit"))
     implementation(project(":core_network"))
 
     implementation(project(":bebas_api"))
     implementation(project(":bebas_config"))
+    implementation(project(":bebas_fcm"))
     implementation(project(":bebas_main"))
     implementation(project(":bebas_onboarding"))
     implementation(project(":bebas_shared"))

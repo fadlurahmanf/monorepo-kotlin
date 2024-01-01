@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_onboarding.domain.di
 
 import android.content.Context
+import com.fadlurahmanf.bebas_fcm.domain.di.BebasFcmComponent
 import com.fadlurahmanf.bebas_onboarding.presentation.camera_verification.EktpVerificationCameraActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.camera_verification.EktpVerificationCameraResultActivity
 import com.fadlurahmanf.bebas_onboarding.presentation.camera_verification.FaceVerificationActivity
@@ -24,6 +25,7 @@ import dagger.Component
     dependencies = [
         CoreCryptoComponent::class,
         CorePlatformComponent::class,
+        BebasFcmComponent::class,
         BebasStorageComponent::class
     ]
 )
@@ -35,6 +37,7 @@ interface BebasOnboardingComponent {
             @BindsInstance context: Context,
             cryptoComponent: CoreCryptoComponent,
             platformComponent: CorePlatformComponent,
+            bebasFcmComponent: BebasFcmComponent,
             bebasStorageComponent: BebasStorageComponent
         ): BebasOnboardingComponent
     }
