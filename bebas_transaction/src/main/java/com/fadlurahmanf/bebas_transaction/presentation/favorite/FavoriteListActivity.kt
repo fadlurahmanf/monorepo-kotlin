@@ -196,7 +196,7 @@ class FavoriteListActivity :
 
                 is InquiryState.SuccessFromFavoriteActivity -> {
                     dismissLoadingDialog()
-                    goToTransferDetailAfterInquiry(
+                    goToDetailAfterInquiry(
                         inquiryResult = it.result,
                         fromFavorite = it.isFromFavorite,
                         favoriteModel = it.favoriteModel,
@@ -326,7 +326,7 @@ class FavoriteListActivity :
         )
     }
 
-    private fun goToTransferDetailAfterInquiry(
+    private fun goToDetailAfterInquiry(
         inquiryResult: InquiryResultModel,
         fromFavorite: Boolean = false,
         favoriteModel: FavoriteContactModel? = null,
@@ -399,6 +399,10 @@ class FavoriteListActivity :
                             subLabelIdentity = "Telkom • ${inquiryResult.inquiryTelkomIndihome?.customerNumber ?: "-"}",
                             additionalTelkomIndihome = PaymentDetailArgument.AdditionalTelkomIndihome(
                                 providerImage = latestModel?.additionalTelkomIndihome?.providerLogo,
+                                periode = inquiryResult.inquiryTelkomIndihome?.periode ?: "-",
+                                tagihan = inquiryResult.inquiryTelkomIndihome?.amountTransaction
+                                    ?: -1.0,
+                                inquiry = inquiryResult.inquiryTelkomIndihome!!
                             )
                         )
                     )

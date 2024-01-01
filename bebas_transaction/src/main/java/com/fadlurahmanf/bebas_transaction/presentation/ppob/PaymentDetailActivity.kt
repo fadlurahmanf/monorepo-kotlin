@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.view.View
 import com.bumptech.glide.Glide
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PaymentDetailArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PulsaDataArgument
 import com.fadlurahmanf.bebas_transaction.data.flow.PaymentDetailFlow
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityPaymentDetailBinding
+import com.fadlurahmanf.bebas_transaction.external.BebasTransactionHelper
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.ppob.pulsa_data.PulsaDataTabAdapter
 import com.google.android.material.tabs.TabLayoutMediator
@@ -59,6 +61,7 @@ class PaymentDetailActivity :
 
         argument = p0Arg
 
+        setupTitle()
         setupIdentityPPOB()
 
         if (flow == PaymentDetailFlow.PULSA_DATA) {
@@ -82,6 +85,18 @@ class PaymentDetailActivity :
         }
     }
 
+    private fun setupTitle() {
+        when (flow) {
+            PaymentDetailFlow.PULSA_DATA -> {
+                binding.toolbar.title = "Pembelian Pulsa/Data"
+            }
+
+            PaymentDetailFlow.TELKOM_INDIHOME -> {
+                binding.toolbar.title = "Pembayaran Telkom/IndiHome"
+            }
+        }
+    }
+
     private fun setupIdentityPPOB() {
         when (flow) {
             PaymentDetailFlow.PULSA_DATA -> {
@@ -98,22 +113,32 @@ class PaymentDetailActivity :
             }
 
             PaymentDetailFlow.TELKOM_INDIHOME -> {
-                binding.tabLayout.visibility = View.GONE
-                binding.vp.visibility = View.GONE
+                binding.llDetailPpobTelkomIndihome.visibility = View.VISIBLE
 
                 binding.layoutIdentityPpob.tvLabelIdentity.text = argument.labelIdentity
                 binding.layoutIdentityPpob.tvIdentitySubLabel.text = argument.subLabelIdentity
 
-                if (argument.additionalPulsaData?.providerImage != null) {
+                if (argument.additionalTelkomIndihome?.providerImage != null) {
                     Glide.with(binding.layoutIdentityPpob.ivPpobLogo)
-                        .load(Uri.parse(argument.additionalPulsaData?.providerImage))
+                        .load(Uri.parse(argument.additionalTelkomIndihome?.providerImage))
                         .into(binding.layoutIdentityPpob.ivPpobLogo)
                     binding.layoutIdentityPpob.tvInitialAvatar.visibility = View.GONE
                     binding.layoutIdentityPpob.ivPpobLogo.visibility = View.VISIBLE
                 } else {
                     binding.layoutIdentityPpob.tvInitialAvatar.visibility = View.VISIBLE
                     binding.layoutIdentityPpob.ivPpobLogo.visibility = View.GONE
+
+                    binding.layoutIdentityPpob.tvInitialAvatar.text =
+                        BebasTransactionHelper.getInitial(argument.labelIdentity)
                 }
+
+                binding.layoutDetailPpobTelkomIndihome.tvPeriodeValue.text =
+                    argument.additionalTelkomIndihome?.periode
+                binding.layoutDetailPpobTelkomIndihome.tvTagihanValue.text =
+                    argument.additionalTelkomIndihome?.tagihan?.toRupiahFormat(
+                        useSymbol = true,
+                        useDecimal = true
+                    )
             }
         }
     }

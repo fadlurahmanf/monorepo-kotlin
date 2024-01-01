@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.FavoriteContactModel
+import com.fadlurahmanf.bebas_transaction.external.BebasTransactionHelper
 
 class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
     lateinit var context: Context
@@ -66,14 +67,8 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
 
         holder.favoriteName.text = favorite.nameInFavoriteContact
         if (favorite.nameInFavoriteContact.isNotEmpty()) {
-            if (favorite.nameInFavoriteContact.contains(" ")) {
-                val first = favorite.nameInFavoriteContact.split(" ").first().take(1)
-                val second = favorite.nameInFavoriteContact.split(" ")[1].take(1)
-
-                holder.initialAvatar.text = "$first$second"
-            } else {
-                holder.initialAvatar.text = favorite.nameInFavoriteContact.take(1)
-            }
+            holder.initialAvatar.text =
+                BebasTransactionHelper.getInitial(favorite.nameInFavoriteContact)
         }
 
         holder.subFavoriteLavel.text = "${favorite.labelTypeOfFavorite} • ${favorite.accountNumber}"

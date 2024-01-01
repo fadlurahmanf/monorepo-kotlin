@@ -1,5 +1,9 @@
 package com.fadlurahmanf.bebas_api.data.dto.ppob
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class InquiryTelkomIndihomeResponse(
     val customerName: String? = null,
     val customerNumber: String? = null,
@@ -8,4 +12,4 @@ data class InquiryTelkomIndihomeResponse(
     val amountTransaction: Double? = null,
     val transactionFee: Double? = null,
     val autoDebitStatus: Boolean = false,
-)
+) : Parcelable

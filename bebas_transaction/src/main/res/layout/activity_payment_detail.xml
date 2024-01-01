@@ -56,20 +56,35 @@
                 android:id="@+id/layout_identity_ppob"
                 layout="@layout/layout_identity_detail_ppob" />
 
+            <LinearLayout
+                android:id="@+id/ll_detail_ppob_telkom_indihome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <include
+                    android:id="@+id/layout_detail_ppob_telkom_indihome"
+                    layout="@layout/layout_detail_ppob_telkom_indihome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp" />
+            </LinearLayout>
+
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:tabSelectedTextColor="@color/red"
                 app:tabTextColor="@color/black" />
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vp"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:orientation="vertical"
+                android:visibility="gone" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

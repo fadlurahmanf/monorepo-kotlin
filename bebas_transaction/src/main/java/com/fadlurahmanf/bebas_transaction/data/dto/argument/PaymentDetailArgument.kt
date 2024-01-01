@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_transaction.data.dto.argument
 
 import android.os.Parcelable
+import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -22,5 +23,8 @@ data class PaymentDetailArgument(
     @Parcelize
     data class AdditionalTelkomIndihome(
         val providerImage: String? = null,
+        val periode: String,
+        val tagihan: Double,
+        val inquiry: InquiryTelkomIndihomeResponse,
     ) : Parcelable
 }

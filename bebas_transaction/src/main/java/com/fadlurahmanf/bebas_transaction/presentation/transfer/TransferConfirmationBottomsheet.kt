@@ -16,6 +16,7 @@ import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferConfirmation
 import com.fadlurahmanf.bebas_transaction.data.dto.result.TransferConfirmationResult
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.BottomsheetTransferConfirmationBinding
+import com.fadlurahmanf.bebas_transaction.external.BebasTransactionHelper
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.transfer.adapter.TransferConfirmationDetailAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -144,13 +145,8 @@ class TransferConfirmationBottomsheet :
         } else {
             binding.itemDestinationAccount.ivLogo.visibility = View.GONE
             binding.itemDestinationAccount.initialAvatar.visibility = View.VISIBLE
-            if (argument.realAccountName.contains(" ")) {
-                val first = argument.realAccountName.split(" ").first().take(1)
-                val second = argument.realAccountName.split(" ")[1].take(1)
-                binding.itemDestinationAccount.initialAvatar.text = "$first$second"
-            } else {
-                binding.itemDestinationAccount.initialAvatar.text = argument.realAccountName.take(1)
-            }
+            binding.itemDestinationAccount.initialAvatar.text =
+                BebasTransactionHelper.getInitial(argument.realAccountName)
         }
 
         binding.itemDestinationAccount.tvAccountName.text = argument.realAccountName

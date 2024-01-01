@@ -151,6 +151,18 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="Font.DetailKey">
+        <item name="android:fontFamily">@font/lexend_deca_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
+
+    <style name="Font.DetailValue">
+        <item name="android:fontFamily">@font/lexend_deca_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="Font.DetailValueBold">
         <item name="android:fontFamily">@font/lexend_deca_bold</item>
         <item name="android:textSize">14sp</item>

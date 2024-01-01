@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fadlurahmanf.bebas_transaction.R
+import com.fadlurahmanf.bebas_transaction.external.BebasTransactionHelper
 import com.fadlurahmanf.core_platform.data.dto.model.BebasContactModel
 
 class ContactListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -120,13 +121,7 @@ class ContactListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             mHolder.phoneNumber.text = Html.fromHtml(contact.phoneNumberHtml)
 
             if (contact.name.isNotEmpty()) {
-                if (contact.name.contains(" ")) {
-                    val first = contact.name.split(" ").first().take(1)
-                    val second = contact.name.split(" ")[1].take(1)
-                    mHolder.avatar.text = "$first$second"
-                } else {
-                    mHolder.avatar.text = contact.name.take(1).uppercase()
-                }
+                mHolder.avatar.text = BebasTransactionHelper.getInitial(contact.name)
             }
 
             mHolder.itemView.setOnClickListener {
