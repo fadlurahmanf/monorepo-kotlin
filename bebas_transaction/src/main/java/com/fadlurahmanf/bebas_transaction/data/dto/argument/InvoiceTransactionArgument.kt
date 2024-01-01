@@ -1,6 +1,9 @@
 package com.fadlurahmanf.bebas_transaction.data.dto.argument
 
 import android.os.Parcelable
+import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
+import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeRequest
+import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeResponse
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -10,21 +13,25 @@ data class InvoiceTransactionArgument(
     var transactionDate: String,
     var isFavorite: Boolean,
     val isFavoriteEnabled: Boolean,
-    var additionalTransfer: Transfer? = null,
-    var additionalTelkomIndihome: TelkomIndihome? = null,
+    val additionalTransfer: Transfer? = null,
+    val additionalTelkomIndihome: TelkomIndihome? = null,
 ) : Parcelable {
     @Parcelize
     data class Transfer(
-        var destinationAccountName: String,
-        var destinationBankNickName: String,
-        var destinationAccountNumber: String,
-        var nominal: Long
+        val destinationAccountName: String,
+        val destinationBankNickName: String,
+        val destinationAccountNumber: String,
+        val nominal: Long
     ) : Parcelable
 
     @Parcelize
     data class TelkomIndihome(
-        var destinationAccountName: String,
-        var destinationAccountNumber: String,
-        var totalTransaction: Double
+        val destinationAccountName: String,
+        val destinationAccountNumber: String,
+        val totalTransaction: Double,
+        val fromAccount: String,
+
+        val postingResponse: PostingTelkomIndihomeResponse,
+        val inquiryResponse: InquiryTelkomIndihomeResponse,
     ) : Parcelable
 }

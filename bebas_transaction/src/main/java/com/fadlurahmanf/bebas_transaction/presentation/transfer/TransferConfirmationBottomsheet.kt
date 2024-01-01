@@ -7,11 +7,9 @@ import android.os.Looper
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.R
-import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferConfirmationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.model.TransactionDetailModel
 import com.fadlurahmanf.bebas_transaction.data.dto.result.TransferConfirmationResult
@@ -19,7 +17,7 @@ import com.fadlurahmanf.bebas_transaction.data.flow.TransferConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.BottomsheetTransferConfirmationBinding
 import com.fadlurahmanf.bebas_transaction.external.BebasTransactionHelper
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionBottomsheet
-import com.fadlurahmanf.bebas_transaction.presentation.transfer.adapter.TransferConfirmationDetailAdapter
+import com.fadlurahmanf.bebas_transaction.presentation.others.adapter.TransactionDetailAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import javax.inject.Inject
@@ -43,7 +41,7 @@ class TransferConfirmationBottomsheet :
     private lateinit var argument: TransferConfirmationArgument
     private var flow: TransferConfirmationFlow? = null
 
-    private lateinit var adapter: TransferConfirmationDetailAdapter
+    private lateinit var adapter: TransactionDetailAdapter
     private val details: ArrayList<TransferConfirmationArgument.Detail> = arrayListOf()
 
     @Inject
@@ -82,7 +80,7 @@ class TransferConfirmationBottomsheet :
         details.clear()
         details.addAll(argument.details)
 
-        adapter = TransferConfirmationDetailAdapter()
+        adapter = TransactionDetailAdapter()
         adapter.setList(details.map { nestedDetail ->
             TransactionDetailModel(
                 label = nestedDetail.label,

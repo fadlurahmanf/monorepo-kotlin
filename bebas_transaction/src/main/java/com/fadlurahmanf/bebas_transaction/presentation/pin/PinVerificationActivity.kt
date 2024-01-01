@@ -153,7 +153,11 @@ class PinVerificationActivity :
                                 ?: "-",
                             totalTransaction = (argument.additionalTelkomIndihome?.inquiryResponse?.amountTransaction
                                 ?: -1.0) + (argument.additionalTelkomIndihome?.inquiryResponse?.transactionFee
-                                ?: -1.0)
+                                ?: -1.0),
+                            fromAccount = argument.additionalTelkomIndihome?.postingRequest?.fromAccount
+                                ?: "-",
+                            inquiryResponse = argument.additionalTelkomIndihome?.inquiryResponse!!,
+                            postingResponse = result.telkomIndihome!!
                         )
                     )
                 )

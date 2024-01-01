@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/lexend_deca_regular"
             android:text="-"
+            android:layout_marginStart="10dp"
             android:textColor="@color/black" />
 
     </LinearLayout>

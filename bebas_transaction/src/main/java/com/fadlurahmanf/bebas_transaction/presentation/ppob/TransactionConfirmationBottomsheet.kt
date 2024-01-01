@@ -7,7 +7,6 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
-import com.fadlurahmanf.bebas_shared.extension.toRupiahFormatTypeDetailTransaction
 import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.model.TransactionDetailModel
@@ -15,7 +14,7 @@ import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmatio
 import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.BottomsheetTransactionConfirmationBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionBottomsheet
-import com.fadlurahmanf.bebas_transaction.presentation.transfer.adapter.TransferConfirmationDetailAdapter
+import com.fadlurahmanf.bebas_transaction.presentation.others.adapter.TransactionDetailAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import javax.inject.Inject
@@ -39,8 +38,8 @@ class TransactionConfirmationBottomsheet :
     private lateinit var argument: TransactionConfirmationArgument
     private lateinit var flow: TransactionConfirmationFlow
 
-    private lateinit var feeDetailAdapter: TransferConfirmationDetailAdapter
-    private lateinit var detailAdapter: TransferConfirmationDetailAdapter
+    private lateinit var feeDetailAdapter: TransactionDetailAdapter
+    private lateinit var detailAdapter: TransactionDetailAdapter
     private val feeDetails: ArrayList<TransactionConfirmationArgument.FeeDetail.Detail> =
         arrayListOf()
     private val details: ArrayList<TransactionConfirmationArgument.Detail> = arrayListOf()
@@ -152,13 +151,14 @@ class TransactionConfirmationBottomsheet :
     private fun setupFeeDetails() {
         feeDetails.clear()
         feeDetails.addAll(argument.feeDetail.details)
-        feeDetailAdapter = TransferConfirmationDetailAdapter()
+        feeDetailAdapter = TransactionDetailAdapter()
         feeDetailAdapter.setList(feeDetails.map { nestedDetail ->
             TransactionDetailModel(
                 label = nestedDetail.label,
-                value = nestedDetail.value.toRupiahFormatTypeDetailTransaction(
+                value = nestedDetail.value.toRupiahFormat(
                     useSymbol = true,
-                    useDecimal = true
+                    useDecimal = true,
+                    freeIfZero = true
                 ),
             )
         })
@@ -170,7 +170,7 @@ class TransactionConfirmationBottomsheet :
     private fun setupDetails() {
         details.clear()
         details.addAll(argument.details)
-        detailAdapter = TransferConfirmationDetailAdapter()
+        detailAdapter = TransactionDetailAdapter()
         detailAdapter.setList(details.map { nestedDetail ->
             TransactionDetailModel(
                 label = nestedDetail.label,
