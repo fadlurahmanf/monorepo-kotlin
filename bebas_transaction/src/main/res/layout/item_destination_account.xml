@@ -40,21 +40,21 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_account_name"
+                android:id="@+id/tv_label"
                 style="@style/Font.Text14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lexend_deca_bold"
-                android:text="Account Name" />
+                android:text="Label" />
 
             <TextView
-                android:id="@+id/tv_saving_type_and_account_number"
+                android:id="@+id/tv_sub_label"
                 style="@style/Font.Text14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:fontFamily="@font/lexend_deca_regular"
-                android:text="Mas Saving • 1002037919"
+                android:text="Sub Label"
                 android:textColor="@color/grey" />
         </LinearLayout>
 

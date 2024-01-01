@@ -8,6 +8,7 @@ import com.fadlurahmanf.bebas_transaction.presentation.invoice.InvoiceTransactio
 import com.fadlurahmanf.bebas_transaction.presentation.others.ContactListBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.pin.PinVerificationActivity
 import com.fadlurahmanf.bebas_transaction.presentation.ppob.PaymentDetailActivity
+import com.fadlurahmanf.bebas_transaction.presentation.ppob.TransactionConfirmationBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.ppob.pulsa_data.PaketDataDenomFragment
 import com.fadlurahmanf.bebas_transaction.presentation.ppob.pulsa_data.PulsaDenomFragment
 import com.fadlurahmanf.bebas_transaction.presentation.transfer.TransferConfirmationBottomsheet
@@ -45,6 +46,7 @@ interface BebasTransactionComponent {
 
     // bottomsheet
     fun inject(botttomsheet: TransferConfirmationBottomsheet)
+    fun inject(botttomsheet: TransactionConfirmationBottomsheet)
     fun inject(botttomsheet: ContactListBottomsheet)
     fun inject(fragment: PulsaDenomFragment)
     fun inject(fragment: PaketDataDenomFragment)

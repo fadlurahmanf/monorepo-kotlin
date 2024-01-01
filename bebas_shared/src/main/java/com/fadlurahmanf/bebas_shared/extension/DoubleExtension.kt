@@ -21,3 +21,26 @@ fun Double.toRupiahFormat(
     }
     return formatted
 }
+
+fun Double.toRupiahFormatTypeDetailTransaction(
+    useSymbol: Boolean = false,
+    useDecimal: Boolean = true
+): String {
+    val localeID = Locale("in", "ID")
+    val numberFormat = NumberFormat.getCurrencyInstance(localeID)
+    var formatted = numberFormat.format(this).toString()
+    if (this == 0.0) {
+        return "Gratis"
+    }
+
+    if (useSymbol) {
+        formatted = formatted.lowercase().replace("rp", "Rp ")
+    } else {
+        formatted = formatted.lowercase().replace("rp", "")
+    }
+
+    if (!useDecimal) {
+        formatted = formatted.substringBefore(",")
+    }
+    return formatted
+}

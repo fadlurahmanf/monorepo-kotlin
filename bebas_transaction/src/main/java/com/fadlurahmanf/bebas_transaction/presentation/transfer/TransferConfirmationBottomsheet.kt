@@ -13,6 +13,7 @@ import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferConfirmationArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.model.TransactionDetailModel
 import com.fadlurahmanf.bebas_transaction.data.dto.result.TransferConfirmationResult
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.BottomsheetTransferConfirmationBinding
@@ -82,7 +83,13 @@ class TransferConfirmationBottomsheet :
         details.addAll(argument.details)
 
         adapter = TransferConfirmationDetailAdapter()
-        adapter.setList(details)
+        adapter.setList(details.map { nestedDetail ->
+            TransactionDetailModel(
+                label = nestedDetail.label,
+                value = nestedDetail.value,
+                valueStyle = nestedDetail.valueStyle
+            )
+        })
         binding.rvDetails.adapter = adapter
 
         if (details.isNotEmpty()) {
@@ -149,8 +156,8 @@ class TransferConfirmationBottomsheet :
                 BebasTransactionHelper.getInitial(argument.realAccountName)
         }
 
-        binding.itemDestinationAccount.tvAccountName.text = argument.realAccountName
-        binding.itemDestinationAccount.tvSavingTypeAndAccountNumber.text =
+        binding.itemDestinationAccount.tvLabel.text = argument.realAccountName
+        binding.itemDestinationAccount.tvSubLabel.text =
             "Bank ${argument.bankNickName} • ${argument.destinationAccountNumber}"
         binding.tvNominal.text =
             argument.nominal.toDouble().toRupiahFormat(useSymbol = true, useDecimal = false)

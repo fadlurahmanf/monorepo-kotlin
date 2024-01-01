@@ -9,7 +9,10 @@ import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PaymentDetailArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PulsaDataArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmationResult
 import com.fadlurahmanf.bebas_transaction.data.flow.PaymentDetailFlow
+import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityPaymentDetailBinding
 import com.fadlurahmanf.bebas_transaction.external.BebasTransactionHelper
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
@@ -18,7 +21,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import javax.inject.Inject
 
 class PaymentDetailActivity :
-    BaseTransactionActivity<ActivityPaymentDetailBinding>(ActivityPaymentDetailBinding::inflate) {
+    BaseTransactionActivity<ActivityPaymentDetailBinding>(ActivityPaymentDetailBinding::inflate),
+    TransactionConfirmationBottomsheet.Callback {
 
     companion object {
         const val ARGUMENT = "ARGUMENT"
@@ -62,26 +66,106 @@ class PaymentDetailActivity :
         argument = p0Arg
 
         setupTitle()
+        setupMainLayoutDetailPPOB()
         setupIdentityPPOB()
 
-        if (flow == PaymentDetailFlow.PULSA_DATA) {
-            adapter = PulsaDataTabAdapter(
-                applicationContext,
-                PulsaDataArgument(
-                    providerImage = argument.additionalPulsaData?.providerImage,
-                    providerName = argument.additionalPulsaData?.providerName ?: "-",
-                    phoneNumber = argument.additionalPulsaData?.phoneNumber ?: "-"
-                ), supportFragmentManager, lifecycle
-            )
+        binding.btnNext.setOnClickListener {
+            when (flow) {
+                PaymentDetailFlow.TELKOM_INDIHOME -> {
+                    showTransactionConfirmationBottomsheet()
+                }
 
-            binding.vp.adapter = adapter
-            supportActionBar?.elevation = 0f
+                else -> {
 
-            TabLayoutMediator(binding.tabLayout, binding.vp) { tab, position ->
-                tab.customView = adapter.getTabView(position)
-            }.attach()
+                }
+            }
+        }
+    }
 
-            binding.btnNext.visibility = View.GONE
+    private var transactionConfirmationBottomsheet: TransactionConfirmationBottomsheet? = null
+    private fun showTransactionConfirmationBottomsheet() {
+        transactionConfirmationBottomsheet?.dismiss()
+        transactionConfirmationBottomsheet = null
+        transactionConfirmationBottomsheet = TransactionConfirmationBottomsheet()
+        val bundle = Bundle()
+        transactionConfirmationBottomsheet?.setCallback(this)
+        when (flow) {
+            PaymentDetailFlow.PULSA_DATA -> {
+
+            }
+
+            PaymentDetailFlow.TELKOM_INDIHOME -> {
+                val inquiry = argument.additionalTelkomIndihome?.inquiry
+                bundle.apply {
+                    putString(
+                        TransactionConfirmationBottomsheet.FLOW,
+                        TransactionConfirmationFlow.TELKOM_INDIHOME.name
+                    )
+                    putParcelable(
+                        TransactionConfirmationBottomsheet.ADDITIONAL_ARG,
+                        TransactionConfirmationArgument(
+                            destinationLabel = inquiry?.customerName ?: "-",
+                            destinationSubLabel = "Telkom • ${inquiry?.customerNumber ?: "-"}",
+                            feeDetail = TransactionConfirmationArgument.FeeDetail(
+                                total = (inquiry?.amountTransaction
+                                    ?: -1.0) + (inquiry?.transactionFee ?: -1.0),
+                                details = arrayListOf(
+                                    TransactionConfirmationArgument.FeeDetail.Detail(
+                                        label = "Tagihan",
+                                        value = inquiry?.amountTransaction ?: -1.0,
+                                    ),
+                                    TransactionConfirmationArgument.FeeDetail.Detail(
+                                        label = "Biaya Admin",
+                                        value = inquiry?.transactionFee ?: -1.0,
+                                    )
+                                )
+                            ),
+                            details = arrayListOf<TransactionConfirmationArgument.Detail>(
+                                TransactionConfirmationArgument.Detail(
+                                    label = "Periode",
+                                    value = inquiry?.periode ?: "-"
+                                )
+                            )
+                        )
+                    )
+                }
+            }
+        }
+
+        transactionConfirmationBottomsheet?.arguments = bundle
+        transactionConfirmationBottomsheet?.show(
+            supportFragmentManager,
+            TransactionConfirmationBottomsheet::class.java.simpleName
+        )
+    }
+
+    private fun setupMainLayoutDetailPPOB() {
+        when (flow) {
+            PaymentDetailFlow.PULSA_DATA -> {
+                binding.tabLayout.visibility = View.VISIBLE
+                binding.vp.visibility = View.VISIBLE
+
+                adapter = PulsaDataTabAdapter(
+                    applicationContext,
+                    PulsaDataArgument(
+                        providerImage = argument.additionalPulsaData?.providerImage,
+                        providerName = argument.additionalPulsaData?.providerName ?: "-",
+                        phoneNumber = argument.additionalPulsaData?.phoneNumber ?: "-"
+                    ), supportFragmentManager, lifecycle
+                )
+
+                binding.vp.adapter = adapter
+                supportActionBar?.elevation = 0f
+
+                TabLayoutMediator(binding.tabLayout, binding.vp) { tab, position ->
+                    tab.customView = adapter.getTabView(position)
+                }.attach()
+            }
+
+            PaymentDetailFlow.TELKOM_INDIHOME -> {
+                binding.llDetailPpobTelkomIndihome.visibility = View.VISIBLE
+                binding.btnNext.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -100,8 +184,6 @@ class PaymentDetailActivity :
     private fun setupIdentityPPOB() {
         when (flow) {
             PaymentDetailFlow.PULSA_DATA -> {
-                binding.tabLayout.visibility = View.VISIBLE
-                binding.vp.visibility = View.VISIBLE
                 binding.layoutIdentityPpob.tvLabelIdentity.text = argument.labelIdentity
                 binding.layoutIdentityPpob.tvIdentitySubLabel.text = argument.subLabelIdentity
 
@@ -113,8 +195,6 @@ class PaymentDetailActivity :
             }
 
             PaymentDetailFlow.TELKOM_INDIHOME -> {
-                binding.llDetailPpobTelkomIndihome.visibility = View.VISIBLE
-
                 binding.layoutIdentityPpob.tvLabelIdentity.text = argument.labelIdentity
                 binding.layoutIdentityPpob.tvIdentitySubLabel.text = argument.subLabelIdentity
 
@@ -141,5 +221,9 @@ class PaymentDetailActivity :
                     )
             }
         }
+    }
+
+    override fun onButtonTransactionConfirmationClicked(result: TransactionConfirmationResult) {
+        transactionConfirmationBottomsheet?.dismiss()
     }
 }
