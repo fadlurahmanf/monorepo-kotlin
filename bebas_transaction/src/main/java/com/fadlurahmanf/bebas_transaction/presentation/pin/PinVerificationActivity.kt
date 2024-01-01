@@ -147,12 +147,13 @@ class PinVerificationActivity :
                         isFavoriteEnabled = false,
                         transactionDate = result.telkomIndihome?.transactionDateTime ?: "-",
                         additionalTelkomIndihome = InvoiceTransactionArgument.TelkomIndihome(
-                            destinationAccountName = argument.telkomIndihomeRequest?.fromAccountName
+                            destinationAccountName = argument.additionalTelkomIndihome?.inquiryResponse?.customerName
                                 ?: "-",
-                            destinationAccountNumber = argument.telkomIndihomeRequest?.customerNumber
+                            destinationAccountNumber = argument.additionalTelkomIndihome?.inquiryResponse?.customerNumber
                                 ?: "-",
-                            totalTransaction = (argument.telkomIndihomeRequest?.amountTransaction
-                                ?: -1.0) + (argument.telkomIndihomeRequest?.transactionFee ?: -1.0)
+                            totalTransaction = (argument.additionalTelkomIndihome?.inquiryResponse?.amountTransaction
+                                ?: -1.0) + (argument.additionalTelkomIndihome?.inquiryResponse?.transactionFee
+                                ?: -1.0)
                         )
                     )
                 )
@@ -192,7 +193,7 @@ class PinVerificationActivity :
                     viewModel.postingPinVerification(
                         this.pin,
                         request = PostingPinVerificationRequestModel.PostingTelkomIndihome(
-                            postingTelkomIndihomeRequest = argument.telkomIndihomeRequest!!
+                            postingTelkomIndihomeRequest = argument.additionalTelkomIndihome!!.postingRequest
                         )
                     )
                 }

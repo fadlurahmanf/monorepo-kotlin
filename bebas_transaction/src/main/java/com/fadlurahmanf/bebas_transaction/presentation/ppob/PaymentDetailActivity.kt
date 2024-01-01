@@ -246,15 +246,18 @@ class PaymentDetailActivity :
                     )
                     putExtra(
                         PinVerificationActivity.ARGUMENT, PinVerificationArgument(
-                            telkomIndihomeRequest = PostingTelkomIndihomeRequest(
-                                additionalDataPrivate = inquiry?.additionalDataPrivate ?: "-",
-                                amountTransaction = (inquiry?.amountTransaction
-                                    ?: -1.0) + (inquiry?.transactionFee ?: -1.0),
-                                autodebitStatus = inquiry?.autoDebitStatus ?: false,
-                                customerNumber = inquiry?.customerNumber ?: "-",
-                                fromAccount = result.selectedAccountNumber,
-                                fromAccountName = result.selectedAccountName,
-                                transactionFee = inquiry?.transactionFee ?: -1.0
+                            additionalTelkomIndihome = PinVerificationArgument.TelkomIndihome(
+                                postingRequest = PostingTelkomIndihomeRequest(
+                                    additionalDataPrivate = inquiry?.additionalDataPrivate ?: "-",
+                                    amountTransaction = (inquiry?.amountTransaction
+                                        ?: -1.0) + (inquiry?.transactionFee ?: -1.0),
+                                    autodebitStatus = inquiry?.autoDebitStatus ?: false,
+                                    customerNumber = inquiry?.customerNumber ?: "-",
+                                    fromAccount = result.selectedAccountNumber,
+                                    fromAccountName = result.selectedAccountName,
+                                    transactionFee = inquiry?.transactionFee ?: -1.0
+                                ),
+                                inquiryResponse = inquiry!!
                             )
                         )
                     )
