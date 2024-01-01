@@ -91,6 +91,12 @@ class FavoriteListActivity :
                 binding.tvBtnNewReceiver.text = "Nomor Ponsel Baru"
                 binding.ivButtonNewReceiver.setImageResource(R.drawable.round_phonelink_ring_24)
             }
+
+            FavoriteFlow.TRANSACTION_MENU_TELKOM_INDIHOME -> {
+                binding.toolbar.title = "Nomor Pelanggan Favorit"
+                binding.tvBtnNewReceiver.text = "Nomor Pelanggan Baru"
+                binding.ivButtonNewReceiver.setImageResource(R.drawable.outline_person_add_alt_1_24)
+            }
         }
 
         latestAdapter = LatestAdapter()
@@ -292,6 +298,10 @@ class FavoriteListActivity :
                     }
                 }
             }
+
+            FavoriteFlow.TRANSACTION_MENU_TELKOM_INDIHOME -> {
+
+            }
         }
     }
 
@@ -325,7 +335,7 @@ class FavoriteListActivity :
     ) {
         when (favoriteFlow) {
             FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
-                val isInquiryBankMas = inquiryResult.inquiryTransferBank?.isInquiryBankMas == true
+                val isInquiryBankMas = inquiryResult.additionalInquiryTransferBank?.isInquiryBankMas == true
                 val intent = Intent(this, TransferDetailActivity::class.java)
                 intent.apply {
                     putExtra(
@@ -340,7 +350,7 @@ class FavoriteListActivity :
                             accountNumber = favoriteModel?.accountNumber
                                 ?: latestModel?.accountNumber
                                 ?: "-",
-                            realAccountName = inquiryResult.inquiryTransferBank?.inquiryBank?.destinationAccountName
+                            realAccountName = inquiryResult.additionalInquiryTransferBank?.inquiryBank?.destinationAccountName
                                 ?: "-",
                             bankName = favoriteModel?.additionalTransferData?.bankName
                                 ?: latestModel?.additionalTransferData?.bankName ?: "-",
@@ -374,6 +384,10 @@ class FavoriteListActivity :
                     )
                 }
                 startActivity(intent)
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_TELKOM_INDIHOME -> {
+
             }
         }
     }
@@ -448,6 +462,10 @@ class FavoriteListActivity :
                     favoriteModel = favorite,
                 )
             }
+
+            FavoriteFlow.TRANSACTION_MENU_TELKOM_INDIHOME -> {
+
+            }
         }
     }
 
@@ -494,6 +512,10 @@ class FavoriteListActivity :
                     isFromLatest = true,
                     latestModel = latest
                 )
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_TELKOM_INDIHOME -> {
+
             }
         }
     }

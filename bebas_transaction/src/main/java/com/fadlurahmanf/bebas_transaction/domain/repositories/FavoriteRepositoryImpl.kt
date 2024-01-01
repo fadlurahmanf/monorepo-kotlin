@@ -49,6 +49,24 @@ class FavoriteRepositoryImpl @Inject constructor(
         }
     }
 
+    fun getLatestTransactionTelkomIndihome(): Observable<List<LatestTransactionModel>> {
+        return cifRemoteDatasource.getLatestTransactionTelkomIndihome().map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+
+            val latest = it.data!!
+            latest.map { latestResp ->
+                LatestTransactionModel(
+                    name = latestResp.accountName ?: "-",
+                    labelLatest = latestResp.customerName ?: "-",
+                    accountNumber = latestResp.billPaymentNumber ?: "-",
+                    additionalTelkomIndihome = latestResp
+                )
+            }.toList()
+        }
+    }
+
     fun getFavoriteTransfer(): Observable<List<FavoriteContactModel>> {
         return cifRemoteDatasource.getFavoriteTransfer().map {
             if (it.data == null) {
@@ -104,6 +122,26 @@ class FavoriteRepositoryImpl @Inject constructor(
                     accountNumber = favResp.accountNumber ?: "-",
                     isPinned = favResp.isPinned ?: false,
                     additionalPulsaPrePaidData = favResp
+                )
+            }.toList()
+        }
+    }
+
+    fun getFavoriteTelkomIndihome(): Observable<List<FavoriteContactModel>> {
+        return cifRemoteDatasource.getFavoriteTelkomIndihome().map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+
+            val favorites = it.data!!
+            favorites.map { favResp ->
+                FavoriteContactModel(
+                    id = favResp.id ?: "-",
+                    nameInFavoriteContact = favResp.aliasName ?: "-",
+                    labelTypeOfFavorite = favResp.aliasName ?: "-",
+                    accountNumber = favResp.accountNumber ?: "-",
+                    isPinned = favResp.isPinned ?: false,
+                    additionalTelkomIndihome = favResp
                 )
             }.toList()
         }

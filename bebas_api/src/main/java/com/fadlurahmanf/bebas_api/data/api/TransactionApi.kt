@@ -2,10 +2,10 @@ package com.fadlurahmanf.bebas_api.data.api
 
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
+import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeRequest
+import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PulsaDenomResponse
-import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferResponse
-import com.fadlurahmanf.bebas_api.data.dto.transfer.GenerateChallengeCodeRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankMasRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
@@ -56,4 +56,9 @@ interface TransactionApi {
     fun postingPulsaPrePaid(
         @Body json: JsonObject
     ): Observable<BaseResponse<FundTransferResponse>>
+
+    @POST("telkom-bill/inquiry/postpaid")
+    fun inquiryTelkomIndihome(
+        @Body request: InquiryTelkomIndihomeRequest
+    ): Observable<BaseResponse<InquiryTelkomIndihomeResponse>>
 }

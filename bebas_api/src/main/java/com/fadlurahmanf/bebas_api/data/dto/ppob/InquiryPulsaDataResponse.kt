@@ -1,4 +1,4 @@
-package com.fadlurahmanf.bebas_api.data.dto.transfer
+package com.fadlurahmanf.bebas_api.data.dto.ppob
 
 data class InquiryPulsaDataResponse(
     val phoneNumber: String? = null,

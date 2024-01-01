@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_transaction.data.dto.model.favorite
 
+import com.fadlurahmanf.bebas_api.data.dto.favorite.LatestTransactionPostPaidResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.LatestTransactionResponse
 
 data class LatestTransactionModel(
@@ -7,5 +8,7 @@ data class LatestTransactionModel(
     val labelLatest: String,
     val accountNumber: String,
 
-    val additionalTransferData: LatestTransactionResponse? = null
+    val additionalTransferData: LatestTransactionResponse? = null,
+    val additionalPLNPrePaid: LatestTransactionResponse? = null,
+    val additionalTelkomIndihome: LatestTransactionPostPaidResponse? = null,
 )

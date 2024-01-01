@@ -2,7 +2,7 @@ package com.fadlurahmanf.bebas_api.data.datasources
 
 import android.content.Context
 import com.fadlurahmanf.bebas_api.data.api.CmsApi
-import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryPulsaDataRequest
+import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryPulsaDataRequest
 import com.fadlurahmanf.bebas_api.domain.network.CmsNetwork
 import javax.inject.Inject
 

@@ -99,6 +99,14 @@ class ProductTransactionBottomsheet :
                 productTransactionMenu = productTransactionMenu.firstOrNull {
                     it.productMenuId == "TRANSFER"
                 } ?: othersMenu
+            ),
+            SubProductTransactionMenuModel(
+                subProductMenuId = "TELKOM_INDIHOME",
+                subProductMenuLabel = R.string.telkom_or_indihome,
+                subProductImageMenu = R.drawable.ic_subproduct_telkomindihome,
+                productTransactionMenu = productTransactionMenu.firstOrNull {
+                    it.productMenuId == "PAYMENT"
+                } ?: othersMenu
             )
         )
 
@@ -196,6 +204,18 @@ class ProductTransactionBottomsheet :
                 intent.putExtra(
                     FavoriteArgumentConstant.FAVORITE_FLOW,
                     FavoriteFlow.TRANSACTION_MENU_PULSA_DATA.name
+                )
+                startActivity(intent)
+            }
+
+            "TELKOM_INDIHOME" -> {
+                val intent = Intent(
+                    requireContext(),
+                    Class.forName("com.fadlurahmanf.bebas_transaction.presentation.favorite.FavoriteListActivity")
+                )
+                intent.putExtra(
+                    FavoriteArgumentConstant.FAVORITE_FLOW,
+                    FavoriteFlow.TRANSACTION_MENU_TELKOM_INDIHOME.name
                 )
                 startActivity(intent)
             }

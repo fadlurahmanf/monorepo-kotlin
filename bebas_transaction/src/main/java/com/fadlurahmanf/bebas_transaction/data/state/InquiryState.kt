@@ -1,7 +1,6 @@
 package com.fadlurahmanf.bebas_transaction.data.state
 
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
-import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryPulsaDataResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.FavoriteContactModel

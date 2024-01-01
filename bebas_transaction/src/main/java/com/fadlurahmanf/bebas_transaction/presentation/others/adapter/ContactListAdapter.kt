@@ -37,7 +37,10 @@ class ContactListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             notifyItemRangeRemoved(0, itemCount)
             val newContacts = arrayListOf<BebasContactModel>()
             val newAlphabetIndicator = arrayListOf<String>()
-            for (element in initialContacts) {
+            val initialContactsWithIndicator = initialContacts.filter {
+                it.type == 1
+            }
+            for (element in initialContactsWithIndicator) {
                 if (element.name.contains(
                         keyword,
                         ignoreCase = true
@@ -46,6 +49,15 @@ class ContactListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     val indicator = element.name.take(1)
                     if (!newAlphabetIndicator.contains(indicator)) {
                         newAlphabetIndicator.add(indicator)
+                        newContacts.add(
+                            BebasContactModel(
+                                name = indicator,
+                                nameHtml = indicator,
+                                phoneNumber = indicator,
+                                phoneNumberHtml = indicator,
+                                type = 0
+                            )
+                        )
                     }
                     val newElement = element.copy(
                         nameHtml = element.name.replace(

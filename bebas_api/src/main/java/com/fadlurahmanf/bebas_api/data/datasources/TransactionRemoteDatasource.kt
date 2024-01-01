@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_api.data.datasources
 
 import android.content.Context
 import com.fadlurahmanf.bebas_api.data.api.TransactionApi
+import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.GenerateChallengeCodeRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankMasRequest
@@ -36,4 +37,7 @@ class TransactionRemoteDatasource @Inject constructor(
 
     fun postingPulsaPrePaid(json: JsonObject) =
         networkService().postingPulsaPrePaid(json)
+
+    fun inquiryTelkomIndihome(request: InquiryTelkomIndihomeRequest) =
+        networkService().inquiryTelkomIndihome(request)
 }

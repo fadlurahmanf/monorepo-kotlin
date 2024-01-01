@@ -8,13 +8,14 @@ import com.fadlurahmanf.bebas_api.data.dto.pin.PinAttemptResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingPulsaPrePaidRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PulsaDenomResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
-import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.GenerateChallengeCodeRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankMasRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
-import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryPulsaDataRequest
-import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryPulsaDataResponse
+import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryPulsaDataRequest
+import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryPulsaDataResponse
+import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeRequest
+import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
@@ -107,7 +108,7 @@ class TransactionRepositoryImpl @Inject constructor(
     fun inquiryBankMasReturnModel(destinationAccountNumber: String): Observable<InquiryResultModel> {
         return inquiryBankMas(destinationAccountNumber).map { inqRes ->
             InquiryResultModel(
-                inquiryTransferBank = InquiryResultModel.InquiryTransferBank(
+                additionalInquiryTransferBank = InquiryResultModel.InquiryTransferBank(
                     inquiryBank = inqRes,
                     isInquiryBankMas = true,
                 )
@@ -278,6 +279,31 @@ class TransactionRepositoryImpl @Inject constructor(
                         pulsaPrePaid = resp.data!!
                     )
                 }
+        }
+    }
+
+    fun inquiryTelkomIndihome(customerId: String): Observable<InquiryTelkomIndihomeResponse> {
+        return getMainBankAccount().flatMap { bankAccount ->
+            val request = InquiryTelkomIndihomeRequest(
+                fromAccountNumber = bankAccount.accountNumber ?: "-",
+                customerId = customerId
+            )
+            transactionRemoteDatasource.inquiryTelkomIndihome(request).map { inqRes ->
+                if (inqRes.data == null) {
+                    throw BebasException.generalRC("INQ_00")
+                }
+                inqRes.data!!
+            }
+        }
+    }
+
+    fun inquiryTelkomIndihomeReturnModel(
+        customerId: String
+    ): Observable<InquiryResultModel> {
+        return inquiryTelkomIndihome(customerId).map { resp ->
+            InquiryResultModel(
+                inquiryTelkomIndihome = resp
+            )
         }
     }
 

@@ -41,6 +41,10 @@ class FavoriteViewModel @Inject constructor(
             FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {
                 favoriteRepositoryImpl.getLatestTransactionPLNPrePaid()
             }
+
+            FavoriteFlow.TRANSACTION_MENU_TELKOM_INDIHOME -> {
+                favoriteRepositoryImpl.getLatestTransactionTelkomIndihome()
+            }
         }
 
         baseDisposable.add(observable
@@ -74,6 +78,10 @@ class FavoriteViewModel @Inject constructor(
 
             FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {
                 favoriteRepositoryImpl.getFavoritePulsaPrePaid()
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_TELKOM_INDIHOME -> {
+                favoriteRepositoryImpl.getFavoriteTelkomIndihome()
             }
         }
 
@@ -134,16 +142,17 @@ class FavoriteViewModel @Inject constructor(
         isFromLatest: Boolean = false,
         latestModel: LatestTransactionModel? = null,
     ) {
-        val disposableModel: Observable<InquiryResultModel>
-        when (inquiryRequestModel) {
+        val disposableModel: Observable<InquiryResultModel> = when (inquiryRequestModel) {
             is InquiryRequestModel.InquiryBankMas -> {
-                disposableModel =
-                    transactionRepositoryImpl.inquiryBankMasReturnModel(inquiryRequestModel.destinationAccountNumber)
+                transactionRepositoryImpl.inquiryBankMasReturnModel(inquiryRequestModel.destinationAccountNumber)
             }
 
             is InquiryRequestModel.InquiryPulsaData -> {
-                disposableModel =
-                    transactionRepositoryImpl.inquiryPulsaDataReturnModel(inquiryRequestModel.phoneNumber)
+                transactionRepositoryImpl.inquiryPulsaDataReturnModel(inquiryRequestModel.phoneNumber)
+            }
+
+            is InquiryRequestModel.InquiryTelkomIndihome -> {
+                transactionRepositoryImpl.inquiryTelkomIndihomeReturnModel(inquiryRequestModel.customerId)
             }
         }
         _inquiryState.value = InquiryState.LOADING
