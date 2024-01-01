@@ -45,19 +45,19 @@ class LatestAdapter : RecyclerView.Adapter<LatestAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val latest = latests[position]
 
-        holder.favoriteName.text = latest.name
-        if (latest.name.isNotEmpty()) {
-            if (latest.name.contains(" ")) {
-                val first = latest.name.split(" ").first().take(1)
-                val second = latest.name.split(" ")[1].take(1)
+        holder.favoriteName.text = latest.label
+        if (latest.label.isNotEmpty()) {
+            if (latest.label.contains(" ")) {
+                val first = latest.label.split(" ").first().take(1)
+                val second = latest.label.split(" ")[1].take(1)
 
                 holder.initialAvatar.text = "$first$second"
             } else {
-                holder.initialAvatar.text = latest.name.take(1)
+                holder.initialAvatar.text = latest.label.take(1)
             }
         }
 
-        holder.subFavoriteLavel.text = latest.labelLatest
+        holder.subFavoriteLavel.text = latest.subLabel
 
         holder.itemView.setOnClickListener {
             callback?.onItemClicked(latest)

@@ -23,8 +23,8 @@ class FavoriteRepositoryImpl @Inject constructor(
             val latest = it.data!!
             latest.map { latestResp ->
                 LatestTransactionModel(
-                    name = latestResp.accountName ?: "-",
-                    labelLatest = latestResp.bankName ?: "-",
+                    label = latestResp.accountName ?: "-",
+                    subLabel = latestResp.bankName ?: "-",
                     accountNumber = latestResp.accountNumber ?: "-",
                     additionalTransferData = latestResp
                 )
@@ -41,8 +41,8 @@ class FavoriteRepositoryImpl @Inject constructor(
             val latest = it.data!!
             latest.map { latestResp ->
                 LatestTransactionModel(
-                    name = latestResp.accountName ?: "-",
-                    labelLatest = latestResp.bankName ?: "-",
+                    label = latestResp.accountName ?: "-",
+                    subLabel = latestResp.bankName ?: "-",
                     accountNumber = latestResp.accountNumber ?: "-"
                 )
             }.toList()
@@ -58,8 +58,8 @@ class FavoriteRepositoryImpl @Inject constructor(
             val latest = it.data!!
             latest.map { latestResp ->
                 LatestTransactionModel(
-                    name = latestResp.accountName ?: "-",
-                    labelLatest = latestResp.customerName ?: "-",
+                    label = latestResp.customerName ?: "-",
+                    subLabel = "Telkom",
                     accountNumber = latestResp.billPaymentNumber ?: "-",
                     additionalTelkomIndihome = latestResp
                 )
