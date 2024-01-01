@@ -5,6 +5,7 @@
     <color name="green_opacity_90">#E6019267</color>
     <color name="grey">#FFCACACA</color>
     <color name="grey_opacity_90">#E6CACACA</color>
+    <color name="light_grey">#F1F2F2</color>
 
     <color name="black">#FF000000</color>
     <color name="black_opacity">#33000000</color>

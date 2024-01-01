@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_invoice_label_transaction"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:padding="15dp">
+
+        <ImageView
+            android:id="@+id/iv_destination_logo"
+            style="@style/Font.InitialFavorite"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/background_circle_white_with_border_grey"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="9dp"
+            android:src="@drawable/il_bebas_grey_transaction"
+            android:textAllCaps="true" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_destination_account_name"
+                style="@style/Font.Text14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lexend_deca_bold"
+                android:text="Label" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="10dp" />
+
+            <TextView
+                android:id="@+id/tv_sub_label"
+                style="@style/Font.Text14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sublabel" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_input_nominal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/background_rectangle_border_grey"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp">
+
+        <TextView
+            style="@style/Font.Text14"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/lexend_deca_regular"
+            android:text="Total Pembayaran"
+            android:textColor="@color/grey" />
+
+        <TextView
+            android:id="@+id/tv_total_payment_value"
+            style="@style/Font.Text14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/lexend_deca_extra_bold"
+            android:text="Rp -"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+</LinearLayout>

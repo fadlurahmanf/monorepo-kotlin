@@ -10,7 +10,8 @@ data class InvoiceTransactionArgument(
     var transactionDate: String,
     var isFavorite: Boolean,
     val isFavoriteEnabled: Boolean,
-    var additionalTransfer: Transfer? = null
+    var additionalTransfer: Transfer? = null,
+    var additionalTelkomIndihome: TelkomIndihome? = null,
 ) : Parcelable {
     @Parcelize
     data class Transfer(
@@ -18,5 +19,12 @@ data class InvoiceTransactionArgument(
         var destinationBankNickName: String,
         var destinationAccountNumber: String,
         var nominal: Long
+    ) : Parcelable
+
+    @Parcelize
+    data class TelkomIndihome(
+        var destinationAccountName: String,
+        var destinationAccountNumber: String,
+        var totalTransaction: Double
     ) : Parcelable
 }

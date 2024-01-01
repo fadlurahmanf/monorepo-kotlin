@@ -145,7 +145,15 @@ class PinVerificationActivity :
                         transactionId = result.telkomIndihome?.transactionId ?: "-",
                         isFavorite = false,
                         isFavoriteEnabled = false,
-                        transactionDate = result.telkomIndihome?.transactionDateTime ?: "-"
+                        transactionDate = result.telkomIndihome?.transactionDateTime ?: "-",
+                        additionalTelkomIndihome = InvoiceTransactionArgument.TelkomIndihome(
+                            destinationAccountName = argument.telkomIndihomeRequest?.fromAccountName
+                                ?: "-",
+                            destinationAccountNumber = argument.telkomIndihomeRequest?.customerNumber
+                                ?: "-",
+                            totalTransaction = (argument.telkomIndihomeRequest?.amountTransaction
+                                ?: -1.0) + (argument.telkomIndihomeRequest?.transactionFee ?: -1.0)
+                        )
                     )
                 )
                 startActivity(intent)
