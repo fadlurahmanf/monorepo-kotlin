@@ -111,8 +111,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             app:lottie_autoPlay="true"
+            app:lottie_loop="false"
             app:lottie_rawRes="@raw/il_invoice_success"
-            app:lottie_repeatCount="3"
             app:lottie_repeatMode="reverse" />
     </LinearLayout>
 

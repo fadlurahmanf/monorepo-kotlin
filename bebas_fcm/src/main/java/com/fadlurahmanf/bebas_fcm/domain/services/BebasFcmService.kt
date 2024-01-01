@@ -1,10 +1,14 @@
 package com.fadlurahmanf.bebas_fcm.domain.services
 
 import android.util.Log
+import com.fadlurahmanf.bebas_notification.domain.BebasNotificationRepositoryImpl
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import kotlin.random.Random
 
 class BebasFcmService : FirebaseMessagingService() {
+    lateinit var bebasNotificationRepositoryImpl: BebasNotificationRepositoryImpl
+
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         Log.d("BebasLoggerFcm", "onNewToken")
@@ -12,44 +16,29 @@ class BebasFcmService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-        Log.d("BebasLoggerFcm", "TITLE: ${message.notification?.title}")
-        Log.d("BebasLoggerFcm", "BODY: ${message.notification?.body}")
-        Log.d("BebasLoggerFcm", "ADDITIONAL DATA: ${message.data}")
-//        when (message.data["type"]) {
-//            "GENERAL" -> {
-//                showGeneral(message)
-//            }
-//
-//            "INCOMING_CALL" -> {
-//                showIncomingCall()
-//            }
-//        }
-    }
+        if (!::bebasNotificationRepositoryImpl.isInitialized) {
+            bebasNotificationRepositoryImpl = BebasNotificationRepositoryImpl(applicationContext)
+        }
+        val notification = message.notification
+        val title = notification?.title
+        val body = notification?.body
+        val data = message.data
+        val transactionType = data["transactionType"]
+        Log.d("BebasLoggerFcm", "TITLE: $title")
+        Log.d("BebasLoggerFcm", "BODY: $body")
+        Log.d("BebasLoggerFcm", "ADDITIONAL DATA: $data")
 
-    private fun showGeneral(message: RemoteMessage) {
-//        val title = message.data["title"]
-//        val body = message.data["body"]
-//        if (title != null && body != null) {
-//            val id = Random.nextInt()
-//            val intent =
-//                MappNotificationReceiver.getOnClickGeneralPendingIntent(applicationContext, id)
-//            notificationRepository.showNotification(id, title, body, intent)
-//        } else {
-//            showUnknownNotification()
-//        }
-    }
-
-    private fun showIncomingCall() {
-//        Log.d("MappLogger", "FcmService showIncomingCall")
-//        MappNotificationReceiver.sendBroadcastShowIncomingCall(applicationContext)
-    }
-
-    private fun showUnknownNotification() {
-//        notificationRepository.showNotification(
-//            Random.nextInt(9999),
-//            "Mapp Notification",
-//            "New Notification",
-//            null,
-//        )
+        if (title != null && body != null) {
+            when (transactionType) {
+                "Telepon/Internet" -> {
+                    bebasNotificationRepositoryImpl.showTransactionNotification(
+                        Random.nextInt(999),
+                        title,
+                        body,
+                        null
+                    )
+                }
+            }
+        }
     }
 }
