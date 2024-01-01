@@ -4,6 +4,7 @@ import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
+import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PulsaDenomResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankMasRequest
@@ -61,4 +62,9 @@ interface TransactionApi {
     fun inquiryTelkomIndihome(
         @Body request: InquiryTelkomIndihomeRequest
     ): Observable<BaseResponse<InquiryTelkomIndihomeResponse>>
+
+    @POST("telkom-bill/posting")
+    fun postingTelkomIndihome(
+        @Body json: JsonObject
+    ): Observable<BaseResponse<PostingTelkomIndihomeResponse>>
 }

@@ -40,4 +40,7 @@ class TransactionRemoteDatasource @Inject constructor(
 
     fun inquiryTelkomIndihome(request: InquiryTelkomIndihomeRequest) =
         networkService().inquiryTelkomIndihome(request)
+
+    fun postingTelkomIndihome(json: JsonObject) =
+        networkService().postingTelkomIndihome(json)
 }

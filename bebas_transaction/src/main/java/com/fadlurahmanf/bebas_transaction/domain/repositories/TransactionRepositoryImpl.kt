@@ -16,6 +16,7 @@ import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryPulsaDataRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryPulsaDataResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
+import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
@@ -304,6 +305,43 @@ class TransactionRepositoryImpl @Inject constructor(
             InquiryResultModel(
                 inquiryTelkomIndihome = resp
             )
+        }
+    }
+
+    fun postingTelkomIndihome(
+        plainPin: String,
+        telkomIndihomeRequest: PostingTelkomIndihomeRequest
+    ): Observable<PostingPinVerificationResultModel> {
+        if (!cryptoTransactionRepositoryImpl.verifyPin(plainPin)) {
+            throw BebasException.generalRC("INCORRECT_PIN")
+        }
+        val timestamp = System.currentTimeMillis().toString()
+        val challengeCodeRequest = GenerateChallengeCodeRequest<PostingTelkomIndihomeRequest>(
+            data = telkomIndihomeRequest,
+            transactionType = "Antar Rekening",
+            timestamp = timestamp,
+        )
+        return generateChallengeCode(Gson().toJsonTree(challengeCodeRequest).asJsonObject).flatMap {
+            val telkomIndihomeRequestString = Gson().toJson(telkomIndihomeRequest)
+            val signature = cryptoTransactionRepositoryImpl.generateSignature(
+                plainJsonString = telkomIndihomeRequestString,
+                timestamp = timestamp,
+                challengeCode = it
+            )
+            val body = PostingRequest<PostingTelkomIndihomeRequest>(
+                data = telkomIndihomeRequest,
+                signature = signature,
+                timestamp = timestamp
+            )
+            transactionRemoteDatasource.postingTelkomIndihome(Gson().toJsonTree(body).asJsonObject)
+                .map { resp ->
+                    if (resp.data == null) {
+                        throw BebasException.generalRC("FT_00")
+                    }
+                    PostingPinVerificationResultModel(
+                        telkomIndihome = resp.data!!
+                    )
+                }
         }
     }
 

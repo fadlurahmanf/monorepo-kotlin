@@ -5,5 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class TransactionConfirmationResult(
-    val selectedAccountNumber: String
+    val selectedAccountNumber: String,
+    val selectedAccountName: String
 ) : Parcelable

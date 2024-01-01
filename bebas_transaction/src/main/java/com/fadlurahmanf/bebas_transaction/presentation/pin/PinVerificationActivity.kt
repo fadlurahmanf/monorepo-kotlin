@@ -132,6 +132,24 @@ class PinVerificationActivity :
                 )
                 startActivity(intent)
             }
+
+            PinVerificationFlow.POSTING_TELKOM_INDIHOME -> {
+                val intent = Intent(this, InvoiceTransactionActivity::class.java)
+                intent.putExtra(
+                    InvoiceTransactionActivity.FLOW,
+                    InvoiceTransactionFlow.TELKOM_INDIHOME.name
+                )
+                intent.putExtra(
+                    InvoiceTransactionActivity.ARGUMENT, InvoiceTransactionArgument(
+                        statusTransaction = "SUCCESS",
+                        transactionId = result.telkomIndihome?.transactionId ?: "-",
+                        isFavorite = false,
+                        isFavoriteEnabled = false,
+                        transactionDate = result.telkomIndihome?.transactionDateTime ?: "-"
+                    )
+                )
+                startActivity(intent)
+            }
         }
     }
 
@@ -158,6 +176,15 @@ class PinVerificationActivity :
                     viewModel.postingPinVerification(
                         this.pin, request = PostingPinVerificationRequestModel.PostingPulsaPrePaid(
                             postingPulsaPrePaidRequest = argument.pulsaPrePaidRequest!!
+                        )
+                    )
+                }
+
+                PinVerificationFlow.POSTING_TELKOM_INDIHOME -> {
+                    viewModel.postingPinVerification(
+                        this.pin,
+                        request = PostingPinVerificationRequestModel.PostingTelkomIndihome(
+                            postingTelkomIndihomeRequest = argument.telkomIndihomeRequest!!
                         )
                     )
                 }

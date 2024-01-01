@@ -127,6 +127,7 @@ class TransactionConfirmationBottomsheet :
                         result = TransactionConfirmationResult(
                             selectedAccountNumber = viewModel.selectedBankAccount?.accountNumber
                                 ?: "-",
+                            selectedAccountName = viewModel.selectedBankAccount?.accountName ?: "-"
                         )
                     )
                 }

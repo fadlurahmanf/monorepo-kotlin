@@ -1,21 +1,26 @@
 package com.fadlurahmanf.bebas_transaction.presentation.ppob
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import com.bumptech.glide.Glide
+import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PaymentDetailArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PulsaDataArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmationResult
 import com.fadlurahmanf.bebas_transaction.data.flow.PaymentDetailFlow
+import com.fadlurahmanf.bebas_transaction.data.flow.PinVerificationFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityPaymentDetailBinding
 import com.fadlurahmanf.bebas_transaction.external.BebasTransactionHelper
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
+import com.fadlurahmanf.bebas_transaction.presentation.pin.PinVerificationActivity
 import com.fadlurahmanf.bebas_transaction.presentation.ppob.pulsa_data.PulsaDataTabAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import javax.inject.Inject
@@ -225,5 +230,37 @@ class PaymentDetailActivity :
 
     override fun onButtonTransactionConfirmationClicked(result: TransactionConfirmationResult) {
         transactionConfirmationBottomsheet?.dismiss()
+
+        val intent = Intent(this, PinVerificationActivity::class.java)
+        when (flow) {
+            PaymentDetailFlow.PULSA_DATA -> {
+
+            }
+
+            PaymentDetailFlow.TELKOM_INDIHOME -> {
+                val inquiry = argument.additionalTelkomIndihome?.inquiry
+                intent.apply {
+                    putExtra(
+                        PinVerificationActivity.FLOW,
+                        PinVerificationFlow.POSTING_TELKOM_INDIHOME.name
+                    )
+                    putExtra(
+                        PinVerificationActivity.ARGUMENT, PinVerificationArgument(
+                            telkomIndihomeRequest = PostingTelkomIndihomeRequest(
+                                additionalDataPrivate = inquiry?.additionalDataPrivate ?: "-",
+                                amountTransaction = (inquiry?.amountTransaction
+                                    ?: -1.0) + (inquiry?.transactionFee ?: -1.0),
+                                autodebitStatus = inquiry?.autoDebitStatus ?: false,
+                                customerNumber = inquiry?.customerNumber ?: "-",
+                                fromAccount = result.selectedAccountNumber,
+                                fromAccountName = result.selectedAccountName,
+                                transactionFee = inquiry?.transactionFee ?: -1.0
+                            )
+                        )
+                    )
+                }
+            }
+        }
+        startActivity(intent)
     }
 }
