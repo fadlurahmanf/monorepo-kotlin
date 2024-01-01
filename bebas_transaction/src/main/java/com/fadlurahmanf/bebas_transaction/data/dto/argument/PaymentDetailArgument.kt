@@ -9,13 +9,18 @@ data class PaymentDetailArgument(
     var isFavoriteEnabled: Boolean = false,
     var labelIdentity: String,
     var subLabelIdentity: String,
-    var ppobImageUrl: String? = null,
     var additionalPulsaData: AdditionalPulsaDataArgument? = null,
+    var additionalTelkomIndihome: AdditionalTelkomIndihome? = null,
 ) : Parcelable {
     @Parcelize
     data class AdditionalPulsaDataArgument(
         val providerImage: String? = null,
         val providerName: String,
         val phoneNumber: String
+    ) : Parcelable
+
+    @Parcelize
+    data class AdditionalTelkomIndihome(
+        val providerImage: String? = null,
     ) : Parcelable
 }

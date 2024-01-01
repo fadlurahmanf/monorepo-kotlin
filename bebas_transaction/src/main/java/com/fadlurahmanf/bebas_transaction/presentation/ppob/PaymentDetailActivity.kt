@@ -85,13 +85,34 @@ class PaymentDetailActivity :
     private fun setupIdentityPPOB() {
         when (flow) {
             PaymentDetailFlow.PULSA_DATA -> {
+                binding.tabLayout.visibility = View.VISIBLE
+                binding.vp.visibility = View.VISIBLE
                 binding.layoutIdentityPpob.tvLabelIdentity.text = argument.labelIdentity
                 binding.layoutIdentityPpob.tvIdentitySubLabel.text = argument.subLabelIdentity
 
-                if (argument.ppobImageUrl != null) {
+                if (argument.additionalPulsaData?.providerImage != null) {
                     Glide.with(binding.layoutIdentityPpob.ivPpobLogo)
-                        .load(Uri.parse(argument.ppobImageUrl))
+                        .load(Uri.parse(argument.additionalPulsaData?.providerImage))
                         .into(binding.layoutIdentityPpob.ivPpobLogo)
+                }
+            }
+
+            PaymentDetailFlow.TELKOM_INDIHOME -> {
+                binding.tabLayout.visibility = View.GONE
+                binding.vp.visibility = View.GONE
+
+                binding.layoutIdentityPpob.tvLabelIdentity.text = argument.labelIdentity
+                binding.layoutIdentityPpob.tvIdentitySubLabel.text = argument.subLabelIdentity
+
+                if (argument.additionalPulsaData?.providerImage != null) {
+                    Glide.with(binding.layoutIdentityPpob.ivPpobLogo)
+                        .load(Uri.parse(argument.additionalPulsaData?.providerImage))
+                        .into(binding.layoutIdentityPpob.ivPpobLogo)
+                    binding.layoutIdentityPpob.tvInitialAvatar.visibility = View.GONE
+                    binding.layoutIdentityPpob.ivPpobLogo.visibility = View.VISIBLE
+                } else {
+                    binding.layoutIdentityPpob.tvInitialAvatar.visibility = View.VISIBLE
+                    binding.layoutIdentityPpob.ivPpobLogo.visibility = View.GONE
                 }
             }
         }

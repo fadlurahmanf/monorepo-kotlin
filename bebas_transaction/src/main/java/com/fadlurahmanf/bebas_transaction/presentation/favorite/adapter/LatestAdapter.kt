@@ -60,12 +60,12 @@ class LatestAdapter : RecyclerView.Adapter<LatestAdapter.ViewHolder>() {
         holder.subFavoriteLavel.text = latest.subLabel
 
         holder.itemView.setOnClickListener {
-            callback?.onItemClicked(latest)
+            callback?.onLatestTransactionItemClicked(latest)
         }
     }
 
     interface Callback {
-        fun onItemClicked(latest: LatestTransactionModel)
+        fun onLatestTransactionItemClicked(latest: LatestTransactionModel)
     }
 
 }

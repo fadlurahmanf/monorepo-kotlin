@@ -335,7 +335,8 @@ class FavoriteListActivity :
     ) {
         when (favoriteFlow) {
             FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
-                val isInquiryBankMas = inquiryResult.additionalInquiryTransferBank?.isInquiryBankMas == true
+                val isInquiryBankMas =
+                    inquiryResult.additionalInquiryTransferBank?.isInquiryBankMas == true
                 val intent = Intent(this, TransferDetailActivity::class.java)
                 intent.apply {
                     putExtra(
@@ -374,7 +375,6 @@ class FavoriteListActivity :
                             isFavoriteEnabled = true,
                             labelIdentity = inquiryResult.inquiryPulsaData?.providerName ?: "-",
                             subLabelIdentity = inquiryResult.inquiryPulsaData?.phoneNumber ?: "-",
-                            ppobImageUrl = inquiryResult.inquiryPulsaData?.imageProvider,
                             additionalPulsaData = PaymentDetailArgument.AdditionalPulsaDataArgument(
                                 providerName = inquiryResult.inquiryPulsaData?.providerName ?: "",
                                 providerImage = inquiryResult.inquiryPulsaData?.imageProvider,
@@ -387,7 +387,23 @@ class FavoriteListActivity :
             }
 
             FavoriteFlow.TRANSACTION_MENU_TELKOM_INDIHOME -> {
-
+                val intent = Intent(this, PaymentDetailActivity::class.java)
+                intent.apply {
+                    putExtra(PaymentDetailActivity.FLOW, PaymentDetailFlow.TELKOM_INDIHOME.name)
+                    putExtra(
+                        PaymentDetailActivity.ARGUMENT, PaymentDetailArgument(
+                            isFavorite = fromFavorite,
+                            isFavoriteEnabled = true,
+                            labelIdentity = inquiryResult.inquiryTelkomIndihome?.customerName
+                                ?: "-",
+                            subLabelIdentity = "Telkom • ${inquiryResult.inquiryTelkomIndihome?.customerNumber ?: "-"}",
+                            additionalTelkomIndihome = PaymentDetailArgument.AdditionalTelkomIndihome(
+                                providerImage = latestModel?.additionalTelkomIndihome?.providerLogo,
+                            )
+                        )
+                    )
+                }
+                startActivity(intent)
             }
         }
     }
@@ -433,7 +449,7 @@ class FavoriteListActivity :
 
     }
 
-    override fun onItemClicked(favorite: FavoriteContactModel) {
+    override fun onFavoriteItemClicked(favorite: FavoriteContactModel) {
         when (favoriteFlow) {
             FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
                 if (favorite.additionalTransferData?.sknId == "5480300" || favorite.additionalTransferData?.rtgsId == "BMSEIDJA") {
@@ -464,7 +480,13 @@ class FavoriteListActivity :
             }
 
             FavoriteFlow.TRANSACTION_MENU_TELKOM_INDIHOME -> {
-
+                viewModel.inquiry(
+                    InquiryRequestModel.InquiryTelkomIndihome(
+                        customerId = favorite.accountNumber
+                    ),
+                    isFromFavorite = true,
+                    favoriteModel = favorite,
+                )
             }
         }
     }
@@ -488,7 +510,7 @@ class FavoriteListActivity :
         }
     }
 
-    override fun onItemClicked(latest: LatestTransactionModel) {
+    override fun onLatestTransactionItemClicked(latest: LatestTransactionModel) {
         when (favoriteFlow) {
             FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
                 viewModel.inquiry(
@@ -515,7 +537,13 @@ class FavoriteListActivity :
             }
 
             FavoriteFlow.TRANSACTION_MENU_TELKOM_INDIHOME -> {
-
+                viewModel.inquiry(
+                    InquiryRequestModel.InquiryTelkomIndihome(
+                        customerId = latest.accountNumber
+                    ),
+                    isFromLatest = true,
+                    latestModel = latest,
+                )
             }
         }
     }
