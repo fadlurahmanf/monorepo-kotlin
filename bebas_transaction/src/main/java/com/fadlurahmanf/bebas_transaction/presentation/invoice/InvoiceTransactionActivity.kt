@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_transaction.presentation.invoice
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -75,6 +76,18 @@ class InvoiceTransactionActivity :
 
         binding.layoutInvoiceDetail.llDetailShowCollapsedOrExpanded.setOnClickListener {
             showCollapsedOrExpanded()
+        }
+
+        binding.btnShared.setOnClickListener {
+
+        }
+
+        binding.btnFinished.setOnClickListener {
+            val intent = Intent(
+                this,
+                Class.forName("com.fadlurahmanf.bebas_main.presentation.home.HomeActivity")
+            )
+            startActivity(intent)
         }
     }
 
@@ -180,7 +193,8 @@ class InvoiceTransactionActivity :
     }
 
     @SuppressLint("MissingSuperCall")
-    override fun onBackPressed() {}
+    override fun onBackPressed() {
+    }
 
 
 }

@@ -129,11 +129,14 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.fadlurahmanf.bebas_ui.button.BebasOutlinedButton
+            android:id="@+id/btn_shared"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/outline_share_24"
             app:text="Bagikan" />
 
         <com.fadlurahmanf.bebas_ui.button.BebasRoundedButton
+            android:id="@+id/btn_finished"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

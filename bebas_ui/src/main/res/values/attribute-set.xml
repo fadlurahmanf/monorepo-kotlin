@@ -12,6 +12,7 @@
 
     <declare-styleable name="BebasOutlinedButton">
         <attr name="text" />
+        <attr name="android:drawableStart" />
     </declare-styleable>
 
     <declare-styleable name="BebasEdittext">
