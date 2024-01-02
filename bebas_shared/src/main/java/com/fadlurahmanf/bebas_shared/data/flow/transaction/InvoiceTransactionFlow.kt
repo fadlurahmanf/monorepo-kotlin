@@ -1,4 +1,4 @@
-package com.fadlurahmanf.bebas_transaction.data.flow
+package com.fadlurahmanf.bebas_shared.data.flow.transaction
 
 enum class InvoiceTransactionFlow {
     FUND_TRANSFER_BANK_MAS,

@@ -4,12 +4,13 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
+import com.fadlurahmanf.bebas_shared.data.argument.transaction.InvoiceTransactionArgumentConstant
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.InvoiceTransactionArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.PostingPinVerificationRequestModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.PostingPinVerificationResultModel
-import com.fadlurahmanf.bebas_transaction.data.flow.InvoiceTransactionFlow
+import com.fadlurahmanf.bebas_shared.data.flow.transaction.InvoiceTransactionFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.PinVerificationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityPinVerificationBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
@@ -108,11 +109,11 @@ class PinVerificationActivity :
             PinVerificationFlow.TRANSFER_BETWEEN_BANK_MAS -> {
                 val intent = Intent(this, InvoiceTransactionActivity::class.java)
                 intent.putExtra(
-                    InvoiceTransactionActivity.FLOW,
+                    InvoiceTransactionArgumentConstant.FLOW,
                     InvoiceTransactionFlow.FUND_TRANSFER_BANK_MAS.name
                 )
                 intent.putExtra(
-                    InvoiceTransactionActivity.ARGUMENT, InvoiceTransactionArgument(
+                    InvoiceTransactionArgumentConstant.ARGUMENT, InvoiceTransactionArgument(
                         statusTransaction = result.transactionStatus,
                         transactionId = result.tranferBankMas?.transactionId ?: "-",
                         isFavorite = false,
@@ -126,11 +127,11 @@ class PinVerificationActivity :
             PinVerificationFlow.POSTING_PULSA_PREPAID -> {
                 val intent = Intent(this, InvoiceTransactionActivity::class.java)
                 intent.putExtra(
-                    InvoiceTransactionActivity.FLOW,
+                    InvoiceTransactionArgumentConstant.FLOW,
                     InvoiceTransactionFlow.PULSA_PREPAID.name
                 )
                 intent.putExtra(
-                    InvoiceTransactionActivity.ARGUMENT, InvoiceTransactionArgument(
+                    InvoiceTransactionArgumentConstant.ARGUMENT, InvoiceTransactionArgument(
                         transactionId = result.pulsaPrePaid?.transactionId ?: "-",
                         transactionDate = result.pulsaPrePaid?.transactionDateTime ?: "-",
                         isFavorite = false,
@@ -156,11 +157,11 @@ class PinVerificationActivity :
             PinVerificationFlow.POSTING_TELKOM_INDIHOME -> {
                 val intent = Intent(this, InvoiceTransactionActivity::class.java)
                 intent.putExtra(
-                    InvoiceTransactionActivity.FLOW,
+                    InvoiceTransactionArgumentConstant.FLOW,
                     InvoiceTransactionFlow.TELKOM_INDIHOME.name
                 )
                 intent.putExtra(
-                    InvoiceTransactionActivity.ARGUMENT, InvoiceTransactionArgument(
+                    InvoiceTransactionArgumentConstant.ARGUMENT, InvoiceTransactionArgument(
                         statusTransaction = result.transactionStatus,
                         transactionId = result.telkomIndihome?.transactionId ?: "-",
                         isFavorite = false,

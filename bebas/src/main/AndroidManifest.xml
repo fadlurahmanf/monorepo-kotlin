@@ -37,6 +37,14 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <receiver
+            android:name="com.fadlurahmanf.bebas_shared.receiver.FcmBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.fadlurahmanf.bebas_fcm.ACTION_FCM_LISTENER" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

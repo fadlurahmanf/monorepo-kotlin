@@ -1,23 +1,29 @@
 package com.fadlurahmanf.bebas_transaction.presentation.invoice
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
+import com.fadlurahmanf.bebas_shared.data.argument.transaction.InvoiceTransactionArgumentConstant
+import com.fadlurahmanf.bebas_shared.data.dto.NotificationRefreshPulsaTransactionModel
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.extension.formatInvoiceTransaction
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_shared.extension.utcToLocal
+import com.fadlurahmanf.bebas_shared.receiver.FcmBroadcastReceiver
 import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.InvoiceTransactionArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.model.TransactionDetailModel
-import com.fadlurahmanf.bebas_transaction.data.flow.InvoiceTransactionFlow
+import com.fadlurahmanf.bebas_shared.data.flow.transaction.InvoiceTransactionFlow
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityInvoiceTransactionBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.others.adapter.TransactionDetailAdapter
@@ -25,9 +31,48 @@ import javax.inject.Inject
 
 class InvoiceTransactionActivity :
     BaseTransactionActivity<ActivityInvoiceTransactionBinding>(ActivityInvoiceTransactionBinding::inflate) {
-    companion object {
-        const val FLOW = "FLOW"
-        const val ARGUMENT = "ARGUMENT"
+
+    private lateinit var refreshFlow: InvoiceTransactionFlow
+    private var refreshPulsaArgument: NotificationRefreshPulsaTransactionModel? = null
+    private val fcmListener = object : FcmBroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            Log.d(
+                "BebasLogger",
+                "ON RECEIVE DATA IN ACTIVITY"
+            )
+            val stringFlow =
+                intent?.getStringExtra(InvoiceTransactionArgumentConstant.REFRESH_FLOW) ?: return
+
+            refreshFlow = enumValueOf(stringFlow)
+
+            when (refreshFlow) {
+                InvoiceTransactionFlow.FUND_TRANSFER_BANK_MAS -> {
+
+                }
+
+                InvoiceTransactionFlow.PULSA_PREPAID -> {
+                    refreshPulsaArgument =
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            intent.extras?.getParcelable(
+                                InvoiceTransactionArgumentConstant.REFRESH_ARGUMENT,
+                                NotificationRefreshPulsaTransactionModel::class.java
+                            )
+                        } else {
+                            intent.extras?.getParcelable(InvoiceTransactionArgumentConstant.REFRESH_ARGUMENT)
+                        }
+
+                    if (refreshPulsaArgument == null) {
+                        return
+                    }
+
+                    viewModel.refreshStatusTransaction(argument.transactionId)
+                }
+
+                InvoiceTransactionFlow.TELKOM_INDIHOME -> {
+
+                }
+            }
+        }
     }
 
     @Inject
@@ -48,7 +93,7 @@ class InvoiceTransactionActivity :
     }
 
     override fun onBebasCreate(savedInstanceState: Bundle?) {
-        val p0Flow = intent.getStringExtra(FLOW)
+        val p0Flow = intent.getStringExtra(InvoiceTransactionArgumentConstant.FLOW)
 
         if (p0Flow == null) {
             showForcedHomeBottomsheet(BebasException.generalRC("UNKNOWN_FLOW"))
@@ -58,9 +103,12 @@ class InvoiceTransactionActivity :
         flow = enumValueOf(p0Flow)
 
         val p0Arg = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(ARGUMENT, InvoiceTransactionArgument::class.java)
+            intent.getParcelableExtra(
+                InvoiceTransactionArgumentConstant.ARGUMENT,
+                InvoiceTransactionArgument::class.java
+            )
         } else {
-            intent.getParcelableExtra(ARGUMENT)
+            intent.getParcelableExtra(InvoiceTransactionArgumentConstant.ARGUMENT)
         }
 
         if (p0Arg == null) {
@@ -69,6 +117,8 @@ class InvoiceTransactionActivity :
         }
 
         argument = p0Arg
+
+        initReceiver()
 
         binding.tvTransactionId.text = "ID Transaksi: ${argument.transactionId}"
         binding.tvTransactionDate.text =
@@ -123,6 +173,19 @@ class InvoiceTransactionActivity :
         }
     }
 
+    private fun initReceiver() {
+        registerReceiver(
+            fcmListener,
+            IntentFilter("com.fadlurahmanf.bebas_fcm.ACTION_FCM_LISTENER")
+        )
+        Log.d("BebasLogger", "REGISTER RECEIVER IN ACTIVITY")
+    }
+
+    override fun onDestroy() {
+        unregisterReceiver(fcmListener)
+        super.onDestroy()
+    }
+
     private fun setupTransactionStatus() {
         binding.llStatus.visibility = View.VISIBLE
         binding.llStatus.animate()
@@ -161,6 +224,7 @@ class InvoiceTransactionActivity :
         handler.postDelayed({
                                 binding.llStatus.animate()
                                     .translationY(binding.llStatus.height.toFloat())
+                                binding.llStatus.visibility = View.GONE
 
                             }, 3000)
 
@@ -239,7 +303,8 @@ class InvoiceTransactionActivity :
                         ),
                         TransactionDetailModel(
                             label = "Serial Number",
-                            value = argument.additionalPulsaData?.postingResponse?.serialNumber ?: "-"
+                            value = argument.additionalPulsaData?.postingResponse?.serialNumber
+                                ?: "-"
                         ),
                     )
                 )
