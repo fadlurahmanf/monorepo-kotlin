@@ -8,6 +8,7 @@ import com.fadlurahmanf.bebas_api.data.dto.favorite.LatestTransactionResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.LatestTransactionPostPaidResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.PinFavoriteRequest
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
+import com.fadlurahmanf.bebas_api.data.dto.loyalty.CifBebasPoinResponse
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -46,4 +47,7 @@ interface CifApi {
     fun getLatestPostPaidTransaction(
         @Query("type") type: String
     ): Observable<BaseResponse<List<LatestTransactionPostPaidResponse>>>
+
+    @GET("customer-info/points")
+    fun getCifBebasPoin(): Observable<BaseResponse<CifBebasPoinResponse>>
 }

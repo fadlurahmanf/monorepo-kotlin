@@ -6,6 +6,7 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
+import com.fadlurahmanf.bebas_main.R
 import com.fadlurahmanf.bebas_main.data.dto.argument.ProductTransactionMenuArgument
 import com.fadlurahmanf.bebas_main.data.dto.model.home.HomeBankAccountModel
 import com.fadlurahmanf.bebas_main.data.dto.model.home.ProductTransactionMenuModel
@@ -15,6 +16,7 @@ import com.fadlurahmanf.bebas_main.presentation.home.adapter.BankAccountAdapter
 import com.fadlurahmanf.bebas_main.presentation.home.adapter.ProductTransactionMenuAdapter
 import com.fadlurahmanf.bebas_main.presentation.home.adapter.PromoAdapter
 import com.fadlurahmanf.bebas_main.presentation.notification.NotificationActivity
+import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import javax.inject.Inject
 
 private const val ARG_PARAM1 = "param1"
@@ -122,6 +124,27 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
                 else -> {}
             }
         }
+
+        viewModel.cifBebasPoinState.observe(this) {
+            when (it) {
+                is NetworkState.SUCCESS -> {
+                    if (it.data.point != null) {
+                        binding.layoutBankAccount.tvTotalBebasPoin.text =
+                            it.data.point!!.toDouble().toRupiahFormat(
+                                useSymbol = false,
+                                useDecimal = false
+                            )
+                    } else {
+                        binding.layoutBankAccount.tvTotalBebasPoin.text =
+                            getString(R.string.learn_now)
+                    }
+                }
+
+                else -> {
+                    binding.layoutBankAccount.tvTotalBebasPoin.text = getString(R.string.learn_now)
+                }
+            }
+        }
     }
 
     override fun onBebasViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -156,6 +179,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
         viewModel.getMenus()
         viewModel.getBankAccounts()
         viewModel.getPromos()
+        viewModel.getBebasPoin()
     }
 
     companion object {

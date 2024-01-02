@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_main.presentation.home.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.fadlurahmanf.bebas_api.data.dto.loyalty.CifBebasPoinResponse
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_main.data.dto.model.home.HomeBankAccountModel
@@ -16,6 +17,26 @@ import javax.inject.Inject
 class HomeFragmentViewModel @Inject constructor(
     private val mainRepositoryImpl: MainRepositoryImpl
 ) : BaseViewModel() {
+
+    private val _cifBebasPoinState = MutableLiveData<NetworkState<CifBebasPoinResponse>>()
+    val cifBebasPoinState: LiveData<NetworkState<CifBebasPoinResponse>> = _cifBebasPoinState
+
+    fun getBebasPoin() {
+        _cifBebasPoinState.value = NetworkState.LOADING
+        baseDisposable.add(mainRepositoryImpl.getCifBebasPoin()
+                               .subscribeOn(Schedulers.io())
+                               .observeOn(AndroidSchedulers.mainThread())
+                               .subscribe(
+                                   {
+                                       _cifBebasPoinState.value = NetworkState.SUCCESS(it)
+                                   },
+                                   {
+                                       _cifBebasPoinState.value =
+                                           NetworkState.FAILED(BebasException.fromThrowable(it))
+                                   },
+                                   {}
+                               ))
+    }
 
     private val _menuState = MutableLiveData<NetworkState<List<ProductTransactionMenuModel>>>()
     val menuState: LiveData<NetworkState<List<ProductTransactionMenuModel>>> = _menuState

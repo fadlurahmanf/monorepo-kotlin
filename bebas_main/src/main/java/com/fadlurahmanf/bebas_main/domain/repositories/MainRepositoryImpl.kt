@@ -2,10 +2,12 @@ package com.fadlurahmanf.bebas_main.domain.repositories
 
 import android.content.Context
 import android.util.Log
+import com.fadlurahmanf.bebas_api.data.datasources.CifRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.CmsRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.InboxRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
+import com.fadlurahmanf.bebas_api.data.dto.loyalty.CifBebasPoinResponse
 import com.fadlurahmanf.bebas_api.data.dto.notification.NotificationResponse
 import com.fadlurahmanf.bebas_api.data.dto.notification.UnreadNotificationCountResponse
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
@@ -19,10 +21,20 @@ import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
     context: Context,
+    private val cifRemoteDatasource: CifRemoteDatasource,
     private val cmsRemoteDatasource: CmsRemoteDatasource,
     private val transactionRemoteDatasource: TransactionRemoteDatasource,
     private val inboxRemoteDatasource: InboxRemoteDatasource,
 ) {
+
+    fun getCifBebasPoin(): Observable<CifBebasPoinResponse> {
+        return cifRemoteDatasource.getCifBebasPoin().map {
+            if (it.data == null) {
+                throw BebasException.generalRC("BP_00")
+            }
+            it.data!!
+        }
+    }
 
     fun getUnreadNotificationCount(): Observable<UnreadNotificationCountResponse> {
         return inboxRemoteDatasource.getUnreadNotificationCount().map {

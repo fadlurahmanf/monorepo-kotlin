@@ -123,20 +123,38 @@ abstract class BaseBebasActivity<VB : ViewBinding>(
 
     fun initRxbusEvent() {
         baseDisposable.addAll(
-            RxBus.listen(RxEvent.ChangeLanguageEvent::class.java).subscribe {
-                Log.d("BebasLogger", "change language: ${it.languageCode} & ${it.countryCode}")
-                onChangeLanguageEvent(languageCode = it.languageCode, countryCode = it.countryCode)
-            },
-            RxBus.listen(RxEvent.ResetTimerForceLogout::class.java).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe {
-                    Log.d("BebasLogger", "reset timer: ${it.expiresIn} & ${it.refreshExpiresIn}")
-                    resetTimer(it.refreshExpiresIn)
+            RxBus.listen(RxEvent.ChangeLanguageEvent::class.java).subscribe(
+                {
+                    Log.d("BebasLogger", "change language: ${it.languageCode} & ${it.countryCode}")
+                    onChangeLanguageEvent(
+                        languageCode = it.languageCode,
+                        countryCode = it.countryCode
+                    )
                 },
+                {},
+                {}
+            ),
+            RxBus.listen(RxEvent.ResetTimerForceLogout::class.java).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                    {
+                        Log.d(
+                            "BebasLogger",
+                            "reset timer: ${it.expiresIn} & ${it.refreshExpiresIn}"
+                        )
+                        resetTimer(it.refreshExpiresIn)
+                    },
+                    {},
+                    {}
+                ),
             RxBus.listen(RxEvent.ForceLogoutBottomsheet::class.java).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe {
-                    Log.d("BebasLogger", "force logout event")
-                    showForceLogoutBottomsheet()
-                }
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                    {
+                        Log.d("BebasLogger", "force logout event")
+                        showForceLogoutBottomsheet()
+                    },
+                    {},
+                    {}
+                )
         )
     }
 
@@ -191,7 +209,7 @@ abstract class BaseBebasActivity<VB : ViewBinding>(
             }
 
         })
-        Log.d("BebasLogger", "SUPPORT FM IS DESTROYED: ${supportFragmentManager.isDestroyed}")
+
         forceLogoutBottomsheet?.show(
             supportFragmentManager,
             ForceLogoutBottomsheet::class.java.simpleName

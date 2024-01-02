@@ -71,7 +71,7 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/lexend_deca_regular"
                 android:maxLines="1"
-                android:text="Pelajari Sekarang"
+                android:text="@string/learn_now"
                 android:textColor="@color/red" />
         </LinearLayout>
     </LinearLayout>

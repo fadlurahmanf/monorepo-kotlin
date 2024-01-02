@@ -25,4 +25,6 @@ class CifRemoteDatasource @Inject constructor(
     fun getLatestTransactionTelkomIndihome() = networkService().getLatestPostPaidTransaction(
         type = "Telepon/Internet"
     )
+
+    fun getCifBebasPoin() = networkService().getCifBebasPoin()
 }
