@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_fcm.domain.services
 
 import android.util.Log
 import com.fadlurahmanf.bebas_notification.domain.BebasNotificationRepositoryImpl
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlin.random.Random
@@ -31,6 +32,15 @@ class BebasFcmService : FirebaseMessagingService() {
         if (title != null && body != null) {
             when (transactionType) {
                 "Telepon/Internet" -> {
+                    bebasNotificationRepositoryImpl.showTransactionNotification(
+                        Random.nextInt(999),
+                        title,
+                        body,
+                        null
+                    )
+                }
+
+                "Pulsa" -> {
                     bebasNotificationRepositoryImpl.showTransactionNotification(
                         Random.nextInt(999),
                         title,

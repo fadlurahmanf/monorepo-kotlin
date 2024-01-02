@@ -74,8 +74,61 @@ class InvoiceTransactionActivity :
         binding.tvTransactionDate.text =
             argument.transactionDate.utcToLocal()?.formatInvoiceTransaction() ?: "-"
 
+        setupTransactionStatus()
+
         setupTotalTransaction()
         setupDetailTransaction()
+
+        binding.layoutInvoiceDetail.llDetailShowCollapsedOrExpanded.setOnClickListener {
+            showCollapsedOrExpanded()
+        }
+
+        binding.btnRefreshTransaction.setOnClickListener {
+            viewModel.refreshStatusTransaction(argument.transactionId)
+        }
+
+        binding.btnShared.setOnClickListener {
+        }
+
+        binding.btnFinished.setOnClickListener {
+            val intent = Intent(
+                this,
+                Class.forName("com.fadlurahmanf.bebas_main.presentation.home.HomeActivity")
+            )
+            startActivity(intent)
+        }
+
+        viewModel.refreshState.observe(this) {
+            when (it) {
+                is NetworkState.FAILED -> {
+                    dismissLoadingDialog()
+                }
+
+                is NetworkState.LOADING -> {
+                    showLoadingDialog()
+                }
+
+                is NetworkState.SUCCESS -> {
+                    dismissLoadingDialog()
+                    if (it.data.transactionStatus != "PENDING") {
+                        argument.statusTransaction = it.data.transactionStatus ?: ""
+                        setupTransactionStatus()
+                    }
+                }
+
+                else -> {
+
+                }
+            }
+        }
+    }
+
+    private fun setupTransactionStatus() {
+        binding.llStatus.visibility = View.VISIBLE
+        binding.llStatus.animate()
+            .translationY(0f)
+        binding.llBottomLayout.visibility = View.GONE
+        binding.btnRefreshTransaction.visibility = View.GONE
 
         when (argument.statusTransaction) {
             "FAILED" -> {
@@ -103,45 +156,7 @@ class InvoiceTransactionActivity :
             }
         }
 
-        binding.layoutInvoiceDetail.llDetailShowCollapsedOrExpanded.setOnClickListener {
-            showCollapsedOrExpanded()
-        }
-
-        binding.btnRefreshTransaction.setOnClickListener {
-            viewModel.refreshStatusTransaction(argument.transactionId)
-        }
-
-        binding.btnShared.setOnClickListener {
-
-        }
-
-        binding.btnFinished.setOnClickListener {
-            val intent = Intent(
-                this,
-                Class.forName("com.fadlurahmanf.bebas_main.presentation.home.HomeActivity")
-            )
-            startActivity(intent)
-        }
-
-        viewModel.refreshState.observe(this) {
-            when (it) {
-                is NetworkState.FAILED -> {
-                    dismissLoadingDialog()
-                }
-
-                is NetworkState.LOADING -> {
-                    showLoadingDialog()
-                }
-
-                is NetworkState.SUCCESS -> {
-                    dismissLoadingDialog()
-                }
-
-                else -> {
-
-                }
-            }
-        }
+        binding.lottieStatus.playAnimation()
 
         handler.postDelayed({
                                 binding.llStatus.animate()
@@ -221,6 +236,10 @@ class InvoiceTransactionActivity :
                         TransactionDetailModel(
                             label = "Rekening Sumber",
                             value = argument.additionalPulsaData?.fromAccount ?: "-"
+                        ),
+                        TransactionDetailModel(
+                            label = "Serial Number",
+                            value = argument.additionalPulsaData?.postingResponse?.serialNumber ?: "-"
                         ),
                     )
                 )

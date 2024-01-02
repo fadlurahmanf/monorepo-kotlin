@@ -194,7 +194,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:lottie_autoPlay="true"
+            app:lottie_autoPlay="false"
             app:lottie_loop="false"
             app:lottie_rawRes="@raw/il_success_transaction_invoice"
             app:lottie_repeatMode="reverse" />
