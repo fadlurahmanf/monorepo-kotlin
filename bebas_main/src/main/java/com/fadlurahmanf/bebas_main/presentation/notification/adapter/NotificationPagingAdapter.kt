@@ -1,10 +1,13 @@
 package com.fadlurahmanf.bebas_main.presentation.notification.adapter
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +26,7 @@ class NotificationPagingAdapter :
         val header: TextView = view.findViewById(R.id.tv_header)
         val body: TextView = view.findViewById(R.id.tv_body)
         val date: TextView = view.findViewById(R.id.tv_date)
+        val mainLayout: LinearLayout = view.findViewById(R.id.ll_main)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -30,6 +34,14 @@ class NotificationPagingAdapter :
         holder.header.text = notification?.titleMessage ?: "-"
         holder.body.text = notification?.bodyMessage ?: "-"
         holder.date.text = notification?.time ?: "-"
+
+        if (notification?.additionalData?.read == true) {
+            holder.mainLayout.backgroundTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white))
+        } else {
+            holder.mainLayout.backgroundTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(context, R.color.warm_red))
+        }
 
         holder.itemView.setOnClickListener {
             if (notification != null) {

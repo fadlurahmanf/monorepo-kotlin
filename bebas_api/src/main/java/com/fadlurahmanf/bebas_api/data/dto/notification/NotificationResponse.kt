@@ -18,6 +18,6 @@ data class NotificationResponse(
         val transactionId: String? = null,
         val transactionDate: String? = null,
         val transactionType: String? = null,
-        val read: String? = null,
+        val read: Boolean? = null,
     )
 }
