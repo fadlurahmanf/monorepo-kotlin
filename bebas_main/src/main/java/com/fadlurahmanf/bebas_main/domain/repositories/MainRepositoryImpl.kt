@@ -7,6 +7,7 @@ import com.fadlurahmanf.bebas_api.data.datasources.InboxRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_api.data.dto.notification.NotificationResponse
+import com.fadlurahmanf.bebas_api.data.dto.notification.UnreadNotificationCountResponse
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_main.R
 import com.fadlurahmanf.bebas_main.data.dto.model.home.HomeBankAccountModel
@@ -22,6 +23,24 @@ class MainRepositoryImpl @Inject constructor(
     private val transactionRemoteDatasource: TransactionRemoteDatasource,
     private val inboxRemoteDatasource: InboxRemoteDatasource,
 ) {
+
+    fun getUnreadNotificationCount(): Observable<UnreadNotificationCountResponse> {
+        return inboxRemoteDatasource.getUnreadNotificationCount().map {
+            if (it.data == null) {
+                throw BebasException.generalRC("UNC_00")
+            }
+            it.data!!
+        }
+    }
+
+    fun getUnreadTransactionNotificationCount(): Observable<Int> {
+        return getUnreadNotificationCount().map { resp ->
+            val details = resp.details ?: listOf()
+            details.firstOrNull { detail ->
+                detail.type == "TRANSACTION"
+            }?.total ?: 0
+        }
+    }
 
     fun getTransactionMenu(): Observable<List<ProductTransactionMenuModel>> {
         return cmsRemoteDatasource.getTransactionMenu()

@@ -42,10 +42,12 @@ class HomeActivity : BaseMainActivity<ActivityHomeBinding>(ActivityHomeBinding::
         }
 
         binding.fab.setOnClickListener {
-            RxBus.publish(RxEvent.ResetTimerForceLogout(
-                expiresIn = 5,
-                refreshExpiresIn = 5
-            ))
+            RxBus.publish(
+                RxEvent.ResetTimerForceLogout(
+                    expiresIn = 5,
+                    refreshExpiresIn = 5
+                )
+            )
         }
 
         setStatusBarTextColor(true)
@@ -83,7 +85,8 @@ class HomeActivity : BaseMainActivity<ActivityHomeBinding>(ActivityHomeBinding::
     }
 
     fun setStatusBarColor() {
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        window.decorView.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         window.statusBarColor = resources.getColor(R.color.background_home_color)
     }
 }

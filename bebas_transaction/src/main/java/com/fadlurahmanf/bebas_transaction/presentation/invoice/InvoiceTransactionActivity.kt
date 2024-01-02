@@ -11,6 +11,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.argument.transaction.InvoiceTransactionArgumentConstant
@@ -198,7 +199,7 @@ class InvoiceTransactionActivity :
                 binding.lottieStatus.setAnimation(R.raw.il_failed_transaction_invoice)
                 binding.tvTransactionStatus.text = "Transaksi Gagal"
                 Glide.with(binding.ivStatusTransaction)
-                    .load(R.drawable.il_transaction_status_failed)
+                    .load(ContextCompat.getDrawable(this, R.drawable.il_transaction_status_failed))
                     .into(binding.ivStatusTransaction)
             }
 
@@ -206,7 +207,7 @@ class InvoiceTransactionActivity :
                 binding.lottieStatus.setAnimation(R.raw.il_success_transaction_invoice)
                 binding.tvTransactionStatus.text = "Transaksi Berhasil"
                 Glide.with(binding.ivStatusTransaction)
-                    .load(R.drawable.il_transaction_status_success)
+                    .load(ContextCompat.getDrawable(this, R.drawable.il_transaction_status_success))
                     .into(binding.ivStatusTransaction)
             }
 
@@ -214,7 +215,7 @@ class InvoiceTransactionActivity :
                 binding.lottieStatus.setAnimation(R.raw.il_pending_transaction_invoice)
                 binding.tvTransactionStatus.text = "Transaksi Sedang Diproses"
                 Glide.with(binding.ivStatusTransaction)
-                    .load(R.drawable.il_transaction_status_pending)
+                    .load(ContextCompat.getDrawable(this, R.drawable.il_transaction_status_pendig))
                     .into(binding.ivStatusTransaction)
             }
         }

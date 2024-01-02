@@ -25,4 +25,6 @@ class InboxRemoteDatasource @Inject constructor(
         searchText = searchText,
         status = status
     )
+
+    fun getUnreadNotificationCount() = networkService().getUnreadNotificationCount()
 }

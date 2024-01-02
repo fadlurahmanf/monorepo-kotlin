@@ -1,7 +1,6 @@
 package com.fadlurahmanf.bebas_main.presentation.notification
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.Pager
@@ -21,6 +20,22 @@ class NotificationViewModel @Inject constructor(
     private val mainRepositoryImpl: MainRepositoryImpl,
     private val transactionPagingSource: NotificationTransactionPagingSource,
 ) : BaseViewModel() {
+
+    private val _unreadTransaction = MutableLiveData<Int>(0)
+    val unreadTransaction: LiveData<Int> = _unreadTransaction
+
+    fun getTransactionNotifCount() {
+        baseDisposable.add(mainRepositoryImpl.getUnreadTransactionNotificationCount()
+                               .subscribeOn(Schedulers.io())
+                               .observeOn(AndroidSchedulers.mainThread())
+                               .subscribe(
+                                   {
+                                       _unreadTransaction.value = it
+                                   },
+                                   {},
+                                   {}
+                               ))
+    }
 
     private val _notificationState = MutableLiveData<PagingData<NotificationModel>>()
     val notificationState: LiveData<PagingData<NotificationModel>> = _notificationState
@@ -54,7 +69,7 @@ class NotificationViewModel @Inject constructor(
         ).flowable
     }
 
-    fun getTransactionDetail(transactionId:String, transactionType:String) {
+    fun getTransactionDetail(transactionId: String, transactionType: String) {
         baseDisposable.add(mainRepositoryImpl.getDetailTransaction(transactionId, transactionType)
                                .subscribeOn(Schedulers.io())
                                .observeOn(AndroidSchedulers.mainThread())

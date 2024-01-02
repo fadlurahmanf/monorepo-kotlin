@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_api.data.api
 
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.notification.NotificationResponse
+import com.fadlurahmanf.bebas_api.data.dto.notification.UnreadNotificationCountResponse
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
@@ -18,4 +19,7 @@ interface InboxApi {
         @Query("searchText") searchText: String? = null,
         @Query("status") status: String? = null,
     ): Single<BaseResponse<NotificationResponse>>
+
+    @GET("notification/v2/retail/count/unread")
+    fun getUnreadNotificationCount(): Observable<BaseResponse<UnreadNotificationCountResponse>>
 }

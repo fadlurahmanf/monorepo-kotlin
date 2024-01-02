@@ -45,4 +45,26 @@ class NotificationTabAdapter(
         }
         return v
     }
+
+    fun getTabViewWithBadge(position: Int, totalBadge: Int): View {
+        val v: View =
+            LayoutInflater.from(context).inflate(R.layout.layout_tab_with_badge, null, false)
+        val title = v.findViewById<TextView>(R.id.tv_tab_title)
+        val badge = v.findViewById<TextView>(R.id.tv_tab_badge)
+
+        if (totalBadge > 0) {
+            badge.visibility = View.VISIBLE
+            badge.text = totalBadge.toString()
+        } else {
+            badge.visibility = View.GONE
+        }
+
+        title.text = when (position) {
+            1 -> "Informasi"
+            else -> {
+                "Transaksi"
+            }
+        }
+        return v
+    }
 }
