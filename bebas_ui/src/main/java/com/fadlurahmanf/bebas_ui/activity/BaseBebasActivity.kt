@@ -18,6 +18,7 @@ import androidx.viewbinding.ViewBinding
 import com.fadlurahmanf.bebas_shared.RxBus
 import com.fadlurahmanf.bebas_shared.RxEvent
 import com.fadlurahmanf.bebas_ui.R
+import com.fadlurahmanf.bebas_ui.bottomsheet.ForceLogoutBottomsheet
 import com.fadlurahmanf.bebas_ui.dialog.LoadingDialog
 import com.fadlurahmanf.bebas_ui.font.BebasFontTypeSpan
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -130,6 +131,11 @@ abstract class BaseBebasActivity<VB : ViewBinding>(
                 .observeOn(AndroidSchedulers.mainThread()).subscribe {
                     Log.d("BebasLogger", "reset timer: ${it.expiresIn} & ${it.refreshExpiresIn}")
                     resetTimer(it.refreshExpiresIn)
+                },
+            RxBus.listen(RxEvent.ForceLogoutBottomsheet::class.java).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe {
+                    Log.d("BebasLogger", "force logout event")
+                    showForceLogoutBottomsheet()
                 }
         )
     }
@@ -137,6 +143,8 @@ abstract class BaseBebasActivity<VB : ViewBinding>(
     private var forceLogoutTimer: CountDownTimer? = null
 
     fun resetTimer(refreshExpiresInSecond: Long) {
+        forceLogoutTimer?.cancel()
+        forceLogoutTimer = null
         forceLogoutTimer = object : CountDownTimer(refreshExpiresInSecond * 1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val inSecond = millisUntilFinished / 1000
@@ -147,6 +155,7 @@ abstract class BaseBebasActivity<VB : ViewBinding>(
 
             override fun onFinish() {
                 Log.d("BebasLogger", "on finish")
+                RxBus.publish(RxEvent.ForceLogoutBottomsheet)
             }
         }
         forceLogoutTimer?.start()
@@ -162,5 +171,30 @@ abstract class BaseBebasActivity<VB : ViewBinding>(
         val uri = Uri.fromParts("package", packageName, null)
         intent.data = uri
         startActivity(intent)
+    }
+
+    var forceLogoutBottomsheet: ForceLogoutBottomsheet? = null
+    open fun showForceLogoutBottomsheet() {
+        forceLogoutBottomsheet?.dismiss()
+        forceLogoutBottomsheet = null
+        forceLogoutBottomsheet = ForceLogoutBottomsheet()
+        forceLogoutBottomsheet?.setCallback(object : ForceLogoutBottomsheet.Callback {
+            override fun onButtonClicked() {
+                forceLogoutBottomsheet?.dismiss()
+                val intent = Intent(
+                    this@BaseBebasActivity,
+                    Class.forName("com.fadlurahmanf.bebas_onboarding.presentation.login.LoginActivity")
+                )
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+            }
+
+        })
+        Log.d("BebasLogger", "SUPPORT FM IS DESTROYED: ${supportFragmentManager.isDestroyed}")
+        forceLogoutBottomsheet?.show(
+            supportFragmentManager,
+            ForceLogoutBottomsheet::class.java.simpleName
+        )
     }
 }

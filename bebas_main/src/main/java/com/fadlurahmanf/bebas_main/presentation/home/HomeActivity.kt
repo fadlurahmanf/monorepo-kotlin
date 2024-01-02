@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_main.presentation.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import androidx.core.view.ViewCompat
@@ -9,6 +10,8 @@ import com.fadlurahmanf.bebas_main.R
 import com.fadlurahmanf.bebas_main.databinding.ActivityHomeBinding
 import com.fadlurahmanf.bebas_main.presentation.BaseMainActivity
 import com.fadlurahmanf.bebas_main.presentation.home.home.HomeFragment
+import com.fadlurahmanf.bebas_shared.RxBus
+import com.fadlurahmanf.bebas_shared.RxEvent
 
 class HomeActivity : BaseMainActivity<ActivityHomeBinding>(ActivityHomeBinding::inflate) {
 
@@ -38,6 +41,13 @@ class HomeActivity : BaseMainActivity<ActivityHomeBinding>(ActivityHomeBinding::
             }
         }
 
+        binding.fab.setOnClickListener {
+            RxBus.publish(RxEvent.ResetTimerForceLogout(
+                expiresIn = 5,
+                refreshExpiresIn = 5
+            ))
+        }
+
         setStatusBarTextColor(true)
         setStatusBarColor()
     }
@@ -47,11 +57,14 @@ class HomeActivity : BaseMainActivity<ActivityHomeBinding>(ActivityHomeBinding::
         val existingFragment = fragmentManager.findFragmentByTag(tag)
 
         if (existingFragment?.isAdded == true && activeFragment != null) {
+            Log.d("BebasLogger", "MASUK IF 1 $tag")
             fragmentManager.beginTransaction().hide(activeFragment!!).show(fragment).commit()
         } else if (activeFragment != null) {
+            Log.d("BebasLogger", "MASUK IF 2 $tag")
             fragmentManager.beginTransaction().hide(activeFragment!!).add(R.id.fl, fragment, tag)
                 .commit()
         } else {
+            Log.d("BebasLogger", "MASUK IF 3 $tag")
             fragmentManager.beginTransaction().add(R.id.fl, fragment, tag).commit()
         }
 

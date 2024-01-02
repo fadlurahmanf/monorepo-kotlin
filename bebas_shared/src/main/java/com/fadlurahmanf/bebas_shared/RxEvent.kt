@@ -11,4 +11,6 @@ class RxEvent {
         val expiresIn: Long,
         val refreshExpiresIn: Long,
     )
+
+    object ForceLogoutBottomsheet
 }
