@@ -17,6 +17,7 @@ import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryPulsaDataResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeRequest
+import com.fadlurahmanf.bebas_api.data.dto.ppob.RefreshStatusResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
@@ -345,6 +346,17 @@ class TransactionRepositoryImpl @Inject constructor(
                         telkomIndihome = resp.data!!
                     )
                 }
+        }
+    }
+
+    fun refreshStatusTransaction(
+        transactionId: String
+    ): Observable<RefreshStatusResponse> {
+        return transactionRemoteDatasource.refreshStatus(transactionId).map { resp ->
+            if (resp.data == null) {
+                throw BebasException.generalRC("RT_00")
+            }
+            resp.data!!
         }
     }
 

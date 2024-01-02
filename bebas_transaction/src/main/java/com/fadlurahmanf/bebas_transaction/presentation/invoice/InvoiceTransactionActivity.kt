@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import com.bumptech.glide.Glide
+import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.extension.formatInvoiceTransaction
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
@@ -20,6 +21,7 @@ import com.fadlurahmanf.bebas_transaction.data.flow.InvoiceTransactionFlow
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityInvoiceTransactionBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.others.adapter.TransactionDetailAdapter
+import javax.inject.Inject
 
 class InvoiceTransactionActivity :
     BaseTransactionActivity<ActivityInvoiceTransactionBinding>(ActivityInvoiceTransactionBinding::inflate) {
@@ -28,6 +30,9 @@ class InvoiceTransactionActivity :
         const val ARGUMENT = "ARGUMENT"
     }
 
+    @Inject
+    lateinit var viewModel: InvoiceTransactionViewModel
+
     lateinit var flow: InvoiceTransactionFlow
     lateinit var argument: InvoiceTransactionArgument
 
@@ -35,6 +40,8 @@ class InvoiceTransactionActivity :
     lateinit var detailAdapter: TransactionDetailAdapter
     private val feeDetails: ArrayList<TransactionDetailModel> = arrayListOf()
     lateinit var feeDetailAdapter: TransactionDetailAdapter
+
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun injectActivity() {
         component.inject(this)
@@ -95,15 +102,13 @@ class InvoiceTransactionActivity :
                     .into(binding.ivStatusTransaction)
             }
         }
-        Handler(Looper.getMainLooper()).postDelayed({
-                                                        binding.llStatus.animate()
-                                                            .translationY(binding.llStatus.height.toFloat())
-                                                        binding.llBottomLayout.visibility =
-                                                            View.VISIBLE
-                                                    }, 3000)
 
         binding.layoutInvoiceDetail.llDetailShowCollapsedOrExpanded.setOnClickListener {
             showCollapsedOrExpanded()
+        }
+
+        binding.btnRefreshTransaction.setOnClickListener {
+            viewModel.refreshStatusTransaction(argument.transactionId)
         }
 
         binding.btnShared.setOnClickListener {
@@ -117,6 +122,42 @@ class InvoiceTransactionActivity :
             )
             startActivity(intent)
         }
+
+        viewModel.refreshState.observe(this) {
+            when (it) {
+                is NetworkState.FAILED -> {
+                    dismissLoadingDialog()
+                }
+
+                is NetworkState.LOADING -> {
+                    showLoadingDialog()
+                }
+
+                is NetworkState.SUCCESS -> {
+                    dismissLoadingDialog()
+                }
+
+                else -> {
+
+                }
+            }
+        }
+
+        handler.postDelayed({
+                                binding.llStatus.animate()
+                                    .translationY(binding.llStatus.height.toFloat())
+
+                            }, 3000)
+
+        handler.postDelayed({
+                                binding.llBottomLayout.visibility =
+                                    View.VISIBLE
+
+                                if (argument.statusTransaction != "SUCCESS" && argument.statusTransaction != "FAILED") {
+                                    binding.btnRefreshTransaction.visibility =
+                                        View.VISIBLE
+                                }
+                            }, 4000)
     }
 
 

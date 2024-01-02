@@ -43,4 +43,7 @@ class TransactionRemoteDatasource @Inject constructor(
 
     fun postingTelkomIndihome(json: JsonObject) =
         networkService().postingTelkomIndihome(json)
+
+    fun refreshStatus(transactionId: String) =
+        networkService().refreshStatusPrePaid(transactionId)
 }

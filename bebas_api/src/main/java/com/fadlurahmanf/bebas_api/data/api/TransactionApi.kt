@@ -7,6 +7,7 @@ import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingPulsaDataResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PulsaDenomResponse
+import com.fadlurahmanf.bebas_api.data.dto.ppob.RefreshStatusResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingFundTransferResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankMasRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
@@ -68,4 +69,9 @@ interface TransactionApi {
     fun postingTelkomIndihome(
         @Body json: JsonObject
     ): Observable<BaseResponse<PostingTelkomIndihomeResponse>>
+
+    @GET("prepaid/status")
+    fun refreshStatusPrePaid(
+        @Query("transactionId") transactionId: String
+    ): Observable<BaseResponse<RefreshStatusResponse>>
 }
