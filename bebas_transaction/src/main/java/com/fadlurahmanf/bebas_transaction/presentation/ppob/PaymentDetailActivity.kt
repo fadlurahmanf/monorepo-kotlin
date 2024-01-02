@@ -155,7 +155,8 @@ class PaymentDetailActivity :
                     PulsaDataArgument(
                         providerImage = argument.additionalPulsaData?.providerImage,
                         providerName = argument.additionalPulsaData?.providerName ?: "-",
-                        phoneNumber = argument.additionalPulsaData?.phoneNumber ?: "-"
+                        phoneNumber = argument.additionalPulsaData?.phoneNumber ?: "-",
+                        inquiry = argument.additionalPulsaData?.inquiry!!
                     ), supportFragmentManager, lifecycle
                 )
 

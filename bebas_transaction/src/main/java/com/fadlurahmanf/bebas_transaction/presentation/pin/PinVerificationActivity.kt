@@ -137,7 +137,16 @@ class PinVerificationActivity :
                         isFavoriteEnabled = true,
                         statusTransaction = result.transactionStatus,
                         additionalPulsaData = InvoiceTransactionArgument.PulsaData(
-                            phoneNumber = "-"
+                            phoneNumber = argument.additionalPulsaData?.inquiryResponse?.phoneNumber
+                                ?: "-",
+                            totalTransaction = (argument.additionalPulsaData?.pulsaDenomClicked?.nominal
+                                ?: -1.0) + (argument.additionalPulsaData?.pulsaDenomClicked?.adminFee
+                                ?: -1.0),
+                            fromAccount = argument.additionalPulsaData?.postingRequest?.accountNumber
+                                ?: "-",
+                            postingResponse = result.pulsaPrePaid!!,
+                            inquiryResponse = argument.additionalPulsaData?.inquiryResponse!!,
+                            pulsaDenomClicked = argument.additionalPulsaData?.pulsaDenomClicked!!
                         )
                     )
                 )
@@ -199,7 +208,7 @@ class PinVerificationActivity :
                 PinVerificationFlow.POSTING_PULSA_PREPAID -> {
                     viewModel.postingPinVerification(
                         this.pin, request = PostingPinVerificationRequestModel.PostingPulsaPrePaid(
-                            postingPulsaPrePaidRequest = argument.pulsaPrePaidRequest!!
+                            postingPulsaPrePaidRequest = argument.additionalPulsaData?.postingRequest!!
                         )
                     )
                 }

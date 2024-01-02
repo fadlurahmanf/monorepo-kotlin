@@ -378,7 +378,8 @@ class FavoriteListActivity :
                             additionalPulsaData = PaymentDetailArgument.AdditionalPulsaDataArgument(
                                 providerName = inquiryResult.inquiryPulsaData?.providerName ?: "",
                                 providerImage = inquiryResult.inquiryPulsaData?.imageProvider,
-                                phoneNumber = inquiryResult.inquiryPulsaData?.phoneNumber ?: ""
+                                phoneNumber = inquiryResult.inquiryPulsaData?.phoneNumber ?: "",
+                                inquiry = inquiryResult.inquiryPulsaData!!
                             )
                         )
                     )

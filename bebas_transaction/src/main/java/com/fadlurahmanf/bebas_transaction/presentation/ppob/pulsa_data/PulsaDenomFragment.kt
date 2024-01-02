@@ -170,18 +170,22 @@ class PulsaDenomFragment :
             )
             putExtra(
                 PinVerificationActivity.ARGUMENT, PinVerificationArgument(
-                    pulsaPrePaidRequest = PostingPulsaPrePaidRequest(
-                        accountName = result.selectedAccountName,
-                        accountNumber = result.selectedAccountNumber,
-                        amount = denomClicked.pulsaDenomResponse?.value ?: -1.0,
-                        billerCode = denomClicked.pulsaDenomResponse?.billerCode ?: "-",
-                        ip = "0.0.0.0",
-                        latitude = 0.0,
-                        longitude = 0.0,
-                        phoneNumber = argument.phoneNumber,
-                        productCode = denomClicked.pulsaDenomResponse?.productCode ?: "-",
-                        providerName = argument.providerName,
-                        transactionFee = denomClicked.pulsaDenomResponse?.adminFee ?: -1.0
+                    additionalPulsaData = PinVerificationArgument.PulsaData(
+                        postingRequest = PostingPulsaPrePaidRequest(
+                            accountName = result.selectedAccountName,
+                            accountNumber = result.selectedAccountNumber,
+                            amount = denomClicked.pulsaDenomResponse?.value ?: -1.0,
+                            billerCode = denomClicked.pulsaDenomResponse?.billerCode ?: "-",
+                            ip = "0.0.0.0",
+                            latitude = 0.0,
+                            longitude = 0.0,
+                            phoneNumber = argument.phoneNumber,
+                            productCode = denomClicked.pulsaDenomResponse?.productCode ?: "-",
+                            providerName = argument.providerName,
+                            transactionFee = denomClicked.pulsaDenomResponse?.adminFee ?: -1.0
+                        ),
+                        inquiryResponse = argument.inquiry,
+                        pulsaDenomClicked = denomClicked.pulsaDenomResponse!!
                     )
                 )
             )

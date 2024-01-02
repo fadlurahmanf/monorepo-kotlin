@@ -1,9 +1,12 @@
 package com.fadlurahmanf.bebas_transaction.data.dto.argument
 
 import android.os.Parcelable
+import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryPulsaDataResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
+import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingPulsaDataResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeResponse
+import com.fadlurahmanf.bebas_api.data.dto.ppob.PulsaDenomResponse
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -28,6 +31,12 @@ data class InvoiceTransactionArgument(
     @Parcelize
     data class PulsaData(
         val phoneNumber: String,
+        val fromAccount: String,
+        val totalTransaction: Double,
+
+        val pulsaDenomClicked: PulsaDenomResponse,
+        val postingResponse: PostingPulsaDataResponse,
+        val inquiryResponse: InquiryPulsaDataResponse,
     ) : Parcelable
 
     @Parcelize

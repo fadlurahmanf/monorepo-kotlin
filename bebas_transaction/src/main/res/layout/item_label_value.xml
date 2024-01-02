@@ -16,7 +16,7 @@
             style="@style/Font.Text14"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.4"
             android:fontFamily="@font/lexend_deca_regular"
             android:text="Label"
             android:textColor="@color/grey" />
@@ -24,8 +24,10 @@
         <TextView
             android:id="@+id/tv_value"
             style="@style/Font.Text14"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:gravity="end"
             android:fontFamily="@font/lexend_deca_regular"
             android:text="-"
             android:layout_marginStart="10dp"

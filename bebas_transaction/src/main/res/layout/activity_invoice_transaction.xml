@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".presentation.invoice.InvoiceTransactionActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/il_background_invoice_left" />
+
+    <ImageView
+        android:layout_width="73dp"
+        android:layout_height="175dp"
+        android:background="@drawable/il_background_invoice_top_right"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsv_main"
         android:layout_width="match_parent"
@@ -40,21 +52,11 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/background_logo_success_invoice"
-                        android:orientation="vertical"
-                        android:padding="7dp">
-
-                        <ImageView
-                            android:layout_width="85dp"
-                            android:layout_height="85dp"
-                            android:background="@drawable/background_logo_success_invoice"
-                            android:padding="7dp"
-                            android:src="@drawable/round_check_circle_24"
-                            app:tint="@color/tertiary" />
-                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/iv_status_transaction"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:src="@drawable/il_transaction_status_pending" />
 
                     <TextView
                         android:id="@+id/tv_transaction_status"
@@ -120,13 +122,16 @@
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
+        android:id="@+id/ll_bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/backgorund_button_bottom_layout"
+        android:elevation="50dp"
         android:orientation="vertical"
         android:paddingHorizontal="20dp"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.fadlurahmanf.bebas_ui.button.BebasOutlinedButton
@@ -150,7 +155,7 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:gravity="center"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottie_status"

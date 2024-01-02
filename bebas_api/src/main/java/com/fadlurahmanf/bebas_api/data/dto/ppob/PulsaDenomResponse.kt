@@ -1,5 +1,9 @@
 package com.fadlurahmanf.bebas_api.data.dto.ppob
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class PulsaDenomResponse(
     val value: Double? = null,
     val nominal: Double? = null,
@@ -9,4 +13,4 @@ data class PulsaDenomResponse(
     val billerCode: String? = null,
     val isAvailable: Boolean? = null,
     val paymentTypeCode: String? = null,
-)
+) : Parcelable

@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_transaction.presentation.invoice
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -73,21 +74,32 @@ class InvoiceTransactionActivity :
             "FAILED" -> {
                 binding.lottieStatus.setAnimation(R.raw.il_failed_transaction_invoice)
                 binding.tvTransactionStatus.text = "Transaksi Gagal"
+                Glide.with(binding.ivStatusTransaction)
+                    .load(R.drawable.il_transaction_status_failed)
+                    .into(binding.ivStatusTransaction)
             }
 
             "SUCCESS" -> {
                 binding.lottieStatus.setAnimation(R.raw.il_success_transaction_invoice)
                 binding.tvTransactionStatus.text = "Transaksi Berhasil"
+                Glide.with(binding.ivStatusTransaction)
+                    .load(R.drawable.il_transaction_status_success)
+                    .into(binding.ivStatusTransaction)
             }
 
             else -> {
                 binding.lottieStatus.setAnimation(R.raw.il_pending_transaction_invoice)
                 binding.tvTransactionStatus.text = "Transaksi Sedang Diproses"
+                Glide.with(binding.ivStatusTransaction)
+                    .load(R.drawable.il_transaction_status_pending)
+                    .into(binding.ivStatusTransaction)
             }
         }
         Handler(Looper.getMainLooper()).postDelayed({
                                                         binding.llStatus.animate()
                                                             .translationY(binding.llStatus.height.toFloat())
+                                                        binding.llBottomLayout.visibility =
+                                                            View.VISIBLE
                                                     }, 3000)
 
         binding.layoutInvoiceDetail.llDetailShowCollapsedOrExpanded.setOnClickListener {
@@ -115,7 +127,22 @@ class InvoiceTransactionActivity :
             }
 
             InvoiceTransactionFlow.PULSA_PREPAID -> {
-
+                Glide.with(binding.layoutInvoiceTotalTransaction.ivDestinationLogo)
+                    .load(
+                        Uri.parse(
+                            argument.additionalPulsaData?.inquiryResponse?.imageProvider ?: ""
+                        )
+                    )
+                    .into(binding.layoutInvoiceTotalTransaction.ivDestinationLogo)
+                binding.layoutInvoiceTotalTransaction.tvDestinationAccountName.text =
+                    argument.additionalPulsaData?.inquiryResponse?.providerName ?: "-"
+                binding.layoutInvoiceTotalTransaction.tvSubLabel.text =
+                    argument.additionalPulsaData?.inquiryResponse?.phoneNumber ?: "-"
+                binding.layoutInvoiceTotalTransaction.tvTotalPaymentValue.text =
+                    argument.additionalPulsaData?.totalTransaction?.toRupiahFormat(
+                        useSymbol = true,
+                        useDecimal = true
+                    ) ?: "-"
             }
 
             InvoiceTransactionFlow.TELKOM_INDIHOME -> {
@@ -137,56 +164,106 @@ class InvoiceTransactionActivity :
 
     private fun setupDetailTransaction() {
         details.clear()
-        details.addAll(
-            listOf(
-                TransactionDetailModel(
-                    label = "Jenis Transaksi",
-                    value = "Pembayaran Telkom/IndiHome"
-                ),
-                TransactionDetailModel(
-                    label = "Rekening Sumber",
-                    value = argument.additionalTelkomIndihome?.fromAccount ?: "-"
-                ),
-                TransactionDetailModel(
-                    label = "Periode",
-                    value = argument.additionalTelkomIndihome?.inquiryResponse?.periode ?: "-"
+        feeDetails.clear()
+        when (flow) {
+            InvoiceTransactionFlow.FUND_TRANSFER_BANK_MAS -> {
+
+            }
+
+            InvoiceTransactionFlow.PULSA_PREPAID -> {
+                details.addAll(
+                    listOf(
+                        TransactionDetailModel(
+                            label = "Jenis Transaksi",
+                            value = "Pembelian Pulsa ${argument.additionalPulsaData?.inquiryResponse?.providerName ?: "-"}"
+                        ),
+                        TransactionDetailModel(
+                            label = "Rekening Sumber",
+                            value = argument.additionalPulsaData?.fromAccount ?: "-"
+                        ),
+                    )
                 )
-            )
-        )
+
+                feeDetails.addAll(
+                    listOf(
+                        TransactionDetailModel(
+                            label = "Tagihan",
+                            value = argument.additionalPulsaData?.pulsaDenomClicked?.nominal?.toRupiahFormat(
+                                useSymbol = true,
+                                useDecimal = true
+                            ) ?: "-"
+                        ),
+                        TransactionDetailModel(
+                            label = "Biaya Admin",
+                            value = argument.additionalPulsaData?.pulsaDenomClicked?.adminFee?.toRupiahFormat(
+                                useSymbol = true,
+                                useDecimal = true,
+                                freeIfZero = true
+                            ) ?: "-"
+                        ),
+                        TransactionDetailModel(
+                            label = "Total",
+                            value = argument.additionalPulsaData?.totalTransaction?.toRupiahFormat(
+                                useSymbol = true,
+                                useDecimal = true
+                            ) ?: "-",
+                            valueStyle = R.style.Font_DetailValueBold
+                        )
+                    )
+                )
+            }
+
+            InvoiceTransactionFlow.TELKOM_INDIHOME -> {
+                details.addAll(
+                    listOf(
+                        TransactionDetailModel(
+                            label = "Jenis Transaksi",
+                            value = "Pembayaran Telkom/IndiHome"
+                        ),
+                        TransactionDetailModel(
+                            label = "Rekening Sumber",
+                            value = argument.additionalTelkomIndihome?.fromAccount ?: "-"
+                        ),
+                        TransactionDetailModel(
+                            label = "Periode",
+                            value = argument.additionalTelkomIndihome?.inquiryResponse?.periode
+                                ?: "-"
+                        )
+                    )
+                )
+
+                feeDetails.addAll(
+                    listOf(
+                        TransactionDetailModel(
+                            label = "Tagihan",
+                            value = argument.additionalTelkomIndihome?.inquiryResponse?.amountTransaction?.toRupiahFormat(
+                                useSymbol = true,
+                                useDecimal = true
+                            ) ?: "-"
+                        ),
+                        TransactionDetailModel(
+                            label = "Biaya Admin",
+                            value = argument.additionalTelkomIndihome?.inquiryResponse?.transactionFee?.toRupiahFormat(
+                                useSymbol = true,
+                                useDecimal = true,
+                                freeIfZero = true
+                            ) ?: "-"
+                        ),
+                        TransactionDetailModel(
+                            label = "Total",
+                            value = argument.additionalTelkomIndihome?.totalTransaction?.toRupiahFormat(
+                                useSymbol = true,
+                                useDecimal = true
+                            ) ?: "-",
+                            valueStyle = R.style.Font_DetailValueBold
+                        )
+                    )
+                )
+            }
+        }
         detailAdapter = TransactionDetailAdapter()
         detailAdapter.setList(details)
         binding.layoutInvoiceDetail.rvDetail.adapter = detailAdapter
-
-        feeDetails.clear()
-        feeDetails.addAll(
-            listOf(
-                TransactionDetailModel(
-                    label = "Tagihan",
-                    value = argument.additionalTelkomIndihome?.inquiryResponse?.amountTransaction?.toRupiahFormat(
-                        useSymbol = true,
-                        useDecimal = true
-                    ) ?: "-"
-                ),
-                TransactionDetailModel(
-                    label = "Biaya Admin",
-                    value = argument.additionalTelkomIndihome?.inquiryResponse?.transactionFee?.toRupiahFormat(
-                        useSymbol = true,
-                        useDecimal = true,
-                        freeIfZero = true
-                    ) ?: "-"
-                ),
-                TransactionDetailModel(
-                    label = "Total",
-                    value = ((argument.additionalTelkomIndihome?.inquiryResponse?.amountTransaction
-                        ?: -1.0) + (argument.additionalTelkomIndihome?.inquiryResponse?.transactionFee
-                        ?: -1.0)).toRupiahFormat(
-                        useSymbol = true,
-                        useDecimal = true
-                    ),
-                    valueStyle = R.style.Font_DetailValueBold
-                )
-            )
-        )
         feeDetailAdapter = TransactionDetailAdapter()
         feeDetailAdapter.setList(feeDetails)
 

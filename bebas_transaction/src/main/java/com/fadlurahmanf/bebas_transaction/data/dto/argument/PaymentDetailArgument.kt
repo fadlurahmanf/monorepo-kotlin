@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_transaction.data.dto.argument
 
 import android.os.Parcelable
+import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryPulsaDataResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
 import kotlinx.parcelize.Parcelize
 
@@ -17,7 +18,8 @@ data class PaymentDetailArgument(
     data class AdditionalPulsaDataArgument(
         val providerImage: String? = null,
         val providerName: String,
-        val phoneNumber: String
+        val phoneNumber: String,
+        val inquiry: InquiryPulsaDataResponse
     ) : Parcelable
 
     @Parcelize
