@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_transaction.presentation.ppob
 
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -130,6 +131,16 @@ class TransactionConfirmationBottomsheet :
                         )
                     )
                 }
+
+                TransactionConfirmationFlow.PULSA -> {
+                    callback?.onButtonTransactionConfirmationClicked(
+                        result = TransactionConfirmationResult(
+                            selectedAccountNumber = viewModel.selectedBankAccount?.accountNumber
+                                ?: "-",
+                            selectedAccountName = viewModel.selectedBankAccount?.accountName ?: "-"
+                        )
+                    )
+                }
             }
         }
     }
@@ -140,6 +151,17 @@ class TransactionConfirmationBottomsheet :
                 binding.itemDestinationAccount.ivLogo.visibility = View.VISIBLE
                 binding.itemDestinationAccount.initialAvatar.visibility = View.GONE
                 Glide.with(binding.itemDestinationAccount.ivLogo).load(R.drawable.il_telkom_logo)
+                    .into(binding.itemDestinationAccount.ivLogo)
+
+                binding.itemDestinationAccount.tvLabel.text = argument.destinationLabel
+                binding.itemDestinationAccount.tvSubLabel.text = argument.destinationSubLabel
+            }
+
+            TransactionConfirmationFlow.PULSA -> {
+                binding.itemDestinationAccount.ivLogo.visibility = View.VISIBLE
+                binding.itemDestinationAccount.initialAvatar.visibility = View.GONE
+                Glide.with(binding.itemDestinationAccount.ivLogo)
+                    .load(Uri.parse(argument.imageLogoUrl ?: ""))
                     .into(binding.itemDestinationAccount.ivLogo)
 
                 binding.itemDestinationAccount.tvLabel.text = argument.destinationLabel

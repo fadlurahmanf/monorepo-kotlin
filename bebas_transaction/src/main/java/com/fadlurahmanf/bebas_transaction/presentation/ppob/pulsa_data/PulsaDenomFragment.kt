@@ -10,11 +10,16 @@ import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PulsaDataArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PulsaDenomModel
+import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmationResult
+import com.fadlurahmanf.bebas_transaction.data.flow.PaymentDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.PinVerificationFlow
+import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.FragmentPulsaDenomBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionFragment
 import com.fadlurahmanf.bebas_transaction.presentation.pin.PinVerificationActivity
+import com.fadlurahmanf.bebas_transaction.presentation.ppob.TransactionConfirmationBottomsheet
 import javax.inject.Inject
 
 
@@ -22,7 +27,7 @@ private const val PULSA_DATA_ARGUMENT = "PULSA_DATA_ARGUMENT"
 
 class PulsaDenomFragment :
     BaseTransactionFragment<FragmentPulsaDenomBinding>(FragmentPulsaDenomBinding::inflate),
-    PulsaDenomAdapter.Callback {
+    PulsaDenomAdapter.Callback, TransactionConfirmationBottomsheet.Callback {
 
     @Inject
     lateinit var viewModel: PulsaDataViewModel
@@ -100,7 +105,63 @@ class PulsaDenomFragment :
             }
     }
 
+    private lateinit var denomClicked: PulsaDenomModel
     override fun onDenomClicked(model: PulsaDenomModel) {
+        denomClicked = model
+        showTransactionConfirmationBottomsheet()
+    }
+
+    private var transactionConfirmationBottomsheet: TransactionConfirmationBottomsheet? = null
+    private fun showTransactionConfirmationBottomsheet() {
+        transactionConfirmationBottomsheet?.dismiss()
+        transactionConfirmationBottomsheet = null
+        transactionConfirmationBottomsheet = TransactionConfirmationBottomsheet()
+        transactionConfirmationBottomsheet?.setCallback(this)
+        transactionConfirmationBottomsheet?.arguments = Bundle().apply {
+            putString(
+                TransactionConfirmationBottomsheet.FLOW,
+                TransactionConfirmationFlow.PULSA.name
+            )
+            putParcelable(
+                TransactionConfirmationBottomsheet.ADDITIONAL_ARG, TransactionConfirmationArgument(
+                    destinationLabel = argument.providerName,
+                    destinationSubLabel = argument.phoneNumber,
+                    imageLogoUrl = argument.providerImage,
+                    feeDetail = TransactionConfirmationArgument.FeeDetail(
+                        total = denomClicked.total,
+                        details = arrayListOf(
+                            TransactionConfirmationArgument.FeeDetail.Detail(
+                                label = "Harga",
+                                value = denomClicked.pulsaDenomResponse?.value ?: -1.0
+                            ),
+                            TransactionConfirmationArgument.FeeDetail.Detail(
+                                label = "Biaya Admin",
+                                value = denomClicked.pulsaDenomResponse?.adminFee ?: -1.0
+                            ),
+                        )
+                    ),
+                    details = arrayListOf(
+                        TransactionConfirmationArgument.Detail(
+                            label = "Nomor Ponsel",
+                            value = argument.phoneNumber
+                        ),
+                        TransactionConfirmationArgument.Detail(
+                            label = "Provider",
+                            value = argument.providerName
+                        )
+                    )
+                )
+            )
+        }
+        transactionConfirmationBottomsheet?.show(
+            requireActivity().supportFragmentManager,
+            TransactionConfirmationBottomsheet::class.java.simpleName
+        )
+    }
+
+    override fun onButtonTransactionConfirmationClicked(result: TransactionConfirmationResult) {
+        transactionConfirmationBottomsheet?.dismiss()
+
         val intent = Intent(requireContext(), PinVerificationActivity::class.java)
         intent.apply {
             putExtra(
@@ -110,17 +171,17 @@ class PulsaDenomFragment :
             putExtra(
                 PinVerificationActivity.ARGUMENT, PinVerificationArgument(
                     pulsaPrePaidRequest = PostingPulsaPrePaidRequest(
-                        accountName = "BEBASDEV",
-                        accountNumber = "1001934356",
-                        amount = model.total,
-                        billerCode = model.pulsaDenomResponse?.billerCode ?: "",
+                        accountName = result.selectedAccountName,
+                        accountNumber = result.selectedAccountNumber,
+                        amount = denomClicked.pulsaDenomResponse?.value ?: -1.0,
+                        billerCode = denomClicked.pulsaDenomResponse?.billerCode ?: "-",
                         ip = "0.0.0.0",
                         latitude = 0.0,
                         longitude = 0.0,
                         phoneNumber = argument.phoneNumber,
-                        productCode = model.pulsaDenomResponse?.productCode ?: "",
+                        productCode = denomClicked.pulsaDenomResponse?.productCode ?: "-",
                         providerName = argument.providerName,
-                        transactionFee = model.pulsaDenomResponse?.adminFee ?: -1.0
+                        transactionFee = denomClicked.pulsaDenomResponse?.adminFee ?: -1.0
                     )
                 )
             )

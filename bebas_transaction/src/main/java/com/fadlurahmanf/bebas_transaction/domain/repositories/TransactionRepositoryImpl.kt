@@ -204,6 +204,7 @@ class TransactionRepositoryImpl @Inject constructor(
                         throw BebasException.generalRC("FT_00")
                     }
                     PostingPinVerificationResultModel(
+                        transactionStatus = resp.message ?: "-",
                         tranferBankMas = resp.data!!
                     )
                 }
@@ -277,6 +278,7 @@ class TransactionRepositoryImpl @Inject constructor(
                         throw BebasException.generalRC("FT_00")
                     }
                     PostingPinVerificationResultModel(
+                        transactionStatus = resp.message ?: "-",
                         pulsaPrePaid = resp.data!!
                     )
                 }
@@ -339,6 +341,7 @@ class TransactionRepositoryImpl @Inject constructor(
                         throw BebasException.generalRC("FT_00")
                     }
                     PostingPinVerificationResultModel(
+                        transactionStatus = resp.message ?: "-",
                         telkomIndihome = resp.data!!
                     )
                 }

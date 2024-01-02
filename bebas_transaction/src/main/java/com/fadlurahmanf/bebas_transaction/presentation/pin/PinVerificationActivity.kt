@@ -3,7 +3,6 @@ package com.fadlurahmanf.bebas_transaction.presentation.pin
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.InvoiceTransactionArgument
@@ -114,7 +113,7 @@ class PinVerificationActivity :
                 )
                 intent.putExtra(
                     InvoiceTransactionActivity.ARGUMENT, InvoiceTransactionArgument(
-                        statusTransaction = "SUCCESS",
+                        statusTransaction = result.transactionStatus,
                         transactionId = result.tranferBankMas?.transactionId ?: "-",
                         isFavorite = false,
                         isFavoriteEnabled = false,
@@ -130,6 +129,18 @@ class PinVerificationActivity :
                     InvoiceTransactionActivity.FLOW,
                     InvoiceTransactionFlow.PULSA_PREPAID.name
                 )
+                intent.putExtra(
+                    InvoiceTransactionActivity.ARGUMENT, InvoiceTransactionArgument(
+                        transactionId = result.pulsaPrePaid?.transactionId ?: "-",
+                        transactionDate = result.pulsaPrePaid?.transactionDateTime ?: "-",
+                        isFavorite = false,
+                        isFavoriteEnabled = true,
+                        statusTransaction = result.transactionStatus,
+                        additionalPulsaData = InvoiceTransactionArgument.PulsaData(
+                            phoneNumber = "-"
+                        )
+                    )
+                )
                 startActivity(intent)
             }
 
@@ -141,7 +152,7 @@ class PinVerificationActivity :
                 )
                 intent.putExtra(
                     InvoiceTransactionActivity.ARGUMENT, InvoiceTransactionArgument(
-                        statusTransaction = "SUCCESS",
+                        statusTransaction = result.transactionStatus,
                         transactionId = result.telkomIndihome?.transactionId ?: "-",
                         isFavorite = false,
                         isFavoriteEnabled = false,

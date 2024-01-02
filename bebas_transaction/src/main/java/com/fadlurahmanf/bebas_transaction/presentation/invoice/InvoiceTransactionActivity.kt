@@ -69,6 +69,22 @@ class InvoiceTransactionActivity :
         setupTotalTransaction()
         setupDetailTransaction()
 
+        when (argument.statusTransaction) {
+            "FAILED" -> {
+                binding.lottieStatus.setAnimation(R.raw.il_failed_transaction_invoice)
+                binding.tvTransactionStatus.text = "Transaksi Gagal"
+            }
+
+            "SUCCESS" -> {
+                binding.lottieStatus.setAnimation(R.raw.il_success_transaction_invoice)
+                binding.tvTransactionStatus.text = "Transaksi Berhasil"
+            }
+
+            else -> {
+                binding.lottieStatus.setAnimation(R.raw.il_pending_transaction_invoice)
+                binding.tvTransactionStatus.text = "Transaksi Sedang Diproses"
+            }
+        }
         Handler(Looper.getMainLooper()).postDelayed({
                                                         binding.llStatus.animate()
                                                             .translationY(binding.llStatus.height.toFloat())

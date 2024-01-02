@@ -14,6 +14,7 @@ data class InvoiceTransactionArgument(
     var isFavorite: Boolean,
     val isFavoriteEnabled: Boolean,
     val additionalTransfer: Transfer? = null,
+    val additionalPulsaData: PulsaData? = null,
     val additionalTelkomIndihome: TelkomIndihome? = null,
 ) : Parcelable {
     @Parcelize
@@ -22,6 +23,11 @@ data class InvoiceTransactionArgument(
         val destinationBankNickName: String,
         val destinationAccountNumber: String,
         val nominal: Long
+    ) : Parcelable
+
+    @Parcelize
+    data class PulsaData(
+        val phoneNumber: String,
     ) : Parcelable
 
     @Parcelize

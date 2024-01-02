@@ -3,8 +3,6 @@ package com.fadlurahmanf.bebas_transaction.presentation.pin
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.data.dto.pin.PinAttemptResponse
-import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
-import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.PostingPinVerificationRequestModel

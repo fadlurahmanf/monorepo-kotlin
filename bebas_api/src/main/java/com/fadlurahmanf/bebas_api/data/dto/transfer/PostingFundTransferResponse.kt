@@ -1,9 +1,6 @@
 package com.fadlurahmanf.bebas_api.data.dto.transfer
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-data class FundTransferResponse(
+data class PostingFundTransferResponse(
     var transactionId: String? = null,
     var correlationId: String? = null,
     var referenceCode: String? = null,

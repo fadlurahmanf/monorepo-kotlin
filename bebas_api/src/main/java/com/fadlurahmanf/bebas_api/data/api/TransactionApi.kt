@@ -4,9 +4,10 @@ import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
+import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingPulsaDataResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PulsaDenomResponse
-import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferResponse
+import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingFundTransferResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankMasRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
@@ -40,7 +41,7 @@ interface TransactionApi {
     @POST("transfer/posting/bank-mas")
     fun fundTransferBankMAS(
         @Body json: JsonObject
-    ): Observable<BaseResponse<FundTransferResponse>>
+    ): Observable<BaseResponse<PostingFundTransferResponse>>
 
     @GET("transaction/{transactionId}/type/{transactionType}")
     fun getTransactionDetail(
@@ -56,7 +57,7 @@ interface TransactionApi {
     @POST("pulsa/posting/prepaid")
     fun postingPulsaPrePaid(
         @Body json: JsonObject
-    ): Observable<BaseResponse<FundTransferResponse>>
+    ): Observable<BaseResponse<PostingPulsaDataResponse>>
 
     @POST("telkom-bill/inquiry/postpaid")
     fun inquiryTelkomIndihome(
