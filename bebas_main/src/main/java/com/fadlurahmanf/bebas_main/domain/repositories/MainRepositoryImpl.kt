@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_main.domain.repositories
 
 import android.content.Context
+import android.util.Log
 import com.fadlurahmanf.bebas_api.data.datasources.CmsRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.InboxRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
@@ -115,7 +116,8 @@ class MainRepositoryImpl @Inject constructor(
                 HomeBankAccountModel(
                     accountBalance = it.workingBalance ?: -1.0,
                     accountNumber = it.accountNumber ?: "-",
-                    response = it
+                    accountName = it.accountName ?: "-",
+                    response = it,
                 )
             }
             newList[0].isPinned = true

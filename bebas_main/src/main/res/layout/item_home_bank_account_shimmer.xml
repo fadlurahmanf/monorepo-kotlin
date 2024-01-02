@@ -16,7 +16,7 @@
             android:layout_height="10dp"
             android:layout_marginHorizontal="5dp"
             android:background="@color/white"
-            app:shimmer_base_color="@color/light_grey"
+            app:shimmer_base_color="@color/grey"
             app:shimmer_colored="true" />
 
         <ImageView
@@ -43,7 +43,7 @@
             android:layout_height="10dp"
             android:layout_marginHorizontal="5dp"
             android:background="@color/white"
-            app:shimmer_base_color="@color/light_grey"
+            app:shimmer_base_color="@color/grey"
             app:shimmer_colored="true" />
 
         <ImageView

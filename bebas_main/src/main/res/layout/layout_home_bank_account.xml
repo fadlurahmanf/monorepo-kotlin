@@ -10,12 +10,13 @@
     android:paddingVertical="15dp">
 
     <TextView
+        android:id="@+id/tv_hello_user"
         style="@style/Font.Text14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="5dp"
         android:fontFamily="@font/lexend_deca_bold"
-        android:text="Halo TFF" />
+        android:text="Halo -" />
 
     <LinearLayout
         android:layout_width="match_parent"

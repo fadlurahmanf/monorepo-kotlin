@@ -74,6 +74,9 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
         viewModel.bankAccounts.observe(this) {
             when (it) {
                 is NetworkState.SUCCESS -> {
+                    binding.layoutBankAccount.tvHelloUser.text =
+                        "Halo ${it.data.firstOrNull()?.accountName ?: "-"}!"
+
                     bankAccounts.clear()
                     bankAccounts.addAll(it.data)
                     bankAccountAdapter.setList(bankAccounts)
