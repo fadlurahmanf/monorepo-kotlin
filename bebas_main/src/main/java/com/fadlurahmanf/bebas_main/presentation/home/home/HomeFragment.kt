@@ -1,9 +1,17 @@
 package com.fadlurahmanf.bebas_main.presentation.home.home
 
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_main.R
@@ -16,8 +24,10 @@ import com.fadlurahmanf.bebas_main.presentation.home.adapter.BankAccountAdapter
 import com.fadlurahmanf.bebas_main.presentation.home.adapter.ProductTransactionMenuAdapter
 import com.fadlurahmanf.bebas_main.presentation.home.adapter.PromoAdapter
 import com.fadlurahmanf.bebas_main.presentation.notification.NotificationActivity
+import com.fadlurahmanf.bebas_shared.extension.toDp
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -42,6 +52,8 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
     override fun injectFragment() {
         component.inject(this)
     }
+
+    private var totalBankAccount = 1
 
     override fun onBebasCreate(savedInstanceState: Bundle?) {
         arguments?.let {
@@ -82,6 +94,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
                     bankAccounts.clear()
                     bankAccounts.addAll(it.data)
                     bankAccountAdapter.setList(bankAccounts)
+                    totalBankAccount = bankAccounts.size
 
                     binding.layoutBankAccountShimmer.llMain.visibility = View.GONE
                     binding.layoutBankAccount.llMain.visibility = View.VISIBLE
@@ -159,6 +172,13 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
         bankAccountAdapter = BankAccountAdapter()
         bankAccountAdapter.setList(bankAccounts)
         binding.layoutBankAccount.vpBankAccount.adapter = bankAccountAdapter
+        binding.layoutBankAccount.vpBankAccount.registerOnPageChangeCallback(object :
+                                                                                 ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                updateLayoutParamScrollbar(position + 1)
+            }
+        })
 
         val layoutManager = GridLayoutManager(requireContext(), 4)
         productTransactionMenuAdapter = ProductTransactionMenuAdapter(
@@ -180,6 +200,31 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
         viewModel.getBankAccounts()
         viewModel.getPromos()
         viewModel.getBebasPoin()
+    }
+
+
+    fun updateLayoutParamScrollbar(position: Int) {
+        val scrollbarLp = LinearLayout.LayoutParams(
+            3.toDp(),
+            40.toDp()
+        )
+        scrollbarLp.setMargins(10.toDp(), 0, 8.toDp(), 0)
+        binding.layoutBankAccount.clScrollbar.layoutParams = scrollbarLp
+
+
+        val margin = (40 / totalBankAccount)
+        val scrollbarActiveLp =
+            ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT
+            )
+        scrollbarActiveLp.setMargins(
+            0,
+            ((position - 1) * margin).toDp(),
+            0,
+            ((totalBankAccount - position) * margin).toDp()
+        )
+        binding.layoutBankAccount.vScrollbarActive.layoutParams = scrollbarActiveLp
     }
 
     companion object {
