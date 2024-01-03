@@ -12,8 +12,8 @@ class CoreBiometric {
         fun onAuthenticationError(errorCode: Int, errString: CharSequence?)
     }
 
-    interface AuthenticateXCallback {
-        fun onAuthenticationSuccess(result: XBiometricPrompt.AuthenticationResult?)
+    interface AuthenticateGeneralCallback : AuthenticateCallback {
+        fun onAuthenticationSuccess(result: XBiometricPrompt.AuthenticationResult)
     }
 
     interface AuthenticatePCallback : AuthenticateCallback {

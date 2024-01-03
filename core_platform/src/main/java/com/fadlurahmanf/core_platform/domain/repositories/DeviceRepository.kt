@@ -4,21 +4,25 @@ import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.fadlurahmanf.core_platform.data.dto.model.BebasContactModel
 import com.fadlurahmanf.core_platform.external.helper.CoreBiometric
 import io.reactivex.rxjava3.core.Observable
+import java.util.concurrent.Executor
 
 interface DeviceRepository {
     fun randomUUID(): String
     fun deviceID(context: Context): String
     fun isSupportedBiometric(context: Context): Boolean
 
-    fun authenticateX(
-        fragment: Fragment,
+    fun authenticateGeneral(
+        context: Context,
+        fragmentActivity: FragmentActivity,
+        executor: Executor,
         titleText: String,
         descriptionText: String,
         negativeText: String,
-        callback: CoreBiometric.AuthenticateXCallback,
+        callback: CoreBiometric.AuthenticateGeneralCallback
     )
 
     @RequiresApi(Build.VERSION_CODES.P)

@@ -14,12 +14,13 @@ import android.provider.Settings.Secure
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.fadlurahmanf.core_platform.data.dto.model.BebasContactModel
 import androidx.biometric.BiometricPrompt as XBiometricPrompt
 import com.fadlurahmanf.core_platform.external.helper.CoreBiometric
 import io.reactivex.rxjava3.core.Observable
 import java.util.UUID
+import java.util.concurrent.Executor
 
 class DeviceRepositoryImpl : DeviceRepository {
 
@@ -54,25 +55,38 @@ class DeviceRepositoryImpl : DeviceRepository {
         }
     }
 
-    override fun authenticateX(
-        fragment: Fragment,
+    override fun authenticateGeneral(
+        context: Context,
+        fragmentActivity: FragmentActivity,
+        executor: Executor,
         titleText: String,
         descriptionText: String,
         negativeText: String,
-        callback: CoreBiometric.AuthenticateXCallback,
+        callback:CoreBiometric.AuthenticateGeneralCallback
     ) {
-        val prompt = XBiometricPrompt(fragment, object :
+        val prompt = XBiometricPrompt(fragmentActivity, executor, object :
             XBiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationSucceeded(result: XBiometricPrompt.AuthenticationResult) {
                 super.onAuthenticationSucceeded(result)
                 callback.onAuthenticationSuccess(result)
             }
+
+            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                super.onAuthenticationError(errorCode, errString)
+                callback.onAuthenticationError(errorCode, errString)
+            }
+
+            override fun onAuthenticationFailed() {
+                super.onAuthenticationFailed()
+                callback.onAuthenticationFailed()
+            }
         })
-        val promptInfo = XBiometricPrompt.PromptInfo.Builder().setTitle(titleText)
+        val info = XBiometricPrompt.PromptInfo.Builder()
+            .setTitle(titleText)
             .setDescription(descriptionText)
             .setNegativeButtonText(negativeText)
             .build()
-        return prompt.authenticate(promptInfo)
+        prompt.authenticate(info)
     }
 
     @RequiresApi(Build.VERSION_CODES.P)

@@ -1,10 +1,15 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.login
 
 import android.content.Intent
+import android.hardware.biometrics.BiometricPrompt
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityLoginBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
+import com.fadlurahmanf.core_platform.external.helper.CoreBiometric
 import javax.inject.Inject
 
 class LoginActivity : BaseOnboardingActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate) {
@@ -15,6 +20,8 @@ class LoginActivity : BaseOnboardingActivity<ActivityLoginBinding>(ActivityLogin
     override fun injectActivity() {
         component.inject(this)
     }
+
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun onBebasCreate(savedInstanceState: Bundle?) {
         viewModel.loginState.observe(this) {
@@ -48,7 +55,30 @@ class LoginActivity : BaseOnboardingActivity<ActivityLoginBinding>(ActivityLogin
             viewModel.login()
         }
 
-        // fake
-        viewModel.login()
+        handler.postDelayed({
+                                viewModel.authenticateBiometric(
+                                    applicationContext,
+                                    fragmentActivity = this,
+                                    executor = ContextCompat.getMainExecutor(applicationContext),
+                                    callback = object : CoreBiometric.AuthenticateGeneralCallback {
+                                        override fun onAuthenticationSuccess(result: androidx.biometric.BiometricPrompt.AuthenticationResult) {
+                                            viewModel.login()
+                                        }
+
+                                        override fun onAuthenticationFailed() {
+
+                                        }
+
+                                        override fun onAuthenticationError(
+                                            errorCode: Int,
+                                            errString: CharSequence?
+                                        ) {
+
+                                        }
+
+
+                                    }
+                                )
+                            }, 1000)
     }
 }
