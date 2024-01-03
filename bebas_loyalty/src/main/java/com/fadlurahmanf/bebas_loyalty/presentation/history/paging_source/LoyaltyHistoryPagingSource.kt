@@ -28,30 +28,41 @@ class LoyaltyHistoryPagingSource @Inject constructor(
     }
 
     override fun loadSingle(params: LoadParams<Int>): Single<LoadResult<Int, HistoryLoyaltyModel>> {
+        Log.d("BebasLogger", "OFFSET: $offset")
         return loyaltyRepositoryImpl.getHistoryLoyalty(
             offset = offset,
         ).subscribeOn(Schedulers.io()).map { resp ->
-            toLoadSuccess(resp)
+            Log.d("BebasLogger", "CONTENT LENGTH: ${resp.content?.size}")
+            toLoadSuccess(resp, offset)
         }.onErrorReturn {
             toLoadError(it)
         }
     }
 
     private fun toLoadSuccess(
-        response: BasePaginationTransactionResponse<List<HistoryLoyaltyResponse>>
+        response: BasePaginationTransactionResponse<List<HistoryLoyaltyResponse>>,
+        offset: Int
     ): LoadResult<Int, HistoryLoyaltyModel> {
+        val isNextAvailable = response.next == true
+        var nextKey: Int? = null
+        if (isNextAvailable) {
+            nextKey = offset + (response.content?.size ?: 0)
+            this.offset = nextKey
+            Log.d("BebasLogger", "IS NEXT AVAILABLE -> NEXT KEY: $nextKey")
+        }
         return LoadResult.Page(
             data = ArrayList(response.content ?: listOf()).map { content ->
                 HistoryLoyaltyModel(
                     id = content.id ?: "",
                     header = "Dari Rekening ${content.accountNumber ?: "-"}",
                     body = content.label ?: "-",
+//                    body = "ID: ${content.id ?: "-"}",
                     point = content.point ?: -1,
                     response = content
                 )
             },
             prevKey = null,
-            nextKey = null
+            nextKey = nextKey
         )
     }
 

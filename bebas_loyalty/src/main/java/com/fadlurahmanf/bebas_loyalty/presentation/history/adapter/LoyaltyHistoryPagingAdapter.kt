@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_loyalty.presentation.history.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ class LoyaltyHistoryPagingAdapter :
     PagingDataAdapter<HistoryLoyaltyModel, LoyaltyHistoryPagingAdapter.ViewHolder>(DiffUtilCallBack()) {
     private lateinit var context: Context
     private var callBack: CallBack? = null
+    private var mapModel: HashMap<Int, HistoryLoyaltyModel> = hashMapOf()
     fun setCallBack(callBack: CallBack) {
         this.callBack = callBack
     }
@@ -26,7 +28,10 @@ class LoyaltyHistoryPagingAdapter :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val model = getItem(position)
+        val model = getItem(position) ?: mapModel[position]
+        if (mapModel[position] == null && model != null) {
+            mapModel[position] = model
+        }
         holder.fromAccount.text = model?.header ?: "-"
         holder.body.text = model?.body ?: "-"
         holder.bebasPoint.text =

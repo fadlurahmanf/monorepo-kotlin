@@ -28,7 +28,6 @@ class HistoryLoyaltyActivity :
         adapter = LoyaltyHistoryPagingAdapter()
         binding.rvHistory.adapter = adapter
 
-
         viewModel.getNotification(applicationContext)
     }
 
