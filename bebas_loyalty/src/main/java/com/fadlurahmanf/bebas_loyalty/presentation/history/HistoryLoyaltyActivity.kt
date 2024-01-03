@@ -22,6 +22,7 @@ class HistoryLoyaltyActivity :
         tabAdapter = LoyaltyHistoryTabAdapter(applicationContext, supportFragmentManager, lifecycle)
 
         binding.vp.adapter = tabAdapter
+        binding.vp.isUserInputEnabled = false
         supportActionBar?.elevation = 0f
 
         TabLayoutMediator(binding.tabLayout, binding.vp) { tab, position ->
