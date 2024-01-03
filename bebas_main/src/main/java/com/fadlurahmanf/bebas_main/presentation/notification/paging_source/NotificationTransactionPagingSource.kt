@@ -44,11 +44,8 @@ class NotificationTransactionPagingSource @Inject constructor(
         response: NotificationResponse,
         key: Int
     ): LoadResult<Int, NotificationModel> {
-        Log.d("BebasLogger", "KEY: $key")
         val prevKey = null
         val nextKey = if (response.isLast != true) key + 1 else null
-        Log.d("BebasLogger", "PREV: $prevKey")
-        Log.d("BebasLogger", "NEXT: $nextKey")
         return LoadResult.Page(
             data = ArrayList(response.contents ?: listOf()).map { content ->
                 NotificationModel(

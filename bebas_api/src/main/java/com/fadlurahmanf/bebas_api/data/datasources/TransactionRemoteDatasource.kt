@@ -46,4 +46,7 @@ class TransactionRemoteDatasource @Inject constructor(
 
     fun refreshStatus(transactionId: String) =
         networkService().refreshStatusPrePaid(transactionId)
+
+    fun getAllHistory(offset: Int) =
+        networkService().getHistoryLoyalty(offset)
 }

@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class BaseResponse<T>(
     @SerializedName("code")
-    var code:String ?= null,
+    val code:String ?= null,
     @SerializedName("message")
-    var message:String ?= null,
+    val message:String ?= null,
     @SerializedName("data")
-    var data: T ?= null
+    val data: T ?= null
 )

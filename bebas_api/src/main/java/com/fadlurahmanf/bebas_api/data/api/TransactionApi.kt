@@ -1,7 +1,9 @@
 package com.fadlurahmanf.bebas_api.data.api
 
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
+import com.fadlurahmanf.bebas_api.data.dto.general.BasePaginationTransactionResponse
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
+import com.fadlurahmanf.bebas_api.data.dto.loyalty.HistoryLoyaltyResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingPulsaDataResponse
@@ -14,8 +16,10 @@ import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
 import com.google.gson.JsonObject
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -74,4 +78,11 @@ interface TransactionApi {
     fun refreshStatusPrePaid(
         @Query("transactionId") transactionId: String
     ): Observable<BaseResponse<RefreshStatusResponse>>
+
+    @GET("points")
+    fun getHistoryLoyalty(
+        @Query("offset") offset: Int,
+        @Query("status") status: String? = null,
+        @Header("Accept-Language") language: String = "id-ID",
+    ): Single<BaseResponse<BasePaginationTransactionResponse<List<HistoryLoyaltyResponse>>>>
 }

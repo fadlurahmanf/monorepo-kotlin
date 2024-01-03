@@ -32,8 +32,6 @@ class NotificationTransactionFragment : BaseMainFragment<FragmentNotificationTra
     private lateinit var adapter: NotificationPagingAdapter
 
     override fun onBebasViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("BebasLogger", "TES_onBebasViewCreated")
-
         viewModel.notificationState.observe(this) {
             adapter.submitData(lifecycle, it)
         }
