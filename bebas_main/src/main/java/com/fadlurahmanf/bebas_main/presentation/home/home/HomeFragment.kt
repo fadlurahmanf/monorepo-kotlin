@@ -180,6 +180,14 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
             }
         })
 
+        binding.layoutBankAccount.llBebasPoin.setOnClickListener {
+            val intent = Intent(
+                requireContext(),
+                Class.forName("com.fadlurahmanf.bebas_loyalty.presentation.history.HistoryLoyaltyActivity")
+            )
+            startActivity(intent)
+        }
+
         val layoutManager = GridLayoutManager(requireContext(), 4)
         productTransactionMenuAdapter = ProductTransactionMenuAdapter(
             type = ProductTransactionMenuAdapter.Type.HOME_PRODUCT_TRANSACTION_MENU
