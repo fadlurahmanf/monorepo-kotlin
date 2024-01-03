@@ -39,7 +39,7 @@ class FavoriteViewModel @Inject constructor(
             }
 
             FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {
-                favoriteRepositoryImpl.getLatestTransactionPLNPrePaid()
+                favoriteRepositoryImpl.getLatestTransactionPulsaPrePaid()
             }
 
             FavoriteFlow.TRANSACTION_MENU_TELKOM_INDIHOME -> {

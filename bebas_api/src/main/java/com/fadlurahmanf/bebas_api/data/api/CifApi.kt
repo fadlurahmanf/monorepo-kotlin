@@ -6,6 +6,7 @@ import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoriteTelkomIndihomeRespon
 import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoriteTransferResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.LatestTransactionResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.LatestTransactionPostPaidResponse
+import com.fadlurahmanf.bebas_api.data.dto.favorite.LatestTransactionPulsaPrePaidResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.PinFavoriteRequest
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.loyalty.CifBebasPoinResponse
@@ -42,6 +43,11 @@ interface CifApi {
     fun getLatestPrePaidTransaction(
         @Query("type") type: String
     ): Observable<BaseResponse<List<LatestTransactionResponse>>>
+
+    @GET("transaction-history/prepaid/last-three-transactions")
+    fun getLatestPulsaPrePaidTransaction(
+        @Query("type") type: String = "Pulsa"
+    ): Observable<BaseResponse<List<LatestTransactionPulsaPrePaidResponse>>>
 
     @GET("transaction-history/postpaid/last-three-transactions")
     fun getLatestPostPaidTransaction(

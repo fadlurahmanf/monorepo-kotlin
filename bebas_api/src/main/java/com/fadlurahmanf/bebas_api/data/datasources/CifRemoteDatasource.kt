@@ -22,6 +22,8 @@ class CifRemoteDatasource @Inject constructor(
         type = "Listrik"
     )
 
+    fun getLatestTransactionPulsaPrePaid() = networkService().getLatestPulsaPrePaidTransaction()
+
     fun getLatestTransactionTelkomIndihome() = networkService().getLatestPostPaidTransaction(
         type = "Telepon/Internet"
     )

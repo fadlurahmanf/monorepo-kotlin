@@ -23,6 +23,7 @@ import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.InquiryResultM
 import com.fadlurahmanf.bebas_transaction.data.flow.InputDestinationAccountFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.PaymentDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferDetailFlow
+import com.fadlurahmanf.bebas_transaction.data.flow.favorite.LatestAdapterFlow
 import com.fadlurahmanf.bebas_transaction.data.state.InquiryState
 import com.fadlurahmanf.bebas_transaction.data.state.PinFavoriteState
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityFavoriteListBinding
@@ -75,31 +76,34 @@ class FavoriteListActivity :
 
         when (favoriteFlow) {
             FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
+                latestAdapter = LatestAdapter(LatestAdapterFlow.TRANSFER)
                 binding.toolbar.title = "Transfer Favorit"
                 binding.tvBtnNewReceiver.text = "Penerima Baru"
                 binding.ivButtonNewReceiver.setImageResource(R.drawable.outline_person_add_alt_1_24)
             }
 
             FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID -> {
+                latestAdapter = LatestAdapter(LatestAdapterFlow.PLN_PREPAID)
                 binding.toolbar.title = "Nomor Pelanggan Favorit"
                 binding.tvBtnNewReceiver.text = "Penerima Baru"
                 binding.ivButtonNewReceiver.setImageResource(R.drawable.outline_person_add_alt_1_24)
             }
 
             FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {
+                latestAdapter = LatestAdapter(LatestAdapterFlow.PULSA_PREPAID)
                 binding.toolbar.title = "Nomor Ponsel Favorit"
                 binding.tvBtnNewReceiver.text = "Nomor Ponsel Baru"
                 binding.ivButtonNewReceiver.setImageResource(R.drawable.round_phonelink_ring_24)
             }
 
             FavoriteFlow.TRANSACTION_MENU_TELKOM_INDIHOME -> {
+                latestAdapter = LatestAdapter(LatestAdapterFlow.TELKOM_INDIHOME)
                 binding.toolbar.title = "Nomor Pelanggan Favorit"
                 binding.tvBtnNewReceiver.text = "Nomor Pelanggan Baru"
                 binding.ivButtonNewReceiver.setImageResource(R.drawable.outline_person_add_alt_1_24)
             }
         }
 
-        latestAdapter = LatestAdapter()
         latestAdapter.setCallback(this)
         favoriteAdapter = FavoriteAdapter()
         favoriteAdapter.setCallback(this)

@@ -49,6 +49,24 @@ class FavoriteRepositoryImpl @Inject constructor(
         }
     }
 
+    fun getLatestTransactionPulsaPrePaid(): Observable<List<LatestTransactionModel>> {
+        return cifRemoteDatasource.getLatestTransactionPulsaPrePaid().map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+
+            val latest = it.data!!
+            latest.map { latestResp ->
+                LatestTransactionModel(
+                    label = latestResp.prepaidNumber ?: "-",
+                    subLabel = latestResp.providerName ?: "-",
+                    accountNumber = latestResp.prepaidNumber ?: "-",
+                    additionalPulsaPrePaid = latestResp
+                )
+            }.toList()
+        }
+    }
+
     fun getLatestTransactionTelkomIndihome(): Observable<List<LatestTransactionModel>> {
         return cifRemoteDatasource.getLatestTransactionTelkomIndihome().map {
             if (it.data == null) {

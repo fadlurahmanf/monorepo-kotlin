@@ -19,25 +19,36 @@
         android:text="LF"
         android:textAllCaps="true" />
 
+    <ImageView
+        android:id="@+id/iv_latest_logo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/background_circle_bebas_logo"
+        android:gravity="center"
+        android:padding="10dp"
+        android:src="@drawable/iv_logo_pln"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/tv_latest_name"
         style="@style/Font.LatestName"
-        android:textAlignment="center"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:layout_marginTop="7dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Favorite Name" />
+        android:layout_marginTop="7dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="Favorite Name"
+        android:textAlignment="center" />
 
 
     <TextView
         android:id="@+id/tv_latest_label"
         style="@style/Font.LatestLabel"
-        android:gravity="center"
-        android:layout_marginTop="3dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:gravity="center"
         android:text="Bank MAS" />
 </LinearLayout>
