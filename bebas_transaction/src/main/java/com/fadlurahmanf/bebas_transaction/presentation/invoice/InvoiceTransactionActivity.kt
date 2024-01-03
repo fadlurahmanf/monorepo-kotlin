@@ -37,10 +37,6 @@ class InvoiceTransactionActivity :
     private var refreshPulsaArgument: NotificationRefreshPulsaTransactionModel? = null
     private val fcmListener = object : FcmBroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            Log.d(
-                "BebasLogger",
-                "ON RECEIVE DATA IN ACTIVITY"
-            )
             val stringFlow =
                 intent?.getStringExtra(InvoiceTransactionArgumentConstant.REFRESH_FLOW) ?: return
 
@@ -196,6 +192,7 @@ class InvoiceTransactionActivity :
 
         when (argument.statusTransaction) {
             "FAILED" -> {
+                binding.btnShared.visibility = View.GONE
                 binding.lottieStatus.setAnimation(R.raw.il_failed_transaction_invoice)
                 binding.tvTransactionStatus.text = "Transaksi Gagal"
                 Glide.with(binding.ivStatusTransaction)
@@ -204,6 +201,7 @@ class InvoiceTransactionActivity :
             }
 
             "SUCCESS" -> {
+                binding.btnShared.visibility = View.VISIBLE
                 binding.lottieStatus.setAnimation(R.raw.il_success_transaction_invoice)
                 binding.tvTransactionStatus.text = "Transaksi Berhasil"
                 Glide.with(binding.ivStatusTransaction)
@@ -212,6 +210,7 @@ class InvoiceTransactionActivity :
             }
 
             else -> {
+                binding.btnShared.visibility = View.GONE
                 binding.lottieStatus.setAnimation(R.raw.il_pending_transaction_invoice)
                 binding.tvTransactionStatus.text = "Transaksi Sedang Diproses"
                 Glide.with(binding.ivStatusTransaction)

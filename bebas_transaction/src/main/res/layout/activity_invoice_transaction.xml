@@ -169,8 +169,10 @@
 
         <com.fadlurahmanf.bebas_ui.button.BebasOutlinedButton
             android:id="@+id/btn_shared"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:drawableStart="@drawable/outline_share_24"
             app:text="Bagikan" />
 
@@ -178,7 +180,6 @@
             android:id="@+id/btn_finished"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             app:text="Selesai" />
     </LinearLayout>
 

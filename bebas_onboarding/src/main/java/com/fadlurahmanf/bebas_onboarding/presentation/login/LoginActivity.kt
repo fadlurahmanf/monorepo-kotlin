@@ -55,30 +55,31 @@ class LoginActivity : BaseOnboardingActivity<ActivityLoginBinding>(ActivityLogin
             viewModel.login()
         }
 
+        viewModel.login()
         handler.postDelayed({
-                                viewModel.authenticateBiometric(
-                                    applicationContext,
-                                    fragmentActivity = this,
-                                    executor = ContextCompat.getMainExecutor(applicationContext),
-                                    callback = object : CoreBiometric.AuthenticateGeneralCallback {
-                                        override fun onAuthenticationSuccess(result: androidx.biometric.BiometricPrompt.AuthenticationResult) {
-                                            viewModel.login()
-                                        }
-
-                                        override fun onAuthenticationFailed() {
-
-                                        }
-
-                                        override fun onAuthenticationError(
-                                            errorCode: Int,
-                                            errString: CharSequence?
-                                        ) {
-
-                                        }
-
-
-                                    }
-                                )
+//                                viewModel.authenticateBiometric(
+//                                    applicationContext,
+//                                    fragmentActivity = this,
+//                                    executor = ContextCompat.getMainExecutor(applicationContext),
+//                                    callback = object : CoreBiometric.AuthenticateGeneralCallback {
+//                                        override fun onAuthenticationSuccess(result: androidx.biometric.BiometricPrompt.AuthenticationResult) {
+//                                            viewModel.login()
+//                                        }
+//
+//                                        override fun onAuthenticationFailed() {
+//
+//                                        }
+//
+//                                        override fun onAuthenticationError(
+//                                            errorCode: Int,
+//                                            errString: CharSequence?
+//                                        ) {
+//
+//                                        }
+//
+//
+//                                    }
+//                                )
                             }, 1000)
     }
 }
