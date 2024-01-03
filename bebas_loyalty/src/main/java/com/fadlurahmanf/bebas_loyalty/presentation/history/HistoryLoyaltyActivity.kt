@@ -1,10 +1,10 @@
 package com.fadlurahmanf.bebas_loyalty.presentation.history
 
 import android.os.Bundle
-import android.util.Log
 import com.fadlurahmanf.bebas_loyalty.databinding.ActivityHistoryLoyaltyBinding
 import com.fadlurahmanf.bebas_loyalty.presentation.BaseLoyaltyActivity
-import com.fadlurahmanf.bebas_loyalty.presentation.history.adapter.LoyaltyHistoryPagingAdapter
+import com.fadlurahmanf.bebas_loyalty.presentation.history.adapter.LoyaltyHistoryTabAdapter
+import com.google.android.material.tabs.TabLayoutMediator
 import javax.inject.Inject
 
 class HistoryLoyaltyActivity :
@@ -17,18 +17,32 @@ class HistoryLoyaltyActivity :
         component.inject(this)
     }
 
-    private lateinit var adapter: LoyaltyHistoryPagingAdapter
-
+    private lateinit var tabAdapter: LoyaltyHistoryTabAdapter
     override fun onBebasCreate(savedInstanceState: Bundle?) {
-        viewModel.notificationState.observe(this) {
-            Log.d("BebasLogger", "PAGING DATA LOADED: $it")
-            adapter.submitData(lifecycle, it)
-        }
+        tabAdapter = LoyaltyHistoryTabAdapter(applicationContext, supportFragmentManager, lifecycle)
 
-        adapter = LoyaltyHistoryPagingAdapter()
-        binding.rvHistory.adapter = adapter
+        binding.vp.adapter = tabAdapter
+        supportActionBar?.elevation = 0f
 
-        viewModel.getNotification(applicationContext)
+        TabLayoutMediator(binding.tabLayout, binding.vp) { tab, position ->
+            when (position) {
+                0 -> {
+                    tab.text = "Semua"
+                }
+
+                1 -> {
+                    tab.text = "Didapat"
+                }
+
+                2 -> {
+                    tab.text = "Digunakan"
+                }
+
+                3 -> {
+                    tab.text = "Hangus"
+                }
+            }
+        }.attach()
     }
 
 }

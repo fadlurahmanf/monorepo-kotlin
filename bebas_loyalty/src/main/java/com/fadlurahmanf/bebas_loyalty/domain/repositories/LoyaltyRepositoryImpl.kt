@@ -13,8 +13,11 @@ class LoyaltyRepositoryImpl @Inject constructor(
     private val transactionRemoteDatasource: TransactionRemoteDatasource
 ) {
 
-    fun getHistoryLoyalty(offset: Int): Single<BasePaginationTransactionResponse<List<HistoryLoyaltyResponse>>> {
-        return transactionRemoteDatasource.getAllHistory(offset).map {
+    fun getHistoryLoyalty(
+        offset: Int,
+        status: String? = null
+    ): Single<BasePaginationTransactionResponse<List<HistoryLoyaltyResponse>>> {
+        return transactionRemoteDatasource.getAllHistory(offset = offset, status = status).map {
             if (it.data == null) {
                 throw BebasException.generalRC("HL_00")
             }

@@ -84,4 +84,16 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
+    <style name="Font.TabTitle">
+        <item name="android:fontFamily">@font/lexend_deca_regular</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
+
+    <style name="Font.SelectedTabTitle">
+        <item name="android:fontFamily">@font/lexend_deca_semi_bold</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/red</item>
+    </style>
 </resources>
