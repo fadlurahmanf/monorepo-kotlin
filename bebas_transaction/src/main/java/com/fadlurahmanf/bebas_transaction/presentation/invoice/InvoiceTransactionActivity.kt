@@ -135,6 +135,12 @@ class InvoiceTransactionActivity :
         }
 
         binding.btnShared.setOnClickListener {
+            val intent = Intent(this, ScreenshotInvoiceTransactionActivity::class.java)
+            intent.apply {
+                putExtra(InvoiceTransactionArgumentConstant.FLOW, flow.name)
+                putExtra(InvoiceTransactionArgumentConstant.ARGUMENT, argument)
+            }
+            startActivity(intent)
         }
 
         binding.btnFinished.setOnClickListener {
