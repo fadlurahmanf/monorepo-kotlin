@@ -20,15 +20,16 @@ class LatestAdapter(private val flow: LatestAdapterFlow) :
     private var latests: ArrayList<LatestTransactionModel> = arrayListOf()
     private var callback: Callback? = null
 
-    fun setList(list: List<LatestTransactionModel>) {
-        val itemCount = latests.size
+    fun setNewList(list: List<LatestTransactionModel>) {
         latests.clear()
-        if (itemCount > 0) {
-            notifyItemRangeRemoved(0, itemCount)
-        }
-
         latests.addAll(list)
         notifyItemRangeInserted(0, list.size)
+    }
+
+    fun resetList(list: List<LatestTransactionModel>) {
+        latests.clear()
+        latests.addAll(list)
+        notifyItemRangeChanged(0, list.size)
     }
 
     fun setCallback(callback: Callback) {

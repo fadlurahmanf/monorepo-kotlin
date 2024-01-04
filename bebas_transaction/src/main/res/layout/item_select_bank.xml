@@ -11,11 +11,11 @@
         android:id="@+id/iv_logo"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@color/white"
         android:layout_gravity="center"
+        android:background="@color/white"
         android:gravity="center"
         android:padding="5dp"
-        android:src="@drawable/round_account_balance_24"
+        android:src="@drawable/il_logo_bebas_grey"
         android:textAllCaps="true" />
 
     <TextView

@@ -40,7 +40,7 @@ class BankListAdapter : RecyclerView.Adapter<BankListAdapter.ViewHolder>() {
         }
 
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_identity_transaction_menu, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_select_bank, parent, false)
         return ViewHolder(view)
     }
 

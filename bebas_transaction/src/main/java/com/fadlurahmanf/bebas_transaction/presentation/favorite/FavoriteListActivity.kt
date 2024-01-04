@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -257,21 +256,40 @@ class FavoriteListActivity :
             when (it) {
                 is NetworkState.FAILED -> {
                     binding.llLatest.visibility = View.GONE
+                    binding.llLatestShimmer.visibility = View.GONE
+                    binding.rvLatest.visibility = View.GONE
                 }
 
                 NetworkState.LOADING -> {
-                    binding.llLatest.visibility = View.GONE
+                    if (latests.isNotEmpty()) {
+                        binding.llLatest.visibility = View.VISIBLE
+                        binding.llLatestShimmer.visibility = View.GONE
+                        binding.rvLatest.visibility = View.VISIBLE
+                    } else {
+                        binding.llLatest.visibility = View.VISIBLE
+                        binding.llLatestShimmer.visibility = View.VISIBLE
+                        binding.rvLatest.visibility = View.GONE
+                    }
                 }
 
                 is NetworkState.SUCCESS -> {
+                    val isPreviousLatestExist = latests.isNotEmpty()
                     latests.clear()
                     latests.addAll(it.data)
-                    latestAdapter.setList(latests)
+                    if (isPreviousLatestExist) {
+                        latestAdapter.resetList(latests)
+                    } else {
+                        latestAdapter.setNewList(latests)
+                    }
 
                     if (latests.isNotEmpty()) {
                         binding.llLatest.visibility = View.VISIBLE
+                        binding.llLatestShimmer.visibility = View.GONE
+                        binding.rvLatest.visibility = View.VISIBLE
                     } else {
-                        binding.llLatest.visibility = View.GONE
+                        binding.llLatest.visibility = View.VISIBLE
+                        binding.llLatestShimmer.visibility = View.VISIBLE
+                        binding.rvLatest.visibility = View.GONE
                     }
                 }
 
@@ -285,7 +303,7 @@ class FavoriteListActivity :
     override fun onResume() {
         super.onResume()
         viewModel.getTransferFavorite(favoriteFlow)
-//        viewModel.getTransferLatest(favoriteFlow)
+        viewModel.getTransferLatest(favoriteFlow)
     }
 
     private val contactPermissionLauncher =
