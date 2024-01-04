@@ -1,10 +1,13 @@
 package com.fadlurahmanf.bebas_transaction.presentation.others
 
+import android.annotation.SuppressLint
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_transaction.databinding.BottomsheetContactListBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionBottomsheet
@@ -37,10 +40,12 @@ class ContactListBottomsheet :
         component.inject(this)
     }
 
+    private lateinit var contactLayoutManager: LinearLayoutManager
     private lateinit var contactListAdapter: ContactListAdapter
     private lateinit var alphabetAdapter: AlphabetScrollAdapter
     private val contacts: ArrayList<BebasContactModel> = arrayListOf()
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun setup() {
         bottomsheetDialog = (dialog as BottomSheetDialog)
 
@@ -53,12 +58,14 @@ class ContactListBottomsheet :
             dialog?.dismiss()
         }
 
+        contactLayoutManager = LinearLayoutManager(context)
         contactListAdapter = ContactListAdapter()
         contactListAdapter.setCallback(this)
         alphabetAdapter = AlphabetScrollAdapter()
         alphabetAdapter.setCallback(this)
-        alphabetAdapter.setAlphabets()
+        alphabetAdapter.setAlphabets(alphabets)
         contactListAdapter.setList(contacts)
+        binding.rvContact.layoutManager = contactLayoutManager
         binding.rvContact.adapter = contactListAdapter
 
         binding.etNameOrPhone.addTextChangedListener(object :
@@ -76,16 +83,23 @@ class ContactListBottomsheet :
             }
         })
 
-//        binding.rvAlphabet.setOnTouchListener { v, event ->
-//            Log.d("BebasLogger", "TOUCHED: ${v.y} & ${event.y}")
-//
-//            if (event.y >= 80) {
-//                binding.rvContact.smoothScrollToPosition(2)
-//                false
-//            } else {
-//                true
-//            }
-//        }
+
+        binding.rvAlphabet.setOnTouchListener { v, event ->
+            val indexAlphabet = getIndexAlphabet(event.y)
+            Log.d("BebasLogger", "TOUCHED: ${v.y} & ${event.y}")
+            Log.d("BebasLogger", "MASUK INDEX ALPHABET $indexAlphabet")
+            Log.d("BebasLogger", "MASUK ALPHABETS LENGTH ${alphabets.size}")
+            val alphabet = alphabets[indexAlphabet]
+            Log.d("BebasLogger", "MASUK ALPHABET $alphabet")
+            val indexStarOfAlphabet = getStartIndexOfAlphabetsInContacts(alphabet)
+            Log.d("BebasLogger", "MASUK INDEX CONTACT $indexStarOfAlphabet")
+
+            Log.d("BebasLogger", "MASUK CONTACT ${contacts[indexStarOfAlphabet]}")
+            binding.tvAlphabetSelected.text = alphabet.uppercase()
+            resetViewAlphabetSelected()
+            contactLayoutManager.scrollToPositionWithOffset(indexStarOfAlphabet, 20)
+            false
+        }
 
         viewModel.contacts.observe(this) {
             when (it) {
@@ -98,7 +112,6 @@ class ContactListBottomsheet :
                     contacts.addAll(it.data)
                     contactListAdapter.setList(contacts)
 
-                    alphabetAdapter.setAlphabets()
                     binding.rvAlphabet.adapter = alphabetAdapter
                 }
 
@@ -107,6 +120,16 @@ class ContactListBottomsheet :
             }
         }
         viewModel.getListContact(requireContext())
+    }
+
+    private val handler = Handler(Looper.getMainLooper())
+    private val alphabetSelectedRunnable =
+        Runnable { binding.tvAlphabetSelected.visibility = View.GONE }
+
+    private fun resetViewAlphabetSelected() {
+        handler.removeCallbacks(alphabetSelectedRunnable)
+        binding.tvAlphabetSelected.visibility = View.VISIBLE
+        handler.postDelayed(alphabetSelectedRunnable, 1500)
     }
 
     interface Callback {
@@ -121,4 +144,58 @@ class ContactListBottomsheet :
         dialog?.dismiss()
         callback?.onContactClicked(contact)
     }
+
+    private fun getIndexAlphabet(y: Float): Int {
+        return try {
+            val indexAlphabet = ((y / 50) - 0.5f).toInt()
+            if (indexAlphabet < 0) {
+                0
+            } else if (indexAlphabet > 24) {
+                24
+            } else {
+                indexAlphabet
+            }
+        } catch (e: Throwable) {
+            0
+        }
+    }
+
+    private fun getStartIndexOfAlphabetsInContacts(alphabet: String): Int {
+        var index: Int = 0
+        for (element in 0 until contacts.size) {
+            index = element
+            if (contacts[element].name.startsWith(alphabet)) {
+                break
+            }
+        }
+        return index
+    }
+
+    private val alphabets = arrayListOf(
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z"
+    )
 }

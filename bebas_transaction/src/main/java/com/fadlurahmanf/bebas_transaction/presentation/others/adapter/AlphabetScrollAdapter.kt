@@ -3,6 +3,9 @@ package com.fadlurahmanf.bebas_transaction.presentation.others.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.database.DataSetObserver
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -16,38 +19,12 @@ class AlphabetScrollAdapter : RecyclerView.Adapter<AlphabetScrollAdapter.ViewHol
     lateinit var context: Context
     private var alphabets: ArrayList<String> = arrayListOf()
     private var callback: Callback? = null
+    private val handler = Handler(Looper.getMainLooper())
+    private var isTouched = false
 
-    fun setAlphabets() {
-        alphabets.clear()
-        alphabets.addAll(
-            arrayListOf(
-                "A",
-                "B",
-                "C",
-                "D",
-                "E",
-                "F",
-                "G",
-                "H",
-                "I",
-                "J",
-                "K",
-                "L",
-                "M",
-                "O",
-                "P",
-                "Q",
-                "R",
-                "S",
-                "T",
-                "U",
-                "V",
-                "W",
-                "X",
-                "Y",
-                "Z"
-            )
-        )
+    fun setAlphabets(alphabets: List<String>) {
+        this.alphabets.clear()
+        this.alphabets.addAll(alphabets)
         notifyItemRangeInserted(0, alphabets.size)
     }
 
@@ -79,9 +56,27 @@ class AlphabetScrollAdapter : RecyclerView.Adapter<AlphabetScrollAdapter.ViewHol
         holder.alphabet.text = alphabet
 
 //        holder.itemView.setOnTouchListener { v, event ->
-//            callback?.onAlphabetTouched(v, event, alphabet)
-//            return@setOnTouchListener true
+//            Log.d("BebasLogger", "EVENT $alphabet & ${event.action}")
+//            if (event.action == MotionEvent.ACTION_MOVE) {
+//                if (!isTouched) {
+//                    isTouched = true
+//                    callback?.onAlphabetTouched(v, event, alphabet)
+//                    resetTouch(v)
+//                    return@setOnTouchListener true
+//                } else {
+//                    return@setOnTouchListener false
+//                }
+//
+//            } else {
+//                return@setOnTouchListener false
+//            }
 //        }
+    }
+
+    fun resetTouch(v: View) {
+        handler.postDelayed({
+                                isTouched = false
+                            }, 1000)
     }
 
     interface Callback {
