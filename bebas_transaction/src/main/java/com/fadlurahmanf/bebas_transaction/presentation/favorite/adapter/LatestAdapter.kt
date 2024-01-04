@@ -21,7 +21,12 @@ class LatestAdapter(private val flow: LatestAdapterFlow) :
     private var callback: Callback? = null
 
     fun setList(list: List<LatestTransactionModel>) {
+        val itemCount = latests.size
         latests.clear()
+        if (itemCount > 0) {
+            notifyItemRangeRemoved(0, itemCount)
+        }
+
         latests.addAll(list)
         notifyItemRangeInserted(0, list.size)
     }

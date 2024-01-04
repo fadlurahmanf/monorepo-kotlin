@@ -63,12 +63,35 @@
             android:orientation="horizontal"
             app:layout_constraintTop_toTopOf="parent">
 
+            <LinearLayout
+                android:id="@+id/ll_shimmer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/item_contact_shimmer" />
+
+                <include layout="@layout/item_contact_shimmer" />
+
+                <include layout="@layout/item_contact_shimmer" />
+
+                <include layout="@layout/item_contact_shimmer" />
+
+                <include layout="@layout/item_contact_shimmer" />
+
+                <include layout="@layout/item_contact_shimmer" />
+
+                <include layout="@layout/item_contact_shimmer" />
+
+            </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_contact"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_contact" />
 
@@ -78,6 +101,7 @@
                 android:layout_height="match_parent"
                 android:nestedScrollingEnabled="false"
                 android:orientation="vertical"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_alphabet_scroll" />
         </LinearLayout>
@@ -89,9 +113,9 @@
             android:background="@drawable/backgorund_selected_alphabet"
             android:fontFamily="@font/lexend_deca_bold"
             android:gravity="center"
-            android:visibility="gone"
             android:text="A"
             android:textSize="40sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

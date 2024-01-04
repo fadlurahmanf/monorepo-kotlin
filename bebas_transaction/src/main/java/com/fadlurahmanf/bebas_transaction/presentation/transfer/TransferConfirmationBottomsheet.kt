@@ -137,13 +137,13 @@ class TransferConfirmationBottomsheet :
                 .placeholder(
                     ContextCompat.getDrawable(
                         requireContext(),
-                        R.drawable.il_bebas_grey_transaction
+                        R.drawable.il_logo_bebas_grey
                     )
                 )
                 .error(
                     ContextCompat.getDrawable(
                         requireContext(),
-                        R.drawable.il_bebas_grey_transaction
+                        R.drawable.il_logo_bebas_grey
                     )
                 )
                 .into(binding.itemDestinationAccount.ivLogo)

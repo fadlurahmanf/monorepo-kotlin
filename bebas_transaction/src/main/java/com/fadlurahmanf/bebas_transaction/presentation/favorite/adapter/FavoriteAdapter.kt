@@ -18,10 +18,16 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
     private var favorites: ArrayList<FavoriteContactModel> = arrayListOf()
     private var callback: Callback? = null
 
-    fun setList(list: List<FavoriteContactModel>) {
+    fun setNewList(list: List<FavoriteContactModel>) {
         favorites.clear()
         favorites.addAll(list)
         notifyItemRangeInserted(0, list.size)
+    }
+
+    fun resetList(list: List<FavoriteContactModel>) {
+        favorites.clear()
+        favorites.addAll(list)
+        notifyItemRangeChanged(0, list.size)
     }
 
     fun insertModel(favorite: FavoriteContactModel) {
@@ -90,7 +96,7 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
                 )
             )
             holder.pin.imageTintList =
-                ColorStateList.valueOf(ContextCompat.getColor(context, R.color.light_grey))
+                ColorStateList.valueOf(ContextCompat.getColor(context, R.color.grey))
         }
 
         holder.pin.setOnClickListener {

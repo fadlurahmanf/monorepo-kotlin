@@ -54,12 +54,25 @@
             android:paddingBottom="85dp">
 
             <LinearLayout
+                android:id="@+id/ll_latest_shimmer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include layout="@layout/item_latest_shimmer" />
+
+                <include layout="@layout/item_latest_shimmer" />
+
+                <include layout="@layout/item_latest_shimmer" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/ll_latest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     style="@style/Font.Text14"
@@ -85,7 +98,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <TextView
                     style="@style/Font.Text14"
@@ -94,11 +107,22 @@
                     android:text="Favorit Teratas"
                     android:textColor="@color/grey" />
 
+                <LinearLayout
+                    android:id="@+id/ll_pinned_favorites_shimmer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/item_favorite_shimmer" />
+
+                </LinearLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_pinned_favorite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_favorite" />
             </LinearLayout>
@@ -109,7 +133,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <TextView
                     style="@style/Font.Text14"
@@ -118,11 +142,21 @@
                     android:text="Daftar Favorit"
                     android:textColor="@color/grey" />
 
+                <LinearLayout
+                    android:id="@+id/ll_favorites_shimmer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/item_favorite_shimmer" />
+                </LinearLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_favorite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_favorite" />
             </LinearLayout>

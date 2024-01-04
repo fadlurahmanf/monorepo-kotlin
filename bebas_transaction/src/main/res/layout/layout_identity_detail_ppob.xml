@@ -21,7 +21,7 @@
             android:background="@drawable/background_circle_white_with_border_grey"
             android:gravity="center"
             android:padding="10dp"
-            android:src="@drawable/il_bebas_grey_transaction" />
+            android:src="@drawable/il_logo_bebas_grey" />
 
         <TextView
             android:id="@+id/tv_initial_avatar"

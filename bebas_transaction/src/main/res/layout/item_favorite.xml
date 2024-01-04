@@ -5,7 +5,7 @@
     android:layout_height="80dp"
     android:background="@drawable/background_favorite"
     android:orientation="horizontal"
-    android:layout_marginVertical="10dp"
+    android:layout_marginTop="10dp"
     android:padding="10dp">
 
     <TextView
@@ -52,5 +52,5 @@
         android:layout_height="20dp"
         android:layout_gravity="center"
         android:src="@drawable/outline_push_pin_24"
-        app:tint="@color/light_grey" />
+        app:tint="@color/grey" />
 </LinearLayout>

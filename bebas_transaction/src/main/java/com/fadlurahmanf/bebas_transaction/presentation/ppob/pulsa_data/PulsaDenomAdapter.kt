@@ -51,7 +51,7 @@ class PulsaDenomAdapter : RecyclerView.Adapter<PulsaDenomAdapter.ViewHolder>() {
         val denom = denoms[position]
 
         Glide.with(holder.providerImage).load(Uri.parse(denom.providerImage))
-            .fallback(ContextCompat.getDrawable(context, R.drawable.il_bebas_grey_transaction))
+            .fallback(ContextCompat.getDrawable(context, R.drawable.il_logo_bebas_grey))
             .into(holder.providerImage)
         holder.denom.text = denom.denom.toRupiahFormat(useDecimal = false)
         holder.total.text = denom.total.toRupiahFormat(useSymbol = true, useDecimal = false)

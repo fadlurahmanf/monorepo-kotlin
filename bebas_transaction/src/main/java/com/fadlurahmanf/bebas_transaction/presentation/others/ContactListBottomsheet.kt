@@ -113,6 +113,16 @@ class ContactListBottomsheet :
                     contactListAdapter.setList(contacts)
 
                     binding.rvAlphabet.adapter = alphabetAdapter
+
+                    binding.llShimmer.visibility = View.GONE
+                    binding.rvContact.visibility = View.VISIBLE
+                    binding.rvAlphabet.visibility = View.VISIBLE
+                }
+
+                is NetworkState.LOADING -> {
+                    binding.llShimmer.visibility = View.VISIBLE
+                    binding.rvContact.visibility = View.GONE
+                    binding.rvAlphabet.visibility = View.GONE
                 }
 
                 else -> {}

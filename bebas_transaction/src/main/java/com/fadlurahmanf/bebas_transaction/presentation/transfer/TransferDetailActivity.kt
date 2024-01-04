@@ -86,13 +86,13 @@ class TransferDetailActivity :
                 .error(
                     ContextCompat.getDrawable(
                         applicationContext,
-                        R.drawable.il_bebas_grey_transaction
+                        R.drawable.il_logo_bebas_grey
                     )
                 )
                 .placeholder(
                     ContextCompat.getDrawable(
                         applicationContext,
-                        R.drawable.il_bebas_grey_transaction
+                        R.drawable.il_logo_bebas_grey
                     )
                 )
                 .into(binding.layoutInputNominal.ivBankLogo)

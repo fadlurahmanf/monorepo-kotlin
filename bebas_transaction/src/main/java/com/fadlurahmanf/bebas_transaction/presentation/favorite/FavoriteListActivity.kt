@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -152,22 +153,44 @@ class FavoriteListActivity :
         viewModel.favoriteState.observe(this) {
             when (it) {
                 is NetworkState.SUCCESS -> {
+                    val isPreviousFavoritesExist = favorites.isNotEmpty()
                     favorites.clear()
                     favorites.addAll(it.data)
-                    favoriteAdapter.setList(favorites)
-
-                    pinnedFavorites.clear()
-                    pinnedFavorites.addAll(it.data.filter { model ->
-                        model.isPinned
-                    })
-                    pinnedFavoriteAdapter.setList(pinnedFavorites)
-
-                    if (pinnedFavorites.isNotEmpty()) {
-                        binding.llPinnedFavorites.visibility = View.VISIBLE
+                    if (isPreviousFavoritesExist) {
+                        favoriteAdapter.resetList(favorites)
+                    } else {
+                        favoriteAdapter.setNewList(favorites)
                     }
 
                     if (favorites.isNotEmpty()) {
                         binding.llFavorites.visibility = View.VISIBLE
+                        binding.llFavoritesShimmer.visibility = View.GONE
+                        binding.rvFavorite.visibility = View.VISIBLE
+                    } else {
+                        binding.llFavorites.visibility = View.GONE
+                        binding.llFavoritesShimmer.visibility = View.GONE
+                        binding.rvFavorite.visibility = View.GONE
+                    }
+
+                    val isPreviousPinnedFavoritesExist = pinnedFavorites.isNotEmpty()
+                    pinnedFavorites.clear()
+                    pinnedFavorites.addAll(it.data.filter { model ->
+                        model.isPinned
+                    })
+                    if (isPreviousPinnedFavoritesExist) {
+                        pinnedFavoriteAdapter.resetList(pinnedFavorites)
+                    } else {
+                        pinnedFavoriteAdapter.setNewList(pinnedFavorites)
+                    }
+
+                    if (pinnedFavorites.isNotEmpty()) {
+                        binding.llPinnedFavorites.visibility = View.VISIBLE
+                        binding.llPinnedFavoritesShimmer.visibility = View.GONE
+                        binding.rvPinnedFavorite.visibility = View.VISIBLE
+                    } else {
+                        binding.llPinnedFavorites.visibility = View.GONE
+                        binding.llPinnedFavoritesShimmer.visibility = View.GONE
+                        binding.rvPinnedFavorite.visibility = View.GONE
                     }
                 }
 
@@ -177,8 +200,25 @@ class FavoriteListActivity :
                 }
 
                 is NetworkState.LOADING -> {
-                    binding.llFavorites.visibility = View.GONE
-                    binding.llPinnedFavorites.visibility = View.GONE
+                    if (pinnedFavorites.isNotEmpty()) {
+                        binding.llPinnedFavorites.visibility = View.VISIBLE
+                        binding.llPinnedFavoritesShimmer.visibility = View.GONE
+                        binding.rvPinnedFavorite.visibility = View.VISIBLE
+                    } else {
+                        binding.llPinnedFavorites.visibility = View.VISIBLE
+                        binding.llPinnedFavoritesShimmer.visibility = View.VISIBLE
+                        binding.rvPinnedFavorite.visibility = View.GONE
+                    }
+
+                    if (favorites.isNotEmpty()) {
+                        binding.llFavorites.visibility = View.VISIBLE
+                        binding.llFavoritesShimmer.visibility = View.GONE
+                        binding.rvFavorite.visibility = View.VISIBLE
+                    } else {
+                        binding.llFavorites.visibility = View.VISIBLE
+                        binding.llFavoritesShimmer.visibility = View.VISIBLE
+                        binding.rvFavorite.visibility = View.GONE
+                    }
                 }
 
                 else -> {
@@ -230,6 +270,8 @@ class FavoriteListActivity :
 
                     if (latests.isNotEmpty()) {
                         binding.llLatest.visibility = View.VISIBLE
+                    } else {
+                        binding.llLatest.visibility = View.GONE
                     }
                 }
 
@@ -238,9 +280,12 @@ class FavoriteListActivity :
                 }
             }
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
         viewModel.getTransferFavorite(favoriteFlow)
-        viewModel.getTransferLatest(favoriteFlow)
+//        viewModel.getTransferLatest(favoriteFlow)
     }
 
     private val contactPermissionLauncher =
@@ -426,7 +471,7 @@ class FavoriteListActivity :
         if (isCurrentPinned) {
             var indexFavorite: Int = -1
             for (element in 0 until favorites.size) {
-                if (favorites[0].id == favorite.id) {
+                if (favorites[element].id == favorite.id) {
                     indexFavorite = element
                     break
                 }
@@ -443,7 +488,7 @@ class FavoriteListActivity :
 
             var indexFavorite: Int = -1
             for (element in 0 until favorites.size) {
-                if (favorites[0].id == favorite.id) {
+                if (favorites[element].id == favorite.id) {
                     indexFavorite = element
                     break
                 }
@@ -514,8 +559,12 @@ class FavoriteListActivity :
 
         if (pinnedFavorites.isNotEmpty()) {
             binding.llPinnedFavorites.visibility = View.VISIBLE
+            binding.llPinnedFavoritesShimmer.visibility = View.GONE
+            binding.rvPinnedFavorite.visibility = View.VISIBLE
         } else {
             binding.llPinnedFavorites.visibility = View.GONE
+            binding.llPinnedFavoritesShimmer.visibility = View.GONE
+            binding.rvPinnedFavorite.visibility = View.GONE
         }
     }
 
