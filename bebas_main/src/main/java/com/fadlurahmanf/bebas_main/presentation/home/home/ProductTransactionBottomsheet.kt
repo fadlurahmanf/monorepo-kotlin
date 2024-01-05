@@ -107,6 +107,14 @@ class ProductTransactionBottomsheet :
                 productTransactionMenu = productTransactionMenu.firstOrNull {
                     it.productMenuId == "PAYMENT"
                 } ?: othersMenu
+            ),
+            SubProductTransactionMenuModel(
+                subProductMenuId = "POSTPAID_PLN",
+                subProductMenuLabel = R.string.electricity_bill,
+                subProductImageMenu = R.drawable.ic_subproduct_tagihanlistrik,
+                productTransactionMenu = productTransactionMenu.firstOrNull {
+                    it.productMenuId == "PAYMENT"
+                } ?: othersMenu
             )
         )
 
@@ -204,6 +212,18 @@ class ProductTransactionBottomsheet :
                 intent.putExtra(
                     FavoriteArgumentConstant.FAVORITE_FLOW,
                     FavoriteFlow.TRANSACTION_MENU_PULSA_DATA.name
+                )
+                startActivity(intent)
+            }
+
+            "POSTPAID_PLN" -> {
+                val intent = Intent(
+                    requireContext(),
+                    Class.forName("com.fadlurahmanf.bebas_transaction.presentation.favorite.FavoriteListActivity")
+                )
+                intent.putExtra(
+                    FavoriteArgumentConstant.FAVORITE_FLOW,
+                    FavoriteFlow.TRANSACTION_MENU_PLN_POSTPAID_CHECKOUT.name
                 )
                 startActivity(intent)
             }

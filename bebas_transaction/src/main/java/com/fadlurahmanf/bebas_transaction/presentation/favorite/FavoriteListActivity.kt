@@ -102,6 +102,13 @@ class FavoriteListActivity :
                 binding.tvBtnNewReceiver.text = "Nomor Pelanggan Baru"
                 binding.ivButtonNewReceiver.setImageResource(R.drawable.outline_person_add_alt_1_24)
             }
+
+            FavoriteFlow.TRANSACTION_MENU_PLN_POSTPAID_CHECKOUT -> {
+                latestAdapter = LatestAdapter(LatestAdapterFlow.PLN_POSTPAID_CHECKOUT)
+                binding.toolbar.title = "Nomor Pelanggan Favorit"
+                binding.tvBtnNewReceiver.text = "Nomor Pelanggan Baru"
+                binding.ivButtonNewReceiver.setImageResource(R.drawable.outline_person_add_alt_1_24)
+            }
         }
 
         latestAdapter.setCallback(this)
@@ -303,7 +310,7 @@ class FavoriteListActivity :
     override fun onResume() {
         super.onResume()
         viewModel.getTransferFavorite(favoriteFlow)
-        viewModel.getTransferLatest(favoriteFlow)
+        viewModel.getLatestTransaction(favoriteFlow)
     }
 
     private val contactPermissionLauncher =
@@ -367,6 +374,10 @@ class FavoriteListActivity :
             }
 
             FavoriteFlow.TRANSACTION_MENU_TELKOM_INDIHOME -> {
+
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_PLN_POSTPAID_CHECKOUT -> {
 
             }
         }
@@ -477,6 +488,10 @@ class FavoriteListActivity :
                 }
                 startActivity(intent)
             }
+
+            FavoriteFlow.TRANSACTION_MENU_PLN_POSTPAID_CHECKOUT -> {
+
+            }
         }
     }
 
@@ -560,6 +575,10 @@ class FavoriteListActivity :
                     favoriteModel = favorite,
                 )
             }
+
+            FavoriteFlow.TRANSACTION_MENU_PLN_POSTPAID_CHECKOUT -> {
+
+            }
         }
     }
 
@@ -620,6 +639,10 @@ class FavoriteListActivity :
                     isFromLatest = true,
                     latestModel = latest,
                 )
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_PLN_POSTPAID_CHECKOUT -> {
+
             }
         }
     }

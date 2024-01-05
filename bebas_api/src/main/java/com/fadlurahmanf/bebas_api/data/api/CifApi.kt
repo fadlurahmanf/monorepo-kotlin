@@ -1,6 +1,6 @@
 package com.fadlurahmanf.bebas_api.data.api
 
-import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoritePLNPrePaidResponse
+import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoritePLNResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoritePulsaPrePaidResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoriteTelkomIndihomeResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoriteTransferResponse
@@ -21,7 +21,10 @@ interface CifApi {
     fun getFavoriteTransfer(): Observable<BaseResponse<List<FavoriteTransferResponse>>>
 
     @GET("favorite-prepaid/get-favorite")
-    fun getFavoritePLNPrePaid(): Observable<BaseResponse<List<FavoritePLNPrePaidResponse>>>
+    fun getFavoritePLNPrePaid(): Observable<BaseResponse<List<FavoritePLNResponse>>>
+
+    @GET("favorite-bill-payment/get-favorite")
+    fun getFavoritePLNPostPaid(): Observable<BaseResponse<List<FavoritePLNResponse>>>
 
     @GET("favorite-pulsa/get-favorite")
     fun getFavoritePulsaPrePaid(

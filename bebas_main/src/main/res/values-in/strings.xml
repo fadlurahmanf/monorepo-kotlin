@@ -12,4 +12,6 @@
     <string name="credit_and_package">Pulsa &amp; Data</string>
     <string name="telkom_or_indihome">Telkom/Indihome</string>
     <string name="learn_now">Pelajari Sekarang</string>
+
+    <string name="electricity_bill">Tagihan Listrik</string>
 </resources>

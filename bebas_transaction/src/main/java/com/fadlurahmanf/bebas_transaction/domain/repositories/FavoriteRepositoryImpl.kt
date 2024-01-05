@@ -49,6 +49,23 @@ class FavoriteRepositoryImpl @Inject constructor(
         }
     }
 
+    fun getLatestTransactionPLNPostPaid(): Observable<List<LatestTransactionModel>> {
+        return cifRemoteDatasource.getLatestTransactionPLNPostPaid().map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+
+            val latest = it.data!!
+            latest.map { latestResp ->
+                LatestTransactionModel(
+                    label = latestResp.customerName ?: "-",
+                    subLabel = latestResp.billPaymentNumber ?: "-",
+                    accountNumber = latestResp.billPaymentNumber ?: "-"
+                )
+            }.toList()
+        }
+    }
+
     fun getLatestTransactionPulsaPrePaid(): Observable<List<LatestTransactionModel>> {
         return cifRemoteDatasource.getLatestTransactionPulsaPrePaid().map {
             if (it.data == null) {
@@ -116,7 +133,27 @@ class FavoriteRepositoryImpl @Inject constructor(
                 FavoriteContactModel(
                     id = favResp.id ?: "-",
                     nameInFavoriteContact = favResp.aliasName ?: "-",
-                    labelTypeOfFavorite = favResp.aliasName ?: "-",
+                    labelTypeOfFavorite = "PLN",
+                    accountNumber = favResp.accountNumber ?: "-",
+                    isPinned = favResp.isPinned ?: false,
+                    additionalPlnPrePaidData = favResp
+                )
+            }.toList()
+        }
+    }
+
+    fun getFavoritePLNPostPaid(): Observable<List<FavoriteContactModel>> {
+        return cifRemoteDatasource.getFavoritePLNPostPaid().map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+
+            val favorites = it.data!!
+            favorites.map { favResp ->
+                FavoriteContactModel(
+                    id = favResp.id ?: "-",
+                    nameInFavoriteContact = favResp.aliasName ?: "-",
+                    labelTypeOfFavorite = "PLN",
                     accountNumber = favResp.accountNumber ?: "-",
                     isPinned = favResp.isPinned ?: false,
                     additionalPlnPrePaidData = favResp

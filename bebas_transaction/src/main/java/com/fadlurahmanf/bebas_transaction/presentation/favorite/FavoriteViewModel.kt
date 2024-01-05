@@ -27,7 +27,7 @@ class FavoriteViewModel @Inject constructor(
     private val _latestState = MutableLiveData<NetworkState<List<LatestTransactionModel>>>()
     val latestState: LiveData<NetworkState<List<LatestTransactionModel>>> = _latestState
 
-    fun getTransferLatest(favoriteFlow: FavoriteFlow) {
+    fun getLatestTransaction(favoriteFlow: FavoriteFlow) {
         _latestState.value = NetworkState.LOADING
         val observable: Observable<List<LatestTransactionModel>> = when (favoriteFlow) {
             FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
@@ -44,6 +44,10 @@ class FavoriteViewModel @Inject constructor(
 
             FavoriteFlow.TRANSACTION_MENU_TELKOM_INDIHOME -> {
                 favoriteRepositoryImpl.getLatestTransactionTelkomIndihome()
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_PLN_POSTPAID_CHECKOUT -> {
+                favoriteRepositoryImpl.getLatestTransactionPLNPostPaid()
             }
         }
 
@@ -82,6 +86,10 @@ class FavoriteViewModel @Inject constructor(
 
             FavoriteFlow.TRANSACTION_MENU_TELKOM_INDIHOME -> {
                 favoriteRepositoryImpl.getFavoriteTelkomIndihome()
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_PLN_POSTPAID_CHECKOUT -> {
+                favoriteRepositoryImpl.getFavoritePLNPostPaid()
             }
         }
 
