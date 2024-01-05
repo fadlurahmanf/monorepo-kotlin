@@ -60,7 +60,8 @@ class FavoriteRepositoryImpl @Inject constructor(
                 LatestTransactionModel(
                     label = latestResp.customerName ?: "-",
                     subLabel = latestResp.billPaymentNumber ?: "-",
-                    accountNumber = latestResp.billPaymentNumber ?: "-"
+                    accountNumber = latestResp.billPaymentNumber ?: "-",
+                    additionalPLNPostPaid = latestResp
                 )
             }.toList()
         }

@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -490,7 +491,28 @@ class FavoriteListActivity :
             }
 
             FavoriteFlow.TRANSACTION_MENU_PLN_POSTPAID_CHECKOUT -> {
-
+                val intent = Intent(this, PaymentDetailActivity::class.java)
+                intent.apply {
+                    putExtra(
+                        PaymentDetailActivity.FLOW,
+                        PaymentDetailFlow.PLN_POSTPAID_CHECKOUT.name
+                    )
+                    putExtra(
+                        PaymentDetailActivity.ARGUMENT, PaymentDetailArgument(
+                            isFavorite = fromFavorite,
+                            isFavoriteEnabled = true,
+                            labelIdentity = inquiryResult.inquiryPLNPostPaidCheckout?.clientName
+                                ?: "-",
+                            subLabelIdentity = "PLN • ${inquiryResult.inquiryPLNPostPaidCheckout?.clientNumber ?: "-"}",
+                            additionalPLNPostPaidCheckout = PaymentDetailArgument.AdditionalPLNPostPaidCheckout(
+                                clientName = inquiryResult.inquiryPLNPostPaidCheckout?.clientName
+                                    ?: "-",
+                                inquiry = inquiryResult.inquiryPLNPostPaidCheckout!!
+                            )
+                        )
+                    )
+                }
+                startActivity(intent)
             }
         }
     }
@@ -650,7 +672,15 @@ class FavoriteListActivity :
             }
 
             FavoriteFlow.TRANSACTION_MENU_PLN_POSTPAID_CHECKOUT -> {
-
+                viewModel.inquiry(
+                    InquiryRequestModel.InquiryPLNPostPaid(
+                        customerId = latest.accountNumber,
+                        providerName = latest.additionalPLNPostPaid?.providerName ?: "-",
+                        billingCategory = latest.additionalPLNPostPaid?.billingCategory ?: "-"
+                    ),
+                    isFromFavorite = true,
+                    latestModel = latest,
+                )
             }
         }
     }

@@ -351,7 +351,9 @@ class TransactionRepositoryImpl @Inject constructor(
             providerName = providerName,
             billingCategory = billingCategory
         ).map {
-            InquiryResultModel()
+            InquiryResultModel(
+                inquiryPLNPostPaidCheckout = it
+            )
         }
     }
 

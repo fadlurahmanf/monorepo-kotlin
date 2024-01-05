@@ -135,6 +135,10 @@ class PaymentDetailActivity :
                     )
                 }
             }
+
+            PaymentDetailFlow.PLN_POSTPAID_CHECKOUT -> {
+
+            }
         }
 
         transactionConfirmationBottomsheet?.arguments = bundle
@@ -172,6 +176,10 @@ class PaymentDetailActivity :
                 binding.llDetailPpobTelkomIndihome.visibility = View.VISIBLE
                 binding.btnNext.visibility = View.VISIBLE
             }
+
+            PaymentDetailFlow.PLN_POSTPAID_CHECKOUT -> {
+
+            }
         }
     }
 
@@ -183,6 +191,10 @@ class PaymentDetailActivity :
 
             PaymentDetailFlow.TELKOM_INDIHOME -> {
                 binding.toolbar.title = "Pembayaran Telkom/IndiHome"
+            }
+
+            PaymentDetailFlow.PLN_POSTPAID_CHECKOUT -> {
+                binding.toolbar.title = "Pembayaran Tagihan Listrik"
             }
         }
     }
@@ -226,6 +238,10 @@ class PaymentDetailActivity :
                         useDecimal = true
                     )
             }
+
+            PaymentDetailFlow.PLN_POSTPAID_CHECKOUT -> {
+
+            }
         }
     }
 
@@ -263,6 +279,10 @@ class PaymentDetailActivity :
                         )
                     )
                 }
+            }
+
+            PaymentDetailFlow.PLN_POSTPAID_CHECKOUT -> {
+
             }
         }
         startActivity(intent)
