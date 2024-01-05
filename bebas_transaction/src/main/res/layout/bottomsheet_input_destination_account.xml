@@ -29,12 +29,35 @@
         android:paddingHorizontal="10dp"
         android:text="Masukkan Rekening Tujuan" />
 
-    <include
-        android:id="@+id/item_identity"
-        layout="@layout/item_select_bank"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:layout_height="80dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/iv_new_receiver_logo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/background_circle_white_with_border_light_grey"
+            android:gravity="center"
+            android:padding="8dp"
+            android:src="@drawable/il_logo_bebas_grey"
+            android:textAllCaps="true" />
+
+        <TextView
+            android:id="@+id/tv_new_receiver_label"
+            style="@style/Font.Text16"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/lexend_deca_bold"
+            android:text="New Receiver Logo" />
+    </LinearLayout>
 
     <com.fadlurahmanf.bebas_ui.edittext.BebasEdittext
         android:id="@+id/et_destination_account"

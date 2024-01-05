@@ -24,8 +24,8 @@ class InputDestinationAccountBottomsheet :
     companion object {
         const val FLOW = "FLOW"
 
-        const val IMAGE_LOGO_URL = "IMAGE_URL"
-        const val LABEL_NAME = "LABEL_NAME"
+        const val IMAGE_NEW_RECEIVER_LOGO = "IMAGE_NEW_RECEIVER_LOGO"
+        const val LABEL_NEW_RECEIVER = "LABEL_NEW_RECEIVER"
         const val INITIAL_DESTINATION_ACCOUNT = "INITIAL_DESTINATION_ACCOUNT"
     }
 
@@ -50,8 +50,8 @@ class InputDestinationAccountBottomsheet :
         val stringFlow = arguments?.getString(FLOW) ?: return
         flow = enumValueOf<InputDestinationAccountFlow>(stringFlow)
 
-        imageUrl = arguments?.getString(IMAGE_LOGO_URL)
-        label = arguments?.getString(LABEL_NAME)
+        imageUrl = arguments?.getString(IMAGE_NEW_RECEIVER_LOGO)
+        label = arguments?.getString(LABEL_NEW_RECEIVER)
         destinationAccountNumber = arguments?.getString(INITIAL_DESTINATION_ACCOUNT)
 
         when (flow) {
@@ -64,21 +64,33 @@ class InputDestinationAccountBottomsheet :
                 binding.tvTitleBottomsheet.text = "Masukkan ID Pel/No. Meter"
                 binding.etDestinationAccount.setLabel("ID Pelanggan/No. Meter")
             }
+
+            InputDestinationAccountFlow.PLN_POSTPAID -> {
+                binding.tvTitleBottomsheet.text = "Masukkan ID Pel/No. Meter"
+                binding.etDestinationAccount.setLabel("ID Pelanggan/No. Meter")
+            }
         }
 
         when (flow) {
             InputDestinationAccountFlow.PLN_PREPAID -> {
-                binding.itemIdentity.tvLabel.text = "Token Listrik"
-                Glide.with(binding.itemIdentity.ivLogo)
+                binding.tvNewReceiverLabel.text = "Token Listrik"
+                Glide.with(binding.ivNewReceiverLogo)
                     .load(ContextCompat.getDrawable(requireContext(), R.drawable.iv_logo_pln))
-                    .into(binding.itemIdentity.ivLogo)
+                    .into(binding.ivNewReceiverLogo)
+            }
+
+            InputDestinationAccountFlow.PLN_POSTPAID -> {
+                binding.tvNewReceiverLabel.text = "Tagihan Listrik"
+                Glide.with(binding.ivNewReceiverLogo)
+                    .load(ContextCompat.getDrawable(requireContext(), R.drawable.iv_logo_pln))
+                    .into(binding.ivNewReceiverLogo)
             }
 
             else -> {
-                binding.itemIdentity.tvLabel.text = label ?: "-"
+                binding.tvNewReceiverLabel.text = label ?: "-"
                 binding.etDestinationAccount.text = destinationAccountNumber ?: ""
-                Glide.with(binding.itemIdentity.ivLogo).load(Uri.parse(imageUrl ?: ""))
-                    .into(binding.itemIdentity.ivLogo)
+                Glide.with(binding.ivNewReceiverLogo).load(Uri.parse(imageUrl ?: ""))
+                    .into(binding.ivNewReceiverLogo)
             }
         }
 

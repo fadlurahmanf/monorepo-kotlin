@@ -148,8 +148,8 @@ class BankListActivity :
                 InputDestinationAccountBottomsheet.FLOW,
                 InputDestinationAccountFlow.TRANSFER.name
             )
-            putString(InputDestinationAccountBottomsheet.LABEL_NAME, bank.nickName ?: "-")
-            putString(InputDestinationAccountBottomsheet.IMAGE_LOGO_URL, bank.image ?: "-")
+            putString(InputDestinationAccountBottomsheet.LABEL_NEW_RECEIVER, bank.nickName ?: "-")
+            putString(InputDestinationAccountBottomsheet.IMAGE_NEW_RECEIVER_LOGO, bank.image ?: "-")
         }
         inputDestinationAccountBottomsheet?.show(
             supportFragmentManager,

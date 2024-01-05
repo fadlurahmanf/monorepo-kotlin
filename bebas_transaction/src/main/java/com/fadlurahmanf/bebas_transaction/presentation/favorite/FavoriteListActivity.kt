@@ -379,7 +379,7 @@ class FavoriteListActivity :
             }
 
             FavoriteFlow.TRANSACTION_MENU_PLN_POSTPAID_CHECKOUT -> {
-
+                showInputAccountBottomsheet()
             }
         }
     }
@@ -390,15 +390,51 @@ class FavoriteListActivity :
         inputAccountBottomsheet?.setCallback(object : InputDestinationAccountBottomsheet.Callback {
             override fun onNextClicked(dialog: Dialog?, destinationAccount: String) {
                 super.onNextClicked(dialog, destinationAccount)
+                dialog?.dismiss()
+                when (favoriteFlow) {
+                    FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID -> {
 
+                    }
+
+                    FavoriteFlow.TRANSACTION_MENU_PLN_POSTPAID_CHECKOUT -> {
+                        viewModel.inquiry(
+                            InquiryRequestModel.InquiryPLNPostPaid(
+                                customerId = destinationAccount,
+                                billingCategory = "Listrik",
+                                providerName = "PLN"
+                            )
+                        )
+                    }
+
+                    else -> {
+
+                    }
+                }
             }
         })
-        inputAccountBottomsheet?.arguments = Bundle().apply {
-            putString(
-                InputDestinationAccountBottomsheet.FLOW,
-                InputDestinationAccountFlow.PLN_PREPAID.name
-            )
+
+        when (favoriteFlow) {
+            FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID -> {
+                inputAccountBottomsheet?.arguments = Bundle().apply {
+                    putString(
+                        InputDestinationAccountBottomsheet.FLOW,
+                        InputDestinationAccountFlow.PLN_PREPAID.name
+                    )
+                }
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_PLN_POSTPAID_CHECKOUT -> {
+                inputAccountBottomsheet?.arguments = Bundle().apply {
+                    putString(
+                        InputDestinationAccountBottomsheet.FLOW,
+                        InputDestinationAccountFlow.PLN_POSTPAID.name
+                    )
+                }
+            }
+
+            else -> {}
         }
+
         inputAccountBottomsheet?.show(
             supportFragmentManager,
             InputDestinationAccountBottomsheet::class.java.simpleName
