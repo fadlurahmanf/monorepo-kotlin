@@ -12,4 +12,10 @@ sealed class InquiryRequestModel {
     data class InquiryTelkomIndihome(
         val customerId: String
     ) : InquiryRequestModel()
+
+    data class InquiryPLNPostPaid(
+        val customerId: String,
+        val providerName: String,
+        val billingCategory: String,
+    ) : InquiryRequestModel()
 }

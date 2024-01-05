@@ -156,7 +156,7 @@ class FavoriteRepositoryImpl @Inject constructor(
                     labelTypeOfFavorite = "PLN",
                     accountNumber = favResp.accountNumber ?: "-",
                     isPinned = favResp.isPinned ?: false,
-                    additionalPlnPrePaidData = favResp
+                    additionalPlnPostPaidData = favResp
                 )
             }.toList()
         }

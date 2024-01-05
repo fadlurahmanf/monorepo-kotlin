@@ -6,6 +6,7 @@ import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.loyalty.HistoryLoyaltyResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
+import com.fadlurahmanf.bebas_api.data.dto.ppob.PPOBProductCodeResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingPulsaDataResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PulsaDenomResponse
@@ -68,6 +69,12 @@ interface TransactionApi {
     fun inquiryTelkomIndihome(
         @Body request: InquiryTelkomIndihomeRequest
     ): Observable<BaseResponse<InquiryTelkomIndihomeResponse>>
+
+    @GET("ppob-product/bill-payment")
+    fun inquiryPPOBProductCode(
+        @Query("billingCategory") category: String,
+        @Query("providerName") providerName: String,
+    ): Observable<BaseResponse<PPOBProductCodeResponse>>
 
     @POST("telkom-bill/posting")
     fun postingTelkomIndihome(

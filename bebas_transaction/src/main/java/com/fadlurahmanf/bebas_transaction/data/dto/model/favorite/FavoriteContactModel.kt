@@ -14,6 +14,7 @@ data class FavoriteContactModel(
 
     var additionalTransferData: FavoriteTransferResponse? = null,
     var additionalPlnPrePaidData: FavoritePLNResponse? = null,
+    var additionalPlnPostPaidData: FavoritePLNResponse? = null,
     var additionalPulsaPrePaidData: FavoritePulsaPrePaidResponse? = null,
     var additionalTelkomIndihome: FavoriteTelkomIndihomeResponse? = null,
 )

@@ -1,10 +1,13 @@
 package com.fadlurahmanf.bebas_transaction.domain.repositories
 
 import com.fadlurahmanf.bebas_api.data.datasources.CmsRemoteDatasource
+import com.fadlurahmanf.bebas_api.data.datasources.FulfillmentRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.IdentityRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_api.data.dto.pin.PinAttemptResponse
+import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryCheckoutFlowRequest
+import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryCheckoutFlowResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingPulsaPrePaidRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PulsaDenomResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
@@ -30,10 +33,11 @@ import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
 
 class TransactionRepositoryImpl @Inject constructor(
-    private val identityRemoteDatasource: IdentityRemoteDatasource,
-    private val transactionRemoteDatasource: TransactionRemoteDatasource,
     private val cmsRemoteDatasource: CmsRemoteDatasource,
     private val cryptoTransactionRepositoryImpl: CryptoTransactionRepositoryImpl,
+    private val fulfillmentRemoteDatasource: FulfillmentRemoteDatasource,
+    private val identityRemoteDatasource: IdentityRemoteDatasource,
+    private val transactionRemoteDatasource: TransactionRemoteDatasource,
 ) {
 
     fun getBankList(): Observable<List<ItemBankResponse>> {
@@ -308,6 +312,42 @@ class TransactionRepositoryImpl @Inject constructor(
             InquiryResultModel(
                 inquiryTelkomIndihome = resp
             )
+        }
+    }
+
+    private fun inquiryPLNPostPaidCheckoutFlow(
+        customerId: String,
+        providerName: String,
+        billingCategory: String
+    ): Observable<InquiryCheckoutFlowResponse> {
+        return transactionRemoteDatasource.inquiryPPOBProduct(
+            providerName = providerName,
+            billingCategory = billingCategory
+        ).flatMap {
+            val request = InquiryCheckoutFlowRequest(
+                productCode = "pln-postpaid-new",
+                clientNumber = customerId
+            )
+            fulfillmentRemoteDatasource.inquiryCheckoutFlow(request).map { inqRes ->
+                if (inqRes.data == null) {
+                    throw BebasException.generalRC("INQ_00")
+                }
+                inqRes.data!!
+            }
+        }
+    }
+
+    fun inquiryPLNPostPaidCheckoutFlowReturnModel(
+        customerId: String,
+        providerName: String,
+        billingCategory: String
+    ): Observable<InquiryResultModel> {
+        return inquiryPLNPostPaidCheckoutFlow(
+            customerId = customerId,
+            providerName = providerName,
+            billingCategory = billingCategory
+        ).map {
+            InquiryResultModel()
         }
     }
 

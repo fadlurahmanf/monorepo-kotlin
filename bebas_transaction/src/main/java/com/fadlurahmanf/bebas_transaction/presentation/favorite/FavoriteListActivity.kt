@@ -577,7 +577,15 @@ class FavoriteListActivity :
             }
 
             FavoriteFlow.TRANSACTION_MENU_PLN_POSTPAID_CHECKOUT -> {
-
+                viewModel.inquiry(
+                    InquiryRequestModel.InquiryPLNPostPaid(
+                        customerId = favorite.accountNumber,
+                        providerName = favorite.additionalPlnPostPaidData?.providerName ?: "-",
+                        billingCategory = favorite.additionalPlnPostPaidData?.categoryName ?: "-"
+                    ),
+                    isFromFavorite = true,
+                    favoriteModel = favorite,
+                )
             }
         }
     }

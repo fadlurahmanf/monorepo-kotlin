@@ -41,6 +41,12 @@ class TransactionRemoteDatasource @Inject constructor(
     fun inquiryTelkomIndihome(request: InquiryTelkomIndihomeRequest) =
         networkService().inquiryTelkomIndihome(request)
 
+    fun inquiryPPOBProduct(billingCategory: String, providerName: String) =
+        networkService().inquiryPPOBProductCode(
+            category = billingCategory,
+            providerName = providerName
+        )
+
     fun postingTelkomIndihome(json: JsonObject) =
         networkService().postingTelkomIndihome(json)
 

@@ -162,6 +162,14 @@ class FavoriteViewModel @Inject constructor(
             is InquiryRequestModel.InquiryTelkomIndihome -> {
                 transactionRepositoryImpl.inquiryTelkomIndihomeReturnModel(inquiryRequestModel.customerId)
             }
+
+            is InquiryRequestModel.InquiryPLNPostPaid -> {
+                transactionRepositoryImpl.inquiryPLNPostPaidCheckoutFlowReturnModel(
+                    customerId = inquiryRequestModel.customerId,
+                    providerName = inquiryRequestModel.providerName,
+                    billingCategory = inquiryRequestModel.billingCategory,
+                )
+            }
         }
         _inquiryState.value = InquiryState.LOADING
         baseDisposable.add(disposableModel.subscribeOn(Schedulers.io())
