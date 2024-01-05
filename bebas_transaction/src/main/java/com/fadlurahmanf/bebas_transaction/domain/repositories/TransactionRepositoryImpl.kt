@@ -323,9 +323,13 @@ class TransactionRepositoryImpl @Inject constructor(
         return transactionRemoteDatasource.inquiryPPOBProduct(
             providerName = providerName,
             billingCategory = billingCategory
-        ).flatMap {
+        ).flatMap { productCodeBaseResp ->
+            if (productCodeBaseResp.data == null) {
+                throw BebasException.generalRC("PPOB_PRODUCT_CODE_00")
+            }
+            val productCodeResp = productCodeBaseResp.data!!
             val request = InquiryCheckoutFlowRequest(
-                productCode = "pln-postpaid-new",
+                productCode = productCodeResp.providerProductCode ?: "-",
                 clientNumber = customerId
             )
             fulfillmentRemoteDatasource.inquiryCheckoutFlow(request).map { inqRes ->
