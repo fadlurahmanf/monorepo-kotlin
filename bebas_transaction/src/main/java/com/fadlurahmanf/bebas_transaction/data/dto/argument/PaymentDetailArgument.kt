@@ -14,6 +14,7 @@ data class PaymentDetailArgument(
     var subLabelIdentity: String,
     var additionalPulsaData: AdditionalPulsaDataArgument? = null,
     var additionalTelkomIndihome: AdditionalTelkomIndihome? = null,
+    var additionalPLNPrePaidCheckout: AdditionalPLNPrePaidCheckout? = null,
     var additionalPLNPostPaidCheckout: AdditionalPLNPostPaidCheckout? = null,
 ) : Parcelable {
     @Parcelize
@@ -30,6 +31,11 @@ data class PaymentDetailArgument(
         val periode: String,
         val tagihan: Double,
         val inquiry: InquiryTelkomIndihomeResponse,
+    ) : Parcelable
+
+    @Parcelize
+    data class AdditionalPLNPrePaidCheckout(
+        var clientNumber: String,
     ) : Parcelable
 
     @Parcelize

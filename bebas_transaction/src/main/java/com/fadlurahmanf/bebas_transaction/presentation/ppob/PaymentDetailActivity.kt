@@ -139,6 +139,10 @@ class PaymentDetailActivity :
             PaymentDetailFlow.PLN_POSTPAID_CHECKOUT -> {
 
             }
+
+            PaymentDetailFlow.PLN_PREPAID_CHECKOUT -> {
+
+            }
         }
 
         transactionConfirmationBottomsheet?.arguments = bundle
@@ -180,6 +184,10 @@ class PaymentDetailActivity :
             PaymentDetailFlow.PLN_POSTPAID_CHECKOUT -> {
 
             }
+
+            PaymentDetailFlow.PLN_PREPAID_CHECKOUT -> {
+
+            }
         }
     }
 
@@ -195,6 +203,10 @@ class PaymentDetailActivity :
 
             PaymentDetailFlow.PLN_POSTPAID_CHECKOUT -> {
                 binding.toolbar.title = "Pembayaran Tagihan Listrik"
+            }
+
+            PaymentDetailFlow.PLN_PREPAID_CHECKOUT -> {
+                binding.toolbar.title = "Pembelian Token Listrik"
             }
         }
     }
@@ -242,6 +254,10 @@ class PaymentDetailActivity :
             PaymentDetailFlow.PLN_POSTPAID_CHECKOUT -> {
 
             }
+
+            PaymentDetailFlow.PLN_PREPAID_CHECKOUT -> {
+
+            }
         }
     }
 
@@ -282,6 +298,10 @@ class PaymentDetailActivity :
             }
 
             PaymentDetailFlow.PLN_POSTPAID_CHECKOUT -> {
+
+            }
+
+            PaymentDetailFlow.PLN_PREPAID_CHECKOUT -> {
 
             }
         }

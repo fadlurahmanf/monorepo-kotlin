@@ -299,8 +299,8 @@ class FavoriteListActivity :
                         binding.llLatestShimmer.visibility = View.GONE
                         binding.rvLatest.visibility = View.VISIBLE
                     } else {
-                        binding.llLatest.visibility = View.VISIBLE
-                        binding.llLatestShimmer.visibility = View.VISIBLE
+                        binding.llLatest.visibility = View.GONE
+                        binding.llLatestShimmer.visibility = View.GONE
                         binding.rvLatest.visibility = View.GONE
                     }
                 }
@@ -615,7 +615,25 @@ class FavoriteListActivity :
             }
 
             FavoriteFlow.TRANSACTION_MENU_PLN_PREPAID -> {
-
+                val intent = Intent(this, PaymentDetailActivity::class.java)
+                intent.apply {
+                    putExtra(
+                        PaymentDetailActivity.FLOW,
+                        PaymentDetailFlow.PLN_PREPAID_CHECKOUT.name
+                    )
+                    putExtra(
+                        PaymentDetailActivity.ARGUMENT, PaymentDetailArgument(
+                            isFavorite = false,
+                            isFavoriteEnabled = false,
+                            labelIdentity = "-",
+                            subLabelIdentity = "-",
+                            additionalPLNPrePaidCheckout = PaymentDetailArgument.AdditionalPLNPrePaidCheckout(
+                                clientNumber = favorite.accountNumber
+                            )
+                        )
+                    )
+                }
+                startActivity(intent)
             }
 
             FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {

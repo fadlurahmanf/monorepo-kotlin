@@ -85,6 +85,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:listitem="@layout/item_pln_denom" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
