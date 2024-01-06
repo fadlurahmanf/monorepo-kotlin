@@ -625,8 +625,8 @@ class FavoriteListActivity :
                         PaymentDetailActivity.ARGUMENT, PaymentDetailArgument(
                             isFavorite = false,
                             isFavoriteEnabled = false,
-                            labelIdentity = "-",
-                            subLabelIdentity = "-",
+                            labelIdentity = "PLN",
+                            subLabelIdentity = favorite.accountNumber,
                             additionalPLNPrePaidCheckout = PaymentDetailArgument.AdditionalPLNPrePaidCheckout(
                                 clientNumber = favorite.accountNumber
                             )

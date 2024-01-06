@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -11,6 +12,7 @@ import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeRequest
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
+import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PaymentDetailArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PulsaDataArgument
@@ -111,13 +113,16 @@ class PaymentDetailActivity :
     }
 
     private fun initObserver() {
-        viewModel.selectedDenomModel.observe(this) {
-            if (it != null) {
-                binding.llBottomLayout.visibility = View.VISIBLE
-            } else {
-                binding.llBottomLayout.visibility = View.GONE
+        if (flow == PaymentDetailFlow.PLN_PREPAID_CHECKOUT) {
+            viewModel.selectedDenomModel.observe(this) {
+                if (it != null) {
+                    binding.llBottomLayout.visibility = View.VISIBLE
+                } else {
+                    binding.llBottomLayout.visibility = View.GONE
+                }
             }
         }
+
         viewModel.plnPrePaidDenomState.observe(this) {
             when (it) {
                 is NetworkState.FAILED -> {
@@ -286,11 +291,10 @@ class PaymentDetailActivity :
     }
 
     private fun setupIdentityPPOB() {
+        binding.layoutIdentityPpob.tvLabelIdentity.text = argument.labelIdentity
+        binding.layoutIdentityPpob.tvIdentitySubLabel.text = argument.subLabelIdentity
         when (flow) {
             PaymentDetailFlow.PULSA_DATA -> {
-                binding.layoutIdentityPpob.tvLabelIdentity.text = argument.labelIdentity
-                binding.layoutIdentityPpob.tvIdentitySubLabel.text = argument.subLabelIdentity
-
                 if (argument.additionalPulsaData?.providerImage != null) {
                     Glide.with(binding.layoutIdentityPpob.ivPpobLogo)
                         .load(Uri.parse(argument.additionalPulsaData?.providerImage))
@@ -299,9 +303,6 @@ class PaymentDetailActivity :
             }
 
             PaymentDetailFlow.TELKOM_INDIHOME -> {
-                binding.layoutIdentityPpob.tvLabelIdentity.text = argument.labelIdentity
-                binding.layoutIdentityPpob.tvIdentitySubLabel.text = argument.subLabelIdentity
-
                 if (argument.additionalTelkomIndihome?.providerImage != null) {
                     Glide.with(binding.layoutIdentityPpob.ivPpobLogo)
                         .load(Uri.parse(argument.additionalTelkomIndihome?.providerImage))
@@ -326,11 +327,15 @@ class PaymentDetailActivity :
             }
 
             PaymentDetailFlow.PLN_POSTPAID_CHECKOUT -> {
-
+                Glide.with(binding.layoutIdentityPpob.ivPpobLogo)
+                    .load(R.drawable.il_logo_pln)
+                    .into(binding.layoutIdentityPpob.ivPpobLogo)
             }
 
             PaymentDetailFlow.PLN_PREPAID_CHECKOUT -> {
-
+                Glide.with(binding.layoutIdentityPpob.ivPpobLogo)
+                    .load(R.drawable.il_logo_pln)
+                    .into(binding.layoutIdentityPpob.ivPpobLogo)
             }
         }
     }

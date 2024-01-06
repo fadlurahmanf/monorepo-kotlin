@@ -114,6 +114,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:elevation="20dp"
+        android:visibility="gone"
         android:background="@drawable/backgorund_button_bottom_layout"
         android:orientation="vertical"
         android:paddingVertical="15dp">
