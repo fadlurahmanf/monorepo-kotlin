@@ -1,47 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ll_main"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_main"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
-    android:background="@drawable/background_denom"
-    android:orientation="vertical"
-    android:padding="5dp">
+    android:layout_height="130dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_second_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_denom_sub_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:background="@drawable/background_denom"
+        android:orientation="vertical"
+        android:padding="5dp">
 
-        <ImageView
-            android:id="@+id/iv_denom_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/il_logo_bebas_grey" />
+        <LinearLayout
+            android:id="@+id/ll_nominal_layout"
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:background="@drawable/background_denom_sub_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_denom_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:src="@drawable/il_logo_bebas_grey" />
+
+            <TextView
+                android:id="@+id/tv_nominal"
+                style="@style/Font.Text16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/lexend_deca_bold"
+                android:text="-" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_nominal"
-            style="@style/Font.Text16"
+            android:id="@+id/tv_total_bayar"
+            style="@style/Font.Text14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/lexend_deca_bold"
-            android:text="22.500" />
-    </LinearLayout>
+            android:text="Rp-"
+            android:textColor="@color/grey"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_nominal_layout" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/tv_total_bayar"
-        style="@style/Font.Text14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:text="Rp22.500"
-        android:textColor="@color/grey" />
-</LinearLayout>
+    <ImageView
+        android:id="@+id/v_background_unavailable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:background="@drawable/background_denom_unavailable" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

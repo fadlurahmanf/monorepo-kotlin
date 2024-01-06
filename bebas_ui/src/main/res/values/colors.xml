@@ -7,6 +7,7 @@
     <color name="grey">#FFB8B8B8</color>
     <color name="light_grey">#FFA1A1A1</color>
     <color name="light_grey_20">#FFE6E6E6</color>
+    <color name="light_grey_opacity_90">#E6E6E6E6</color>
     <color name="grey_opacity_90">#E6B8B8B8</color>
     <color name="border_grey">#FFE6E6E6</color>
 

@@ -6,6 +6,7 @@
     <color name="grey">#FFCACACA</color>
     <color name="grey_opacity_90">#E6CACACA</color>
     <color name="light_grey">#F1F2F2</color>
+    <color name="light_grey_opacity_90">#FFE6E6E6</color>
 
     <color name="black">#FF000000</color>
     <color name="black_opacity">#33000000</color>

@@ -12,6 +12,7 @@
     <color name="grey">#858585</color>
 <!--    <color name="light_grey">#FFA1A1A1</color>-->
     <color name="light_grey">#FFE6E6E6</color>
+    <color name="light_grey_opacity_60">#99E6E6E6</color>
     <color name="border_grey">#FFE6E6E6</color>
     <color name="secondary_light_grey">#FFF1F2F2</color>
 </resources>

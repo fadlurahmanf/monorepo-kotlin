@@ -250,6 +250,7 @@ class TransactionRepositoryImpl @Inject constructor(
                     totalBayar = (denom.nominal ?: -1.0) + (denom.adminFee ?: -1.0),
                     nominal = denom.nominal ?: -1.0,
                     imageUrl = providerImage,
+                    isAvailable = true,
                     pulsaDenomResponse = denom
                 )
             }
@@ -273,6 +274,7 @@ class TransactionRepositoryImpl @Inject constructor(
                     id = "${denom.nominal ?: ""}",
                     totalBayar = (denom.nominal ?: -1.0) + (denom.adminFee ?: -1.0),
                     nominal = denom.nominal ?: -1.0,
+                    isAvailable = denom.isAvailable == true,
                     plnPrePaidDenomResponse = denom
                 )
             }

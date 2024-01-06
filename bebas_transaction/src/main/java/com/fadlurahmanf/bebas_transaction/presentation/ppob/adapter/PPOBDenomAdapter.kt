@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -45,7 +46,9 @@ class PPOBDenomAdapter : RecyclerView.Adapter<PPOBDenomAdapter.ViewHolder>() {
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val llMain = view.findViewById<LinearLayout>(R.id.ll_main)
+        val clMain = view.findViewById<ConstraintLayout>(R.id.cl_main)
+        val clSecondMain = view.findViewById<ConstraintLayout>(R.id.cl_second_main)
+        val vAvailable = view.findViewById<ImageView>(R.id.v_background_unavailable)
         val denomLogo = view.findViewById<ImageView>(R.id.iv_denom_logo)
         val nominal = view.findViewById<TextView>(R.id.tv_nominal)
         val totalBayar = view.findViewById<TextView>(R.id.tv_total_bayar)
@@ -67,13 +70,13 @@ class PPOBDenomAdapter : RecyclerView.Adapter<PPOBDenomAdapter.ViewHolder>() {
         val denom = denoms[position]
 
         if (position % 2 == 0) {
-            val params = holder.llMain.layoutParams as ViewGroup.MarginLayoutParams
+            val params = holder.clMain.layoutParams as ViewGroup.MarginLayoutParams
             params.setMargins(0, 10.toDp(), 5.toDp(), 0)
-            holder.llMain.layoutParams = params
+            holder.clMain.layoutParams = params
         } else {
-            val params = holder.llMain.layoutParams as ViewGroup.MarginLayoutParams
+            val params = holder.clMain.layoutParams as ViewGroup.MarginLayoutParams
             params.setMargins(5.toDp(), 10.toDp(), 0, 0)
-            holder.llMain.layoutParams = params
+            holder.clMain.layoutParams = params
         }
 
         if (denom.imageUrl != null) {
@@ -104,15 +107,24 @@ class PPOBDenomAdapter : RecyclerView.Adapter<PPOBDenomAdapter.ViewHolder>() {
             denom.totalBayar.toRupiahFormat(useSymbol = true, useDecimal = false)
 
         if (denom.isSelected) {
-            holder.llMain.background =
+            holder.clSecondMain.background =
                 ContextCompat.getDrawable(context, R.drawable.background_denom_selected)
         } else {
-            holder.llMain.background =
+            holder.clSecondMain.background =
                 ContextCompat.getDrawable(context, R.drawable.background_denom)
         }
 
+        if (!denom.isAvailable) {
+            holder.vAvailable.visibility = View.VISIBLE
+            holder.totalBayar.text = "Tidak Tersedia"
+        } else {
+            holder.vAvailable.visibility = View.GONE
+        }
+
         holder.itemView.setOnClickListener {
-            callback?.onDenomClicked(denom)
+            if (denom.isAvailable) {
+                callback?.onDenomClicked(denom)
+            }
         }
     }
 

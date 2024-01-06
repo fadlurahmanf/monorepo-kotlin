@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_transaction.presentation.ppob
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
@@ -15,10 +16,6 @@ import javax.inject.Inject
 class PaymentDetailViewModel @Inject constructor(
     private val transactionRepositoryImpl: TransactionRepositoryImpl
 ) : BaseViewModel() {
-
-    init {
-
-    }
 
     private val _selectedBankAccountState = MutableLiveData<NetworkState<BankAccountResponse>>()
     val selectedBankAccountState: LiveData<NetworkState<BankAccountResponse>> =

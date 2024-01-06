@@ -11,6 +11,7 @@ data class PPOBDenomModel(
     val nominal: Double,
     var imageUrl: String? = null,
     var isSelected: Boolean = false,
+    var isAvailable: Boolean = true,
 
     var pulsaDenomResponse: PulsaDenomResponse? = null,
     var plnPrePaidDenomResponse: PLNDenomResponse? = null,

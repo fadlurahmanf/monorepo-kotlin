@@ -111,6 +111,13 @@ class PaymentDetailActivity :
     }
 
     private fun initObserver() {
+        viewModel.selectedDenomModel.observe(this) {
+            if (it != null) {
+                binding.llBottomLayout.visibility = View.VISIBLE
+            } else {
+                binding.llBottomLayout.visibility = View.GONE
+            }
+        }
         viewModel.plnPrePaidDenomState.observe(this) {
             when (it) {
                 is NetworkState.FAILED -> {
@@ -245,7 +252,7 @@ class PaymentDetailActivity :
 
             PaymentDetailFlow.TELKOM_INDIHOME -> {
                 binding.llDetailPpobTelkomIndihome.visibility = View.VISIBLE
-                binding.btnNext.visibility = View.VISIBLE
+                binding.llBottomLayout.visibility = View.VISIBLE
             }
 
             PaymentDetailFlow.PLN_POSTPAID_CHECKOUT -> {
