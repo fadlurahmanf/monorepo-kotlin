@@ -66,7 +66,7 @@ class BankListViewModel @Inject constructor(
                                    },
                                    {
                                        _inquiryState.value =
-                                           InquiryState.FAILED(BebasException.fromThrowable(it))
+                                           InquiryState.FailedBebas(BebasException.fromThrowable(it))
                                    },
                                    {}
                                ))
@@ -92,7 +92,7 @@ class BankListViewModel @Inject constructor(
                                    },
                                    {
                                        _inquiryState.value =
-                                           InquiryState.FAILED(BebasException.fromThrowable(it))
+                                           InquiryState.FailedBebas(BebasException.fromThrowable(it))
                                    },
                                    {}
                                ))

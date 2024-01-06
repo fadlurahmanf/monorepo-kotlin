@@ -36,7 +36,7 @@ class EmailVerificationActivity :
         val emailArg = intent.extras?.getString(EMAIL_ARG)
 
         if (emailArg == null) {
-            showFailedBottomsheet(BebasException.generalRC("EMAIL_MISSING"))
+            showFailedBebasBottomsheet(BebasException.generalRC("EMAIL_MISSING"))
             return
         }
 
@@ -88,7 +88,7 @@ class EmailVerificationActivity :
 
                 is NetworkState.FAILED -> {
                     dismissLoadingDialog()
-                    showFailedBottomsheet(it.exception)
+                    showFailedBebasBottomsheet(it.exception)
                 }
 
                 else -> {

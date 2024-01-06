@@ -40,7 +40,7 @@ class EktpVerificationCameraResultActivity :
                 }
 
                 is InitEktpCameraResult.FAILED -> {
-                    showFailedBottomsheet(it.exception)
+                    showFailedBebasBottomsheet(it.exception)
                 }
             }
         }

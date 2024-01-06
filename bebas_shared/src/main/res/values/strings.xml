@@ -13,4 +13,6 @@
     <string name="error_message_length_nik">Minimum length of NIK is 16 digits</string>
     <string name="error_message_length_full_name">Minimum length of Full Name is 3 digits</string>
     <string name="error_minimum_17_years">Minimum 17 years</string>
+    <string name="bill_already_paid">Bill already paid</string>
+    <string name="bill_already_paid_desc">Horray! Your bill already paid</string>
 </resources>

@@ -1,15 +1,12 @@
 package com.fadlurahmanf.bebas_onboarding.presentation.login
 
 import android.content.Intent
-import android.hardware.biometrics.BiometricPrompt
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_onboarding.databinding.ActivityLoginBinding
 import com.fadlurahmanf.bebas_onboarding.presentation.BaseOnboardingActivity
-import com.fadlurahmanf.core_platform.external.helper.CoreBiometric
 import javax.inject.Inject
 
 class LoginActivity : BaseOnboardingActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate) {
@@ -28,7 +25,7 @@ class LoginActivity : BaseOnboardingActivity<ActivityLoginBinding>(ActivityLogin
             when (it) {
                 is NetworkState.FAILED -> {
                     dismissLoadingDialog()
-                    showFailedBottomsheet(it.exception)
+                    showFailedBebasBottomsheet(it.exception)
                 }
 
                 is NetworkState.LOADING -> {

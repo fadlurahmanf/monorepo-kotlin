@@ -317,7 +317,7 @@ class EktpVerificationFormActivity :
 
                 is EktpFormState.FAILED -> {
                     dismissLoadingDialog()
-                    showFailedBottomsheet(it.exception)
+                    showFailedBebasBottomsheet(it.exception)
                 }
 
                 else -> {}

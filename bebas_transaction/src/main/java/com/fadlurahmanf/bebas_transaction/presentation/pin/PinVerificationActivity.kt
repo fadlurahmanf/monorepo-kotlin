@@ -83,7 +83,7 @@ class PinVerificationActivity :
             when (it) {
                 is NetworkState.FAILED -> {
                     dismissLoadingDialog()
-                    showFailedBottomsheet(it.exception)
+                    showFailedBebasBottomsheet(it.exception)
                 }
 
                 is NetworkState.LOADING -> {

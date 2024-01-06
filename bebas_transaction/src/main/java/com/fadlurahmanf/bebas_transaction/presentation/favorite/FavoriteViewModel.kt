@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.data.exception.FulfillmentException
 import com.fadlurahmanf.bebas_shared.data.flow.transaction.FavoriteFlow
 import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.FavoriteContactModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.LatestTransactionModel
@@ -186,8 +187,21 @@ class FavoriteViewModel @Inject constructor(
                                            )
                                    },
                                    {
-                                       _inquiryState.value =
-                                           InquiryState.FAILED(BebasException.fromThrowable(it))
+                                       if (it is FulfillmentException) {
+                                           _inquiryState.value =
+                                               InquiryState.FailedFulfillment(
+                                                   FulfillmentException.fromThrowable(
+                                                       it
+                                                   )
+                                               )
+                                       } else {
+                                           _inquiryState.value =
+                                               InquiryState.FailedBebas(
+                                                   BebasException.fromThrowable(
+                                                       it
+                                                   )
+                                               )
+                                       }
                                    },
                                    {}
                                ))

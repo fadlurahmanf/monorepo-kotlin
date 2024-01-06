@@ -1,6 +1,8 @@
 package com.fadlurahmanf.bebas_ui.bottomsheet
 
+import android.graphics.drawable.Drawable
 import android.text.Html
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_ui.R
@@ -11,10 +13,10 @@ class FailedBottomsheet : BaseBottomsheet<BottomsheetFailedBinding>(
 ) {
 
     private var callback: Callback? = null
+    private var failedImageDrawble: Drawable? = null
 
     companion object {
         const val IS_DIALOG_CANCELABLE = "IS_DIALOG_CANCELABLE"
-        const val DRAWABLE_RES = "DRAWABLE_RES"
         const val TITLE_TEXT = "TITLE_TEXT"
         const val MESSAGE_TEXT = "MESSAGE_TEXT"
         const val TRACE_ID_TEXT = "TRACE_ID_TEXT"
@@ -23,6 +25,10 @@ class FailedBottomsheet : BaseBottomsheet<BottomsheetFailedBinding>(
 
     override fun setup() {
         isCancelable = arguments?.getBoolean(IS_DIALOG_CANCELABLE, true) ?: true
+
+        if (failedImageDrawble != null) {
+            binding.ivAsset.setImageDrawable(failedImageDrawble)
+        }
 
         binding.tvTitle.text = arguments?.getString(TITLE_TEXT)
         binding.tvDesc.text = arguments?.getString(MESSAGE_TEXT)
@@ -42,6 +48,12 @@ class FailedBottomsheet : BaseBottomsheet<BottomsheetFailedBinding>(
             } else if (isCancelable) {
                 dismiss()
             }
+        }
+    }
+
+    fun setImageDrawable(drawable: Drawable?) {
+        if (drawable != null) {
+            this.failedImageDrawble = drawable
         }
     }
 

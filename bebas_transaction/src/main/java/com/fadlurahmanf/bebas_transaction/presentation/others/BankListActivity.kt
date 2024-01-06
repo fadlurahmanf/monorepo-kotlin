@@ -76,9 +76,9 @@ class BankListActivity :
 
         viewModel.inquiryState.observe(this) {
             when (it) {
-                is InquiryState.FAILED -> {
+                is InquiryState.FailedBebas -> {
                     dismissLoadingDialog()
-                    showFailedBottomsheet(it.exception)
+                    showFailedBebasBottomsheet(it.exception)
                 }
 
                 InquiryState.LOADING -> {

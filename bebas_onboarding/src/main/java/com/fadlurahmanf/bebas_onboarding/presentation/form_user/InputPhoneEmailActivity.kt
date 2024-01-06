@@ -225,7 +225,7 @@ class InputPhoneEmailActivity :
             }
 
             null -> {
-                showFailedBottomsheet(BebasException.generalRC("ONBOARDING_FLOW_MISSING"))
+                showFailedBebasBottomsheet(BebasException.generalRC("ONBOARDING_FLOW_MISSING"))
             }
         }
     }

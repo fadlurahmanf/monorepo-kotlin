@@ -3,9 +3,7 @@ package com.fadlurahmanf.bebas_onboarding.presentation.form_user
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_onboarding.data.flow.EktpVerificationFormFlow
@@ -49,7 +47,7 @@ class PrepareOnboardingActivity :
                 }
 
                 is InitPrepareOnboardingState.FAILED -> {
-                    showFailedBottomsheet(it.exception)
+                    showFailedBebasBottomsheet(it.exception)
                 }
             }
         }
@@ -74,7 +72,7 @@ class PrepareOnboardingActivity :
             }
 
             PackageManager.PERMISSION_DENIED -> {
-                showFailedBottomsheet(
+                showFailedBebasBottomsheet(
                     exception = BebasException(
                         title = "Information",
                         message = "Permission Camera",

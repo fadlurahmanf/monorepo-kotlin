@@ -24,7 +24,7 @@ class IdentityExceptionInterceptor(val context: Context) : Interceptor {
                 throw BebasException(
                     idRawMessage = R.string.socket_exception_desc,
                     xrequestId = xrequestId,
-                    idRawTitle = R.string.oops,
+                    idRawTitle = R.string.oops_error_occured,
                 )
             }
             throw e

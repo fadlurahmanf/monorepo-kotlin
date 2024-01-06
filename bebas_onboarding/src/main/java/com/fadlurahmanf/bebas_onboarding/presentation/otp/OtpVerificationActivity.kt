@@ -52,7 +52,7 @@ class OtpVerificationActivity :
 
         val phoneNumberArg = intent.getStringExtra(PHONE_NUMBER_ARG)
         if (phoneNumberArg == null) {
-            showFailedBottomsheet(BebasException.generalRC("PHONE_NUMBER_MISSING"))
+            showFailedBebasBottomsheet(BebasException.generalRC("PHONE_NUMBER_MISSING"))
             return
         }
         this.phoneNumber = phoneNumberArg
@@ -88,7 +88,7 @@ class OtpVerificationActivity :
                 }
 
                 is NetworkState.FAILED -> {
-                    showFailedBottomsheet(it.exception)
+                    showFailedBebasBottomsheet(it.exception)
                 }
 
 
@@ -110,7 +110,7 @@ class OtpVerificationActivity :
 
                 is NetworkState.FAILED -> {
                     dismissLoadingDialog()
-                    showFailedBottomsheet(it.exception)
+                    showFailedBebasBottomsheet(it.exception)
                 }
 
                 is NetworkState.LOADING -> {

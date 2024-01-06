@@ -40,7 +40,7 @@ class DebugVideoCallActivity :
 
                 is NetworkState.FAILED -> {
                     dismissLoadingDialog()
-                    showFailedBottomsheet(it.exception)
+                    showFailedBebasBottomsheet(it.exception)
                 }
 
                 is NetworkState.IDLE -> {
@@ -62,7 +62,7 @@ class DebugVideoCallActivity :
                 sessionToken = connection.token!!,
             )
         } else {
-            showFailedBottomsheet(BebasException.generalRC("SESSION_ID_MISSING"))
+            showFailedBebasBottomsheet(BebasException.generalRC("SESSION_ID_MISSING"))
         }
     }
 
@@ -73,7 +73,7 @@ class DebugVideoCallActivity :
             binding.localGlSurfaceView.setEnableHardwareScaler(true)
             binding.localGlSurfaceView.setZOrderMediaOverlay(true)
         } else {
-            showFailedBottomsheet(BebasException.generalRC("PERMISSION_MISSING"))
+            showFailedBebasBottomsheet(BebasException.generalRC("PERMISSION_MISSING"))
         }
     }
 

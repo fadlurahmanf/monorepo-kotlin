@@ -3,6 +3,7 @@ package com.fadlurahmanf.bebas_transaction.data.state
 import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.data.exception.FulfillmentException
 import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.FavoriteContactModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.favorite.LatestTransactionModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.InquiryResultModel
@@ -25,7 +26,11 @@ sealed class InquiryState {
         val isInquiryBankMas: Boolean = false,
     ) : InquiryState()
 
-    data class FAILED(
+    data class FailedBebas(
         val exception: BebasException,
+    ) : InquiryState()
+
+    data class FailedFulfillment(
+        val exception: FulfillmentException,
     ) : InquiryState()
 }

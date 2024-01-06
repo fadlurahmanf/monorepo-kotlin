@@ -1,16 +1,17 @@
 package com.fadlurahmanf.bebas_shared.data.exception
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import com.fadlurahmanf.bebas_shared.R
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import java.io.IOException
-import java.lang.Exception
 
-open class BebasException(
+open class FulfillmentException(
     open var httpStatusCode: Int? = null,
     open var xrequestId: String? = null,
     open var statusCode: String? = null,
@@ -28,30 +29,30 @@ open class BebasException(
 
     companion object {
 
-        fun generalRC(rc: String, xRequestId: String? = null): BebasException {
-            return BebasException(
+        fun generalRC(rc: String, xRequestId: String? = null): FulfillmentException {
+            return FulfillmentException(
                 idRawTitle = R.string.oops,
                 xrequestId = xRequestId,
-                rawMessage = "ERROR_RC_$rc"
+                rawMessage = "FULFILLMENT_ERROR_RC_$rc"
             )
         }
 
-        fun fromThrowable(throwable: Throwable): BebasException {
-            return if (throwable is BebasException) {
+        fun fromThrowable(throwable: Throwable): FulfillmentException {
+            return if (throwable is FulfillmentException) {
                 throwable
             } else {
-                BebasException(
+                FulfillmentException(
                     idRawTitle = R.string.oops,
                     rawMessage = throwable.message,
                 )
             }
         }
 
-        fun fromException(exception: Exception): BebasException {
-            return if (exception is BebasException) {
+        fun fromException(exception: Exception): FulfillmentException {
+            return if (exception is FulfillmentException) {
                 exception
             } else {
-                BebasException(rawMessage = exception.message)
+                FulfillmentException(rawMessage = exception.message)
             }
         }
     }
@@ -90,6 +91,7 @@ open class BebasException(
             return context.getString(it)
         }
 
+        Log.d("BebasLogger", "Fulfillment TITLE: $raw")
         raw?.let { r ->
             val identifierLowercase = context.resources.getIdentifier(
                 r.lowercase(),
@@ -110,9 +112,32 @@ open class BebasException(
             if (identifierUppercase != 0) {
                 return context.getString(identifierUppercase)
             }
+
+            if (r.contains("FULFILLMENT_ERROR_RC_")) {
+                val rc = r.split("FULFILLMENT_ERROR_RC_").last()
+                return if (rc == "U01") {
+                    context.getString(R.string.bill_already_paid)
+                } else {
+                    context.getString(R.string.general_exception_desc, rc)
+                }
+            }
         }
 
         return "-"
+    }
+
+    open fun getDrawableImage(context: Context): Drawable? {
+        rawMessage?.let { r ->
+            if (r.contains("FULFILLMENT_ERROR_RC_")) {
+                val rc = r.split("FULFILLMENT_ERROR_RC_").last()
+                return if (rc == "U01") {
+                    ContextCompat.getDrawable(context, R.drawable.il_bill_already_paid)
+                } else {
+                    null
+                }
+            }
+        }
+        return null
     }
 
     open fun getMessage(
@@ -151,9 +176,13 @@ open class BebasException(
                 return context.getString(identifierUppercase)
             }
 
-            if (r.contains("ERROR_RC_")) {
-                val rc = r.split("ERROR_RC_").last()
-                return context.getString(R.string.general_exception_desc, rc)
+            if (r.contains("FULFILLMENT_ERROR_RC_")) {
+                val rc = r.split("FULFILLMENT_ERROR_RC_").last()
+                return if (rc == "U01") {
+                    context.getString(R.string.bill_already_paid_desc)
+                } else {
+                    context.getString(R.string.general_exception_desc, rc)
+                }
             }
 
             return context.getString(R.string.general_exception_desc_wo_param)

@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -236,9 +235,14 @@ class FavoriteListActivity :
 
         viewModel.inquiryState.observe(this) {
             when (it) {
-                is InquiryState.FAILED -> {
+                is InquiryState.FailedBebas -> {
                     dismissLoadingDialog()
-                    showFailedBottomsheet(it.exception)
+                    showFailedBebasBottomsheet(it.exception)
+                }
+
+                is InquiryState.FailedFulfillment -> {
+                    dismissLoadingDialog()
+                    showFailedFulfillmentBottomsheet(it.exception)
                 }
 
                 InquiryState.LOADING -> {
@@ -352,7 +356,7 @@ class FavoriteListActivity :
                     }
 
                     PackageManager.PERMISSION_DENIED -> {
-                        showFailedBottomsheet(
+                        showFailedBebasBottomsheet(
                             exception = BebasException(
                                 title = "Information",
                                 message = "Permission Contact",

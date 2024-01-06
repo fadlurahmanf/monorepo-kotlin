@@ -13,4 +13,6 @@
     <string name="error_message_length_nik">Minimal karakter NIK adalah 16 digit.</string>
     <string name="error_message_length_full_name">Minimal karakter Nama Lengkap adalah 3 digit</string>
     <string name="error_minimum_17_years">Minimal 17 tahun</string>
+    <string name="bill_already_paid">Tagihan sudah lunas</string>
+    <string name="bill_already_paid_desc">Hore! Tagihan kamu sudah terbayar</string>
 </resources>

@@ -30,7 +30,7 @@ class BebasSplashActivity :
                 }
 
                 is SplashState.FAILED -> {
-                    showFailedBottomsheet(it.exception)
+                    showFailedBebasBottomsheet(it.exception)
                 }
 
                 else -> {
