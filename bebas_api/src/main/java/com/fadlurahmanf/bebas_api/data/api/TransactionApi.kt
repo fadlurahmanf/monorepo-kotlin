@@ -6,6 +6,7 @@ import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.loyalty.HistoryLoyaltyResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
+import com.fadlurahmanf.bebas_api.data.dto.ppob.PLNDenomResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PPOBProductCodeResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingPulsaDataResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeResponse
@@ -92,4 +93,7 @@ interface TransactionApi {
         @Query("status") status: String? = null,
         @Header("Accept-Language") language: String = "id-ID",
     ): Single<BaseResponse<BasePaginationTransactionResponse<List<HistoryLoyaltyResponse>>>>
+
+    @GET("pln/prepaid-denom")
+    fun getDenomPrePaidPLN(): Observable<BaseResponse<List<PLNDenomResponse>>>
 }

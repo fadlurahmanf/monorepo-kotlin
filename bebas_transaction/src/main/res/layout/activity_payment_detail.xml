@@ -86,12 +86,26 @@
                 android:orientation="vertical"
                 android:visibility="gone" />
 
+            <LinearLayout
+                android:id="@+id/l_layout_ppob_denom_shimmer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <include
+                    layout="@layout/layout_ppob_denom_shimmer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp" />
+            </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                tools:listitem="@layout/item_pln_denom" />
+                tools:listitem="@layout/item_ppob_denom" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

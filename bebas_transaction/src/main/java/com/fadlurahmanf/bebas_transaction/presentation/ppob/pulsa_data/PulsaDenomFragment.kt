@@ -11,15 +11,15 @@ import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PulsaDataArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationArgument
-import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PulsaDenomModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PPOBDenomModel
 import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmationResult
-import com.fadlurahmanf.bebas_transaction.data.flow.PaymentDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.PinVerificationFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.FragmentPulsaDenomBinding
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionFragment
 import com.fadlurahmanf.bebas_transaction.presentation.pin.PinVerificationActivity
 import com.fadlurahmanf.bebas_transaction.presentation.ppob.TransactionConfirmationBottomsheet
+import com.fadlurahmanf.bebas_transaction.presentation.ppob.adapter.PPOBDenomAdapter
 import javax.inject.Inject
 
 
@@ -27,14 +27,14 @@ private const val PULSA_DATA_ARGUMENT = "PULSA_DATA_ARGUMENT"
 
 class PulsaDenomFragment :
     BaseTransactionFragment<FragmentPulsaDenomBinding>(FragmentPulsaDenomBinding::inflate),
-    PulsaDenomAdapter.Callback, TransactionConfirmationBottomsheet.Callback {
+    PPOBDenomAdapter.Callback, TransactionConfirmationBottomsheet.Callback {
 
     @Inject
     lateinit var viewModel: PulsaDataViewModel
 
     lateinit var argument: PulsaDataArgument
-    private lateinit var adapter: PulsaDenomAdapter
-    private val denoms: ArrayList<PulsaDenomModel> = arrayListOf()
+    private lateinit var adapter: PPOBDenomAdapter
+    private val denoms: ArrayList<PPOBDenomModel> = arrayListOf()
 
     override fun injectFragment() {
         component.inject(this)
@@ -63,7 +63,7 @@ class PulsaDenomFragment :
         }
 
         val gm = GridLayoutManager(requireContext(), 2)
-        adapter = PulsaDenomAdapter()
+        adapter = PPOBDenomAdapter()
         adapter.setCallback(this)
         adapter.setList(denoms)
         binding.rv.adapter = adapter
@@ -72,17 +72,37 @@ class PulsaDenomFragment :
         viewModel.pulsaDenomState.observe(this) {
             when (it) {
                 is NetworkState.FAILED -> {
-
+                    if (denoms.isNotEmpty()) {
+                        binding.lLayoutPpobDenomShimmer.visibility = View.GONE
+                        binding.rv.visibility = View.VISIBLE
+                    } else {
+                        binding.lLayoutPpobDenomShimmer.visibility = View.GONE
+                        binding.rv.visibility = View.GONE
+                    }
                 }
 
                 is NetworkState.LOADING -> {
-
+                    if (denoms.isNotEmpty()) {
+                        binding.lLayoutPpobDenomShimmer.visibility = View.GONE
+                        binding.rv.visibility = View.VISIBLE
+                    } else {
+                        binding.lLayoutPpobDenomShimmer.visibility = View.VISIBLE
+                        binding.rv.visibility = View.GONE
+                    }
                 }
 
                 is NetworkState.SUCCESS -> {
                     denoms.clear()
                     denoms.addAll(it.data)
                     adapter.setList(denoms)
+
+                    if (denoms.isNotEmpty()) {
+                        binding.lLayoutPpobDenomShimmer.visibility = View.GONE
+                        binding.rv.visibility = View.VISIBLE
+                    } else {
+                        binding.lLayoutPpobDenomShimmer.visibility = View.GONE
+                        binding.rv.visibility = View.GONE
+                    }
                 }
 
                 else -> {
@@ -105,8 +125,8 @@ class PulsaDenomFragment :
             }
     }
 
-    private lateinit var denomClicked: PulsaDenomModel
-    override fun onDenomClicked(model: PulsaDenomModel) {
+    private lateinit var denomClicked: PPOBDenomModel
+    override fun onDenomClicked(model: PPOBDenomModel) {
         denomClicked = model
         showTransactionConfirmationBottomsheet()
     }
@@ -128,7 +148,7 @@ class PulsaDenomFragment :
                     destinationSubLabel = argument.phoneNumber,
                     imageLogoUrl = argument.providerImage,
                     feeDetail = TransactionConfirmationArgument.FeeDetail(
-                        total = denomClicked.total,
+                        total = denomClicked.totalBayar,
                         details = arrayListOf(
                             TransactionConfirmationArgument.FeeDetail.Detail(
                                 label = "Harga",

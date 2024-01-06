@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PPOBDenomModel
 import com.fadlurahmanf.bebas_transaction.domain.repositories.TransactionRepositoryImpl
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -20,7 +21,7 @@ class PaymentDetailViewModel @Inject constructor(
         _selectedBankAccountState
 
     var selectedBankAccount: BankAccountResponse? = null
-    val bankAccounts: ArrayList<BankAccountResponse> = arrayListOf()
+    private val bankAccounts: ArrayList<BankAccountResponse> = arrayListOf()
 
     fun getBankAccounts() {
         _selectedBankAccountState.value = NetworkState.LOADING
@@ -43,6 +44,34 @@ class PaymentDetailViewModel @Inject constructor(
                                    },
                                    {
                                        _selectedBankAccountState.value =
+                                           NetworkState.FAILED(BebasException.fromThrowable(it))
+                                   },
+                                   {}
+                               ))
+    }
+
+    private val _plnPrePaidDenomState = MutableLiveData<NetworkState<List<PPOBDenomModel>>>()
+    val plnPrePaidDenomState: LiveData<NetworkState<List<PPOBDenomModel>>> =
+        _plnPrePaidDenomState
+
+    fun getPLNPrePaidDenom() {
+        _plnPrePaidDenomState.value = NetworkState.LOADING
+        baseDisposable.add(transactionRepositoryImpl.getPLNPrePaidDenomModel()
+                               .subscribeOn(Schedulers.io())
+                               .observeOn(AndroidSchedulers.mainThread())
+                               .subscribe(
+                                   {
+                                       if (it.isNotEmpty()) {
+                                           _plnPrePaidDenomState.value =
+                                               NetworkState.SUCCESS(it)
+                                       } else {
+                                           _plnPrePaidDenomState.value = NetworkState.FAILED(
+                                               BebasException.generalRC("PLN_PREPAID_00")
+                                           )
+                                       }
+                                   },
+                                   {
+                                       _plnPrePaidDenomState.value =
                                            NetworkState.FAILED(BebasException.fromThrowable(it))
                                    },
                                    {}

@@ -75,14 +75,14 @@ class InputDestinationAccountBottomsheet :
             InputDestinationAccountFlow.PLN_PREPAID -> {
                 binding.tvNewReceiverLabel.text = "Token Listrik"
                 Glide.with(binding.ivNewReceiverLogo)
-                    .load(ContextCompat.getDrawable(requireContext(), R.drawable.iv_logo_pln))
+                    .load(ContextCompat.getDrawable(requireContext(), R.drawable.il_logo_pln))
                     .into(binding.ivNewReceiverLogo)
             }
 
             InputDestinationAccountFlow.PLN_POSTPAID -> {
                 binding.tvNewReceiverLabel.text = "Tagihan Listrik"
                 Glide.with(binding.ivNewReceiverLogo)
-                    .load(ContextCompat.getDrawable(requireContext(), R.drawable.iv_logo_pln))
+                    .load(ContextCompat.getDrawable(requireContext(), R.drawable.il_logo_pln))
                     .into(binding.ivNewReceiverLogo)
             }
 

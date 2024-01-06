@@ -19,14 +19,16 @@ import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryPulsaDataRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryPulsaDataResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
+import com.fadlurahmanf.bebas_api.data.dto.ppob.PLNDenomResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.RefreshStatusResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
-import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PulsaDenomModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PPOBDenomModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.InquiryResultModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.PostingPinVerificationResultModel
+import com.fadlurahmanf.bebas_transaction.data.flow.PPOBDenomFlow
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import io.reactivex.rxjava3.core.Observable
@@ -239,14 +241,37 @@ class TransactionRepositoryImpl @Inject constructor(
     fun getPulsaDenomModel(
         provider: String,
         providerImage: String? = null
-    ): Observable<List<PulsaDenomModel>> {
+    ): Observable<List<PPOBDenomModel>> {
         return getPulsaDenom(provider).map { denoms ->
             denoms.map { denom ->
-                PulsaDenomModel(
-                    total = (denom.nominal ?: -1.0) + (denom.adminFee ?: -1.0),
-                    denom = denom.nominal ?: -1.0,
-                    providerImage = providerImage,
+                PPOBDenomModel(
+                    flow = PPOBDenomFlow.PULSA_PREPAID,
+                    totalBayar = (denom.nominal ?: -1.0) + (denom.adminFee ?: -1.0),
+                    nominal = denom.nominal ?: -1.0,
+                    imageUrl = providerImage,
                     pulsaDenomResponse = denom
+                )
+            }
+        }
+    }
+
+    private fun getPlnPrePaidDenom(): Observable<List<PLNDenomResponse>> {
+        return transactionRemoteDatasource.getDenomPlnPrePaid().map { resp ->
+            if (resp.data == null) {
+                throw BebasException.generalRC("TP_00")
+            }
+            resp.data!!
+        }
+    }
+
+    fun getPLNPrePaidDenomModel(): Observable<List<PPOBDenomModel>> {
+        return getPlnPrePaidDenom().map { denoms ->
+            denoms.map { denom ->
+                PPOBDenomModel(
+                    flow = PPOBDenomFlow.PLN_PREPAID,
+                    totalBayar = (denom.nominal ?: -1.0) + (denom.adminFee ?: -1.0),
+                    nominal = denom.nominal ?: -1.0,
+                    plnPrePaidDenomResponse = denom
                 )
             }
         }

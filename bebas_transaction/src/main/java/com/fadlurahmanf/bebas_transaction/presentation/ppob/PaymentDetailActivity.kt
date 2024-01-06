@@ -5,14 +5,17 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeRequest
+import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PaymentDetailArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PulsaDataArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PPOBDenomModel
 import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmationResult
 import com.fadlurahmanf.bebas_transaction.data.flow.PaymentDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.PinVerificationFlow
@@ -21,13 +24,14 @@ import com.fadlurahmanf.bebas_transaction.databinding.ActivityPaymentDetailBindi
 import com.fadlurahmanf.bebas_transaction.external.BebasTransactionHelper
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.pin.PinVerificationActivity
+import com.fadlurahmanf.bebas_transaction.presentation.ppob.adapter.PPOBDenomAdapter
 import com.fadlurahmanf.bebas_transaction.presentation.ppob.pulsa_data.PulsaDataTabAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import javax.inject.Inject
 
 class PaymentDetailActivity :
     BaseTransactionActivity<ActivityPaymentDetailBinding>(ActivityPaymentDetailBinding::inflate),
-    TransactionConfirmationBottomsheet.Callback {
+    TransactionConfirmationBottomsheet.Callback, PPOBDenomAdapter.Callback {
 
     companion object {
         const val ARGUMENT = "ARGUMENT"
@@ -37,7 +41,9 @@ class PaymentDetailActivity :
     private lateinit var argument: PaymentDetailArgument
     private lateinit var flow: PaymentDetailFlow
 
-    private lateinit var adapter: PulsaDataTabAdapter
+    private lateinit var tabPulsaDataAdapter: PulsaDataTabAdapter
+    private lateinit var ppobDenomAdapter: PPOBDenomAdapter
+    private val plnDenoms: ArrayList<PPOBDenomModel> = arrayListOf()
 
     @Inject
     lateinit var viewModel: PaymentDetailViewModel
@@ -73,11 +79,72 @@ class PaymentDetailActivity :
         setupTitle()
         setupMainLayoutDetailPPOB()
         setupIdentityPPOB()
+        initObserver()
 
         binding.btnNext.setOnClickListener {
             when (flow) {
                 PaymentDetailFlow.TELKOM_INDIHOME -> {
                     showTransactionConfirmationBottomsheet()
+                }
+
+                else -> {
+
+                }
+            }
+        }
+
+        when (flow) {
+            PaymentDetailFlow.PLN_PREPAID_CHECKOUT -> {
+                ppobDenomAdapter = PPOBDenomAdapter()
+                ppobDenomAdapter.setList(plnDenoms)
+                ppobDenomAdapter.setCallback(this)
+                val gridLayoutManager = GridLayoutManager(this, 2)
+                binding.rv.layoutManager = gridLayoutManager
+                binding.rv.adapter = ppobDenomAdapter
+                viewModel.getPLNPrePaidDenom()
+            }
+
+            else -> {
+
+            }
+        }
+    }
+
+    private fun initObserver() {
+        viewModel.plnPrePaidDenomState.observe(this) {
+            when (it) {
+                is NetworkState.FAILED -> {
+                    if (plnDenoms.isNotEmpty()) {
+                        binding.lLayoutPpobDenomShimmer.visibility = View.GONE
+                        binding.rv.visibility = View.VISIBLE
+                    } else {
+                        binding.lLayoutPpobDenomShimmer.visibility = View.GONE
+                        binding.rv.visibility = View.GONE
+                    }
+                }
+
+                is NetworkState.LOADING -> {
+                    if (plnDenoms.isNotEmpty()) {
+                        binding.lLayoutPpobDenomShimmer.visibility = View.GONE
+                        binding.rv.visibility = View.VISIBLE
+                    } else {
+                        binding.lLayoutPpobDenomShimmer.visibility = View.VISIBLE
+                        binding.rv.visibility = View.VISIBLE
+                    }
+                }
+
+                is NetworkState.SUCCESS -> {
+                    plnDenoms.clear()
+                    plnDenoms.addAll(it.data)
+                    ppobDenomAdapter.setList(plnDenoms)
+
+                    if (plnDenoms.isNotEmpty()) {
+                        binding.lLayoutPpobDenomShimmer.visibility = View.GONE
+                        binding.rv.visibility = View.VISIBLE
+                    } else {
+                        binding.lLayoutPpobDenomShimmer.visibility = View.GONE
+                        binding.rv.visibility = View.GONE
+                    }
                 }
 
                 else -> {
@@ -158,7 +225,7 @@ class PaymentDetailActivity :
                 binding.tabLayout.visibility = View.VISIBLE
                 binding.vp.visibility = View.VISIBLE
 
-                adapter = PulsaDataTabAdapter(
+                tabPulsaDataAdapter = PulsaDataTabAdapter(
                     applicationContext,
                     PulsaDataArgument(
                         providerImage = argument.additionalPulsaData?.providerImage,
@@ -168,11 +235,11 @@ class PaymentDetailActivity :
                     ), supportFragmentManager, lifecycle
                 )
 
-                binding.vp.adapter = adapter
+                binding.vp.adapter = tabPulsaDataAdapter
                 supportActionBar?.elevation = 0f
 
                 TabLayoutMediator(binding.tabLayout, binding.vp) { tab, position ->
-                    tab.customView = adapter.getTabView(position)
+                    tab.customView = tabPulsaDataAdapter.getTabView(position)
                 }.attach()
             }
 
@@ -306,5 +373,9 @@ class PaymentDetailActivity :
             }
         }
         startActivity(intent)
+    }
+
+    override fun onDenomClicked(model: PPOBDenomModel) {
+
     }
 }

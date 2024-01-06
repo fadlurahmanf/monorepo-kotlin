@@ -58,4 +58,7 @@ class TransactionRemoteDatasource @Inject constructor(
             offset = offset,
             status = status
         )
+
+    fun getDenomPlnPrePaid() =
+        networkService().getDenomPrePaidPLN()
 }
