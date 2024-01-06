@@ -17,7 +17,7 @@ fun Double.toRupiahFormat(
     }
 
     if (useSymbol) {
-        formatted = formatted.lowercase().replace("rp", "Rp ")
+        formatted = formatted.lowercase().replace("rp", "Rp")
     } else {
         formatted = formatted.lowercase().replace("rp", "")
     }

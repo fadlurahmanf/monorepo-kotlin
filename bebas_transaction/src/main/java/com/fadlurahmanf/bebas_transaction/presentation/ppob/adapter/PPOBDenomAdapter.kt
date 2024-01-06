@@ -2,7 +2,6 @@ package com.fadlurahmanf.bebas_transaction.presentation.ppob.adapter
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +26,18 @@ class PPOBDenomAdapter : RecyclerView.Adapter<PPOBDenomAdapter.ViewHolder>() {
         denoms.clear()
         denoms.addAll(list)
         notifyItemRangeInserted(0, list.size)
+    }
+
+    fun selectAndUnselectDenom(unSelectedIndex: Int, selectedIndex: Int) {
+        denoms[unSelectedIndex] = denoms[unSelectedIndex].copy(isSelected = false)
+        notifyItemChanged(unSelectedIndex)
+        denoms[selectedIndex] = denoms[selectedIndex].copy(isSelected = true)
+        notifyItemChanged(selectedIndex)
+    }
+
+    fun selectDenom(selectedIndex: Int) {
+        denoms[selectedIndex] = denoms[selectedIndex].copy(isSelected = true)
+        notifyItemChanged(selectedIndex)
     }
 
     fun setCallback(callback: Callback) {
@@ -91,6 +102,14 @@ class PPOBDenomAdapter : RecyclerView.Adapter<PPOBDenomAdapter.ViewHolder>() {
         holder.nominal.text = denom.nominal.toRupiahFormat(useDecimal = false)
         holder.totalBayar.text =
             denom.totalBayar.toRupiahFormat(useSymbol = true, useDecimal = false)
+
+        if (denom.isSelected) {
+            holder.llMain.background =
+                ContextCompat.getDrawable(context, R.drawable.background_denom_selected)
+        } else {
+            holder.llMain.background =
+                ContextCompat.getDrawable(context, R.drawable.background_denom)
+        }
 
         holder.itemView.setOnClickListener {
             callback?.onDenomClicked(denom)

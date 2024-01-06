@@ -6,6 +6,7 @@ import com.fadlurahmanf.bebas_transaction.data.flow.PPOBDenomFlow
 
 data class PPOBDenomModel(
     val flow: PPOBDenomFlow,
+    val id: String,
     val totalBayar: Double,
     val nominal: Double,
     var imageUrl: String? = null,

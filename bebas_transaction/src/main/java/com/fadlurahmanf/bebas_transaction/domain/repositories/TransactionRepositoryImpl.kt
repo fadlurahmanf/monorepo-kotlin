@@ -246,6 +246,7 @@ class TransactionRepositoryImpl @Inject constructor(
             denoms.map { denom ->
                 PPOBDenomModel(
                     flow = PPOBDenomFlow.PULSA_PREPAID,
+                    id = "${denom.nominal ?: ""}",
                     totalBayar = (denom.nominal ?: -1.0) + (denom.adminFee ?: -1.0),
                     nominal = denom.nominal ?: -1.0,
                     imageUrl = providerImage,
@@ -269,6 +270,7 @@ class TransactionRepositoryImpl @Inject constructor(
             denoms.map { denom ->
                 PPOBDenomModel(
                     flow = PPOBDenomFlow.PLN_PREPAID,
+                    id = "${denom.nominal ?: ""}",
                     totalBayar = (denom.nominal ?: -1.0) + (denom.adminFee ?: -1.0),
                     nominal = denom.nominal ?: -1.0,
                     plnPrePaidDenomResponse = denom

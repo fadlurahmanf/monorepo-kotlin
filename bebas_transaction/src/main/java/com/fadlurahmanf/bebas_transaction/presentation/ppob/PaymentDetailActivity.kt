@@ -376,6 +376,45 @@ class PaymentDetailActivity :
     }
 
     override fun onDenomClicked(model: PPOBDenomModel) {
+        when (flow) {
+            PaymentDetailFlow.PLN_PREPAID_CHECKOUT -> {
+                var unSelectedIndex = -1
+                var selectedIndex = -1
+                val currentSelectedDenom = viewModel.selectedDenomModel.value
+                if (currentSelectedDenom != null && !model.isSelected) {
+                    for (index in 0 until plnDenoms.size) {
+                        if (plnDenoms[index].id == currentSelectedDenom.id && plnDenoms[index].isSelected) {
+                            unSelectedIndex = index
+                        } else if (plnDenoms[index].id == model.id && !plnDenoms[index].isSelected) {
+                            selectedIndex = index
+                        }
+                    }
+                    if (unSelectedIndex != -1 && selectedIndex != -1) {
+                        plnDenoms[unSelectedIndex].isSelected = false
+                        plnDenoms[selectedIndex].isSelected = true
+                        ppobDenomAdapter.selectAndUnselectDenom(
+                            unSelectedIndex = unSelectedIndex,
+                            selectedIndex = selectedIndex
+                        )
+                        viewModel.selectDenomModel(plnDenoms[selectedIndex])
+                    }
+                } else {
+                    for (index in 0 until plnDenoms.size) {
+                        if (plnDenoms[index].id == model.id) {
+                            selectedIndex = index
+                        }
+                        if (selectedIndex != -1) {
+                            plnDenoms[selectedIndex].isSelected = true
+                            ppobDenomAdapter.selectDenom(selectedIndex = selectedIndex)
+                            viewModel.selectDenomModel(plnDenoms[selectedIndex])
+                        }
+                    }
+                }
+            }
 
+            else -> {
+
+            }
+        }
     }
 }

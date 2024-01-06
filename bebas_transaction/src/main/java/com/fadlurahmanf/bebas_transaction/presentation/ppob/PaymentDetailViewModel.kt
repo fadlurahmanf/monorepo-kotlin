@@ -16,12 +16,23 @@ class PaymentDetailViewModel @Inject constructor(
     private val transactionRepositoryImpl: TransactionRepositoryImpl
 ) : BaseViewModel() {
 
+    init {
+
+    }
+
     private val _selectedBankAccountState = MutableLiveData<NetworkState<BankAccountResponse>>()
     val selectedBankAccountState: LiveData<NetworkState<BankAccountResponse>> =
         _selectedBankAccountState
 
     var selectedBankAccount: BankAccountResponse? = null
     private val bankAccounts: ArrayList<BankAccountResponse> = arrayListOf()
+
+    private val _selectedDenomModel = MutableLiveData<PPOBDenomModel?>(null)
+    val selectedDenomModel: LiveData<PPOBDenomModel?> = _selectedDenomModel
+
+    fun selectDenomModel(denom:PPOBDenomModel){
+        _selectedDenomModel.value = denom
+    }
 
     fun getBankAccounts() {
         _selectedBankAccountState.value = NetworkState.LOADING
