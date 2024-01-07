@@ -1,4 +1,4 @@
-package com.fadlurahmanf.bebas_transaction.presentation.adapter
+package com.fadlurahmanf.bebas_transaction.presentation.others.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

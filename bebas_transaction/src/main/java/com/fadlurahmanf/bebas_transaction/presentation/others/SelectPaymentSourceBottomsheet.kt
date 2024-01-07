@@ -1,4 +1,4 @@
-package com.fadlurahmanf.bebas_transaction.presentation
+package com.fadlurahmanf.bebas_transaction.presentation.others
 
 import android.os.Build
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
@@ -6,7 +6,8 @@ import com.fadlurahmanf.bebas_transaction.data.dto.argument.SelectPaymentSourceA
 import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import com.fadlurahmanf.bebas_transaction.data.flow.SelectPaymentSourceFlow
 import com.fadlurahmanf.bebas_transaction.databinding.BottomsheetSelectPaymentSourceBinding
-import com.fadlurahmanf.bebas_transaction.presentation.adapter.PaymentSourceAdapter
+import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionBottomsheet
+import com.fadlurahmanf.bebas_transaction.presentation.others.adapter.PaymentSourceAdapter
 import javax.inject.Inject
 
 class SelectPaymentSourceBottomsheet :

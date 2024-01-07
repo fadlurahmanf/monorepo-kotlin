@@ -1,4 +1,4 @@
-package com.fadlurahmanf.bebas_transaction.presentation
+package com.fadlurahmanf.bebas_transaction.presentation.others
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

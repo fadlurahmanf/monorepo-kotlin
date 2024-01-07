@@ -2,7 +2,7 @@ package com.fadlurahmanf.bebas_transaction.domain.di
 
 import android.content.Context
 import com.fadlurahmanf.bebas_storage.BebasStorageComponent
-import com.fadlurahmanf.bebas_transaction.presentation.SelectPaymentSourceBottomsheet
+import com.fadlurahmanf.bebas_transaction.presentation.others.SelectPaymentSourceBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.others.BankListActivity
 import com.fadlurahmanf.bebas_transaction.presentation.favorite.FavoriteListActivity
 import com.fadlurahmanf.bebas_transaction.presentation.invoice.InvoiceTransactionActivity

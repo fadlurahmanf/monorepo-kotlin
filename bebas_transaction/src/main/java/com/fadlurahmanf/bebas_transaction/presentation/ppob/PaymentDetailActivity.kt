@@ -27,7 +27,7 @@ import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityPaymentDetailBinding
 import com.fadlurahmanf.bebas_transaction.external.BebasTransactionHelper
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
-import com.fadlurahmanf.bebas_transaction.presentation.SelectPaymentSourceBottomsheet
+import com.fadlurahmanf.bebas_transaction.presentation.others.SelectPaymentSourceBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.pin.PinVerificationActivity
 import com.fadlurahmanf.bebas_transaction.presentation.ppob.adapter.PPOBDenomAdapter
 import com.fadlurahmanf.bebas_transaction.presentation.ppob.pulsa_data.PulsaDataTabAdapter
