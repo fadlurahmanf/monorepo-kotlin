@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -16,15 +15,19 @@ import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PaymentDetailArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PulsaDataArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.SelectPaymentSourceArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PPOBDenomModel
 import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmationResult
 import com.fadlurahmanf.bebas_transaction.data.flow.PaymentDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.PinVerificationFlow
+import com.fadlurahmanf.bebas_transaction.data.flow.SelectPaymentSourceFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityPaymentDetailBinding
 import com.fadlurahmanf.bebas_transaction.external.BebasTransactionHelper
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
+import com.fadlurahmanf.bebas_transaction.presentation.SelectPaymentSourceBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.pin.PinVerificationActivity
 import com.fadlurahmanf.bebas_transaction.presentation.ppob.adapter.PPOBDenomAdapter
 import com.fadlurahmanf.bebas_transaction.presentation.ppob.pulsa_data.PulsaDataTabAdapter
@@ -33,7 +36,8 @@ import javax.inject.Inject
 
 class PaymentDetailActivity :
     BaseTransactionActivity<ActivityPaymentDetailBinding>(ActivityPaymentDetailBinding::inflate),
-    TransactionConfirmationBottomsheet.Callback, PPOBDenomAdapter.Callback {
+    TransactionConfirmationBottomsheet.Callback, PPOBDenomAdapter.Callback,
+    SelectPaymentSourceBottomsheet.Callback {
 
     companion object {
         const val ARGUMENT = "ARGUMENT"
@@ -167,9 +171,10 @@ class PaymentDetailActivity :
     }
 
     private var transactionConfirmationBottomsheet: TransactionConfirmationBottomsheet? = null
-    private fun showTransactionConfirmationBottomsheet() {
+    private fun showTransactionConfirmationBottomsheet(defaultPaymentSourceModel: PaymentSourceModel? = null) {
         transactionConfirmationBottomsheet?.dismiss()
         transactionConfirmationBottomsheet = null
+
         transactionConfirmationBottomsheet = TransactionConfirmationBottomsheet()
         val bundle = Bundle()
         transactionConfirmationBottomsheet?.setCallback(this)
@@ -190,6 +195,7 @@ class PaymentDetailActivity :
                         TransactionConfirmationArgument(
                             destinationLabel = inquiry?.customerName ?: "-",
                             destinationSubLabel = "Telkom • ${inquiry?.customerNumber ?: "-"}",
+                            defaultPaymentSource = defaultPaymentSourceModel,
                             feeDetail = TransactionConfirmationArgument.FeeDetail(
                                 total = (inquiry?.amountTransaction
                                     ?: -1.0) + (inquiry?.transactionFee ?: -1.0),
@@ -223,6 +229,8 @@ class PaymentDetailActivity :
 
             }
         }
+
+
 
         transactionConfirmationBottomsheet?.arguments = bundle
         transactionConfirmationBottomsheet?.show(
@@ -340,8 +348,40 @@ class PaymentDetailActivity :
         }
     }
 
+    private var selectPaymentSouceBottomsheet: SelectPaymentSourceBottomsheet? = null
+
+    override fun onSelectPaymentSource(paymentSource: PaymentSourceModel) {
+        selectPaymentSouceBottomsheet?.dismiss()
+        selectPaymentSouceBottomsheet = null
+
+        showTransactionConfirmationBottomsheet(defaultPaymentSourceModel = paymentSource)
+    }
+
+    override fun onChangePaymentSource(selectedPaymentSource: PaymentSourceModel) {
+        transactionConfirmationBottomsheet?.dismiss()
+        transactionConfirmationBottomsheet = null
+
+        selectPaymentSouceBottomsheet?.dismiss()
+        selectPaymentSouceBottomsheet = null
+
+        selectPaymentSouceBottomsheet = SelectPaymentSourceBottomsheet()
+        selectPaymentSouceBottomsheet?.setCallback(this)
+        selectPaymentSouceBottomsheet?.arguments = Bundle().apply {
+            putParcelable(
+                SelectPaymentSourceBottomsheet.ARGUMENT, SelectPaymentSourceArgument(
+                    flow = SelectPaymentSourceFlow.CIF_GET_BANK_ACCOUNTS
+                )
+            )
+        }
+        selectPaymentSouceBottomsheet?.show(
+            supportFragmentManager,
+            SelectPaymentSourceBottomsheet::class.java.simpleName
+        )
+    }
+
     override fun onButtonTransactionConfirmationClicked(result: TransactionConfirmationResult) {
         transactionConfirmationBottomsheet?.dismiss()
+        transactionConfirmationBottomsheet = null
 
         val intent = Intent(this, PinVerificationActivity::class.java)
         when (flow) {

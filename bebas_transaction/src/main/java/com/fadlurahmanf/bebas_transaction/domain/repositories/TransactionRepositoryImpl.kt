@@ -25,6 +25,7 @@ import com.fadlurahmanf.bebas_api.data.dto.ppob.RefreshStatusResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PPOBDenomModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.InquiryResultModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.PostingPinVerificationResultModel
@@ -78,8 +79,24 @@ class TransactionRepositoryImpl @Inject constructor(
             if (it.data == null) {
                 throw BebasException.generalRC("DATA_MISSING")
             }
-
             it.data!!
+        }
+    }
+
+    fun getPaymentSourceModelFromGetBankAccounts(): Observable<List<PaymentSourceModel>> {
+        return transactionRemoteDatasource.getBankAccounts().map { baseResp ->
+            if (baseResp.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+            baseResp.data!!.map { bankAccount ->
+                PaymentSourceModel(
+                    accountName = bankAccount.accountName ?: "-",
+                    accountNumber = bankAccount.accountNumber ?: "-",
+                    subLabel = "MAS Saving • ${bankAccount.accountNumber ?: "-"}",
+                    balance = bankAccount.workingBalance ?: -1.0,
+                    bankAccountResponse = bankAccount
+                )
+            }
         }
     }
 

@@ -11,6 +11,7 @@ import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PulsaDataArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PPOBDenomModel
 import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmationResult
 import com.fadlurahmanf.bebas_transaction.data.flow.PinVerificationFlow
@@ -177,6 +178,11 @@ class PulsaDenomFragment :
             requireActivity().supportFragmentManager,
             TransactionConfirmationBottomsheet::class.java.simpleName
         )
+    }
+
+
+    override fun onChangePaymentSource(selectedPaymentSource: PaymentSourceModel) {
+
     }
 
     override fun onButtonTransactionConfirmationClicked(result: TransactionConfirmationResult) {

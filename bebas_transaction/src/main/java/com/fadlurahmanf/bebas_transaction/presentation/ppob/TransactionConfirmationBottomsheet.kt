@@ -10,6 +10,7 @@ import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.TransactionDetailModel
 import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmationResult
 import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationFlow
@@ -85,7 +86,7 @@ class TransactionConfirmationBottomsheet :
         setupFeeDetails()
         setupDetails()
 
-        viewModel.selectedBankAccountState.observe(this) {
+        viewModel.selectedPaymentSourceState.observe(this) {
             when (it) {
                 is NetworkState.FAILED -> {
                     binding.lItemPaymentSourceShimmer.visibility = View.VISIBLE
@@ -103,9 +104,9 @@ class TransactionConfirmationBottomsheet :
 
                     binding.itemPaymentSource.tvAccountName.text = it.data.accountName ?: "-"
                     binding.itemPaymentSource.tvSavingTypeAndAccountNumber.text =
-                        "MAS Saving • ${it.data.accountNumber ?: "-"}"
+                        "MAS Saving • ${it.data.bankAccountResponse?.accountNumber ?: "-"}"
                     binding.itemPaymentSource.tvAccountBalance.text =
-                        it.data.workingBalance?.toRupiahFormat(
+                        it.data.balance.toRupiahFormat(
                             useSymbol = true,
                             useDecimal = true
                         )
@@ -117,17 +118,21 @@ class TransactionConfirmationBottomsheet :
             }
         }
 
-
-        viewModel.getBankAccounts()
+        if (argument.defaultPaymentSource != null) {
+            viewModel.selectPaymentSource(argument.defaultPaymentSource!!)
+        } else {
+            viewModel.getPaymentSources()
+        }
 
         binding.btnNext.setOnClickListener {
             when (flow) {
                 TransactionConfirmationFlow.TELKOM_INDIHOME -> {
                     callback?.onButtonTransactionConfirmationClicked(
                         result = TransactionConfirmationResult(
-                            selectedAccountNumber = viewModel.selectedBankAccount?.accountNumber
+                            selectedAccountNumber = viewModel.selectedPaymentSource?.accountNumber
                                 ?: "-",
-                            selectedAccountName = viewModel.selectedBankAccount?.accountName ?: "-"
+                            selectedAccountName = viewModel.selectedPaymentSource?.accountName
+                                ?: "-"
                         )
                     )
                 }
@@ -135,12 +140,19 @@ class TransactionConfirmationBottomsheet :
                 TransactionConfirmationFlow.PULSA -> {
                     callback?.onButtonTransactionConfirmationClicked(
                         result = TransactionConfirmationResult(
-                            selectedAccountNumber = viewModel.selectedBankAccount?.accountNumber
+                            selectedAccountNumber = viewModel.selectedPaymentSource?.accountNumber
                                 ?: "-",
-                            selectedAccountName = viewModel.selectedBankAccount?.accountName ?: "-"
+                            selectedAccountName = viewModel.selectedPaymentSource?.accountName
+                                ?: "-"
                         )
                     )
                 }
+            }
+        }
+
+        binding.lItemPaymentSource.setOnClickListener {
+            if (viewModel.selectedPaymentSource != null) {
+                callback?.onChangePaymentSource(viewModel.selectedPaymentSource!!)
             }
         }
     }
@@ -211,5 +223,6 @@ class TransactionConfirmationBottomsheet :
 
     interface Callback {
         fun onButtonTransactionConfirmationClicked(result: TransactionConfirmationResult)
+        fun onChangePaymentSource(selectedPaymentSource: PaymentSourceModel)
     }
 }

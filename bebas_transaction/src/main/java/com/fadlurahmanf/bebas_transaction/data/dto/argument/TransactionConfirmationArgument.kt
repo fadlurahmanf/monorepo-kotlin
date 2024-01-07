@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_transaction.data.dto.argument
 
 import android.os.Parcelable
 import androidx.annotation.StyleRes
+import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -10,6 +11,7 @@ data class TransactionConfirmationArgument(
     val destinationSubLabel: String,
     var imageLogoUrl: String? = null,
     var feeDetail: FeeDetail,
+    val defaultPaymentSource: PaymentSourceModel? = null,
     val details: ArrayList<Detail> = arrayListOf()
 ) : Parcelable {
     @Parcelize
