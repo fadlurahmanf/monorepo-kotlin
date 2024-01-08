@@ -17,12 +17,15 @@ import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgum
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PulsaDataArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.SelectPaymentSourceArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationCheckoutArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PPOBDenomModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.InquiryResultModel
 import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmationResult
 import com.fadlurahmanf.bebas_transaction.data.flow.PaymentDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.PinVerificationFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.SelectPaymentSourceFlow
+import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationCheckoutFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityPaymentDetailBinding
 import com.fadlurahmanf.bebas_transaction.external.BebasTransactionHelper
@@ -91,6 +94,14 @@ class PaymentDetailActivity :
             when (flow) {
                 PaymentDetailFlow.TELKOM_INDIHOME -> {
                     showTransactionConfirmationBottomsheet()
+                }
+
+                PaymentDetailFlow.PLN_PREPAID_CHECKOUT -> {
+                    viewModel.inquiryPLNPrePaid(
+                        argument.additionalPLNPrePaidCheckout?.clientNumber ?: "-",
+                        productCode = viewModel.selectedDenomModel.value?.plnPrePaidDenomResponse?.productCode
+                            ?: "-"
+                    )
                 }
 
                 else -> {
@@ -168,6 +179,28 @@ class PaymentDetailActivity :
                 }
             }
         }
+
+        viewModel.inquiryCheckoutState.observe(this) {
+            when (it) {
+                is NetworkState.FAILED -> {
+                    dismissLoadingDialog()
+                }
+
+                is NetworkState.LOADING -> {
+                    showLoadingDialog()
+                }
+
+                is NetworkState.SUCCESS -> {
+                    dismissLoadingDialog()
+                    showTransactionConfirmationCheckoutBottomsheet(
+                        result = it.data
+                    )
+                }
+
+                else -> {
+                }
+            }
+        }
     }
 
     private var transactionConfirmationBottomsheet: TransactionConfirmationBottomsheet? = null
@@ -234,6 +267,54 @@ class PaymentDetailActivity :
 
         transactionConfirmationBottomsheet?.arguments = bundle
         transactionConfirmationBottomsheet?.show(
+            supportFragmentManager,
+            TransactionConfirmationBottomsheet::class.java.simpleName
+        )
+    }
+
+    private var transactionConfirmationCheckoutBottomsheet: TransactionConfirmationFlowCheckoutBottomsheet? =
+        null
+
+    private fun showTransactionConfirmationCheckoutBottomsheet(
+        result: InquiryResultModel,
+        defaultPaymentSourceModel: PaymentSourceModel? = null
+    ) {
+        transactionConfirmationCheckoutBottomsheet?.dismiss()
+        transactionConfirmationCheckoutBottomsheet = null
+
+        transactionConfirmationCheckoutBottomsheet =
+            TransactionConfirmationFlowCheckoutBottomsheet()
+        val bundle = Bundle()
+//        transactionConfirmationCheckoutBottomsheet?.setCallback(this)
+        when (flow) {
+
+            PaymentDetailFlow.PLN_PREPAID_CHECKOUT -> {
+                bundle.apply {
+                    val inquiryPrePaid = result.inquiryPLNPrePaidCheckout
+                    putString(
+                        TransactionConfirmationFlowCheckoutBottomsheet.FLOW,
+                        TransactionConfirmationCheckoutFlow.PLN_PREPAID.name
+                    )
+                    putParcelable(
+                        TransactionConfirmationFlowCheckoutBottomsheet.ADDITIONAL_ARG,
+                        TransactionConfirmationCheckoutArgument(
+                            destinationLabel = "PLN",
+                            destinationSubLabel = inquiryPrePaid?.clientNumber ?: "-",
+                            additionalPLNPrePaid = TransactionConfirmationCheckoutArgument.PLNPrePaid(
+                                productCode = inquiryPrePaid?.productCode ?: "-"
+                            )
+                        )
+                    )
+                }
+            }
+
+            else -> {
+
+            }
+        }
+
+        transactionConfirmationCheckoutBottomsheet?.arguments = bundle
+        transactionConfirmationCheckoutBottomsheet?.show(
             supportFragmentManager,
             TransactionConfirmationBottomsheet::class.java.simpleName
         )

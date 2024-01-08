@@ -9,6 +9,7 @@ data class InquiryResultModel(
     val additionalInquiryTransferBank: InquiryTransferBank? = null,
     val inquiryPulsaData: InquiryPulsaDataResponse? = null,
     val inquiryTelkomIndihome: InquiryTelkomIndihomeResponse? = null,
+    val inquiryPLNPrePaidCheckout: InquiryCheckoutFlowResponse? = null,
     val inquiryPLNPostPaidCheckout: InquiryCheckoutFlowResponse? = null,
 ) {
     data class InquiryTransferBank(

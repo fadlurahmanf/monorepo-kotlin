@@ -100,7 +100,7 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
             TransactionConfirmationCheckoutFlow.PLN_PREPAID -> {
                 binding.itemDestinationAccount.ivLogo.visibility = View.VISIBLE
                 binding.itemDestinationAccount.initialAvatar.visibility = View.GONE
-                Glide.with(binding.itemDestinationAccount.ivLogo).load(R.drawable.il_telkom_logo)
+                Glide.with(binding.itemDestinationAccount.ivLogo).load(R.drawable.il_logo_pln)
                     .into(binding.itemDestinationAccount.ivLogo)
 
                 binding.itemDestinationAccount.tvLabel.text = argument.destinationLabel

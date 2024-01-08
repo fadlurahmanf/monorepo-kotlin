@@ -6,6 +6,7 @@ import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PPOBDenomModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.InquiryResultModel
 import com.fadlurahmanf.bebas_transaction.domain.repositories.TransactionRepositoryImpl
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -82,6 +83,31 @@ class PaymentDetailViewModel @Inject constructor(
                                    {
                                        _plnPrePaidDenomState.value =
                                            NetworkState.FAILED(BebasException.fromThrowable(it))
+                                   },
+                                   {}
+                               ))
+    }
+
+    private val _inquiryCheckoutState = MutableLiveData<NetworkState<InquiryResultModel>>()
+    val inquiryCheckoutState: LiveData<NetworkState<InquiryResultModel>> =
+        _inquiryCheckoutState
+
+    fun inquiryPLNPrePaid(customerId: String, productCode: String) {
+        _inquiryCheckoutState.value = NetworkState.LOADING
+        baseDisposable.add(transactionRepositoryImpl.inquiryPLNPrePaidCheckoutReturnModel(
+            customerId,
+            productCode
+        )
+                               .subscribeOn(Schedulers.io())
+                               .observeOn(AndroidSchedulers.mainThread())
+                               .subscribe(
+                                   {
+                                       _inquiryCheckoutState.value = NetworkState.SUCCESS(it)
+                                   },
+                                   {
+                                       _inquiryCheckoutState.value = NetworkState.FAILED(
+                                           BebasException.fromThrowable(it)
+                                       )
                                    },
                                    {}
                                ))

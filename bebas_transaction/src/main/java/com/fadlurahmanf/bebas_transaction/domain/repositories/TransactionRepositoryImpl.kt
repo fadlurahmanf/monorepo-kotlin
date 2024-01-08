@@ -403,6 +403,37 @@ class TransactionRepositoryImpl @Inject constructor(
         }
     }
 
+    fun inquiryPLNPrePaidCheckout(
+        customerId: String,
+        productCode: String,
+    ): Observable<InquiryCheckoutFlowResponse> {
+        val request = InquiryCheckoutFlowRequest(
+            productCode = productCode,
+            clientNumber = customerId
+        )
+        return fulfillmentRemoteDatasource.inquiryCheckoutFlow(request).map { inqRes ->
+            if (inqRes.data == null) {
+                throw BebasException.generalRC("INQ_00")
+            }
+            inqRes.data!!
+        }
+    }
+
+    fun inquiryPLNPrePaidCheckoutReturnModel(
+        customerId: String,
+        productCode: String,
+    ): Observable<InquiryResultModel> {
+        val request = InquiryCheckoutFlowRequest(
+            productCode = productCode,
+            clientNumber = customerId
+        )
+        return inquiryPLNPrePaidCheckout(customerId, productCode).map {
+            InquiryResultModel(
+                inquiryPLNPrePaidCheckout = it
+            )
+        }
+    }
+
     fun postingTelkomIndihome(
         plainPin: String,
         telkomIndihomeRequest: PostingTelkomIndihomeRequest
