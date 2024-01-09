@@ -3,8 +3,11 @@ package com.fadlurahmanf.bebas_transaction.domain.repositories
 import com.fadlurahmanf.bebas_api.data.datasources.CmsRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.FulfillmentRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.IdentityRemoteDatasource
+import com.fadlurahmanf.bebas_api.data.datasources.PaymentRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
+import com.fadlurahmanf.bebas_api.data.dto.payment_service.PaymentSourceConfigRequest
+import com.fadlurahmanf.bebas_api.data.dto.payment_service.PaymentSourceConfigResponse
 import com.fadlurahmanf.bebas_api.data.dto.pin.PinAttemptResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryCheckoutFlowRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryCheckoutFlowResponse
@@ -27,6 +30,7 @@ import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PPOBDenomModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.transaction.PaymentSourceConfigModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.InquiryResultModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.PostingPinVerificationResultModel
 import com.fadlurahmanf.bebas_transaction.data.flow.PPOBDenomFlow
@@ -40,6 +44,7 @@ class TransactionRepositoryImpl @Inject constructor(
     private val cryptoTransactionRepositoryImpl: CryptoTransactionRepositoryImpl,
     private val fulfillmentRemoteDatasource: FulfillmentRemoteDatasource,
     private val identityRemoteDatasource: IdentityRemoteDatasource,
+    private val paymentRemoteDatasource: PaymentRemoteDatasource,
     private val transactionRemoteDatasource: TransactionRemoteDatasource,
 ) {
 
@@ -480,6 +485,104 @@ class TransactionRepositoryImpl @Inject constructor(
                 throw BebasException.generalRC("RT_00")
             }
             resp.data!!
+        }
+    }
+
+    fun getPaymentSourceConfig(
+        paymentTypeCode: String,
+        amount: Double
+    ): Observable<List<PaymentSourceConfigResponse>> {
+        val request = PaymentSourceConfigRequest(
+            paymentTypeCode = paymentTypeCode,
+            amount = amount
+        )
+        return paymentRemoteDatasource.getPaymentSourceConfig(request).map {
+            if (it.data == null) {
+                throw BebasException.generalRC("PSC_00")
+            }
+            it.data!!
+        }
+    }
+
+    fun getPaymentSourceConfigReturnModel(
+        paymentTypeCode: String,
+        amount: Double
+    ): Observable<PaymentSourceConfigModel> {
+        val request = PaymentSourceConfigRequest(
+            paymentTypeCode = paymentTypeCode,
+            amount = amount
+        )
+        return paymentRemoteDatasource.getPaymentSourceConfig(request).map {
+            if (it.data == null) {
+                throw BebasException.generalRC("PSC_00")
+            }
+            val data = it.data!!
+            var mainPaymentSourceConfig: PaymentSourceConfigResponse? = null
+            var mainPaymentSource: PaymentSourceConfigResponse.Source? = null
+            var loyaltyPaymentSource: PaymentSourceConfigResponse.Source? = null
+
+            val mainPaymentSourcesConfig: ArrayList<PaymentSourceConfigResponse> = arrayListOf()
+            val mainPaymentSources: ArrayList<PaymentSourceConfigResponse.Source> = arrayListOf()
+
+            for (config in data) {
+                mainPaymentSourcesConfig.add(config)
+                for (source in (config.paymentSources ?: listOf())) {
+                    mainPaymentSources.add(source)
+                    if (source.mainAccount == true && source.type == "SALDO" && mainPaymentSource == null) {
+                        mainPaymentSourceConfig = config
+                        mainPaymentSource = source
+                    }
+
+                    if (source.type == "LOYALTY_POINT" && loyaltyPaymentSource == null) {
+                        loyaltyPaymentSource = source
+                    }
+                }
+            }
+            if (mainPaymentSourceConfig == null) {
+                throw BebasException.generalRC("MPSC_00")
+            }
+            if (mainPaymentSource == null) {
+                throw BebasException.generalRC("MPS_00")
+            }
+
+            val paymentSourceModel = PaymentSourceModel(
+                accountName = mainPaymentSource.accountHolderName ?: "-",
+                accountNumber = mainPaymentSource.accountNumber ?: "-",
+                subLabel = "${mainPaymentSource.name ?: "-"} • ${mainPaymentSource.accountNumber ?: "-"}",
+                balance = mainPaymentSource.accountBalance ?: -1.0,
+                paymentSourceConfig = mainPaymentSourceConfig
+            )
+
+            PaymentSourceConfigModel(
+                mainPaymentSource = paymentSourceModel,
+                loyaltyPointPaymentSource = PaymentSourceModel(
+                    accountName = loyaltyPaymentSource?.accountHolderName ?: "-",
+                    accountNumber = loyaltyPaymentSource?.accountNumber ?: "-",
+                    subLabel = "${loyaltyPaymentSource?.name ?: "-"} • ${loyaltyPaymentSource?.accountNumber ?: "-"}",
+                    balance = loyaltyPaymentSource?.accountBalance ?: -1.0,
+                    paymentSource = loyaltyPaymentSource
+                ),
+                paymentSources = mainPaymentSources.map { source ->
+                    PaymentSourceModel(
+                        accountName = source.accountHolderName ?: "-",
+                        accountNumber = source.accountNumber ?: "-",
+                        balance = source.accountBalance ?: -1.0,
+                        subLabel = "${source.name ?: "-"} • ${source.accountNumber ?: "-"}",
+                        paymentSource = source
+                    )
+                },
+                paymentSourcesWithoutLoyaltyPoint = mainPaymentSources.filter { source ->
+                    source.type == "SALDO"
+                }.map { source ->
+                    PaymentSourceModel(
+                        accountName = source.accountHolderName ?: "-",
+                        accountNumber = source.accountNumber ?: "-",
+                        balance = source.accountBalance ?: -1.0,
+                        subLabel = "${source.name ?: "-"} • ${source.accountNumber ?: "-"}",
+                        paymentSource = source
+                    )
+                }
+            )
         }
     }
 

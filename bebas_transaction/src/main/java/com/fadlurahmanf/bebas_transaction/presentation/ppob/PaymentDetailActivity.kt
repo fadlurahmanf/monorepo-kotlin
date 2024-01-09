@@ -301,7 +301,9 @@ class PaymentDetailActivity :
                             destinationLabel = "PLN",
                             destinationSubLabel = inquiryPrePaid?.clientNumber ?: "-",
                             additionalPLNPrePaid = TransactionConfirmationCheckoutArgument.PLNPrePaid(
-                                productCode = inquiryPrePaid?.productCode ?: "-"
+                                paymentTypeCode = viewModel.selectedDenomModel.value?.plnPrePaidDenomResponse?.paymentTypeCode
+                                    ?: "-",
+                                inquiryResponse = result.inquiryPLNPrePaidCheckout!!
                             )
                         )
                     )

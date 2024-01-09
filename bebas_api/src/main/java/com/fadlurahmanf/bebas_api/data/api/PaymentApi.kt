@@ -11,5 +11,5 @@ interface PaymentApi {
     @POST("apps/payment-source-config")
     fun getPaymentSourceConfig(
         @Body paymentSourceConfigRequest: PaymentSourceConfigRequest
-    ): Observable<BaseResponse<PaymentSourceConfigResponse>>
+    ): Observable<BaseResponse<List<PaymentSourceConfigResponse>>>
 }

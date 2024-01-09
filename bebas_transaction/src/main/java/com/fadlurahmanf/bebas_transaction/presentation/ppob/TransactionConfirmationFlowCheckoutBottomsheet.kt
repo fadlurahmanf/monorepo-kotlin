@@ -5,6 +5,8 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import com.bumptech.glide.Glide
+import com.fadlurahmanf.bebas_api.network_state.NetworkState
+import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationCheckoutArgument
@@ -79,7 +81,8 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
 
         argument = arg
 
-        setupIdentity()
+        setupIdentityDestination()
+        initObserver()
 
 
         binding.btnNext.setOnClickListener {
@@ -93,9 +96,54 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
         binding.lItemPaymentSource.setOnClickListener {
 
         }
+
+        when (flow) {
+            TransactionConfirmationCheckoutFlow.PLN_PREPAID -> {
+                viewModel.getPaymentSourceConfig(
+                    paymentTypeCode = argument.additionalPLNPrePaid?.paymentTypeCode
+                        ?: "-",
+                    amount = argument.additionalPLNPrePaid?.inquiryResponse?.amount ?: -1.0
+                )
+            }
+        }
     }
 
-    private fun setupIdentity() {
+    private fun initObserver() {
+        viewModel.paymentSourceState.observe(this) {
+            when (it) {
+                is NetworkState.FAILED -> {
+                    binding.lItemPaymentSourceShimmer.visibility = View.VISIBLE
+                    binding.lItemPaymentSource.visibility = View.GONE
+                }
+
+                is NetworkState.LOADING -> {
+                    binding.lItemPaymentSourceShimmer.visibility = View.VISIBLE
+                    binding.lItemPaymentSource.visibility = View.GONE
+                }
+
+                is NetworkState.SUCCESS -> {
+                    binding.lItemPaymentSourceShimmer.visibility = View.GONE
+                    binding.lItemPaymentSource.visibility = View.VISIBLE
+
+                    binding.itemPaymentSource.tvAccountName.text =
+                        it.data.mainPaymentSource.accountName
+                    binding.itemPaymentSource.tvSavingTypeAndAccountNumber.text =
+                        it.data.mainPaymentSource.subLabel
+                    binding.itemPaymentSource.tvAccountBalance.text =
+                        it.data.mainPaymentSource.balance.toRupiahFormat(
+                            useSymbol = true,
+                            useDecimal = false
+                        )
+                }
+
+                else -> {
+
+                }
+            }
+        }
+    }
+
+    private fun setupIdentityDestination() {
         when (flow) {
             TransactionConfirmationCheckoutFlow.PLN_PREPAID -> {
                 binding.itemDestinationAccount.ivLogo.visibility = View.VISIBLE
