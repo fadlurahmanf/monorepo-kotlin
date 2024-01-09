@@ -92,6 +92,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp" />
 
+            <include
+                android:id="@+id/item_bebas_poin_payment_source"
+                layout="@layout/layout_bebas_poin_display_in_transaction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
