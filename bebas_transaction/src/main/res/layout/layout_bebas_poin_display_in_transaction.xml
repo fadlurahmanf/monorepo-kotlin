@@ -45,7 +45,7 @@
         <androidx.appcompat.widget.SwitchCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
+            android:checked="false"
             android:layout_gravity="center_vertical"
             android:thumb="@drawable/thumb_selector"
             app:track="@drawable/track_selector" />
