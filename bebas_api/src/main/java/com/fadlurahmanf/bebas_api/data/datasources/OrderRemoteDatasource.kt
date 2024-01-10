@@ -11,6 +11,6 @@ class OrderRemoteDatasource @Inject constructor(
 ) : OrderNetwork<OrderApi>(context) {
     override fun getApi(): Class<OrderApi> = OrderApi::class.java
 
-    fun getTransactionNotification(request: OrderPaymentSchemaRequest) =
+    fun orderTransactionSchema(request: OrderPaymentSchemaRequest) =
         networkService().getOrderConfirmation(request)
 }

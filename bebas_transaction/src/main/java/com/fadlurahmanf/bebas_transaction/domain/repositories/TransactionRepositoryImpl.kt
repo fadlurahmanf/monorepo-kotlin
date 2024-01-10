@@ -1,11 +1,15 @@
 package com.fadlurahmanf.bebas_transaction.domain.repositories
 
+import android.util.Log
 import com.fadlurahmanf.bebas_api.data.datasources.CmsRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.FulfillmentRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.IdentityRemoteDatasource
+import com.fadlurahmanf.bebas_api.data.datasources.OrderRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.PaymentRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
+import com.fadlurahmanf.bebas_api.data.dto.order_service.OrderPaymentSchemaRequest
+import com.fadlurahmanf.bebas_api.data.dto.order_service.OrderPaymentSchemaResponse
 import com.fadlurahmanf.bebas_api.data.dto.payment_service.PaymentSourceConfigRequest
 import com.fadlurahmanf.bebas_api.data.dto.payment_service.PaymentSourceConfigResponse
 import com.fadlurahmanf.bebas_api.data.dto.pin.PinAttemptResponse
@@ -44,6 +48,7 @@ class TransactionRepositoryImpl @Inject constructor(
     private val cryptoTransactionRepositoryImpl: CryptoTransactionRepositoryImpl,
     private val fulfillmentRemoteDatasource: FulfillmentRemoteDatasource,
     private val identityRemoteDatasource: IdentityRemoteDatasource,
+    private val orderRemoteDatasource: OrderRemoteDatasource,
     private val paymentRemoteDatasource: PaymentRemoteDatasource,
     private val transactionRemoteDatasource: TransactionRemoteDatasource,
 ) {
@@ -521,18 +526,25 @@ class TransactionRepositoryImpl @Inject constructor(
             var mainPaymentSource: PaymentSourceConfigResponse.Source? = null
             var loyaltyPaymentSource: PaymentSourceConfigResponse.Source? = null
 
-            val mainPaymentSourcesConfig: ArrayList<PaymentSourceConfigResponse> = arrayListOf()
-            val mainPaymentSources: ArrayList<PaymentSourceConfigResponse.Source> = arrayListOf()
+            val paymentSourcesGroupAvailable: ArrayList<PaymentSourceConfigResponse> = arrayListOf()
+            val paymentSourcesAvailable: ArrayList<PaymentSourceConfigResponse.Source> =
+                arrayListOf()
 
             for (config in data) {
-                mainPaymentSourcesConfig.add(config)
+                // list payment source group
+                paymentSourcesGroupAvailable.add(config)
+
                 for (source in (config.paymentSources ?: listOf())) {
-                    mainPaymentSources.add(source)
+                    // list payment source
+                    paymentSourcesAvailable.add(source)
+
+                    // search main payment source type = saldo
                     if (source.mainAccount == true && source.type == "SALDO" && mainPaymentSource == null) {
                         mainPaymentSourceConfig = config
                         mainPaymentSource = source
                     }
 
+                    // search loyalty payment source
                     if (source.type == "LOYALTY_POINT" && loyaltyPaymentSource == null) {
                         loyaltyPaymentSource = source
                     }
@@ -550,8 +562,10 @@ class TransactionRepositoryImpl @Inject constructor(
                 accountNumber = mainPaymentSource.accountNumber ?: "-",
                 subLabel = "${mainPaymentSource.name ?: "-"} • ${mainPaymentSource.accountNumber ?: "-"}",
                 balance = mainPaymentSource.accountBalance ?: -1.0,
-                paymentSourceConfig = mainPaymentSourceConfig
+                paymentSourceConfig = mainPaymentSourceConfig,
+                paymentSource = mainPaymentSource
             )
+            Log.d("Bebaslogger", "MASUK PAYMENT SOURCE: $paymentSourceModel")
 
             PaymentSourceConfigModel(
                 mainPaymentSource = paymentSourceModel,
@@ -562,7 +576,7 @@ class TransactionRepositoryImpl @Inject constructor(
                     balance = loyaltyPaymentSource?.accountBalance ?: -1.0,
                     paymentSource = loyaltyPaymentSource
                 ),
-                paymentSources = mainPaymentSources.map { source ->
+                paymentSourcesAvailable = paymentSourcesAvailable.map { source ->
                     PaymentSourceModel(
                         accountName = source.accountHolderName ?: "-",
                         accountNumber = source.accountNumber ?: "-",
@@ -571,7 +585,7 @@ class TransactionRepositoryImpl @Inject constructor(
                         paymentSource = source
                     )
                 },
-                paymentSourcesWithoutLoyaltyPoint = mainPaymentSources.filter { source ->
+                paymentSourcesWithoutLoyaltyPoint = paymentSourcesAvailable.filter { source ->
                     source.type == "SALDO"
                 }.map { source ->
                     PaymentSourceModel(
@@ -583,6 +597,30 @@ class TransactionRepositoryImpl @Inject constructor(
                     )
                 }
             )
+        }
+    }
+
+    fun orderPaymentSchema(
+        productCode: String,
+        paymentTypeCode: String,
+        sourceGroupId: String,
+        customerName: String,
+        customerId: String,
+        schemas: List<OrderPaymentSchemaRequest.PaymentSourceSchemaRequest>
+    ): Observable<OrderPaymentSchemaResponse> {
+        val request = OrderPaymentSchemaRequest(
+            providerProductCode = productCode,
+            paymentTypeCode = paymentTypeCode,
+            paymentConfigGroupId = sourceGroupId,
+            customerName = customerName,
+            customerNumber = customerId,
+            paymentSourceSchema = schemas
+        )
+        return orderRemoteDatasource.orderTransactionSchema(request).map {
+            if (it.data == null) {
+                throw BebasException.generalRC("OTS_00")
+            }
+            it.data!!
         }
     }
 

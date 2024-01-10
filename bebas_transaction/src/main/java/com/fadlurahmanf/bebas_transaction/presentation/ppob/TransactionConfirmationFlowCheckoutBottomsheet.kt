@@ -102,6 +102,12 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
                 viewModel.getPaymentSourceConfig(
                     paymentTypeCode = argument.additionalPLNPrePaid?.paymentTypeCode
                         ?: "-",
+                    productCode = argument.additionalPLNPrePaid?.inquiryResponse?.productCode
+                        ?: "-",
+                    customerId = argument.additionalPLNPrePaid?.inquiryResponse?.clientNumber
+                        ?: "-",
+                    customerName = argument.additionalPLNPrePaid?.inquiryResponse?.clientName
+                        ?: "-",
                     amount = argument.additionalPLNPrePaid?.inquiryResponse?.amount ?: -1.0
                 )
             }

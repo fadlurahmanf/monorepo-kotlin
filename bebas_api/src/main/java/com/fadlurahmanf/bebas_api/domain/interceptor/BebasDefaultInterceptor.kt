@@ -13,6 +13,8 @@ class BebasDefaultInterceptor : Interceptor {
     private fun getRequest(request: Request): Request {
         return request.newBuilder()
             .addHeader("X-Request-ID", UUID.randomUUID().toString())
+            .addHeader("Accept-Language", "id-ID")
+            .addHeader("Content-Type", "application/json")
             .build()
     }
 }

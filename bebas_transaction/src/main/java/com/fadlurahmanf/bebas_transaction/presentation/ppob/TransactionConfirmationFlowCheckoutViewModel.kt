@@ -1,10 +1,12 @@
 package com.fadlurahmanf.bebas_transaction.presentation.ppob
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.fadlurahmanf.bebas_api.data.dto.payment_service.PaymentSourceConfigResponse
+import com.fadlurahmanf.bebas_api.data.dto.order_service.OrderPaymentSchemaRequest
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transaction.PaymentSourceConfigModel
 import com.fadlurahmanf.bebas_transaction.domain.repositories.TransactionRepositoryImpl
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
@@ -20,7 +22,19 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
     val paymentSourceState: LiveData<NetworkState<PaymentSourceConfigModel>> =
         _paymentSourceState
 
-    fun getPaymentSourceConfig(paymentTypeCode: String, amount: Double) {
+    private val _selectedPaymentSource = MutableLiveData<PaymentSourceModel>()
+    val selectedPaymentSource: LiveData<PaymentSourceModel> = _selectedPaymentSource
+
+    private val _loyaltyPaymentSource = MutableLiveData<PaymentSourceModel?>()
+    val loyaltyPaymentSource: LiveData<PaymentSourceModel?> = _loyaltyPaymentSource
+
+    fun getPaymentSourceConfig(
+        paymentTypeCode: String,
+        productCode: String,
+        customerId: String,
+        customerName: String,
+        amount: Double
+    ) {
         _paymentSourceState.value = NetworkState.LOADING
         baseDisposable.add(
             transactionRepositoryImpl.getPaymentSourceConfigReturnModel(
@@ -31,6 +45,15 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
                 .subscribe(
                     {
                         _paymentSourceState.value = NetworkState.SUCCESS(it)
+                        _selectedPaymentSource.value = it.mainPaymentSource
+                        _loyaltyPaymentSource.value = it.loyaltyPointPaymentSource
+                        orderPaymentSchema(
+                            productCode = productCode,
+                            paymentTypeCode = paymentTypeCode,
+                            customerId = customerId,
+                            customerName = customerName,
+                            useLoyaltyBebasPoin = false
+                        )
                     },
                     {
                         _paymentSourceState.value =
@@ -39,5 +62,49 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
                     {}
                 )
         )
+    }
+
+    fun orderPaymentSchema(
+        productCode: String,
+        paymentTypeCode: String,
+        customerId: String,
+        customerName: String,
+        useLoyaltyBebasPoin: Boolean = false
+    ) {
+        val schemas = arrayListOf<OrderPaymentSchemaRequest.PaymentSourceSchemaRequest>()
+        Log.d("BebasLogger", "ORDER -> ${selectedPaymentSource.value?.paymentSource}")
+        schemas.add(
+            OrderPaymentSchemaRequest.PaymentSourceSchemaRequest(
+                code = selectedPaymentSource.value?.paymentSource?.code ?: "-",
+                accountNumber = selectedPaymentSource.value?.paymentSource?.accountNumber,
+                status = true
+            )
+        )
+        if(loyaltyPaymentSource.value != null){
+            schemas.add(
+                OrderPaymentSchemaRequest.PaymentSourceSchemaRequest(
+                    code = loyaltyPaymentSource.value?.paymentSource?.code ?: "-",
+                    accountNumber = selectedPaymentSource.value?.paymentSource?.accountNumber,
+                    status = useLoyaltyBebasPoin
+                )
+            )
+        }
+        baseDisposable.add(transactionRepositoryImpl.orderPaymentSchema(
+            productCode = productCode,
+            paymentTypeCode = paymentTypeCode,
+            customerId = customerId,
+            customerName = customerName,
+            sourceGroupId = selectedPaymentSource.value?.paymentSourceConfig?.id
+                ?: "-",
+            schemas = schemas
+        ).subscribeOn(Schedulers.io())
+                               .observeOn(AndroidSchedulers.mainThread())
+                               .subscribe(
+                                   {
+
+                                   },
+                                   {},
+                                   {}
+                               ))
     }
 }

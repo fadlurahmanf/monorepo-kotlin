@@ -5,6 +5,6 @@ import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 data class PaymentSourceConfigModel(
     val mainPaymentSource: PaymentSourceModel,
     val loyaltyPointPaymentSource: PaymentSourceModel? = null,
-    val paymentSources: List<PaymentSourceModel>,
+    val paymentSourcesAvailable: List<PaymentSourceModel>,
     val paymentSourcesWithoutLoyaltyPoint: List<PaymentSourceModel>,
 )
