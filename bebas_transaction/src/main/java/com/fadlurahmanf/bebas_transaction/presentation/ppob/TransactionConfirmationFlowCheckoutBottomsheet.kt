@@ -3,6 +3,7 @@ package com.fadlurahmanf.bebas_transaction.presentation.ppob
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
@@ -11,6 +12,8 @@ import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationCheckoutArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.TransactionDetailModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.transaction.OrderFeeDetailModel
 import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmationResult
 import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationCheckoutFlow
 import com.fadlurahmanf.bebas_transaction.databinding.BottomsheetTransactionConfirmationCheckoutBinding
@@ -41,9 +44,9 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
 
     private lateinit var feeDetailAdapter: TransactionDetailAdapter
     private lateinit var detailAdapter: TransactionDetailAdapter
-    private val feeDetails: ArrayList<TransactionConfirmationArgument.FeeDetail.Detail> =
+    private val feeDetails: ArrayList<OrderFeeDetailModel.Detail> =
         arrayListOf()
-    private val details: ArrayList<TransactionConfirmationArgument.Detail> = arrayListOf()
+    private val details: ArrayList<TransactionConfirmationCheckoutArgument.Detail> = arrayListOf()
 
     @Inject
     lateinit var viewModel: TransactionConfirmationFlowCheckoutViewModel
@@ -80,15 +83,36 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
                                                     }, 1000)
 
         argument = arg
+        details.clear()
+        details.addAll(argument.details)
 
         setupIdentityDestination()
+        initFeeDetail()
+        initDetail()
         initObserver()
 
 
         binding.btnNext.setOnClickListener {
-            when (flow) {
-                else -> {
+//            when (flow) {
+//                else -> {
+//
+//                }
+//            }
+        }
 
+        binding.itemBebasPoinPaymentSource.switchUseBebaspoin.setOnCheckedChangeListener { _, isChecked ->
+            when (flow) {
+                TransactionConfirmationCheckoutFlow.PLN_PREPAID -> {
+                    viewModel.orderPaymentSchema(
+                        productCode = argument.additionalPLNPrePaid?.inquiryResponse?.productCode
+                            ?: "-",
+                        customerId = argument.additionalPLNPrePaid?.inquiryResponse?.clientNumber
+                            ?: "-",
+                        customerName = argument.additionalPLNPrePaid?.inquiryResponse?.clientName
+                            ?: "-",
+                        paymentTypeCode = argument.additionalPLNPrePaid?.paymentTypeCode ?: "-",
+                        useLoyaltyBebasPoin = isChecked
+                    )
                 }
             }
         }
@@ -112,6 +136,28 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
                 )
             }
         }
+    }
+
+    private fun initFeeDetail() {
+        feeDetailAdapter = TransactionDetailAdapter()
+        feeDetailAdapter.setList(feeDetails.map { detail ->
+            TransactionDetailModel(
+                label = detail.label,
+                value = detail.value.toRupiahFormat(useSymbol = true, useDecimal = false)
+            )
+        })
+        binding.rvFeeDetail.adapter = feeDetailAdapter
+    }
+
+    private fun initDetail() {
+        detailAdapter = TransactionDetailAdapter()
+        detailAdapter.setList(details.map { detail ->
+            TransactionDetailModel(
+                label = detail.label,
+                value = detail.value
+            )
+        })
+        binding.rvDetails.adapter = detailAdapter
     }
 
     private fun initObserver() {
@@ -144,6 +190,46 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
 
                 else -> {
 
+                }
+            }
+        }
+
+        viewModel.oderFeeDetailState.observe(this) {
+            when (it) {
+                is NetworkState.FAILED -> {
+                    binding.llFeeDetail.visibility = View.GONE
+                }
+
+                is NetworkState.IDLE -> {
+                    binding.llFeeDetail.visibility = View.GONE
+                }
+
+                NetworkState.LOADING -> {
+                    binding.llFeeDetail.visibility = View.GONE
+                }
+
+                is NetworkState.SUCCESS -> {
+                    feeDetails.clear()
+                    feeDetails.addAll(it.data.details)
+                    feeDetailAdapter.resetList(feeDetails.map { detail ->
+                        TransactionDetailModel(
+                            label = detail.label,
+                            value = detail.value.toRupiahFormat(
+                                useSymbol = true,
+                                useDecimal = false
+                            )
+                        )
+                    })
+                    binding.tvTotal.text =
+                        it.data.total.toRupiahFormat(useSymbol = true, useDecimal = false)
+
+                    binding.llFeeDetail.visibility = View.VISIBLE
+
+                    binding.nsv.postDelayed({
+                                                Log.d("BebasLogger", "TURUN KE BAWAH")
+                                                binding.nsv.fullScroll(View.FOCUS_DOWN)
+                                                Log.d("BebasLogger", "TURUN KE BAWAH")
+                                            }, 1000)
                 }
             }
         }

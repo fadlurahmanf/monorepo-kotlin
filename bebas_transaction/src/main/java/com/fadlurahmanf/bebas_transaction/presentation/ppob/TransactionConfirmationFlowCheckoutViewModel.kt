@@ -6,7 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import com.fadlurahmanf.bebas_api.data.dto.order_service.OrderPaymentSchemaRequest
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.data.exception.OrderException
 import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.transaction.OrderFeeDetailModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transaction.PaymentSourceConfigModel
 import com.fadlurahmanf.bebas_transaction.domain.repositories.TransactionRepositoryImpl
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
@@ -35,6 +37,7 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
         customerName: String,
         amount: Double
     ) {
+        _oderFeeDetailState.value = NetworkState.IDLE
         _paymentSourceState.value = NetworkState.LOADING
         baseDisposable.add(
             transactionRepositoryImpl.getPaymentSourceConfigReturnModel(
@@ -64,6 +67,9 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
         )
     }
 
+    private val _oderFeeDetailState = MutableLiveData<NetworkState<OrderFeeDetailModel>>()
+    val oderFeeDetailState: LiveData<NetworkState<OrderFeeDetailModel>> = _oderFeeDetailState
+
     fun orderPaymentSchema(
         productCode: String,
         paymentTypeCode: String,
@@ -71,8 +77,8 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
         customerName: String,
         useLoyaltyBebasPoin: Boolean = false
     ) {
+        _oderFeeDetailState.value = NetworkState.LOADING
         val schemas = arrayListOf<OrderPaymentSchemaRequest.PaymentSourceSchemaRequest>()
-        Log.d("BebasLogger", "ORDER -> ${selectedPaymentSource.value?.paymentSource}")
         schemas.add(
             OrderPaymentSchemaRequest.PaymentSourceSchemaRequest(
                 code = selectedPaymentSource.value?.paymentSource?.code ?: "-",
@@ -80,7 +86,7 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
                 status = true
             )
         )
-        if(loyaltyPaymentSource.value != null){
+        if (loyaltyPaymentSource.value != null) {
             schemas.add(
                 OrderPaymentSchemaRequest.PaymentSourceSchemaRequest(
                     code = loyaltyPaymentSource.value?.paymentSource?.code ?: "-",
@@ -89,7 +95,7 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
                 )
             )
         }
-        baseDisposable.add(transactionRepositoryImpl.orderPaymentSchema(
+        baseDisposable.add(transactionRepositoryImpl.orderPaymentSchemaReturnModel(
             productCode = productCode,
             paymentTypeCode = paymentTypeCode,
             customerId = customerId,
@@ -101,9 +107,12 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
                                .observeOn(AndroidSchedulers.mainThread())
                                .subscribe(
                                    {
-
+                                       _oderFeeDetailState.value = NetworkState.SUCCESS(it)
                                    },
-                                   {},
+                                   {
+                                       _oderFeeDetailState.value =
+                                           NetworkState.FAILED(BebasException.fromThrowable(it))
+                                   },
                                    {}
                                ))
     }

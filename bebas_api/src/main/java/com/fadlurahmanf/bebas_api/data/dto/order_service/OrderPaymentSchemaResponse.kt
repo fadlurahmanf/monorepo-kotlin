@@ -2,11 +2,13 @@ package com.fadlurahmanf.bebas_api.data.dto.order_service
 
 data class OrderPaymentSchemaResponse(
     val orderId: String? = null,
+    val paymentSchema: PaymentSchema? = null,
 ) {
     data class PaymentSchema(
         val total: Double? = null,
         val currencyLabel: String? = null,
         val currencyCode: String? = null,
+        val details: List<Detail>? = null
     ) {
         data class Detail(
             val label: String? = null,

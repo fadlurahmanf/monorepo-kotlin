@@ -32,8 +32,10 @@ import com.fadlurahmanf.bebas_api.data.dto.ppob.RefreshStatusResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PPOBDenomModel
+import com.fadlurahmanf.bebas_transaction.data.dto.model.transaction.OrderFeeDetailModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transaction.PaymentSourceConfigModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.InquiryResultModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transfer.PostingPinVerificationResultModel
@@ -621,6 +623,38 @@ class TransactionRepositoryImpl @Inject constructor(
                 throw BebasException.generalRC("OTS_00")
             }
             it.data!!
+        }
+    }
+
+    fun orderPaymentSchemaReturnModel(
+        productCode: String,
+        paymentTypeCode: String,
+        sourceGroupId: String,
+        customerName: String,
+        customerId: String,
+        schemas: List<OrderPaymentSchemaRequest.PaymentSourceSchemaRequest>,
+    ): Observable<OrderFeeDetailModel> {
+        return orderPaymentSchema(
+            productCode = productCode,
+            paymentTypeCode = paymentTypeCode,
+            sourceGroupId = sourceGroupId,
+            customerName = customerName,
+            customerId = customerId,
+            schemas = schemas
+        ).map { resp ->
+            val details = arrayListOf<OrderFeeDetailModel.Detail>()
+            resp.paymentSchema?.details?.forEach { detail ->
+                details.add(
+                    OrderFeeDetailModel.Detail(
+                        label = detail.label ?: "-",
+                        value = detail.amount ?: -1.0
+                    )
+                )
+            }
+            OrderFeeDetailModel(
+                total = resp.paymentSchema?.total ?: -1.0,
+                details = details
+            )
         }
     }
 

@@ -20,6 +20,14 @@ class TransactionDetailAdapter :
         notifyItemRangeInserted(0, list.size)
     }
 
+    fun resetList(list: List<TransactionDetailModel>) {
+        val itemCount = details.size
+        details.clear()
+        notifyItemRangeRemoved(0, itemCount)
+        details.addAll(list)
+        notifyItemRangeInserted(0, list.size)
+    }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val label = view.findViewById<TextView>(R.id.tv_label)
         val value = view.findViewById<TextView>(R.id.tv_value)

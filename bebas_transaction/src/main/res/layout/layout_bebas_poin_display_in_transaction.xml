@@ -46,6 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
+            android:id="@+id/switch_use_bebaspoin"
             android:layout_gravity="center_vertical"
             android:thumb="@drawable/thumb_selector"
             app:track="@drawable/track_selector" />

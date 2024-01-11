@@ -9,6 +9,7 @@
     android:paddingVertical="20dp">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -100,6 +101,7 @@
                 android:layout_marginTop="15dp" />
 
             <LinearLayout
+                android:id="@+id/ll_fee_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
