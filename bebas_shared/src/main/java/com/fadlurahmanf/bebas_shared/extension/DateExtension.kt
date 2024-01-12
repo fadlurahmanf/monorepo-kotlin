@@ -8,8 +8,15 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
+// RETURN -> [11-01-2023]
 fun Date.formatToEktpForm(): String {
     val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    return simpleDateFormat.format(this)
+}
+
+// RETURN -> [2020-12-01]
+fun Date.formatFetchNotification(): String {
+    val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     return simpleDateFormat.format(this)
 }
 

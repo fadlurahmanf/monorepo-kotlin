@@ -18,6 +18,7 @@ class NotificationPagingAdapter :
     PagingDataAdapter<NotificationModel, NotificationPagingAdapter.ViewHolder>(DiffUtilCallBack()) {
     private lateinit var context: Context
     private var callBack: CallBack? = null
+    private var mapModel: HashMap<Int, NotificationModel> = hashMapOf()
     fun setCallBack(callBack: CallBack) {
         this.callBack = callBack
     }
@@ -30,7 +31,11 @@ class NotificationPagingAdapter :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val notification = getItem(position)
+        val notification = getItem(position) ?: mapModel[position]
+        if (mapModel[position] == null && notification != null) {
+            mapModel[position] = notification
+        }
+
         holder.header.text = notification?.titleMessage ?: "-"
         holder.body.text = notification?.bodyMessage ?: "-"
         holder.date.text = notification?.time ?: "-"
