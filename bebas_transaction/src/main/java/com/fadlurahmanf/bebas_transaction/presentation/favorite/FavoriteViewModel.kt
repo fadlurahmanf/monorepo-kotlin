@@ -50,6 +50,10 @@ class FavoriteViewModel @Inject constructor(
             FavoriteFlow.TRANSACTION_MENU_PLN_POSTPAID_CHECKOUT -> {
                 favoriteRepositoryImpl.getLatestTransactionPLNPostPaid()
             }
+
+            FavoriteFlow.TRANSACTION_MENU_TOPUP_EWALLET -> {
+                favoriteRepositoryImpl.getLatestTransactionPLNPostPaid()
+            }
         }
 
         baseDisposable.add(observable
@@ -91,6 +95,10 @@ class FavoriteViewModel @Inject constructor(
 
             FavoriteFlow.TRANSACTION_MENU_PLN_POSTPAID_CHECKOUT -> {
                 favoriteRepositoryImpl.getFavoritePLNPostPaid()
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_TOPUP_EWALLET -> {
+                favoriteRepositoryImpl.getFavoriteTopUpEWallet()
             }
         }
 

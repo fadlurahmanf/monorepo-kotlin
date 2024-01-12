@@ -203,6 +203,26 @@ class FavoriteRepositoryImpl @Inject constructor(
         }
     }
 
+    fun getFavoriteTopUpEWallet(): Observable<List<FavoriteContactModel>> {
+        return cifRemoteDatasource.getFavoriteTopUpEWallet().map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+
+            val favorites = it.data!!
+            favorites.map { favResp ->
+                FavoriteContactModel(
+                    id = favResp.id ?: "-",
+                    nameInFavoriteContact = favResp.aliasName ?: "-",
+                    labelTypeOfFavorite = favResp.aliasName ?: "-",
+                    accountNumber = favResp.accountNumber ?: "-",
+                    isPinned = favResp.isPinned ?: false,
+                    additionalTelkomIndihome = favResp
+                )
+            }.toList()
+        }
+    }
+
     fun pinFavorite(id: String, isPinned: Boolean): Observable<Boolean> {
         val request = PinFavoriteRequest(
             id, isPinned

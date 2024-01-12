@@ -5,5 +5,6 @@ enum class LatestAdapterFlow {
     PLN_PREPAID,
     PLN_POSTPAID_CHECKOUT,
     PULSA_PREPAID,
-    TELKOM_INDIHOME
+    TELKOM_INDIHOME,
+    TOPUP_EWALLET,
 }

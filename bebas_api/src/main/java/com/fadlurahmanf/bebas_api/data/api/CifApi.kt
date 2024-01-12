@@ -34,6 +34,9 @@ interface CifApi {
     @GET("favorite-telkom-bill/get-favorite")
     fun getFavoriteTelkomIndihome(): Observable<BaseResponse<List<FavoriteTelkomIndihomeResponse>>>
 
+    @GET("favorite-ewallet/get-favorite")
+    fun getFavoriteTopUpEWallet(): Observable<BaseResponse<List<FavoriteTelkomIndihomeResponse>>>
+
     @PUT("favorite/pin")
     fun pinFavorite(
         @Body request: PinFavoriteRequest

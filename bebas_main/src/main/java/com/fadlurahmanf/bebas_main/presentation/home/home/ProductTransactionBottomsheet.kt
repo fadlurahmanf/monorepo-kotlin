@@ -115,6 +115,14 @@ class ProductTransactionBottomsheet :
                 productTransactionMenu = productTransactionMenu.firstOrNull {
                     it.productMenuId == "PAYMENT"
                 } ?: othersMenu
+            ),
+            SubProductTransactionMenuModel(
+                subProductMenuId = "TOPUP_EWALLET",
+                subProductMenuLabel = R.string.ewallet,
+                subProductImageMenu = R.drawable.ic_subproduct_topupewallet,
+                productTransactionMenu = productTransactionMenu.firstOrNull {
+                    it.productMenuId == "TOPUP"
+                } ?: othersMenu
             )
         )
 
@@ -236,6 +244,18 @@ class ProductTransactionBottomsheet :
                 intent.putExtra(
                     FavoriteArgumentConstant.FAVORITE_FLOW,
                     FavoriteFlow.TRANSACTION_MENU_TELKOM_INDIHOME.name
+                )
+                startActivity(intent)
+            }
+
+            "TOPUP_EWALLET" -> {
+                val intent = Intent(
+                    requireContext(),
+                    Class.forName("com.fadlurahmanf.bebas_transaction.presentation.favorite.FavoriteListActivity")
+                )
+                intent.putExtra(
+                    FavoriteArgumentConstant.FAVORITE_FLOW,
+                    FavoriteFlow.TRANSACTION_MENU_TOPUP_EWALLET.name
                 )
                 startActivity(intent)
             }

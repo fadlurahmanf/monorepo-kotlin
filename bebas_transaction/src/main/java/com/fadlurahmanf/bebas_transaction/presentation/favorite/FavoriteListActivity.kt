@@ -33,6 +33,7 @@ import com.fadlurahmanf.bebas_transaction.presentation.favorite.adapter.LatestAd
 import com.fadlurahmanf.bebas_transaction.presentation.others.BankListActivity
 import com.fadlurahmanf.bebas_transaction.presentation.others.ContactListBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.others.InputDestinationAccountBottomsheet
+import com.fadlurahmanf.bebas_transaction.presentation.others.SelectEWalletActivity
 import com.fadlurahmanf.bebas_transaction.presentation.ppob.PaymentDetailActivity
 import com.fadlurahmanf.bebas_transaction.presentation.transfer.TransferDetailActivity
 import com.fadlurahmanf.bebas_ui.bottomsheet.FailedBottomsheet
@@ -108,6 +109,13 @@ class FavoriteListActivity :
                 binding.toolbar.title = "Nomor Pelanggan Favorit"
                 binding.tvBtnNewReceiver.text = "Nomor Pelanggan Baru"
                 binding.ivButtonNewReceiver.setImageResource(R.drawable.outline_person_add_alt_1_24)
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_TOPUP_EWALLET -> {
+                latestAdapter = LatestAdapter(LatestAdapterFlow.TOPUP_EWALLET)
+                binding.toolbar.title = "Nomor Ponsel Favorit"
+                binding.tvBtnNewReceiver.text = "Nomor Ponsel Baru"
+                binding.ivButtonNewReceiver.setImageResource(R.drawable.round_phonelink_ring_24)
             }
         }
 
@@ -385,6 +393,11 @@ class FavoriteListActivity :
             FavoriteFlow.TRANSACTION_MENU_PLN_POSTPAID_CHECKOUT -> {
                 showInputAccountBottomsheet()
             }
+
+            FavoriteFlow.TRANSACTION_MENU_TOPUP_EWALLET -> {
+                val intent = Intent(this, SelectEWalletActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
@@ -554,6 +567,10 @@ class FavoriteListActivity :
                 }
                 startActivity(intent)
             }
+
+            FavoriteFlow.TRANSACTION_MENU_TOPUP_EWALLET -> {
+
+            }
         }
     }
 
@@ -667,6 +684,10 @@ class FavoriteListActivity :
                     favoriteModel = favorite,
                 )
             }
+
+            FavoriteFlow.TRANSACTION_MENU_TOPUP_EWALLET -> {
+
+            }
         }
     }
 
@@ -739,6 +760,10 @@ class FavoriteListActivity :
                     isFromFavorite = true,
                     latestModel = latest,
                 )
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_TOPUP_EWALLET -> {
+
             }
         }
     }
