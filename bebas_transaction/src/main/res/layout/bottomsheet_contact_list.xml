@@ -44,12 +44,13 @@
     </LinearLayout>
 
     <com.fadlurahmanf.bebas_ui.edittext.BebasEdittext
-        android:id="@+id/et_name_or_phone"
+        android:id="@+id/et_phone_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:inputType="text"
-        app:hint="Nama/Nomor Ponsel"
+        android:imeOptions="actionSearch"
+        android:inputType="text|phone"
+        app:hint="Nomor Ponsel"
         app:label="Masukkan Nama/Nomor Ponsel" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -57,6 +58,24 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/l_layout_item_add_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include
+                android:id="@+id/item_ad_contact"
+                layout="@layout/item_add_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_main_contacts_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

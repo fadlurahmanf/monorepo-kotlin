@@ -41,7 +41,6 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
 
     private var isEnabled: Boolean = true
 
-
     private var watcher: BebasEdittextTextWatcher? = null
 
     var text: String
@@ -122,6 +121,21 @@ class BebasEdittext(context: Context, attributeSet: AttributeSet) :
     fun addTextChangedListener(watcher: BebasEdittextTextWatcher) {
         this.watcher = watcher
     }
+
+    fun setTextOnFocus(focus: View.OnFocusChangeListener) {
+        editText.onFocusChangeListener = focus
+    }
+
+    fun setOnEditorActionListener(l:TextView.OnEditorActionListener){
+        editText.setOnEditorActionListener(l)
+    }
+
+//    override fun onViewRemoved(child: View?) {
+//        Log.d("BebasLogger", "onViewRemoved")
+//        editText.onFocusChangeListener = null
+//        hasFocus = false
+//        super.onViewRemoved(child)
+//    }
 
     fun setError(error: String, fieldError: Boolean = false) {
         errorText = error

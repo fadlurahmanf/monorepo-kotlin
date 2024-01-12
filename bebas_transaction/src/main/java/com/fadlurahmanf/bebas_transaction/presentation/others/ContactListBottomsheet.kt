@@ -5,8 +5,11 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.util.Log
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_transaction.databinding.BottomsheetContactListBinding
@@ -14,6 +17,8 @@ import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionBottomshee
 import com.fadlurahmanf.bebas_transaction.presentation.others.adapter.AlphabetScrollAdapter
 import com.fadlurahmanf.bebas_transaction.presentation.others.adapter.ContactListAdapter
 import com.fadlurahmanf.bebas_ui.edittext.BebasEdittext
+import com.fadlurahmanf.bebas_ui.extension.clearFocusAndDismissKeyboard
+import com.fadlurahmanf.bebas_ui.extension.dismissKeyboard
 import com.fadlurahmanf.core_platform.data.dto.model.BebasContactModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -45,12 +50,12 @@ class ContactListBottomsheet :
     private lateinit var alphabetAdapter: AlphabetScrollAdapter
     private val contacts: ArrayList<BebasContactModel> = arrayListOf()
 
+    private var hasFocus: Boolean = false
+
     @SuppressLint("ClickableViewAccessibility")
     override fun setup() {
         bottomsheetDialog = (dialog as BottomSheetDialog)
 
-        dialog?.setCanceledOnTouchOutside(false)
-        bottomsheetDialog.behavior.isDraggable = false
         bottomsheetDialog.behavior.state =
             BottomSheetBehavior.STATE_EXPANDED
 
@@ -68,7 +73,25 @@ class ContactListBottomsheet :
         binding.rvContact.layoutManager = contactLayoutManager
         binding.rvContact.adapter = contactListAdapter
 
-        binding.etNameOrPhone.addTextChangedListener(object :
+        binding.etPhoneNumber.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                binding.etPhoneNumber.clearFocusAndDismissKeyboard()
+                true
+            } else {
+                false
+            }
+        }
+
+        binding.etPhoneNumber.setTextOnFocus { _, hasFocus ->
+            this.hasFocus = hasFocus
+            if (hasFocus || binding.etPhoneNumber.text.isNotEmpty()) {
+                binding.rvAlphabet.visibility = View.GONE
+            } else {
+                binding.rvAlphabet.visibility = View.VISIBLE
+            }
+        }
+
+        binding.etPhoneNumber.addTextChangedListener(object :
                                                          BebasEdittext.BebasEdittextTextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -80,6 +103,13 @@ class ContactListBottomsheet :
 
             override fun afterTextChanged(s: Editable?) {
                 contactListAdapter.refreshListByKeyword(s.toString())
+                binding.itemAdContact.tvContactName.text = s.toString()
+
+                if (s?.toString()?.isEmpty() == false || hasFocus) {
+                    binding.rvAlphabet.visibility = View.GONE
+                } else {
+                    binding.rvAlphabet.visibility = View.VISIBLE
+                }
             }
         })
 
@@ -104,22 +134,28 @@ class ContactListBottomsheet :
         viewModel.contacts.observe(this) {
             when (it) {
                 is NetworkState.FAILED -> {
-
+                    binding.lLayoutItemAddContact.visibility = View.GONE
+                    binding.llShimmer.visibility = View.VISIBLE
+                    binding.rvContact.visibility = View.GONE
+                    binding.rvAlphabet.visibility = View.GONE
                 }
 
                 is NetworkState.SUCCESS -> {
+                    Log.d("BebasLogger", "MASUK SUCCESS FETCH CONTACTS: ${it.data.size}")
                     contacts.clear()
                     contacts.addAll(it.data)
                     contactListAdapter.setList(contacts)
 
                     binding.rvAlphabet.adapter = alphabetAdapter
 
+                    binding.lLayoutItemAddContact.visibility = View.GONE
                     binding.llShimmer.visibility = View.GONE
                     binding.rvContact.visibility = View.VISIBLE
                     binding.rvAlphabet.visibility = View.VISIBLE
                 }
 
                 is NetworkState.LOADING -> {
+                    binding.lLayoutItemAddContact.visibility = View.GONE
                     binding.llShimmer.visibility = View.VISIBLE
                     binding.rvContact.visibility = View.GONE
                     binding.rvAlphabet.visibility = View.GONE
@@ -153,6 +189,16 @@ class ContactListBottomsheet :
     override fun onContactClicked(contact: BebasContactModel) {
         dialog?.dismiss()
         callback?.onContactClicked(contact)
+    }
+
+    override fun onContactsEmptyWhenSearch(isEmpty: Boolean) {
+        if (isEmpty) {
+            binding.llMainContactsLayout.visibility = View.GONE
+            binding.lLayoutItemAddContact.visibility = View.VISIBLE
+        } else {
+            binding.llMainContactsLayout.visibility = View.VISIBLE
+            binding.lLayoutItemAddContact.visibility = View.GONE
+        }
     }
 
     private fun getIndexAlphabet(y: Float): Int {

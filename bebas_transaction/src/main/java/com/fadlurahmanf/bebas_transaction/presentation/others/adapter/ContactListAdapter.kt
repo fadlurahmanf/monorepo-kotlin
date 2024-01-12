@@ -23,6 +23,7 @@ class ContactListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         initialContacts = list
         contacts.addAll(list)
         notifyItemRangeInserted(0, list.size)
+        Log.d("BebasLogger", "MASUK SET LIST: ${contacts.size}")
     }
 
     fun refreshListByKeyword(keyword: String) {
@@ -32,6 +33,7 @@ class ContactListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             notifyItemRangeRemoved(0, itemCount)
             contacts.addAll(initialContacts)
             notifyItemRangeInserted(0, initialContacts.size)
+            callback?.onContactsEmptyWhenSearch(false)
         } else {
             val itemCount = contacts.size
             contacts.clear()
@@ -66,7 +68,7 @@ class ContactListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                             "<font color='red'>$keyword</font>",
                             ignoreCase = true
                         ),
-                        phoneNumber = element.phoneNumber.replace(
+                        phoneNumberHtml = element.phoneNumber.replace(
                             keyword, "<font color='red'>$keyword</font>",
                             ignoreCase = true
                         )
@@ -76,6 +78,7 @@ class ContactListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             contacts.addAll(newContacts)
             notifyItemRangeInserted(0, newContacts.size)
+            callback?.onContactsEmptyWhenSearch(contacts.isEmpty())
         }
     }
 
@@ -135,6 +138,7 @@ class ContactListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface Callback {
         fun onContactClicked(contact: BebasContactModel)
+        fun onContactsEmptyWhenSearch(isEmpty: Boolean)
     }
 
     override fun getItemViewType(position: Int): Int {
