@@ -17,6 +17,7 @@ import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmatio
 import com.fadlurahmanf.bebas_transaction.data.flow.PinVerificationFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.FragmentPulsaDenomBinding
+import com.fadlurahmanf.bebas_transaction.external.TransactionConfirmationCallback
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionFragment
 import com.fadlurahmanf.bebas_transaction.presentation.pin.PinVerificationActivity
 import com.fadlurahmanf.bebas_transaction.presentation.ppob.TransactionConfirmationBottomsheet
@@ -28,7 +29,7 @@ private const val PULSA_DATA_ARGUMENT = "PULSA_DATA_ARGUMENT"
 
 class PulsaDenomFragment :
     BaseTransactionFragment<FragmentPulsaDenomBinding>(FragmentPulsaDenomBinding::inflate),
-    PPOBDenomAdapter.Callback, TransactionConfirmationBottomsheet.Callback {
+    PPOBDenomAdapter.Callback, TransactionConfirmationCallback {
 
     @Inject
     lateinit var viewModel: PulsaDataViewModel

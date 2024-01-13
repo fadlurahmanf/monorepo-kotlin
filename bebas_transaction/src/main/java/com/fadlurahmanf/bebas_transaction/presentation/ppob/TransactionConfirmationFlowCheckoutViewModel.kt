@@ -55,7 +55,8 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
                             paymentTypeCode = paymentTypeCode,
                             customerId = customerId,
                             customerName = customerName,
-                            useLoyaltyBebasPoin = false
+                            useLoyaltyBebasPoin = false,
+                            amount = amount
                         )
                     },
                     {
@@ -75,7 +76,8 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
         paymentTypeCode: String,
         customerId: String,
         customerName: String,
-        useLoyaltyBebasPoin: Boolean = false
+        useLoyaltyBebasPoin: Boolean = false,
+        amount: Double,
     ) {
         _oderFeeDetailState.value = NetworkState.LOADING
         val schemas = arrayListOf<OrderPaymentSchemaRequest.PaymentSourceSchemaRequest>()
@@ -102,7 +104,9 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
             customerName = customerName,
             sourceGroupId = selectedPaymentSource.value?.paymentSourceConfig?.id
                 ?: "-",
-            schemas = schemas
+            schemas = schemas,
+            useBebasPoin = useLoyaltyBebasPoin,
+            loyaltyBebasPointPaymentSource = loyaltyPaymentSource.value,
         ).subscribeOn(Schedulers.io())
                                .observeOn(AndroidSchedulers.mainThread())
                                .subscribe(

@@ -27,3 +27,27 @@ fun Double.toRupiahFormat(
     }
     return formatted
 }
+
+fun Double.isPositive(): Boolean {
+    return this >= 0
+}
+
+fun Double.isNegative(): Boolean {
+    return this < 0
+}
+
+fun Double.toPositive(): Double {
+    return if (this < 0) {
+        this * -1
+    } else {
+        this
+    }
+}
+
+fun Double.toNegative(): Double {
+    return if (this < 0) {
+        this
+    } else {
+        this * -1
+    }
+}

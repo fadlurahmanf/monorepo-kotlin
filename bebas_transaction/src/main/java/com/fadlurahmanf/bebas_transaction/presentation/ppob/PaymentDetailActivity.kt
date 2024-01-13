@@ -29,6 +29,7 @@ import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationCheck
 import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityPaymentDetailBinding
 import com.fadlurahmanf.bebas_transaction.external.BebasTransactionHelper
+import com.fadlurahmanf.bebas_transaction.external.TransactionConfirmationCallback
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
 import com.fadlurahmanf.bebas_transaction.presentation.others.SelectPaymentSourceBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.pin.PinVerificationActivity
@@ -39,8 +40,8 @@ import javax.inject.Inject
 
 class PaymentDetailActivity :
     BaseTransactionActivity<ActivityPaymentDetailBinding>(ActivityPaymentDetailBinding::inflate),
-    TransactionConfirmationBottomsheet.Callback, PPOBDenomAdapter.Callback,
-    SelectPaymentSourceBottomsheet.Callback {
+    PPOBDenomAdapter.Callback,
+    SelectPaymentSourceBottomsheet.Callback, TransactionConfirmationCallback {
 
     companion object {
         const val ARGUMENT = "ARGUMENT"
@@ -184,6 +185,7 @@ class PaymentDetailActivity :
             when (it) {
                 is NetworkState.FAILED -> {
                     dismissLoadingDialog()
+                    showFailedBebasBottomsheet(it.exception)
                 }
 
                 is NetworkState.LOADING -> {
@@ -274,18 +276,20 @@ class PaymentDetailActivity :
 
     private var transactionConfirmationCheckoutBottomsheet: TransactionConfirmationFlowCheckoutBottomsheet? =
         null
+    private var temporaryResultInquiry: InquiryResultModel? = null
 
     private fun showTransactionConfirmationCheckoutBottomsheet(
         result: InquiryResultModel,
         defaultPaymentSourceModel: PaymentSourceModel? = null
     ) {
+        temporaryResultInquiry = result
         transactionConfirmationCheckoutBottomsheet?.dismiss()
         transactionConfirmationCheckoutBottomsheet = null
 
         transactionConfirmationCheckoutBottomsheet =
             TransactionConfirmationFlowCheckoutBottomsheet()
         val bundle = Bundle()
-//        transactionConfirmationCheckoutBottomsheet?.setCallback(this)
+        transactionConfirmationCheckoutBottomsheet?.setCallback(this)
         when (flow) {
 
             PaymentDetailFlow.PLN_PREPAID_CHECKOUT -> {
@@ -443,15 +447,36 @@ class PaymentDetailActivity :
         selectPaymentSouceBottomsheet?.dismiss()
         selectPaymentSouceBottomsheet = null
 
-        showTransactionConfirmationBottomsheet(defaultPaymentSourceModel = paymentSource)
+        when (flow) {
+            PaymentDetailFlow.TELKOM_INDIHOME -> {
+
+            }
+
+            PaymentDetailFlow.PLN_PREPAID_CHECKOUT -> {
+                if (temporaryResultInquiry != null) {
+                    showTransactionConfirmationCheckoutBottomsheet(
+                        result = temporaryResultInquiry!!,
+                        defaultPaymentSourceModel = paymentSource
+                    )
+                }
+            }
+
+            PaymentDetailFlow.PLN_POSTPAID_CHECKOUT -> {
+                showTransactionConfirmationBottomsheet(paymentSource)
+            }
+
+            else -> {
+
+            }
+        }
     }
 
     override fun onChangePaymentSource(selectedPaymentSource: PaymentSourceModel) {
         transactionConfirmationBottomsheet?.dismiss()
         transactionConfirmationBottomsheet = null
 
-        selectPaymentSouceBottomsheet?.dismiss()
-        selectPaymentSouceBottomsheet = null
+        transactionConfirmationCheckoutBottomsheet?.dismiss()
+        transactionConfirmationCheckoutBottomsheet = null
 
         selectPaymentSouceBottomsheet = SelectPaymentSourceBottomsheet()
         selectPaymentSouceBottomsheet?.setCallback(this)

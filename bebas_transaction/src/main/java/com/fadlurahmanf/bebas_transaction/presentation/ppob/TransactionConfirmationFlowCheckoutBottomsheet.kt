@@ -9,14 +9,12 @@ import com.bumptech.glide.Glide
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.R
-import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationCheckoutArgument
-import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.TransactionDetailModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transaction.OrderFeeDetailModel
-import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmationResult
 import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationCheckoutFlow
 import com.fadlurahmanf.bebas_transaction.databinding.BottomsheetTransactionConfirmationCheckoutBinding
+import com.fadlurahmanf.bebas_transaction.external.TransactionConfirmationCallback
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.others.adapter.TransactionDetailAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -33,9 +31,10 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
         const val FLOW = "FLOW"
     }
 
-    private var callback: Callback? = null
+    private var callback: TransactionConfirmationCallback? = null
+    private val handler = Handler(Looper.getMainLooper())
 
-    fun setCallback(callback: Callback) {
+    fun setCallback(callback: TransactionConfirmationCallback) {
         this.callback = callback
     }
 
@@ -58,6 +57,10 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
     }
 
     override fun setup() {
+        binding.ivBack.setOnClickListener {
+            dialog?.dismiss()
+        }
+
         val stringFlow = arguments?.getString(FLOW) ?: return
         flow = enumValueOf<TransactionConfirmationCheckoutFlow>(stringFlow)
 
@@ -77,10 +80,9 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
         }
 
         bottomsheetDialog = (dialog as BottomSheetDialog)
-        Handler(Looper.getMainLooper()).postDelayed({
-                                                        bottomsheetDialog.behavior.state =
-                                                            BottomSheetBehavior.STATE_EXPANDED
-                                                    }, 1000)
+
+        dialog?.setCancelable(false)
+        dialog?.setCanceledOnTouchOutside(false)
 
         argument = arg
         details.clear()
@@ -93,11 +95,6 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
 
 
         binding.btnNext.setOnClickListener {
-//            when (flow) {
-//                else -> {
-//
-//                }
-//            }
         }
 
         binding.itemBebasPoinPaymentSource.switchUseBebaspoin.setOnCheckedChangeListener { _, isChecked ->
@@ -111,14 +108,18 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
                         customerName = argument.additionalPLNPrePaid?.inquiryResponse?.clientName
                             ?: "-",
                         paymentTypeCode = argument.additionalPLNPrePaid?.paymentTypeCode ?: "-",
-                        useLoyaltyBebasPoin = isChecked
+                        useLoyaltyBebasPoin = isChecked,
+                        amount = argument.additionalPLNPrePaid?.inquiryResponse?.amount ?: -1.0,
                     )
                 }
             }
         }
 
         binding.lItemPaymentSource.setOnClickListener {
-
+            Log.d("BebasLogger", "ITEM PAYMENT SOURCE: ${viewModel.selectedPaymentSource.value}")
+            if (viewModel.selectedPaymentSource.value != null) {
+                callback?.onChangePaymentSource(viewModel.selectedPaymentSource.value!!)
+            }
         }
 
         when (flow) {
@@ -177,6 +178,14 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
                     binding.lItemPaymentSourceShimmer.visibility = View.GONE
                     binding.lItemPaymentSource.visibility = View.VISIBLE
 
+                    binding.itemBebasPoinPaymentSource.tvTotalBebasPoinUserHave.text =
+                        "BebasPoin milikmu: ${
+                            it.data.loyaltyPointPaymentSource?.balance?.toRupiahFormat(
+                                useSymbol = false,
+                                useDecimal = false
+                            )
+                        }"
+
                     binding.itemPaymentSource.tvAccountName.text =
                         it.data.mainPaymentSource.accountName
                     binding.itemPaymentSource.tvSavingTypeAndAccountNumber.text =
@@ -198,14 +207,17 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
             when (it) {
                 is NetworkState.FAILED -> {
                     binding.llFeeDetail.visibility = View.GONE
+                    binding.btnNext.visibility = View.GONE
                 }
 
                 is NetworkState.IDLE -> {
                     binding.llFeeDetail.visibility = View.GONE
+                    binding.btnNext.visibility = View.GONE
                 }
 
                 NetworkState.LOADING -> {
                     binding.llFeeDetail.visibility = View.GONE
+                    binding.btnNext.visibility = View.GONE
                 }
 
                 is NetworkState.SUCCESS -> {
@@ -223,12 +235,13 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
                     binding.tvTotal.text =
                         it.data.total.toRupiahFormat(useSymbol = true, useDecimal = false)
 
+                    binding.btnNext.visibility = View.VISIBLE
                     binding.llFeeDetail.visibility = View.VISIBLE
 
                     binding.nsv.postDelayed({
-                                                Log.d("BebasLogger", "TURUN KE BAWAH")
+                                                bottomsheetDialog.behavior.state =
+                                                    BottomSheetBehavior.STATE_EXPANDED
                                                 binding.nsv.fullScroll(View.FOCUS_DOWN)
-                                                Log.d("BebasLogger", "TURUN KE BAWAH")
                                             }, 1000)
                 }
             }
@@ -247,10 +260,5 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
                 binding.itemDestinationAccount.tvSubLabel.text = argument.destinationSubLabel
             }
         }
-    }
-
-    interface Callback {
-        fun onButtonTransactionConfirmationClicked(result: TransactionConfirmationResult)
-        fun onChangePaymentSource(selectedPaymentSource: PaymentSourceModel)
     }
 }

@@ -33,6 +33,7 @@
                 android:text="Pakai BebasPoin" />
 
             <TextView
+                android:id="@+id/tv_total_bebas_poin_user_have"
                 style="@style/Font.Text12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

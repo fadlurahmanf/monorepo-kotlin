@@ -4,17 +4,18 @@ import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationArgument
-import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.TransactionDetailModel
 import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmationResult
 import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.BottomsheetTransactionConfirmationBinding
+import com.fadlurahmanf.bebas_transaction.external.TransactionConfirmationCallback
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.others.adapter.TransactionDetailAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -31,9 +32,9 @@ class TransactionConfirmationBottomsheet :
         const val FLOW = "FLOW"
     }
 
-    private var callback: Callback? = null
+    private var callback: TransactionConfirmationCallback? = null
 
-    fun setCallback(callback: Callback) {
+    fun setCallback(callback: TransactionConfirmationCallback) {
         this.callback = callback
     }
 
@@ -122,6 +123,13 @@ class TransactionConfirmationBottomsheet :
             viewModel.selectPaymentSource(argument.defaultPaymentSource!!)
         } else {
             viewModel.getPaymentSources()
+        }
+
+        binding.lItemPaymentSource.setOnClickListener {
+            Log.d("BebasLogger", "ITEM PAYMENT SOURCE: ${viewModel.selectedPaymentSource}")
+            if (viewModel.selectedPaymentSource != null) {
+                callback?.onChangePaymentSource(viewModel.selectedPaymentSource!!)
+            }
         }
 
         binding.btnNext.setOnClickListener {
@@ -219,10 +227,5 @@ class TransactionConfirmationBottomsheet :
         } else {
             binding.llDetail.visibility = View.GONE
         }
-    }
-
-    interface Callback {
-        fun onButtonTransactionConfirmationClicked(result: TransactionConfirmationResult)
-        fun onChangePaymentSource(selectedPaymentSource: PaymentSourceModel)
     }
 }

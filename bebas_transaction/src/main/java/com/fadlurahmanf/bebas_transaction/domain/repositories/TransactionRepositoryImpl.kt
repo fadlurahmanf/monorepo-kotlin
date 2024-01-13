@@ -32,6 +32,8 @@ import com.fadlurahmanf.bebas_api.data.dto.ppob.RefreshStatusResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.extension.toNegative
+import com.fadlurahmanf.bebas_shared.extension.toPositive
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PPOBDenomModel
@@ -633,6 +635,8 @@ class TransactionRepositoryImpl @Inject constructor(
         customerName: String,
         customerId: String,
         schemas: List<OrderPaymentSchemaRequest.PaymentSourceSchemaRequest>,
+        useBebasPoin: Boolean = false,
+        loyaltyBebasPointPaymentSource: PaymentSourceModel? = null,
     ): Observable<OrderFeeDetailModel> {
         return orderPaymentSchema(
             productCode = productCode,
@@ -651,8 +655,29 @@ class TransactionRepositoryImpl @Inject constructor(
                     )
                 )
             }
+            Log.d("BebasLogger", "AMOUNT: ${resp.paymentSchema?.total ?: -1.0}")
+            Log.d("BebasLogger", "BEBASPOIN: ${loyaltyBebasPointPaymentSource?.balance}")
+            val amount = resp.paymentSchema?.total ?: -1.0
+            var totalFeeUserShouldPaidUsingBalance = resp.paymentSchema?.total ?: -1.0
+            if (useBebasPoin && loyaltyBebasPointPaymentSource?.balance != null) {
+                val loyaltyBalance: Double = loyaltyBebasPointPaymentSource.balance
+                val totalBalanceUserShouldPaidUsingLoyaltyBebasPoin: Double
+                if (loyaltyBalance >= amount) {
+                    totalBalanceUserShouldPaidUsingLoyaltyBebasPoin = amount
+                } else {
+                    totalBalanceUserShouldPaidUsingLoyaltyBebasPoin =
+                        (amount - loyaltyBebasPointPaymentSource.balance).toPositive()
+                }
+                details.add(
+                    OrderFeeDetailModel.Detail(
+                        label = "BebasPoin",
+                        value = totalBalanceUserShouldPaidUsingLoyaltyBebasPoin.toNegative()
+                    )
+                )
+                totalFeeUserShouldPaidUsingBalance -= totalBalanceUserShouldPaidUsingLoyaltyBebasPoin.toPositive()
+            }
             OrderFeeDetailModel(
-                total = resp.paymentSchema?.total ?: -1.0,
+                total = totalFeeUserShouldPaidUsingBalance,
                 details = details
             )
         }
