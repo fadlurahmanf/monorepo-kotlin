@@ -1,8 +1,10 @@
 package com.fadlurahmanf.bebas_main.domain.di
 
 import android.content.Context
-import com.fadlurahmanf.bebas_main.presentation.home.HistoryFragment
+import com.fadlurahmanf.bebas_main.presentation.home.history.HistoryFragment
 import com.fadlurahmanf.bebas_main.presentation.home.HomeActivity
+import com.fadlurahmanf.bebas_main.presentation.home.history.EStatementFragment
+import com.fadlurahmanf.bebas_main.presentation.home.history.MutationFragment
 import com.fadlurahmanf.bebas_main.presentation.home.home.HomeFragment
 import com.fadlurahmanf.bebas_main.presentation.notification.NotificationActivity
 import com.fadlurahmanf.bebas_main.presentation.notification.NotificationInformationFragment
@@ -36,6 +38,8 @@ interface BebasMainComponent {
     fun inject(fragment: HistoryFragment)
     fun inject(fragment: NotificationTransactionFragment)
     fun inject(fragment: NotificationInformationFragment)
+    fun inject(fragment: MutationFragment)
+    fun inject(fragment: EStatementFragment)
 
     fun inject(activity: HomeActivity)
     fun inject(activity: NotificationActivity)

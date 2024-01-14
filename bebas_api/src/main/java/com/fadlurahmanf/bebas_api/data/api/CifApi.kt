@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_api.data.api
 
+import com.fadlurahmanf.bebas_api.data.dto.cif.EStatementResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoritePLNResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoritePulsaPrePaidResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoriteTelkomIndihomeResponse
@@ -10,13 +11,21 @@ import com.fadlurahmanf.bebas_api.data.dto.favorite.LatestTransactionPulsaPrePai
 import com.fadlurahmanf.bebas_api.data.dto.favorite.PinFavoriteRequest
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.loyalty.CifBebasPoinResponse
+import com.google.gson.JsonObject
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Query
 
 interface CifApi {
+
+    @POST("statement/period")
+    fun getEStatements(
+        @Body request:JsonObject
+    ): Observable<BaseResponse<EStatementResponse>>
+
     @GET("favorite")
     fun getFavoriteTransfer(): Observable<BaseResponse<List<FavoriteTransferResponse>>>
 

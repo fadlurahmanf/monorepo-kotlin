@@ -7,6 +7,7 @@ import com.fadlurahmanf.bebas_api.data.datasources.CmsRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.InboxRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
+import com.fadlurahmanf.bebas_api.data.dto.cif.EStatementResponse
 import com.fadlurahmanf.bebas_api.data.dto.loyalty.CifBebasPoinResponse
 import com.fadlurahmanf.bebas_api.data.dto.notification.NotificationResponse
 import com.fadlurahmanf.bebas_api.data.dto.notification.UnreadNotificationCountResponse
@@ -23,8 +24,8 @@ class MainRepositoryImpl @Inject constructor(
     context: Context,
     private val cifRemoteDatasource: CifRemoteDatasource,
     private val cmsRemoteDatasource: CmsRemoteDatasource,
-    private val transactionRemoteDatasource: TransactionRemoteDatasource,
     private val inboxRemoteDatasource: InboxRemoteDatasource,
+    private val transactionRemoteDatasource: TransactionRemoteDatasource,
 ) {
 
     fun getCifBebasPoin(): Observable<CifBebasPoinResponse> {
@@ -179,5 +180,20 @@ class MainRepositoryImpl @Inject constructor(
             .map {
                 ""
             }
+    }
+    fun getEStatements(): Observable<EStatementResponse> {
+        return transactionRemoteDatasource.getBankAccounts().flatMap { baseBankAccounts ->
+            if (baseBankAccounts.data == null || baseBankAccounts.data?.isEmpty() == true) {
+                throw BebasException.generalRC("BA_00")
+            }
+            val accountNumber = baseBankAccounts.data?.first()?.accountNumber
+                ?: throw BebasException.generalRC("AC_00")
+            cifRemoteDatasource.getEStatements(accountNumber).map { baseEstatement ->
+                if (baseEstatement.data == null) {
+                    throw BebasException.generalRC("ESTATEMENT_00")
+                }
+                baseEstatement.data!!
+            }
+        }
     }
 }

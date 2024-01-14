@@ -13,4 +13,6 @@
     <string name="learn_now">Learn Now</string>
     <string name="electricity_bill">Electricity Bill</string>
     <string name="ewallet">E-Wallet</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
