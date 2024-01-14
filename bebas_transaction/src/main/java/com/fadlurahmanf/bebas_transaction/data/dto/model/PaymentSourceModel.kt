@@ -2,7 +2,7 @@ package com.fadlurahmanf.bebas_transaction.data.dto.model
 
 import android.os.Parcelable
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
-import com.fadlurahmanf.bebas_api.data.dto.payment_service.PaymentSourceConfigResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.PaymentSourceConfigResponse
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

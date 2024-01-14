@@ -1,14 +1,14 @@
 package com.fadlurahmanf.bebas_transaction.data.dto.argument
 
 import android.os.Parcelable
-import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryPulsaDataResponse
-import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
-import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingPulsaPrePaidRequest
-import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeRequest
-import com.fadlurahmanf.bebas_api.data.dto.ppob.PulsaDenomResponse
-import com.fadlurahmanf.bebas_api.data.dto.transfer.CheckoutTransactionDataRequest
-import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
-import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryPulsaDataResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryTelkomIndihomeResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.posting.PostingPulsaPrePaidRequest
+import com.fadlurahmanf.bebas_api.data.dto.transaction.posting.PostingTelkomIndihomeRequest
+import com.fadlurahmanf.bebas_api.data.dto.others.PulsaDenomResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.checkout.CheckoutTransactionDataRequest
+import com.fadlurahmanf.bebas_api.data.dto.transaction.posting.FundTransferBankMASRequest
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryBankResponse
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

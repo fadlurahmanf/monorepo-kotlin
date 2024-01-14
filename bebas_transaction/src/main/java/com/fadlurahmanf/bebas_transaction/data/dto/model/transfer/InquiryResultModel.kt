@@ -1,9 +1,9 @@
 package com.fadlurahmanf.bebas_transaction.data.dto.model.transfer
 
-import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryCheckoutFlowResponse
-import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
-import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryPulsaDataResponse
-import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryCheckoutFlowResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryBankResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryPulsaDataResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryTelkomIndihomeResponse
 
 data class InquiryResultModel(
     val additionalTransfer: InquiryTransferBank? = null,

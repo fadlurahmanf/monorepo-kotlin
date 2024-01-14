@@ -1,7 +1,7 @@
 package com.fadlurahmanf.bebas_transaction.data.dto.model.ppob
 
-import com.fadlurahmanf.bebas_api.data.dto.ppob.PLNDenomResponse
-import com.fadlurahmanf.bebas_api.data.dto.ppob.PulsaDenomResponse
+import com.fadlurahmanf.bebas_api.data.dto.others.PLNDenomResponse
+import com.fadlurahmanf.bebas_api.data.dto.others.PulsaDenomResponse
 import com.fadlurahmanf.bebas_transaction.data.flow.PPOBDenomFlow
 
 data class PPOBDenomModel(

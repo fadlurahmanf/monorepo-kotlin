@@ -1,8 +1,8 @@
 package com.fadlurahmanf.bebas_api.data.api
 
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
-import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryCheckoutFlowRequest
-import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryCheckoutFlowResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryCheckoutFlowRequest
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryCheckoutFlowResponse
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.Body
 import retrofit2.http.POST

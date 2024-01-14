@@ -4,8 +4,8 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
-import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
+import com.fadlurahmanf.bebas_api.data.dto.others.ItemBankResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryBankResponse
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferDetailArgument
 import com.fadlurahmanf.bebas_transaction.data.flow.InputDestinationAccountFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferDetailFlow

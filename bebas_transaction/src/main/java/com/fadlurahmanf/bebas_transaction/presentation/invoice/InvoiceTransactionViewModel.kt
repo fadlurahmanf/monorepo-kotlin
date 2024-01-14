@@ -2,7 +2,7 @@ package com.fadlurahmanf.bebas_transaction.presentation.invoice
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.fadlurahmanf.bebas_api.data.dto.ppob.RefreshStatusResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.RefreshStatusResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.domain.repositories.TransactionRepositoryImpl

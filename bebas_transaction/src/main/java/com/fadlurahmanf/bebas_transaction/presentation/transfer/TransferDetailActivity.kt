@@ -10,7 +10,7 @@ import android.os.Looper
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
+import com.fadlurahmanf.bebas_api.data.dto.transaction.posting.FundTransferBankMASRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.R

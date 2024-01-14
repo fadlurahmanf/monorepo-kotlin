@@ -1,7 +1,7 @@
 package com.fadlurahmanf.bebas_transaction.data.dto.result
 
 import android.os.Parcelable
-import com.fadlurahmanf.bebas_api.data.dto.transfer.CheckoutTransactionDataRequest
+import com.fadlurahmanf.bebas_api.data.dto.transaction.checkout.CheckoutTransactionDataRequest
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

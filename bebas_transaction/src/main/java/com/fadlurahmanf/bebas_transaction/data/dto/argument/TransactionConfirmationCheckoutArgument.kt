@@ -2,7 +2,7 @@ package com.fadlurahmanf.bebas_transaction.data.dto.argument
 
 import android.os.Parcelable
 import androidx.annotation.StyleRes
-import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryCheckoutFlowResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryCheckoutFlowResponse
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

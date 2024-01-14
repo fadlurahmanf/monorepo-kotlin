@@ -1,10 +1,10 @@
 package com.fadlurahmanf.bebas_api.data.api
 
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
-import com.fadlurahmanf.bebas_api.data.dto.order_service.OrderPaymentSchemaRequest
-import com.fadlurahmanf.bebas_api.data.dto.order_service.OrderPaymentSchemaResponse
-import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingCheckoutResponse
-import com.fadlurahmanf.bebas_api.data.dto.transfer.CheckoutTransactionPostingRequest
+import com.fadlurahmanf.bebas_api.data.dto.transaction.OrderPaymentSchemaRequest
+import com.fadlurahmanf.bebas_api.data.dto.transaction.OrderPaymentSchemaResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.posting.PostingCheckoutResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.checkout.CheckoutTransactionPostingRequest
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.Body
 import retrofit2.http.POST

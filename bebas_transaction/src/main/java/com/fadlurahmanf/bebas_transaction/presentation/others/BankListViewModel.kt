@@ -3,7 +3,7 @@ package com.fadlurahmanf.bebas_transaction.presentation.others
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
+import com.fadlurahmanf.bebas_api.data.dto.others.ItemBankResponse
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.state.BankListState
 import com.fadlurahmanf.bebas_transaction.data.state.InquiryState

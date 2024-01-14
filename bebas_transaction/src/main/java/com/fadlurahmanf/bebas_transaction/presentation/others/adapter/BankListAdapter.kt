@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
+import com.fadlurahmanf.bebas_api.data.dto.others.ItemBankResponse
 import com.fadlurahmanf.bebas_transaction.R
 
 class BankListAdapter : RecyclerView.Adapter<BankListAdapter.ViewHolder>() {

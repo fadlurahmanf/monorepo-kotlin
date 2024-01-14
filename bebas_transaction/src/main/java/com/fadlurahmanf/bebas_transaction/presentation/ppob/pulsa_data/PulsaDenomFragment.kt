@@ -5,7 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingPulsaPrePaidRequest
+import com.fadlurahmanf.bebas_api.data.dto.transaction.posting.PostingPulsaPrePaidRequest
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
@@ -15,7 +15,6 @@ import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmat
 import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PPOBDenomModel
 import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmationResult
-import com.fadlurahmanf.bebas_transaction.data.flow.PaymentDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.PinVerificationFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.SelectPaymentSourceFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationFlow

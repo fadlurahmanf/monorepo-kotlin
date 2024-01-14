@@ -2,8 +2,7 @@ package com.fadlurahmanf.bebas_transaction.data.dto.model.transaction
 
 import android.os.Parcelable
 import androidx.annotation.StyleRes
-import com.fadlurahmanf.bebas_api.data.dto.order_service.OrderPaymentSchemaRequest
-import com.fadlurahmanf.bebas_api.data.dto.transfer.CheckoutTransactionDataRequest
+import com.fadlurahmanf.bebas_api.data.dto.transaction.checkout.CheckoutTransactionDataRequest
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

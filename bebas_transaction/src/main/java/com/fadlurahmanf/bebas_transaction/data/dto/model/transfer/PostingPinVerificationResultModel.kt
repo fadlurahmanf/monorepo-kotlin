@@ -1,9 +1,9 @@
 package com.fadlurahmanf.bebas_transaction.data.dto.model.transfer
 
-import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingCheckoutResponse
-import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingPulsaDataResponse
-import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeResponse
-import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingFundTransferResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.posting.PostingCheckoutResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.posting.PostingPulsaDataResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.posting.PostingTelkomIndihomeResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.posting.PostingFundTransferResponse
 
 data class PostingPinVerificationResultModel(
     val transactionStatus: String,

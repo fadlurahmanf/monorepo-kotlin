@@ -1,13 +1,12 @@
 package com.fadlurahmanf.bebas_transaction.data.dto.argument
 
 import android.os.Parcelable
-import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryPulsaDataResponse
-import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
-import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingPulsaDataResponse
-import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeRequest
-import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeResponse
-import com.fadlurahmanf.bebas_api.data.dto.ppob.PulsaDenomResponse
-import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryPulsaDataResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryTelkomIndihomeResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.posting.PostingPulsaDataResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.posting.PostingTelkomIndihomeResponse
+import com.fadlurahmanf.bebas_api.data.dto.others.PulsaDenomResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryBankResponse
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -28,7 +27,7 @@ data class InvoiceTransactionArgument(
         val destinationBankNickName: String,
         val destinationAccountNumber: String,
         val nominal: Long,
-        val inquiryResponse:InquiryBankResponse
+        val inquiryResponse: InquiryBankResponse
     ) : Parcelable
 
     @Parcelize

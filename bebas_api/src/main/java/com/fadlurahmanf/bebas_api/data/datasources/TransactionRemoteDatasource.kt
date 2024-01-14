@@ -2,11 +2,9 @@ package com.fadlurahmanf.bebas_api.data.datasources
 
 import android.content.Context
 import com.fadlurahmanf.bebas_api.data.api.TransactionApi
-import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeRequest
-import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
-import com.fadlurahmanf.bebas_api.data.dto.transfer.GenerateChallengeCodeRequest
-import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankMasRequest
-import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryOtherBankRequest
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryTelkomIndihomeRequest
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryBankMasRequest
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryOtherBankRequest
 import com.fadlurahmanf.bebas_api.domain.network.TransactionNetwork
 import com.google.gson.JsonObject
 import javax.inject.Inject
