@@ -18,6 +18,7 @@ import com.fadlurahmanf.bebas_main.data.dto.model.home.ProductTransactionMenuMod
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
+import java.io.InputStream
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
@@ -181,6 +182,7 @@ class MainRepositoryImpl @Inject constructor(
                 ""
             }
     }
+
     fun getEStatements(): Observable<EStatementResponse> {
         return transactionRemoteDatasource.getBankAccounts().flatMap { baseBankAccounts ->
             if (baseBankAccounts.data == null || baseBankAccounts.data?.isEmpty() == true) {
@@ -193,6 +195,16 @@ class MainRepositoryImpl @Inject constructor(
                     throw BebasException.generalRC("ESTATEMENT_00")
                 }
                 baseEstatement.data!!
+            }
+        }
+    }
+
+    fun downloadEStatement(accountNumber: String, year: Int, month: Int): Observable<InputStream> {
+        return cifRemoteDatasource.downloadEStatement(accountNumber, year, month).let {
+            if (it != null) {
+                Observable.just(it)
+            } else {
+                throw BebasException.generalRC("DES_00")
             }
         }
     }

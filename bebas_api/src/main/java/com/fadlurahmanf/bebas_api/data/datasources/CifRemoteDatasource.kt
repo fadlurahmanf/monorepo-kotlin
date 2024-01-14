@@ -8,6 +8,10 @@ import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.domain.network.CifNetwork
 import com.google.gson.JsonObject
 import io.reactivex.rxjava3.core.Observable
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Response
+import java.io.InputStream
 import javax.inject.Inject
 
 class CifRemoteDatasource @Inject constructor(
@@ -19,6 +23,16 @@ class CifRemoteDatasource @Inject constructor(
         val json = JsonObject()
         json.addProperty("accountNumber", accountNumber)
         return networkService().getEStatements(json)
+    }
+
+    fun downloadEStatement(accountNumber: String, year: Int, month: Int): InputStream? {
+        val json = JsonObject()
+        json.addProperty("accountNumber", accountNumber)
+        val period = JsonObject()
+        period.addProperty("year", year)
+        period.addProperty("month", month)
+        json.add("period", period)
+        return networkService().downloadEStatement(json).execute().body()?.byteStream()
     }
 
     fun getFavoriteTransfer() = networkService().getFavoriteTransfer()

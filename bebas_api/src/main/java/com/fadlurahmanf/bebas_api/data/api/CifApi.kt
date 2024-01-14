@@ -13,6 +13,8 @@ import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.loyalty.CifBebasPoinResponse
 import com.google.gson.JsonObject
 import io.reactivex.rxjava3.core.Observable
+import okhttp3.ResponseBody
+import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -25,6 +27,11 @@ interface CifApi {
     fun getEStatements(
         @Body request:JsonObject
     ): Observable<BaseResponse<EStatementResponse>>
+
+    @POST("statement/download")
+    fun downloadEStatement(
+        @Body request:JsonObject
+    ): Call<ResponseBody>
 
     @GET("favorite")
     fun getFavoriteTransfer(): Observable<BaseResponse<List<FavoriteTransferResponse>>>

@@ -1,5 +1,6 @@
 package com.fadlurahmanf.bebas_main.presentation.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -89,5 +90,10 @@ class HomeActivity : BaseMainActivity<ActivityHomeBinding>(ActivityHomeBinding::
         window.decorView.systemUiVisibility =
             View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         window.statusBarColor = resources.getColor(R.color.background_home_color)
+    }
+
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+//        showFailedBebasBottomsheet()
     }
 }
