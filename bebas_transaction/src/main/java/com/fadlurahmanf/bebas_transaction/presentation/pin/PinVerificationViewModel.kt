@@ -17,16 +17,16 @@ class PinVerificationViewModel @Inject constructor(
     private val transactionRepositoryImpl: TransactionRepositoryImpl
 ) : BaseViewModel() {
 
-    private val _fundTransferState =
+    private val _postingTransactionState =
         MutableLiveData<NetworkState<PostingPinVerificationResultModel>>()
-    val fundTransferState: LiveData<NetworkState<PostingPinVerificationResultModel>> =
-        _fundTransferState
+    val postingTransactionState: LiveData<NetworkState<PostingPinVerificationResultModel>> =
+        _postingTransactionState
 
     fun postingPinVerification(
         plainPin: String,
         request: PostingPinVerificationRequestModel
     ) {
-        _fundTransferState.value = NetworkState.LOADING
+        _postingTransactionState.value = NetworkState.LOADING
         val disposable = when (request) {
             is PostingPinVerificationRequestModel.FundTranfeerBankMas -> {
                 transactionRepositoryImpl.postingTransferBankMas(
@@ -61,10 +61,10 @@ class PinVerificationViewModel @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
-                        _fundTransferState.value = NetworkState.SUCCESS(it)
+                        _postingTransactionState.value = NetworkState.SUCCESS(it)
                     },
                     {
-                        _fundTransferState.value =
+                        _postingTransactionState.value =
                             NetworkState.FAILED(BebasException.fromThrowable(it))
                     },
                     {}

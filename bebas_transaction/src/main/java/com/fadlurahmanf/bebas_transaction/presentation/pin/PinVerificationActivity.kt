@@ -79,7 +79,7 @@ class PinVerificationActivity :
             }
         }
 
-        viewModel.fundTransferState.observe(this) {
+        viewModel.postingTransactionState.observe(this) {
             when (it) {
                 is NetworkState.FAILED -> {
                     dismissLoadingDialog()
@@ -186,7 +186,21 @@ class PinVerificationActivity :
             }
 
             PinVerificationFlow.POSTING_PLN_PREPAID_CHECKOUT -> {
-
+                val intent = Intent(this, InvoiceTransactionActivity::class.java)
+                intent.putExtra(
+                    InvoiceTransactionArgumentConstant.FLOW,
+                    InvoiceTransactionFlow.PLN_PREPAID_CHECKOUT.name
+                )
+                intent.putExtra(
+                    InvoiceTransactionArgumentConstant.ARGUMENT, InvoiceTransactionArgument(
+                        statusTransaction = result.transactionStatus,
+                        transactionId = result.plnPrePaidCheckout?.transactionId ?: "-",
+                        isFavorite = false,
+                        isFavoriteEnabled = false,
+                        transactionDate = result.plnPrePaidCheckout?.utcTransactionDateTime ?: "-",
+                    )
+                )
+                startActivity(intent)
             }
         }
     }

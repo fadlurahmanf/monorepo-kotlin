@@ -746,7 +746,7 @@ class TransactionRepositoryImpl @Inject constructor(
             val body = CheckoutTransactionPostingRequest(
                 data = data,
                 signature = signature,
-                clientTimeMillis = timestamp
+                timestamp = timestamp
             )
             orderRemoteDatasource.postingTransaction(body)
                 .map { resp ->
@@ -754,7 +754,8 @@ class TransactionRepositoryImpl @Inject constructor(
                         throw BebasException.generalRC("FT_00")
                     }
                     PostingPinVerificationResultModel(
-                        transactionStatus = resp.message ?: "-",
+                        transactionStatus = resp.data?.transactionStatus ?: "-",
+                        plnPrePaidCheckout = resp.data
                     )
                 }
         }

@@ -68,6 +68,10 @@ class InvoiceTransactionActivity :
                 InvoiceTransactionFlow.TELKOM_INDIHOME -> {
 
                 }
+
+                InvoiceTransactionFlow.PLN_PREPAID_CHECKOUT -> {
+
+                }
             }
         }
     }
@@ -285,6 +289,10 @@ class InvoiceTransactionActivity :
                         useDecimal = true
                     )
             }
+
+            InvoiceTransactionFlow.PLN_PREPAID_CHECKOUT -> {
+
+            }
         }
     }
 
@@ -390,6 +398,10 @@ class InvoiceTransactionActivity :
                         )
                     )
                 )
+            }
+
+            InvoiceTransactionFlow.PLN_PREPAID_CHECKOUT -> {
+
             }
         }
         detailAdapter = TransactionDetailAdapter()
