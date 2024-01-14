@@ -3,6 +3,7 @@ package com.fadlurahmanf.bebas_transaction.presentation.pin
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.argument.transaction.InvoiceTransactionArgumentConstant
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
@@ -69,7 +70,9 @@ class PinVerificationActivity :
             when (it) {
                 is NetworkState.SUCCESS -> {
                     if ((it.data.attemptCount ?: 0) > 0) {
-                        binding.ivPinKeyboard
+                        binding.tvErrorPin.visibility = View.VISIBLE
+                    } else {
+                        binding.tvErrorPin.visibility = View.GONE
                     }
                 }
 
@@ -83,6 +86,8 @@ class PinVerificationActivity :
             when (it) {
                 is NetworkState.FAILED -> {
                     dismissLoadingDialog()
+                    pin = ""
+                    binding.bebasPinBox.pin = ""
                     showFailedBebasBottomsheet(it.exception)
                 }
 
@@ -120,7 +125,8 @@ class PinVerificationActivity :
                         isFavoriteEnabled = false,
                         transactionDate = result.tranferBankMas?.transactionDateTime ?: "-",
                         additionalTransfer = InvoiceTransactionArgument.Transfer(
-                            fromAccountNumber = argument.additionalTransfer?.request?.accountNumber ?: "-",
+                            fromAccountNumber = argument.additionalTransfer?.request?.accountNumber
+                                ?: "-",
                             destinationAccountName = argument.additionalTransfer?.inquiry?.destinationAccountName
                                 ?: "-",
                             destinationAccountNumber = argument.additionalTransfer?.request?.accountNumber

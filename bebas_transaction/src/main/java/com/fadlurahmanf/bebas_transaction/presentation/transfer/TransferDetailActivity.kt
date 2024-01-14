@@ -317,6 +317,9 @@ class TransferDetailActivity :
     }
 
     override fun onButtonTransactionConfirmationClicked(result: TransactionConfirmationResult) {
+        bottomsheetTransferConfirmation?.dismiss()
+        bottomsheetTransferConfirmation = null
+
         when (flow) {
             TransferDetailFlow.TRANSFER_BETWEEN_BANK_MAS -> {
                 val intent = Intent(this, PinVerificationActivity::class.java)
