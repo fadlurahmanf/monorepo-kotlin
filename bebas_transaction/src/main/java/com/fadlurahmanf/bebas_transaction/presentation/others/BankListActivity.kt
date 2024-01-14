@@ -123,7 +123,8 @@ class BankListActivity :
                 realAccountName = data.destinationAccountName ?: "-",
                 accountNumber = destinationAccountNumber,
                 bankImageUrl = selectedBank.image,
-                bankName = selectedBank.name ?: "-"
+                bankName = selectedBank.name ?: "-",
+                inquiryBank = data
             )
         )
         startActivity(intent)

@@ -468,7 +468,7 @@ class FavoriteListActivity :
         when (favoriteFlow) {
             FavoriteFlow.TRANSACTION_MENU_TRANSFER -> {
                 val isInquiryBankMas =
-                    inquiryResult.additionalInquiryTransferBank?.isInquiryBankMas == true
+                    inquiryResult.additionalTransfer?.isInquiryBankMas == true
                 val intent = Intent(this, TransferDetailActivity::class.java)
                 intent.apply {
                     putExtra(
@@ -483,10 +483,11 @@ class FavoriteListActivity :
                             accountNumber = favoriteModel?.accountNumber
                                 ?: latestModel?.accountNumber
                                 ?: "-",
-                            realAccountName = inquiryResult.additionalInquiryTransferBank?.inquiryBank?.destinationAccountName
+                            realAccountName = inquiryResult.additionalTransfer?.inquiryBank?.destinationAccountName
                                 ?: "-",
                             bankName = favoriteModel?.additionalTransferData?.bankName
                                 ?: latestModel?.additionalTransferData?.bankName ?: "-",
+                            inquiryBank = inquiryResult.additionalTransfer?.inquiryBank!!
                         )
                     )
                 }

@@ -20,8 +20,6 @@ import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferConfirmation
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferDetailArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmationResult
-import com.fadlurahmanf.bebas_transaction.data.dto.result.TransferConfirmationResult
-import com.fadlurahmanf.bebas_transaction.data.flow.PaymentDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.PinVerificationFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.SelectPaymentSourceFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferConfirmationFlow
@@ -329,15 +327,18 @@ class TransferDetailActivity :
                     )
                     putExtra(
                         PinVerificationActivity.ARGUMENT, PinVerificationArgument(
-                            fundTransferBankMAS = FundTransferBankMASRequest(
-                                accountNumber = result.selectedAccountNumber,
-                                destinationAccountName = argument.accountName,
-                                destinationAccountNumber = argument.accountNumber,
-                                amountTransaction = (nominal ?: -1L),
-                                description = binding.etNotes.text,
-                                ip = "0.0.0.0",
-                                latitude = 0.0,
-                                longitude = 0.0
+                            additionalTransfer = PinVerificationArgument.Transfer(
+                                request = FundTransferBankMASRequest(
+                                    accountNumber = result.selectedAccountNumber,
+                                    destinationAccountName = argument.accountName,
+                                    destinationAccountNumber = argument.accountNumber,
+                                    amountTransaction = (nominal ?: -1L),
+                                    description = binding.etNotes.text,
+                                    ip = "0.0.0.0",
+                                    latitude = 0.0,
+                                    longitude = 0.0
+                                ),
+                                inquiry = argument.inquiryBank
                             )
                         )
                     )

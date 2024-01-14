@@ -8,15 +8,21 @@ import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PulsaDenomResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.CheckoutTransactionDataRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
+import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class PinVerificationArgument(
-    val fundTransferBankMAS: FundTransferBankMASRequest? = null,
+    val additionalTransfer: Transfer? = null,
     val additionalPulsaData: PulsaData? = null,
     val additionalTelkomIndihome: TelkomIndihome? = null,
     val additionalPlnPrePaidCheckout: PLNPrePaidCheckout? = null,
 ) : Parcelable {
+    @Parcelize
+    data class Transfer(
+        val request: FundTransferBankMASRequest,
+        val inquiry: InquiryBankResponse,
+    ) : Parcelable
 
     @Parcelize
     data class PulsaData(

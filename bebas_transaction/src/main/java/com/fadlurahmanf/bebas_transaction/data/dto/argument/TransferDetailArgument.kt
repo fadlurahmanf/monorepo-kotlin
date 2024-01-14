@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_transaction.data.dto.argument
 
 import android.os.Parcelable
+import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -11,9 +12,7 @@ data class TransferDetailArgument(
     var realAccountName: String,
     var accountNumber: String,
     var bankImageUrl: String? = null,
-    var bankName: String
-) : Parcelable {
-    data class FundTransferBankMAS(
-        val sknId: String = ""
-    )
-}
+    var bankName: String,
+
+    val inquiryBank: InquiryBankResponse
+) : Parcelable

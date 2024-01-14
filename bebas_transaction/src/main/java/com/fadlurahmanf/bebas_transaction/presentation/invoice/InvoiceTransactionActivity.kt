@@ -253,7 +253,15 @@ class InvoiceTransactionActivity :
     private fun setupTotalTransaction() {
         when (flow) {
             InvoiceTransactionFlow.FUND_TRANSFER_BANK_MAS -> {
-
+                binding.layoutInvoiceTotalTransaction.tvDestinationAccountName.text =
+                    argument.additionalTransfer?.inquiryResponse?.destinationAccountName ?: "-"
+                binding.layoutInvoiceTotalTransaction.tvSubLabel.text =
+                    "${argument.additionalTransfer?.destinationBankNickName ?: "-"} • ${argument.additionalTransfer?.destinationAccountNumber ?: "-"}"
+                binding.layoutInvoiceTotalTransaction.tvTotalPaymentValue.text =
+                    argument.additionalTransfer?.nominal?.toDouble()?.toRupiahFormat(
+                        useSymbol = true,
+                        useDecimal = false
+                    ) ?: "-"
             }
 
             InvoiceTransactionFlow.PULSA_PREPAID -> {
@@ -301,7 +309,32 @@ class InvoiceTransactionActivity :
         feeDetails.clear()
         when (flow) {
             InvoiceTransactionFlow.FUND_TRANSFER_BANK_MAS -> {
+                details.addAll(
+                    listOf(
+                        TransactionDetailModel(
+                            label = "Jenis Transaksi",
+                            value = "Transfer Antar Rekening"
+                        ),
+                        TransactionDetailModel(
+                            label = "Rekening Sumber",
+                            value = argument.additionalTransfer?.fromAccountNumber ?: "-"
+                        ),
+                    )
+                )
 
+                feeDetails.addAll(
+                    listOf(
+                        TransactionDetailModel(
+                            label = "Total",
+                            value = argument.additionalTransfer?.nominal?.toDouble()
+                                ?.toRupiahFormat(
+                                    useSymbol = true,
+                                    useDecimal = false
+                                ) ?: "-",
+                            valueStyle = R.style.Font_DetailValueBold
+                        )
+                    )
+                )
             }
 
             InvoiceTransactionFlow.PULSA_PREPAID -> {
@@ -329,14 +362,14 @@ class InvoiceTransactionActivity :
                             label = "Tagihan",
                             value = argument.additionalPulsaData?.pulsaDenomClicked?.nominal?.toRupiahFormat(
                                 useSymbol = true,
-                                useDecimal = true
+                                useDecimal = false
                             ) ?: "-"
                         ),
                         TransactionDetailModel(
                             label = "Biaya Admin",
                             value = argument.additionalPulsaData?.pulsaDenomClicked?.adminFee?.toRupiahFormat(
                                 useSymbol = true,
-                                useDecimal = true,
+                                useDecimal = false,
                                 freeIfZero = true
                             ) ?: "-"
                         ),
@@ -377,14 +410,14 @@ class InvoiceTransactionActivity :
                             label = "Tagihan",
                             value = argument.additionalTelkomIndihome?.inquiryResponse?.amountTransaction?.toRupiahFormat(
                                 useSymbol = true,
-                                useDecimal = true
+                                useDecimal = false
                             ) ?: "-"
                         ),
                         TransactionDetailModel(
                             label = "Biaya Admin",
                             value = argument.additionalTelkomIndihome?.inquiryResponse?.transactionFee?.toRupiahFormat(
                                 useSymbol = true,
-                                useDecimal = true,
+                                useDecimal = false,
                                 freeIfZero = true
                             ) ?: "-"
                         ),
@@ -392,7 +425,7 @@ class InvoiceTransactionActivity :
                             label = "Total",
                             value = argument.additionalTelkomIndihome?.totalTransaction?.toRupiahFormat(
                                 useSymbol = true,
-                                useDecimal = true
+                                useDecimal = false
                             ) ?: "-",
                             valueStyle = R.style.Font_DetailValueBold
                         )

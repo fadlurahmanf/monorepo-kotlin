@@ -150,7 +150,7 @@ class TransactionRepositoryImpl @Inject constructor(
     fun inquiryBankMasReturnModel(destinationAccountNumber: String): Observable<InquiryResultModel> {
         return inquiryBankMas(destinationAccountNumber).map { inqRes ->
             InquiryResultModel(
-                additionalInquiryTransferBank = InquiryResultModel.InquiryTransferBank(
+                additionalTransfer = InquiryResultModel.InquiryTransferBank(
                     inquiryBank = inqRes,
                     isInquiryBankMas = true,
                 )

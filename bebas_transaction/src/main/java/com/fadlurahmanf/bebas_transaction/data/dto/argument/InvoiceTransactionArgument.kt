@@ -7,6 +7,7 @@ import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingPulsaDataResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PulsaDenomResponse
+import com.fadlurahmanf.bebas_api.data.dto.transfer.InquiryBankResponse
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -22,10 +23,12 @@ data class InvoiceTransactionArgument(
 ) : Parcelable {
     @Parcelize
     data class Transfer(
+        val fromAccountNumber: String,
         val destinationAccountName: String,
         val destinationBankNickName: String,
         val destinationAccountNumber: String,
-        val nominal: Long
+        val nominal: Long,
+        val inquiryResponse:InquiryBankResponse
     ) : Parcelable
 
     @Parcelize

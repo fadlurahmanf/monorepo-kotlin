@@ -118,7 +118,17 @@ class PinVerificationActivity :
                         transactionId = result.tranferBankMas?.transactionId ?: "-",
                         isFavorite = false,
                         isFavoriteEnabled = false,
-                        transactionDate = result.tranferBankMas?.transactionDateTime ?: "-"
+                        transactionDate = result.tranferBankMas?.transactionDateTime ?: "-",
+                        additionalTransfer = InvoiceTransactionArgument.Transfer(
+                            fromAccountNumber = argument.additionalTransfer?.request?.accountNumber ?: "-",
+                            destinationAccountName = argument.additionalTransfer?.inquiry?.destinationAccountName
+                                ?: "-",
+                            destinationAccountNumber = argument.additionalTransfer?.request?.accountNumber
+                                ?: "-",
+                            destinationBankNickName = "MAS",
+                            inquiryResponse = argument.additionalTransfer?.inquiry!!,
+                            nominal = argument.additionalTransfer?.request?.amountTransaction ?: -1
+                        )
                     )
                 )
                 startActivity(intent)
@@ -219,7 +229,7 @@ class PinVerificationActivity :
                     viewModel.postingPinVerification(
                         plainPin = this.pin,
                         request = PostingPinVerificationRequestModel.FundTranfeerBankMas(
-                            fundTransferBankMASRequest = argument.fundTransferBankMAS!!
+                            fundTransferBankMASRequest = argument.additionalTransfer?.request!!
                         )
                     )
                 }

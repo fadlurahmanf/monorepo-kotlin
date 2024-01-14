@@ -6,7 +6,7 @@ import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryPulsaDataResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
 
 data class InquiryResultModel(
-    val additionalInquiryTransferBank: InquiryTransferBank? = null,
+    val additionalTransfer: InquiryTransferBank? = null,
     val inquiryPulsaData: InquiryPulsaDataResponse? = null,
     val inquiryTelkomIndihome: InquiryTelkomIndihomeResponse? = null,
     val inquiryPLNPrePaidCheckout: InquiryCheckoutFlowResponse? = null,
