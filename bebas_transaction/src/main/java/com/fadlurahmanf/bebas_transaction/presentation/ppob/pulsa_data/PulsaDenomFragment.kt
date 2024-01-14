@@ -10,15 +10,19 @@ import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PulsaDataArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.SelectPaymentSourceArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PPOBDenomModel
 import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmationResult
+import com.fadlurahmanf.bebas_transaction.data.flow.PaymentDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.PinVerificationFlow
+import com.fadlurahmanf.bebas_transaction.data.flow.SelectPaymentSourceFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.FragmentPulsaDenomBinding
 import com.fadlurahmanf.bebas_transaction.external.TransactionConfirmationCallback
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionFragment
+import com.fadlurahmanf.bebas_transaction.presentation.others.SelectPaymentSourceBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.pin.PinVerificationActivity
 import com.fadlurahmanf.bebas_transaction.presentation.ppob.TransactionConfirmationBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.ppob.adapter.PPOBDenomAdapter
@@ -29,7 +33,8 @@ private const val PULSA_DATA_ARGUMENT = "PULSA_DATA_ARGUMENT"
 
 class PulsaDenomFragment :
     BaseTransactionFragment<FragmentPulsaDenomBinding>(FragmentPulsaDenomBinding::inflate),
-    PPOBDenomAdapter.Callback, TransactionConfirmationCallback {
+    PPOBDenomAdapter.Callback, TransactionConfirmationCallback,
+    SelectPaymentSourceBottomsheet.Callback {
 
     @Inject
     lateinit var viewModel: PulsaDataViewModel
@@ -134,7 +139,7 @@ class PulsaDenomFragment :
     }
 
     private var transactionConfirmationBottomsheet: TransactionConfirmationBottomsheet? = null
-    private fun showTransactionConfirmationBottomsheet() {
+    private fun showTransactionConfirmationBottomsheet(defaultPaymentSource: PaymentSourceModel? = null) {
         transactionConfirmationBottomsheet?.dismiss()
         transactionConfirmationBottomsheet = null
         transactionConfirmationBottomsheet = TransactionConfirmationBottomsheet()
@@ -146,6 +151,7 @@ class PulsaDenomFragment :
             )
             putParcelable(
                 TransactionConfirmationBottomsheet.ADDITIONAL_ARG, TransactionConfirmationArgument(
+                    defaultPaymentSource = defaultPaymentSource,
                     destinationLabel = argument.providerName,
                     destinationSubLabel = argument.phoneNumber,
                     imageLogoUrl = argument.providerImage,
@@ -181,9 +187,25 @@ class PulsaDenomFragment :
         )
     }
 
+    private var selectPaymentSouceBottomsheet: SelectPaymentSourceBottomsheet? = null
 
     override fun onChangePaymentSource(selectedPaymentSource: PaymentSourceModel) {
+        transactionConfirmationBottomsheet?.dismiss()
+        transactionConfirmationBottomsheet = null
 
+        selectPaymentSouceBottomsheet = SelectPaymentSourceBottomsheet()
+        selectPaymentSouceBottomsheet?.setCallback(this)
+        selectPaymentSouceBottomsheet?.arguments = Bundle().apply {
+            putParcelable(
+                SelectPaymentSourceBottomsheet.ARGUMENT, SelectPaymentSourceArgument(
+                    flow = SelectPaymentSourceFlow.CIF_GET_BANK_ACCOUNTS
+                )
+            )
+        }
+        selectPaymentSouceBottomsheet?.show(
+            requireActivity().supportFragmentManager,
+            SelectPaymentSourceBottomsheet::class.java.simpleName
+        )
     }
 
     override fun onButtonTransactionConfirmationClicked(result: TransactionConfirmationResult) {
@@ -218,5 +240,12 @@ class PulsaDenomFragment :
             )
         }
         startActivity(intent)
+    }
+
+    override fun onSelectPaymentSource(paymentSource: PaymentSourceModel) {
+        selectPaymentSouceBottomsheet?.dismiss()
+        selectPaymentSouceBottomsheet = null
+
+        showTransactionConfirmationBottomsheet(defaultPaymentSource = paymentSource)
     }
 }

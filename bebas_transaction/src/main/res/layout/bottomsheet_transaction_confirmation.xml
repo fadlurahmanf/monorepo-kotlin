@@ -66,6 +66,16 @@
                     android:layout_height="wrap_content" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <TextView
+                android:id="@+id/tv_balance_not_enough"
+                style="@style/Font.Text14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Saldo kamu tidak mencukupi, Silakan ubah rekening sumber atau isi saldo"
+                android:textColor="@color/red"
+                android:visibility="gone" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/l_item_payment_source_shimmer"
                 android:layout_width="match_parent"

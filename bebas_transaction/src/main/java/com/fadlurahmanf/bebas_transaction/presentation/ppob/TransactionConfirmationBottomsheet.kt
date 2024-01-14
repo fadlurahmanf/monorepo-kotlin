@@ -111,6 +111,14 @@ class TransactionConfirmationBottomsheet :
                             useSymbol = true,
                             useDecimal = true
                         )
+
+                    if (argument.feeDetail.total > it.data.balance) {
+                        binding.btnNext.setActive(false)
+                        binding.tvBalanceNotEnough.visibility = View.VISIBLE
+                    } else {
+                        binding.btnNext.setActive(true)
+                        binding.tvBalanceNotEnough.visibility = View.GONE
+                    }
                 }
 
                 else -> {
@@ -123,13 +131,6 @@ class TransactionConfirmationBottomsheet :
             viewModel.selectPaymentSource(argument.defaultPaymentSource!!)
         } else {
             viewModel.getPaymentSources()
-        }
-
-        binding.lItemPaymentSource.setOnClickListener {
-            Log.d("BebasLogger", "ITEM PAYMENT SOURCE: ${viewModel.selectedPaymentSource}")
-            if (viewModel.selectedPaymentSource != null) {
-                callback?.onChangePaymentSource(viewModel.selectedPaymentSource!!)
-            }
         }
 
         binding.btnNext.setOnClickListener {
@@ -159,6 +160,8 @@ class TransactionConfirmationBottomsheet :
         }
 
         binding.lItemPaymentSource.setOnClickListener {
+            Log.d("BebasLogger", "ITEM PAYMENT SOURCE: ${viewModel.selectedPaymentSource}")
+            Log.d("BebasLogger", "CALLBACK: ${callback != null}")
             if (viewModel.selectedPaymentSource != null) {
                 callback?.onChangePaymentSource(viewModel.selectedPaymentSource!!)
             }
@@ -199,14 +202,14 @@ class TransactionConfirmationBottomsheet :
                 label = nestedDetail.label,
                 value = nestedDetail.value.toRupiahFormat(
                     useSymbol = true,
-                    useDecimal = true,
+                    useDecimal = false,
                     freeIfZero = true
                 ),
             )
         })
         binding.rvFeeDetail.adapter = feeDetailAdapter
         binding.tvTotal.text =
-            argument.feeDetail.total.toRupiahFormat(useSymbol = true, useDecimal = true)
+            argument.feeDetail.total.toRupiahFormat(useSymbol = true, useDecimal = false)
     }
 
     private fun setupDetails() {
