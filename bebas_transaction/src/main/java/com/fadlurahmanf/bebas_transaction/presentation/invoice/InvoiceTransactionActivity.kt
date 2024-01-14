@@ -126,7 +126,6 @@ class InvoiceTransactionActivity :
             argument.transactionDate.utcToLocal()?.formatInvoiceTransaction() ?: "-"
 
         setupTransactionStatus()
-
         setupTotalTransaction()
         setupDetailTransaction()
 
