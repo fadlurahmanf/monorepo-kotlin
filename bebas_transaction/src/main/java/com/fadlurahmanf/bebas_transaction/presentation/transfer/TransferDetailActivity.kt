@@ -15,23 +15,30 @@ import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.PinVerificationArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.argument.SelectPaymentSourceArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferConfirmationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferDetailArgument
+import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
+import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmationResult
 import com.fadlurahmanf.bebas_transaction.data.dto.result.TransferConfirmationResult
+import com.fadlurahmanf.bebas_transaction.data.flow.PaymentDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.PinVerificationFlow
+import com.fadlurahmanf.bebas_transaction.data.flow.SelectPaymentSourceFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferDetailFlow
 import com.fadlurahmanf.bebas_transaction.data.state.TransferDetailState
 import com.fadlurahmanf.bebas_transaction.databinding.ActivityTransferDetailBinding
 import com.fadlurahmanf.bebas_transaction.external.BebasKeyboardTransaction
+import com.fadlurahmanf.bebas_transaction.external.TransactionConfirmationCallback
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionActivity
+import com.fadlurahmanf.bebas_transaction.presentation.others.SelectPaymentSourceBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.pin.PinVerificationActivity
 import com.fadlurahmanf.bebas_ui.extension.clearFocusAndDismissKeyboard
 import javax.inject.Inject
 
 class TransferDetailActivity :
     BaseTransactionActivity<ActivityTransferDetailBinding>(ActivityTransferDetailBinding::inflate),
-    TransferConfirmationBottomsheet.Callback {
+    TransactionConfirmationCallback, SelectPaymentSourceBottomsheet.Callback {
 
     companion object {
         const val FLOW = "FLOW"
@@ -235,7 +242,7 @@ class TransferDetailActivity :
         isKeyboardVisible = false
         binding.layoutInputNominal.llInputNominal.background = ContextCompat.getDrawable(
             this,
-            R.drawable.background_total_amount_transfer_detail
+            R.drawable.background_input_amount_transfer_detail
         )
         binding.keyboard.animate().translationY(binding.keyboard.height.toFloat())
     }
@@ -264,7 +271,7 @@ class TransferDetailActivity :
     }
 
     private var bottomsheetTransferConfirmation: TransferConfirmationBottomsheet? = null
-    private fun showConfirmationBottomsheet() {
+    private fun showConfirmationBottomsheet(defaultPaymentSource: PaymentSourceModel? = null) {
         val details = arrayListOf<TransferConfirmationArgument.Detail>()
         details.add(
             TransferConfirmationArgument.Detail(
@@ -294,6 +301,7 @@ class TransferDetailActivity :
             )
             putParcelable(
                 TransferConfirmationBottomsheet.ADDITIONAL_ARG, TransferConfirmationArgument(
+                    defaultPaymentSource = defaultPaymentSource,
                     realAccountName = argument.realAccountName,
                     destinationAccountNumber = argument.accountNumber,
                     imageLogoUrl = argument.bankImageUrl,
@@ -310,7 +318,7 @@ class TransferDetailActivity :
         )
     }
 
-    override fun onButtonConfirmationClicked(result: TransferConfirmationResult) {
+    override fun onButtonTransactionConfirmationClicked(result: TransactionConfirmationResult) {
         when (flow) {
             TransferDetailFlow.TRANSFER_BETWEEN_BANK_MAS -> {
                 val intent = Intent(this, PinVerificationActivity::class.java)
@@ -340,6 +348,34 @@ class TransferDetailActivity :
             TransferDetailFlow.TRANSFER_OTHER_BANK -> {
             }
         }
+    }
+
+    private var selectPaymentSouceBottomsheet: SelectPaymentSourceBottomsheet? = null
+
+    override fun onChangePaymentSource(selectedPaymentSource: PaymentSourceModel) {
+        bottomsheetTransferConfirmation?.dismiss()
+        bottomsheetTransferConfirmation = null
+
+        selectPaymentSouceBottomsheet = SelectPaymentSourceBottomsheet()
+        selectPaymentSouceBottomsheet?.setCallback(this)
+        selectPaymentSouceBottomsheet?.arguments = Bundle().apply {
+            putParcelable(
+                SelectPaymentSourceBottomsheet.ARGUMENT, SelectPaymentSourceArgument(
+                    flow = SelectPaymentSourceFlow.CIF_GET_BANK_ACCOUNTS
+                )
+            )
+        }
+        selectPaymentSouceBottomsheet?.show(
+            supportFragmentManager,
+            SelectPaymentSourceBottomsheet::class.java.simpleName
+        )
+    }
+
+    override fun onSelectPaymentSource(paymentSource: PaymentSourceModel) {
+        selectPaymentSouceBottomsheet?.dismiss()
+        selectPaymentSouceBottomsheet = null
+
+        showConfirmationBottomsheet(defaultPaymentSource = paymentSource)
     }
 
 }

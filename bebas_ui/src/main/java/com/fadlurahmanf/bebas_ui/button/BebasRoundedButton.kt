@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_ui.button
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.View
@@ -36,12 +37,31 @@ class BebasRoundedButton(context: Context, attributeSet: AttributeSet) :
     }
 
     fun setActive(active: Boolean) {
+        this.active = active
         if (active) {
             button.background =
                 ContextCompat.getDrawable(context, R.drawable.rounded_primary_button_background)
+            button.setOnClickListener(listener)
+            button.setTextColor(
+                ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.white
+                    )
+                )
+            )
         } else {
             button.background =
                 ContextCompat.getDrawable(context, R.drawable.rounded_grey_button_background)
+            button.setOnClickListener(null)
+            button.setTextColor(
+                ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.grey
+                    )
+                )
+            )
         }
     }
 
@@ -49,8 +69,11 @@ class BebasRoundedButton(context: Context, attributeSet: AttributeSet) :
         button.text = text
     }
 
+    private var listener: OnClickListener? = null
+
     override fun setOnClickListener(l: OnClickListener?) {
         if (active) {
+            listener = l
             button.setOnClickListener(l)
         }
     }

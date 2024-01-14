@@ -2,9 +2,9 @@ package com.fadlurahmanf.bebas_transaction.presentation.transfer
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import com.fadlurahmanf.bebas_transaction.data.state.TransferDetailState
 import com.fadlurahmanf.bebas_transaction.domain.repositories.TransactionRepositoryImpl
 import com.fadlurahmanf.bebas_ui.viewmodel.BaseViewModel
@@ -33,34 +33,39 @@ class TransferDetailViewModel @Inject constructor(
         }
     }
 
-    private val _selectedBankAccountState = MutableLiveData<NetworkState<BankAccountResponse>>()
-    val selectedBankAccountState: LiveData<NetworkState<BankAccountResponse>> =
-        _selectedBankAccountState
+    private val _selectedPaymentSourceState = MutableLiveData<NetworkState<PaymentSourceModel>>()
+    val selectedPaymentSourceState: LiveData<NetworkState<PaymentSourceModel>> =
+        _selectedPaymentSourceState
 
-    var selectedBankAccount: BankAccountResponse? = null
-    val bankAccounts: ArrayList<BankAccountResponse> = arrayListOf()
+    var selectedPaymentSource: PaymentSourceModel? = null
+    val paymentSources: ArrayList<PaymentSourceModel> = arrayListOf()
 
-    fun getBankAccounts() {
-        _selectedBankAccountState.value = NetworkState.LOADING
-        baseDisposable.add(transactionRepositoryImpl.getBankAccounts()
+    fun selectPaymentSource(paymentSource: PaymentSourceModel) {
+        selectedPaymentSource = paymentSource
+        _selectedPaymentSourceState.value = NetworkState.SUCCESS(paymentSource)
+    }
+
+    fun getPaymentSources() {
+        _selectedPaymentSourceState.value = NetworkState.LOADING
+        baseDisposable.add(transactionRepositoryImpl.getPaymentSourceModelFromGetBankAccounts()
                                .subscribeOn(Schedulers.io())
                                .observeOn(AndroidSchedulers.mainThread())
                                .subscribe(
                                    {
                                        if (it.isNotEmpty()) {
-                                           _selectedBankAccountState.value =
+                                           _selectedPaymentSourceState.value =
                                                NetworkState.SUCCESS(it.first())
-                                           selectedBankAccount = it.first()
-                                           bankAccounts.clear()
-                                           bankAccounts.addAll(it)
+                                           selectedPaymentSource = it.first()
+                                           paymentSources.clear()
+                                           paymentSources.addAll(it)
                                        } else {
-                                           _selectedBankAccountState.value = NetworkState.FAILED(
+                                           _selectedPaymentSourceState.value = NetworkState.FAILED(
                                                BebasException.generalRC("AC_01")
                                            )
                                        }
                                    },
                                    {
-                                       _selectedBankAccountState.value =
+                                       _selectedPaymentSourceState.value =
                                            NetworkState.FAILED(BebasException.fromThrowable(it))
                                    },
                                    {}

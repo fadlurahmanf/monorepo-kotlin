@@ -12,10 +12,11 @@ import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransferConfirmationArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.model.TransactionDetailModel
-import com.fadlurahmanf.bebas_transaction.data.dto.result.TransferConfirmationResult
+import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmationResult
 import com.fadlurahmanf.bebas_transaction.data.flow.TransferConfirmationFlow
 import com.fadlurahmanf.bebas_transaction.databinding.BottomsheetTransferConfirmationBinding
 import com.fadlurahmanf.bebas_transaction.external.BebasTransactionHelper
+import com.fadlurahmanf.bebas_transaction.external.TransactionConfirmationCallback
 import com.fadlurahmanf.bebas_transaction.presentation.BaseTransactionBottomsheet
 import com.fadlurahmanf.bebas_transaction.presentation.others.adapter.TransactionDetailAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -32,9 +33,9 @@ class TransferConfirmationBottomsheet :
         const val FLOW = "FLOW"
     }
 
-    private var callback: Callback? = null
+    private var callback: TransactionConfirmationCallback? = null
 
-    fun setCallback(callback: Callback) {
+    fun setCallback(callback: TransactionConfirmationCallback) {
         this.callback = callback
     }
 
@@ -96,35 +97,52 @@ class TransferConfirmationBottomsheet :
             binding.llDetail.visibility = View.GONE
         }
 
+        binding.lItemPaymentSource.setOnClickListener {
+            if (viewModel.selectedPaymentSource != null) {
+                callback?.onChangePaymentSource(viewModel.selectedPaymentSource!!)
+            }
+        }
 
-        viewModel.selectedBankAccountState.observe(this) {
+
+        viewModel.selectedPaymentSourceState.observe(this) {
             when (it) {
                 is NetworkState.FAILED -> {
                     binding.lItemPaymentSourceShimmer.visibility = View.VISIBLE
                     binding.lItemPaymentSource.visibility = View.GONE
+                    binding.btnNext.visibility = View.GONE
                 }
 
                 is NetworkState.LOADING -> {
                     binding.lItemPaymentSourceShimmer.visibility = View.VISIBLE
                     binding.lItemPaymentSource.visibility = View.GONE
+                    binding.btnNext.visibility = View.GONE
                 }
 
                 is NetworkState.SUCCESS -> {
                     binding.lItemPaymentSourceShimmer.visibility = View.GONE
                     binding.lItemPaymentSource.visibility = View.VISIBLE
+                    binding.btnNext.visibility = View.VISIBLE
 
                     binding.itemPaymentSource.tvAccountName.text = it.data.accountName ?: "-"
                     binding.itemPaymentSource.tvSavingTypeAndAccountNumber.text =
                         "MAS Saving • ${it.data.accountNumber ?: "-"}"
                     binding.itemPaymentSource.tvAccountBalance.text =
-                        it.data.workingBalance?.toRupiahFormat(
+                        it.data.balance.toRupiahFormat(
                             useSymbol = true,
                             useDecimal = true
                         )
+
+                    if (argument.nominal > it.data.balance) {
+                        binding.tvBalanceNotEnough.visibility = View.VISIBLE
+                        binding.btnNext.setActive(false)
+                    } else {
+                        binding.tvBalanceNotEnough.visibility = View.GONE
+                        binding.btnNext.setActive(true)
+                    }
                 }
 
                 else -> {
-
+                    binding.btnNext.visibility = View.GONE
                 }
             }
         }
@@ -160,14 +178,20 @@ class TransferConfirmationBottomsheet :
         binding.tvNominal.text =
             argument.nominal.toDouble().toRupiahFormat(useSymbol = true, useDecimal = false)
 
-        viewModel.getBankAccounts()
+        if (argument.defaultPaymentSource != null) {
+            viewModel.selectPaymentSource(argument.defaultPaymentSource!!)
+        } else {
+            viewModel.getPaymentSources()
+        }
 
         binding.btnNext.setOnClickListener {
             when (flow) {
                 TransferConfirmationFlow.TRANSFER_BETWEEN_BANK_MAS -> {
-                    callback?.onButtonConfirmationClicked(
-                        result = TransferConfirmationResult(
-                            selectedAccountNumber = viewModel.selectedBankAccount?.accountNumber
+                    callback?.onButtonTransactionConfirmationClicked(
+                        result = TransactionConfirmationResult(
+                            selectedAccountNumber = viewModel.selectedPaymentSource?.accountNumber
+                                ?: "-",
+                            selectedAccountName = viewModel.selectedPaymentSource?.accountName
                                 ?: "-",
                         )
                     )
@@ -178,9 +202,5 @@ class TransferConfirmationBottomsheet :
                 }
             }
         }
-    }
-
-    interface Callback {
-        fun onButtonConfirmationClicked(result: TransferConfirmationResult)
     }
 }
