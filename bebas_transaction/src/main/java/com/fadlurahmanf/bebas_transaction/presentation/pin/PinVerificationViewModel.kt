@@ -48,6 +48,13 @@ class PinVerificationViewModel @Inject constructor(
                     request.postingTelkomIndihomeRequest
                 )
             }
+
+            is PostingPinVerificationRequestModel.PostingPLNPrePaidCheckout -> {
+                transactionRepositoryImpl.postingTransactionPLNPrePaidCheckout(
+                    plainPin,
+                    request.postingData
+                )
+            }
         }
         baseDisposable.add(
             disposable.subscribeOn(Schedulers.io())

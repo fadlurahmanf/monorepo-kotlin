@@ -26,6 +26,19 @@ class CryptoTransactionRepositoryImpl @Inject constructor(
         ) ?: ""
     }
 
+    fun generateSignature(
+        plainJsonString: String,
+        timestamp: Long,
+        challengeCode: String
+    ): String {
+        val unsign = "$plainJsonString|$timestamp|$challengeCode"
+        Log.d("BebasLogger", "UNSIGN: $unsign")
+        return cryptoED25119Repository.generateSignature(
+            unsign,
+            BebasShared.encodedPrivateKeyTransaction
+        ) ?: ""
+    }
+
     fun verifyPin(plainPin: String): Boolean {
         val signature = cryptoED25119Repository.generateSignature(
             plainPin,

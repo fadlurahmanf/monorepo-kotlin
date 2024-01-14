@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_transaction.data.dto.model.transfer
 
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingPulsaPrePaidRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeRequest
+import com.fadlurahmanf.bebas_api.data.dto.transfer.CheckoutTransactionDataRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.FundTransferBankMASRequest
 
 sealed class PostingPinVerificationRequestModel() {
@@ -15,5 +16,9 @@ sealed class PostingPinVerificationRequestModel() {
 
     data class PostingTelkomIndihome(
         val postingTelkomIndihomeRequest: PostingTelkomIndihomeRequest
+    ) : PostingPinVerificationRequestModel()
+
+    data class PostingPLNPrePaidCheckout(
+        val postingData: CheckoutTransactionDataRequest
     ) : PostingPinVerificationRequestModel()
 }

@@ -12,6 +12,7 @@ import com.fadlurahmanf.bebas_transaction.R
 import com.fadlurahmanf.bebas_transaction.data.dto.argument.TransactionConfirmationCheckoutArgument
 import com.fadlurahmanf.bebas_transaction.data.dto.model.TransactionDetailModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transaction.OrderFeeDetailModel
+import com.fadlurahmanf.bebas_transaction.data.dto.result.TransactionConfirmationResult
 import com.fadlurahmanf.bebas_transaction.data.flow.TransactionConfirmationCheckoutFlow
 import com.fadlurahmanf.bebas_transaction.databinding.BottomsheetTransactionConfirmationCheckoutBinding
 import com.fadlurahmanf.bebas_transaction.external.TransactionConfirmationCallback
@@ -95,6 +96,20 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
 
 
         binding.btnNext.setOnClickListener {
+            when(flow){
+                TransactionConfirmationCheckoutFlow.PLN_PREPAID -> {
+                    callback?.onButtonTransactionConfirmationClicked(TransactionConfirmationResult(
+                        selectedAccountName = viewModel.selectedPaymentSource.value?.accountName ?: "-",
+                        selectedAccountNumber = viewModel.selectedPaymentSource.value?.accountNumber ?: "-",
+                        additionalPLNPrePaidCheckout = TransactionConfirmationResult.PLNPrePaidCheckout(
+                            orderId = viewModel.orderDetail?.orderId ?: "-",
+                            configGroupId = viewModel.orderDetail?.paymentConfigGroupId ?: "-",
+                            paymentTypeCode = viewModel.orderDetail?.paymentTypeCode ?: "-",
+                            paymentSourceSchema = viewModel.orderDetail?.schemas ?: listOf()
+                        )
+                    ))
+                }
+            }
         }
 
         binding.itemBebasPoinPaymentSource.switchUseBebaspoin.setOnCheckedChangeListener { _, isChecked ->

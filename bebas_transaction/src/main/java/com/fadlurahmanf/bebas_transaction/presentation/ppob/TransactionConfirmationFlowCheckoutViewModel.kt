@@ -71,6 +71,8 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
     private val _oderFeeDetailState = MutableLiveData<NetworkState<OrderFeeDetailModel>>()
     val oderFeeDetailState: LiveData<NetworkState<OrderFeeDetailModel>> = _oderFeeDetailState
 
+    var orderDetail: OrderFeeDetailModel? = null
+
     fun orderPaymentSchema(
         productCode: String,
         paymentTypeCode: String,
@@ -85,7 +87,8 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
             OrderPaymentSchemaRequest.PaymentSourceSchemaRequest(
                 code = selectedPaymentSource.value?.paymentSource?.code ?: "-",
                 accountNumber = selectedPaymentSource.value?.paymentSource?.accountNumber,
-                status = true
+                status = true,
+                type = selectedPaymentSource.value?.paymentSource?.type ?: "-"
             )
         )
         if (loyaltyPaymentSource.value != null) {
@@ -93,7 +96,8 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
                 OrderPaymentSchemaRequest.PaymentSourceSchemaRequest(
                     code = loyaltyPaymentSource.value?.paymentSource?.code ?: "-",
                     accountNumber = selectedPaymentSource.value?.paymentSource?.accountNumber,
-                    status = useLoyaltyBebasPoin
+                    status = useLoyaltyBebasPoin,
+                    type = loyaltyPaymentSource.value?.paymentSource?.type ?: "-"
                 )
             )
         }
@@ -112,6 +116,7 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
                                .subscribe(
                                    {
                                        _oderFeeDetailState.value = NetworkState.SUCCESS(it)
+                                       orderDetail = it
                                    },
                                    {
                                        _oderFeeDetailState.value =

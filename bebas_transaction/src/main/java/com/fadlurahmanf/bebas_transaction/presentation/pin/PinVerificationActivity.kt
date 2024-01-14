@@ -184,6 +184,10 @@ class PinVerificationActivity :
                 )
                 startActivity(intent)
             }
+
+            PinVerificationFlow.POSTING_PLN_PREPAID_CHECKOUT -> {
+
+            }
         }
     }
 
@@ -219,6 +223,15 @@ class PinVerificationActivity :
                         this.pin,
                         request = PostingPinVerificationRequestModel.PostingTelkomIndihome(
                             postingTelkomIndihomeRequest = argument.additionalTelkomIndihome!!.postingRequest
+                        )
+                    )
+                }
+
+                PinVerificationFlow.POSTING_PLN_PREPAID_CHECKOUT -> {
+                    viewModel.postingPinVerification(
+                        this.pin,
+                        request = PostingPinVerificationRequestModel.PostingPLNPrePaidCheckout(
+                            postingData = argument.additionalPlnPrePaidCheckout!!.dataRequest
                         )
                     )
                 }

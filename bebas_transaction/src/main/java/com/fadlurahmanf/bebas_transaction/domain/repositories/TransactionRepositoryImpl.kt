@@ -29,12 +29,15 @@ import com.fadlurahmanf.bebas_api.data.dto.ppob.InquiryTelkomIndihomeResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PLNDenomResponse
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeRequest
 import com.fadlurahmanf.bebas_api.data.dto.ppob.RefreshStatusResponse
+import com.fadlurahmanf.bebas_api.data.dto.transfer.CheckoutGenerateChallengeCodeRequest
+import com.fadlurahmanf.bebas_api.data.dto.transfer.CheckoutTransactionDataRequest
+import com.fadlurahmanf.bebas_api.data.dto.transfer.CheckoutTransactionPostingRequest
 import com.fadlurahmanf.bebas_api.data.dto.transfer.ItemBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transfer.PostingRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
+import com.fadlurahmanf.bebas_shared.data.exception.OrderException
 import com.fadlurahmanf.bebas_shared.extension.toNegative
 import com.fadlurahmanf.bebas_shared.extension.toPositive
-import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
 import com.fadlurahmanf.bebas_transaction.data.dto.model.PaymentSourceModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.ppob.PPOBDenomModel
 import com.fadlurahmanf.bebas_transaction.data.dto.model.transaction.OrderFeeDetailModel
@@ -204,6 +207,15 @@ class TransactionRepositoryImpl @Inject constructor(
 
     fun generateChallengeCode(json: JsonObject): Observable<String> {
         return transactionRemoteDatasource.getChallengeCode(json).map {
+            if (it.data == null) {
+                throw BebasException.generalRC("CC_00")
+            }
+            it.data!!
+        }
+    }
+
+    fun generateChallengeCodeCheckout(json: JsonObject): Observable<String> {
+        return identityRemoteDatasource.getChallengeCode(json).map {
             if (it.data == null) {
                 throw BebasException.generalRC("CC_00")
             }
@@ -646,7 +658,11 @@ class TransactionRepositoryImpl @Inject constructor(
             customerId = customerId,
             schemas = schemas
         ).map { resp ->
+            if (resp.orderId == null) {
+                throw OrderException.generalRC("ORDERID_MISSING")
+            }
             val details = arrayListOf<OrderFeeDetailModel.Detail>()
+            val orderSchemas = arrayListOf<CheckoutTransactionDataRequest.Schema>()
             resp.paymentSchema?.details?.forEach { detail ->
                 details.add(
                     OrderFeeDetailModel.Detail(
@@ -655,13 +671,11 @@ class TransactionRepositoryImpl @Inject constructor(
                     )
                 )
             }
-            Log.d("BebasLogger", "AMOUNT: ${resp.paymentSchema?.total ?: -1.0}")
-            Log.d("BebasLogger", "BEBASPOIN: ${loyaltyBebasPointPaymentSource?.balance}")
             val amount = resp.paymentSchema?.total ?: -1.0
             var totalFeeUserShouldPaidUsingBalance = resp.paymentSchema?.total ?: -1.0
+            var totalBalanceUserShouldPaidUsingLoyaltyBebasPoin: Double = -1.0
             if (useBebasPoin && loyaltyBebasPointPaymentSource?.balance != null) {
                 val loyaltyBalance: Double = loyaltyBebasPointPaymentSource.balance
-                val totalBalanceUserShouldPaidUsingLoyaltyBebasPoin: Double
                 if (loyaltyBalance >= amount) {
                     totalBalanceUserShouldPaidUsingLoyaltyBebasPoin = amount
                 } else {
@@ -676,10 +690,73 @@ class TransactionRepositoryImpl @Inject constructor(
                 )
                 totalFeeUserShouldPaidUsingBalance -= totalBalanceUserShouldPaidUsingLoyaltyBebasPoin.toPositive()
             }
+            schemas.forEach { schema ->
+                if (schema.code == "MASSAVING") {
+                    orderSchemas.add(
+                        CheckoutTransactionDataRequest.Schema(
+                            accountNumber = schema.accountNumber,
+                            amount = totalFeeUserShouldPaidUsingBalance,
+                            code = schema.code,
+                            status = schema.status,
+                            type = schema.type,
+                        )
+                    )
+                } else if (schema.code == "LOYE" && totalBalanceUserShouldPaidUsingLoyaltyBebasPoin != -1.0) {
+                    orderSchemas.add(
+                        CheckoutTransactionDataRequest.Schema(
+                            accountNumber = schema.accountNumber,
+                            amount = totalBalanceUserShouldPaidUsingLoyaltyBebasPoin,
+                            code = schema.code,
+                            status = schema.status,
+                            type = schema.type
+                        )
+                    )
+                }
+            }
             OrderFeeDetailModel(
+                orderId = resp.orderId ?: "-",
+                paymentConfigGroupId = sourceGroupId,
+                schemas = orderSchemas,
+                paymentTypeCode = paymentTypeCode,
                 total = totalFeeUserShouldPaidUsingBalance,
-                details = details
+                details = details,
             )
+        }
+    }
+
+    fun postingTransactionPLNPrePaidCheckout(
+        plainPin: String,
+        data: CheckoutTransactionDataRequest
+    ): Observable<PostingPinVerificationResultModel> {
+        if (!cryptoTransactionRepositoryImpl.verifyPin(plainPin)) {
+            throw BebasException.generalRC("INCORRECT_PIN")
+        }
+        val timestamp = System.currentTimeMillis().toString()
+        val challengeCodeRequest = CheckoutGenerateChallengeCodeRequest(
+            data = data,
+            timestamp = timestamp,
+        )
+        return generateChallengeCodeCheckout(Gson().toJsonTree(challengeCodeRequest).asJsonObject).flatMap {
+            val plnPrePaidRequestString = Gson().toJson(data)
+            val signature = cryptoTransactionRepositoryImpl.generateSignature(
+                plainJsonString = plnPrePaidRequestString,
+                timestamp = timestamp,
+                challengeCode = it
+            )
+            val body = CheckoutTransactionPostingRequest(
+                data = data,
+                signature = signature,
+                clientTimeMillis = timestamp
+            )
+            orderRemoteDatasource.postingTransaction(body)
+                .map { resp ->
+                    if (resp.data == null) {
+                        throw BebasException.generalRC("FT_00")
+                    }
+                    PostingPinVerificationResultModel(
+                        transactionStatus = resp.message ?: "-",
+                    )
+                }
         }
     }
 

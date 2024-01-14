@@ -8,6 +8,7 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.fadlurahmanf.bebas_api.data.dto.ppob.PostingTelkomIndihomeRequest
+import com.fadlurahmanf.bebas_api.data.dto.transfer.CheckoutTransactionDataRequest
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.extension.toRupiahFormat
@@ -535,7 +536,25 @@ class PaymentDetailActivity :
             }
 
             PaymentDetailFlow.PLN_PREPAID_CHECKOUT -> {
-
+                val inquiry = argument.additionalTelkomIndihome?.inquiry
+                intent.apply {
+                    putExtra(
+                        PinVerificationActivity.FLOW,
+                        PinVerificationFlow.POSTING_PLN_PREPAID_CHECKOUT.name
+                    )
+                    putExtra(
+                        PinVerificationActivity.ARGUMENT, PinVerificationArgument(
+                            additionalPlnPrePaidCheckout = PinVerificationArgument.PLNPrePaidCheckout(
+                                dataRequest = CheckoutTransactionDataRequest(
+                                    orderId = result.additionalPLNPrePaidCheckout?.orderId ?: "-",
+                                    paymentConfigGroupId = result.additionalPLNPrePaidCheckout?.configGroupId ?: "-",
+                                    paymentTypeCode = result.additionalPLNPrePaidCheckout?.paymentTypeCode ?: "-",
+                                    paymentSourceSchema = result.additionalPLNPrePaidCheckout?.paymentSourceSchema ?: listOf()
+                                )
+                            )
+                        )
+                    )
+                }
             }
         }
         startActivity(intent)
