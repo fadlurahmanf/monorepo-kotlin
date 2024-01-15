@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.liveData
 import androidx.paging.rxjava3.flowable
 import com.fadlurahmanf.bebas_main.data.dto.model.notification.NotificationModel
 import com.fadlurahmanf.bebas_main.domain.repositories.MainRepositoryImpl
@@ -18,7 +19,6 @@ import javax.inject.Inject
 
 class NotificationViewModel @Inject constructor(
     private val mainRepositoryImpl: MainRepositoryImpl,
-    private val transactionPagingSource: NotificationTransactionPagingSource,
 ) : BaseViewModel() {
 
     private val _unreadTransaction = MutableLiveData<Int>(0)
@@ -41,7 +41,7 @@ class NotificationViewModel @Inject constructor(
     val notificationState: LiveData<PagingData<NotificationModel>> = _notificationState
 
     fun getNotification(context: Context) {
-        baseDisposable.add(getFlowableNotificationPagingData()
+        baseDisposable.add(getFlowableNotificationPagingData(context)
                                .subscribeOn(Schedulers.io())
                                .observeOn(AndroidSchedulers.mainThread())
                                .subscribe(
@@ -54,17 +54,14 @@ class NotificationViewModel @Inject constructor(
                                ))
     }
 
-    private fun getFlowableNotificationPagingData(): Flowable<PagingData<NotificationModel>> {
+    private fun getFlowableNotificationPagingData(context: Context): Flowable<PagingData<NotificationModel>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
-                enablePlaceholders = true,
-                maxSize = 30,
-                prefetchDistance = 5,
-                initialLoadSize = 40
+                enablePlaceholders = false,
             ),
             pagingSourceFactory = {
-                transactionPagingSource
+                NotificationTransactionPagingSource(context, mainRepositoryImpl)
             }
         ).flowable
     }

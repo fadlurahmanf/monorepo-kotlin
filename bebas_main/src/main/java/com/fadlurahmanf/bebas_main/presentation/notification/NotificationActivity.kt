@@ -21,6 +21,7 @@ class NotificationActivity :
         adapter = NotificationTabAdapter(applicationContext, supportFragmentManager, lifecycle)
 
         binding.vp.adapter = adapter
+        binding.vp.isUserInputEnabled = false
         supportActionBar?.elevation = 0f
 
         TabLayoutMediator(binding.tabLayout, binding.vp) { tab, position ->

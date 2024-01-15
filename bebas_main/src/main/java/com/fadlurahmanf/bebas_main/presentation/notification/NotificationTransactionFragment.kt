@@ -7,7 +7,6 @@ import com.fadlurahmanf.bebas_main.data.dto.model.notification.NotificationModel
 import com.fadlurahmanf.bebas_main.databinding.FragmentNotificationTransactionBinding
 import com.fadlurahmanf.bebas_main.presentation.BaseMainFragment
 import com.fadlurahmanf.bebas_main.presentation.notification.adapter.NotificationPagingAdapter
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
 private const val ARG_PARAM1 = "param1"
@@ -37,9 +36,11 @@ class NotificationTransactionFragment : BaseMainFragment<FragmentNotificationTra
         }
 
         adapter = NotificationPagingAdapter()
+        adapter.addLoadStateListener {
+            Log.d("BebasLogger", "LOAD STATE: ${it}")
+        }
         adapter.setCallBack(this)
         binding.rv.adapter = adapter
-
 
         viewModel.getNotification(requireContext())
     }

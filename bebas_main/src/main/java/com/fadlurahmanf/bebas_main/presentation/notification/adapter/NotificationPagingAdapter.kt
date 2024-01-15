@@ -70,7 +70,7 @@ class NotificationPagingAdapter :
             oldItem: NotificationModel,
             newItem: NotificationModel
         ): Boolean {
-            return oldItem == newItem
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
