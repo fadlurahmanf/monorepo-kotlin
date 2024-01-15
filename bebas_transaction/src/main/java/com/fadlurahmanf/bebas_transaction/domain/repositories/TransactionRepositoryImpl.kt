@@ -91,7 +91,7 @@ class TransactionRepositoryImpl @Inject constructor(
         }
     }
 
-    fun getBankAccounts(): Observable<List<BankAccountResponse>> {
+    private fun getBankAccounts(): Observable<List<BankAccountResponse>> {
         return transactionRemoteDatasource.getBankAccounts().map {
             if (it.data == null) {
                 throw BebasException.generalRC("DATA_MISSING")
@@ -101,11 +101,8 @@ class TransactionRepositoryImpl @Inject constructor(
     }
 
     fun getPaymentSourceModelFromGetBankAccounts(): Observable<List<PaymentSourceModel>> {
-        return transactionRemoteDatasource.getBankAccounts().map { baseResp ->
-            if (baseResp.data == null) {
-                throw BebasException.generalRC("DATA_MISSING")
-            }
-            baseResp.data!!.map { bankAccount ->
+        return getBankAccounts().map { bankAccounts ->
+            bankAccounts.map { bankAccount ->
                 PaymentSourceModel(
                     accountName = bankAccount.accountName ?: "-",
                     accountNumber = bankAccount.accountNumber ?: "-",
@@ -130,7 +127,6 @@ class TransactionRepositoryImpl @Inject constructor(
             bankAccounts.first()
         }
     }
-
 
     fun inquiryBankMas(destinationAccountNumber: String): Observable<InquiryBankResponse> {
         return getMainBankAccount().flatMap { bankAccount ->
