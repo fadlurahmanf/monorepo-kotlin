@@ -1,6 +1,8 @@
 package com.fadlurahmanf.bebas_main.presentation.home
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -10,12 +12,14 @@ import androidx.fragment.app.Fragment
 import com.fadlurahmanf.bebas_main.R
 import com.fadlurahmanf.bebas_main.databinding.ActivityHomeBinding
 import com.fadlurahmanf.bebas_main.presentation.BaseMainActivity
+import com.fadlurahmanf.bebas_main.presentation.home.bottomsheet.LogoutBottomsheet
 import com.fadlurahmanf.bebas_main.presentation.home.history.HistoryFragment
 import com.fadlurahmanf.bebas_main.presentation.home.home.HomeFragment
 import com.fadlurahmanf.bebas_shared.RxBus
 import com.fadlurahmanf.bebas_shared.RxEvent
 
-class HomeActivity : BaseMainActivity<ActivityHomeBinding>(ActivityHomeBinding::inflate) {
+class HomeActivity : BaseMainActivity<ActivityHomeBinding>(ActivityHomeBinding::inflate),
+    LogoutBottomsheet.Callback {
 
     val homeFragment = HomeFragment()
     val historyFragment = HistoryFragment()
@@ -94,6 +98,32 @@ class HomeActivity : BaseMainActivity<ActivityHomeBinding>(ActivityHomeBinding::
 
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
-//        showFailedBebasBottomsheet()
+        showLogoutBottomsheet()
+    }
+
+    private var logoutBottomsheet: LogoutBottomsheet? = null
+    fun showLogoutBottomsheet() {
+        logoutBottomsheet = LogoutBottomsheet()
+        logoutBottomsheet?.setCallback(this)
+        logoutBottomsheet?.show(supportFragmentManager, LogoutBottomsheet::class.java.simpleName)
+    }
+
+    override fun onClosedAppClicked(dialog: Dialog) {
+        logoutBottomsheet?.dismiss()
+        logoutBottomsheet = null
+        super.onBackPressed()
+    }
+
+    override fun onLogoutAppClicked(dialog: Dialog) {
+        logoutBottomsheet?.dismiss()
+        logoutBottomsheet = null
+
+        val intent = Intent(
+            this,
+            Class.forName("com.fadlurahmanf.bebas_onboarding.presentation.login.LoginActivity")
+        )
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 }
