@@ -636,7 +636,34 @@ class TransactionRepositoryImpl @Inject constructor(
         }
     }
 
+    fun reorderPaymentSchema(
+        orderId: String,
+        productCode: String,
+        paymentTypeCode: String,
+        sourceGroupId: String,
+        customerName: String,
+        customerId: String,
+        schemas: List<OrderPaymentSchemaRequest.PaymentSourceSchemaRequest>
+    ): Observable<OrderPaymentSchemaResponse> {
+        val request = OrderPaymentSchemaRequest(
+            providerProductCode = productCode,
+            paymentTypeCode = paymentTypeCode,
+            paymentConfigGroupId = sourceGroupId,
+            customerName = customerName,
+            customerNumber = customerId,
+            paymentSourceSchema = schemas
+        )
+        return orderRemoteDatasource.reorderTransactionSchema(orderId = orderId, request = request)
+            .map {
+                if (it.data == null) {
+                    throw BebasException.generalRC("OTS_00")
+                }
+                it.data!!
+            }
+    }
+
     fun orderPaymentSchemaReturnModel(
+        orderId: String?,
         productCode: String,
         paymentTypeCode: String,
         sourceGroupId: String,
@@ -646,14 +673,23 @@ class TransactionRepositoryImpl @Inject constructor(
         useBebasPoin: Boolean = false,
         loyaltyBebasPointPaymentSource: PaymentSourceModel? = null,
     ): Observable<OrderFeeDetailModel> {
-        return orderPaymentSchema(
+        val paymentSchema = if (orderId != null) reorderPaymentSchema(
+            orderId = orderId,
             productCode = productCode,
             paymentTypeCode = paymentTypeCode,
             sourceGroupId = sourceGroupId,
             customerName = customerName,
             customerId = customerId,
             schemas = schemas
-        ).map { resp ->
+        ) else orderPaymentSchema(
+            productCode = productCode,
+            paymentTypeCode = paymentTypeCode,
+            sourceGroupId = sourceGroupId,
+            customerName = customerName,
+            customerId = customerId,
+            schemas = schemas
+        )
+        return paymentSchema.map { resp ->
             if (resp.orderId == null) {
                 throw OrderException.generalRC("ORDERID_MISSING")
             }

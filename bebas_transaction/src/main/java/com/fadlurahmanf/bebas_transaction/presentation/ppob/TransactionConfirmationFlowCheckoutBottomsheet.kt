@@ -96,18 +96,22 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
 
 
         binding.btnNext.setOnClickListener {
-            when(flow){
+            when (flow) {
                 TransactionConfirmationCheckoutFlow.PLN_PREPAID -> {
-                    callback?.onButtonTransactionConfirmationClicked(TransactionConfirmationResult(
-                        selectedAccountName = viewModel.selectedPaymentSource.value?.accountName ?: "-",
-                        selectedAccountNumber = viewModel.selectedPaymentSource.value?.accountNumber ?: "-",
-                        additionalPLNPrePaidCheckout = TransactionConfirmationResult.PLNPrePaidCheckout(
-                            orderId = viewModel.orderDetail?.orderId ?: "-",
-                            configGroupId = viewModel.orderDetail?.paymentConfigGroupId ?: "-",
-                            paymentTypeCode = viewModel.orderDetail?.paymentTypeCode ?: "-",
-                            paymentSourceSchema = viewModel.orderDetail?.schemas ?: listOf()
+                    callback?.onButtonTransactionConfirmationClicked(
+                        TransactionConfirmationResult(
+                            selectedAccountName = viewModel.selectedPaymentSource.value?.accountName
+                                ?: "-",
+                            selectedAccountNumber = viewModel.selectedPaymentSource.value?.accountNumber
+                                ?: "-",
+                            additionalPLNPrePaidCheckout = TransactionConfirmationResult.PLNPrePaidCheckout(
+                                orderId = viewModel.orderDetail?.orderId ?: "-",
+                                configGroupId = viewModel.orderDetail?.paymentConfigGroupId ?: "-",
+                                paymentTypeCode = viewModel.orderDetail?.paymentTypeCode ?: "-",
+                                paymentSourceSchema = viewModel.orderDetail?.schemas ?: listOf()
+                            )
                         )
-                    ))
+                    )
                 }
             }
         }
@@ -116,6 +120,7 @@ class TransactionConfirmationFlowCheckoutBottomsheet :
             when (flow) {
                 TransactionConfirmationCheckoutFlow.PLN_PREPAID -> {
                     viewModel.orderPaymentSchema(
+                        orderId = viewModel.orderDetail?.orderId,
                         productCode = argument.additionalPLNPrePaid?.inquiryResponse?.productCode
                             ?: "-",
                         customerId = argument.additionalPLNPrePaid?.inquiryResponse?.clientNumber

@@ -49,6 +49,7 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
                         _selectedPaymentSource.value = it.mainPaymentSource
                         _loyaltyPaymentSource.value = it.loyaltyPointPaymentSource
                         orderPaymentSchema(
+                            orderId = null,
                             productCode = productCode,
                             paymentTypeCode = paymentTypeCode,
                             customerId = customerId,
@@ -72,6 +73,7 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
     var orderDetail: OrderFeeDetailModel? = null
 
     fun orderPaymentSchema(
+        orderId: String?,
         productCode: String,
         paymentTypeCode: String,
         customerId: String,
@@ -100,6 +102,7 @@ class TransactionConfirmationFlowCheckoutViewModel @Inject constructor(
             )
         }
         baseDisposable.add(transactionRepositoryImpl.orderPaymentSchemaReturnModel(
+            orderId = orderId,
             productCode = productCode,
             paymentTypeCode = paymentTypeCode,
             customerId = customerId,

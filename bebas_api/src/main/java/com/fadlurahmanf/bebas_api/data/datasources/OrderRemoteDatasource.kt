@@ -15,6 +15,12 @@ class OrderRemoteDatasource @Inject constructor(
     fun orderTransactionSchema(request: OrderPaymentSchemaRequest) =
         networkService().getOrderConfirmation(request)
 
+    fun reorderTransactionSchema(orderId: String, request: OrderPaymentSchemaRequest) =
+        networkService().reOrderConfirmation(
+            orderId = orderId,
+            request = request
+        )
+
     fun postingTransaction(request: CheckoutTransactionPostingRequest) =
         networkService().postingTransaction(request)
 }

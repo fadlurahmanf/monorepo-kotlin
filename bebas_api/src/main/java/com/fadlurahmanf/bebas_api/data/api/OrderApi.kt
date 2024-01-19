@@ -8,10 +8,18 @@ import com.fadlurahmanf.bebas_api.data.dto.transaction.checkout.CheckoutTransact
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
 
 interface OrderApi {
     @POST("apps/order-confirmation")
     fun getOrderConfirmation(
+        @Body request: OrderPaymentSchemaRequest
+    ): Observable<BaseResponse<OrderPaymentSchemaResponse>>
+
+    @PUT("apps/order-confirmation/{orderId}")
+    fun reOrderConfirmation(
+        @Path("orderId") orderId: String,
         @Body request: OrderPaymentSchemaRequest
     ): Observable<BaseResponse<OrderPaymentSchemaResponse>>
 
