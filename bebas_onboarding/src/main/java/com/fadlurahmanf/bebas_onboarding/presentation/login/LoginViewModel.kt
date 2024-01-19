@@ -47,7 +47,7 @@ class LoginViewModel @Inject constructor(
     fun login() {
         _loginState.value = NetworkState.LOADING
         baseDisposable.add(authenticationRepositoryImpl.login(
-            plainPassword = "FuQZjObKaZMqBlBdWSQ/Ag=="
+            plainPassword = "Abcd1234"
         ).subscribeOn(Schedulers.io())
                                .observeOn(AndroidSchedulers.mainThread())
                                .subscribe(

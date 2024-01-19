@@ -5,6 +5,13 @@ import com.fadlurahmanf.bebas_shared.data.dto.BebasItemPickerBottomsheetModel
 object BebasShared {
     lateinit var flavor: String
 
+    lateinit var appDeviceId: String
+    fun setDeviceId(deviceId: String) {
+        if (!this::appDeviceId.isInitialized) {
+            this.appDeviceId = deviceId
+        }
+    }
+
     private lateinit var bebasUrl: String
 
     fun setBebasUrl(url: String) {
@@ -112,7 +119,9 @@ object BebasShared {
         return refreshToken
     }
 
-    var encodedPrivateKeyTransaction: String = "QG/ujHp6aTcDXPZAP6RjI6uQPlBhoNKgEp7ludgkUfwfvvDtkyxrN2NIpT/rkX04wyOdqB9SOwkJn3s+p+0O9w=="
-    var encodedPublicKeyTransaction: String = "H77w7ZMsazdjSKU/65F9OMMjnagfUjsJCZ97PqftDvc="
+    lateinit var encodedPrivateKeyTransaction: String
+    lateinit var encodedPublicKeyTransaction: String
+    lateinit var saltPassword: String
+    lateinit var saltPin: String
 }
 

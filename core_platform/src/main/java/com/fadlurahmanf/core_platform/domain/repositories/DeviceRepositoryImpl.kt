@@ -29,6 +29,8 @@ class DeviceRepositoryImpl : DeviceRepository {
     }
 
     override fun deviceID(context: Context): String {
+        // TODO: CHANGE LATER
+        return "3caf1726e8a74121440b2daf15ec0c0efa4f85530afc77aaa7629a35a07a4a2e"
         return Secure.getString(context.contentResolver, Secure.ANDROID_ID)
     }
 

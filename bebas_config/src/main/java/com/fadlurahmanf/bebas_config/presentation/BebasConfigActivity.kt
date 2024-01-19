@@ -30,6 +30,10 @@ class BebasConfigActivity : AppCompatActivity() {
             "dev" -> {
                 BebasShared.setBebasUrl("https://api.bankmas.my.id/")
                 BebasShared.setOpenviduBaseUrl("https://vc.bankmas.my.id/", "vc.bankmas.my.id")
+                BebasShared.encodedPrivateKeyTransaction = "j8U51ILRqW/L+hHF4WBjaHA6lKwAbT5crNZTmBb/vqh7DQaLNIgc9ovWRBmsBNVZ8c0X5Y4imBudLzrO5NZIMQ=="
+                BebasShared.encodedPublicKeyTransaction = "ew0GizSIHPaL1kQZrATVWfHNF+WOIpgbnS86zuTWSDE="
+                BebasShared.saltPassword = "ew0GizSIHPaL1kQZrATVWfHNF+WOIpgb"
+                BebasShared.saltPin = "48666158643620530283315810"
             }
 
             "staging" -> {

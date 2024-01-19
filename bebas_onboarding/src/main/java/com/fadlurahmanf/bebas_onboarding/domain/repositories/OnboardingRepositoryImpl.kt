@@ -76,6 +76,7 @@ class OnboardingRepositoryImpl @Inject constructor(
                 )
 
                 val deviceId = deviceRepository.deviceID(context)
+                BebasShared.setDeviceId(deviceId)
 
                 val entity = BebasEntity(
                     deviceId = deviceId,
