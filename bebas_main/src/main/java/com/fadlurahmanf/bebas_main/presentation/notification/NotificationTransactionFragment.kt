@@ -3,10 +3,12 @@ package com.fadlurahmanf.bebas_main.presentation.notification
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.paging.PagingData
 import com.fadlurahmanf.bebas_main.data.dto.model.notification.NotificationModel
 import com.fadlurahmanf.bebas_main.databinding.FragmentNotificationTransactionBinding
 import com.fadlurahmanf.bebas_main.presentation.BaseMainFragment
 import com.fadlurahmanf.bebas_main.presentation.notification.adapter.NotificationPagingAdapter
+import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 private const val ARG_PARAM1 = "param1"
@@ -32,10 +34,12 @@ class NotificationTransactionFragment : BaseMainFragment<FragmentNotificationTra
 
     override fun onBebasViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.notificationState.observe(this) {
+            Log.d("BebasLogger", "PAGING DATA SUBMIT -> ")
             adapter.submitData(lifecycle, it)
         }
 
         adapter = NotificationPagingAdapter()
+        adapter.setCallBack(this)
         adapter.addLoadStateListener {
             Log.d("BebasLogger", "LOAD STATE: ${it}")
         }
@@ -60,10 +64,14 @@ class NotificationTransactionFragment : BaseMainFragment<FragmentNotificationTra
             }
     }
 
-    override fun onClicked(notification: NotificationModel) {
-        viewModel.getTransactionDetail(
-            notification.additionalData?.transactionId ?: "-",
-            notification.additionalData?.transactionType ?: "-"
-        )
+    override fun onReadNotification(notification: NotificationModel) {
+        viewModel.updateIsReadNotification(notification.id)
+    }
+
+    override fun onItemNotificationClicked(notification: NotificationModel) {
+//        viewModel.getTransactionDetail(
+//            notification.additionalData?.transactionId ?: "-",
+//            notification.additionalData?.transactionType ?: "-"
+//        )
     }
 }

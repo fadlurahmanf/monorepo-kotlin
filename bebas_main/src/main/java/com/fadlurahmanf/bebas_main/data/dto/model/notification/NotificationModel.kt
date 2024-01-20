@@ -7,6 +7,7 @@ data class NotificationModel(
     val titleMessage: String,
     val bodyMessage: String,
     val time: String,
+    var isRead: Boolean = true,
 
     var additionalData: NotificationResponse.Content? = null
 )

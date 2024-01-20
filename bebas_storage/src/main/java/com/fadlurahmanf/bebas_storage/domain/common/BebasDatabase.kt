@@ -44,7 +44,7 @@ abstract class BebasDatabase : RoomDatabase() {
                         BebasDbMigrations.MANUAL_MIGRATION_14_15,
                         BebasDbMigrations.MANUAL_MIGRATION_15_16,
                     )
-//                    .fallbackToDestructiveMigration()
+                    .fallbackToDestructiveMigration()
                     .allowMainThreadQueries()
                     .build()
                 INSTANCE = instance

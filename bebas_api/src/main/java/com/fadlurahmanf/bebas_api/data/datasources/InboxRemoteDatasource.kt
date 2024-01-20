@@ -10,6 +10,8 @@ import com.fadlurahmanf.bebas_api.domain.network.InboxNetwork
 import com.fadlurahmanf.bebas_shared.extension.formatFetchNotification
 import com.fadlurahmanf.bebas_shared.extension.formatNotification
 import com.fadlurahmanf.bebas_shared.extension.formatToEktpForm
+import com.google.gson.JsonObject
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import java.util.Calendar
 import javax.inject.Inject
@@ -40,4 +42,14 @@ class InboxRemoteDatasource @Inject constructor(
     }
 
     fun getUnreadNotificationCount() = networkService().getUnreadNotificationCount()
+
+    fun updateReadNotification(notificationId: String): Observable<BaseResponse<Boolean>> {
+        val request = JsonObject()
+        request.addProperty("read", true)
+        request.addProperty("channel", "Retail")
+        return networkService().updateReadNotification(
+            notificationId = notificationId,
+            request = request
+        )
+    }
 }

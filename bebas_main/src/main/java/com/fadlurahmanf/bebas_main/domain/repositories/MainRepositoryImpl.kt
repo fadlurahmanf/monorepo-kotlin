@@ -176,6 +176,12 @@ class MainRepositoryImpl @Inject constructor(
         }
     }
 
+    fun updateReadNotification(notificationId: String): Observable<Boolean> {
+        return inboxRemoteDatasource.updateReadNotification(notificationId).map {
+            true
+        }
+    }
+
     fun getDetailTransaction(transactionId: String, transactionType: String): Observable<String> {
         return transactionRemoteDatasource.getTransactionDetail(transactionId, transactionType)
             .map {

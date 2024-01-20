@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_main.presentation.notification.adapter
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,8 @@ class NotificationPagingAdapter :
     private lateinit var context: Context
     private var callBack: CallBack? = null
     private var mapModel: HashMap<Int, NotificationModel> = hashMapOf()
+
+    //    private var mapIdModel: HashMap<String, NotificationModel> = hashMapOf()
     fun setCallBack(callBack: CallBack) {
         this.callBack = callBack
     }
@@ -40,7 +43,7 @@ class NotificationPagingAdapter :
         holder.body.text = notification?.bodyMessage ?: "-"
         holder.date.text = notification?.time ?: "-"
 
-        if (notification?.additionalData?.read == true) {
+        if (notification?.isRead == true) {
             holder.mainLayout.backgroundTintList =
                 ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white))
         } else {
@@ -50,7 +53,12 @@ class NotificationPagingAdapter :
 
         holder.itemView.setOnClickListener {
             if (notification != null) {
-                callBack?.onClicked(notification)
+                if (snapshot()[position]?.isRead == false) {
+                    snapshot()[position]?.isRead = true
+                    notifyItemChanged(position)
+                    callBack?.onReadNotification(notification)
+                }
+                callBack?.onItemNotificationClicked(notification = notification)
             }
         }
     }
@@ -82,6 +90,7 @@ class NotificationPagingAdapter :
     }
 
     interface CallBack {
-        fun onClicked(notification: NotificationModel)
+        fun onItemNotificationClicked(notification: NotificationModel)
+        fun onReadNotification(notification: NotificationModel)
     }
 }
