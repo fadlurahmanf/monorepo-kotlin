@@ -44,6 +44,10 @@ class NotificationViewModel @Inject constructor(
                                ))
     }
 
+    fun updateUnreadTransaction(totalUnread: Int) {
+        _unreadTransaction.value = totalUnread
+    }
+
     private val _notificationState = MutableLiveData<PagingData<NotificationModel>>()
     val notificationState: LiveData<PagingData<NotificationModel>> = _notificationState
 

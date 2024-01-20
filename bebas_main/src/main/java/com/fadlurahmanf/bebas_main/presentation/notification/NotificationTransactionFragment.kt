@@ -8,6 +8,11 @@ import com.fadlurahmanf.bebas_main.data.dto.model.notification.NotificationModel
 import com.fadlurahmanf.bebas_main.databinding.FragmentNotificationTransactionBinding
 import com.fadlurahmanf.bebas_main.presentation.BaseMainFragment
 import com.fadlurahmanf.bebas_main.presentation.notification.adapter.NotificationPagingAdapter
+import com.fadlurahmanf.bebas_shared.RxBus
+import com.fadlurahmanf.bebas_shared.RxEvent
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
@@ -34,7 +39,6 @@ class NotificationTransactionFragment : BaseMainFragment<FragmentNotificationTra
 
     override fun onBebasViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.notificationState.observe(this) {
-            Log.d("BebasLogger", "PAGING DATA SUBMIT -> ")
             adapter.submitData(lifecycle, it)
         }
 
@@ -66,6 +70,7 @@ class NotificationTransactionFragment : BaseMainFragment<FragmentNotificationTra
 
     override fun onReadNotification(notification: NotificationModel) {
         viewModel.updateIsReadNotification(notification.id)
+        RxBus.publish(RxEvent.UpdateReadNotificationTransaction)
     }
 
     override fun onItemNotificationClicked(notification: NotificationModel) {

@@ -13,4 +13,6 @@ class RxEvent {
     )
 
     object ForceLogoutBottomsheet
+
+    object UpdateReadNotificationTransaction
 }
