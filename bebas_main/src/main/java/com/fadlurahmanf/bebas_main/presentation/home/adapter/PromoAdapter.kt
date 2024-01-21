@@ -2,8 +2,6 @@ package com.fadlurahmanf.bebas_main.presentation.home.adapter
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +13,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_main.R
+import com.fadlurahmanf.core_ui.glide.GlideUrlCachedKey
 
 class PromoAdapter : RecyclerView.Adapter<PromoAdapter.ViewHolder>() {
     private lateinit var context: Context
@@ -50,9 +48,9 @@ class PromoAdapter : RecyclerView.Adapter<PromoAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val promo = promos[position]
 
-
         holder.imagePromo.setPadding(150)
-        Glide.with(holder.imagePromo).load(Uri.parse(promo.thumbnail ?: ""))
+        Glide.with(holder.imagePromo)
+            .load(GlideUrlCachedKey(promo.imageOriginal ?: "", "${promo.id}_thumbnail"))
             .placeholder(ContextCompat.getDrawable(context, R.drawable.il_bebas_shimmer))
             .error(ContextCompat.getDrawable(context, R.drawable.il_bebas_shimmer))
             .addListener(object : RequestListener<Drawable> {

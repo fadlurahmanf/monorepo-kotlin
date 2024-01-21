@@ -98,8 +98,12 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
     implementation("com.google.firebase:firebase-analytics-ktx")
 
+    implementation(project(":core_crypto"))
+    implementation(project(":core_logger"))
     implementation(project(":core_mlkit"))
     implementation(project(":core_network"))
+    implementation(project(":core_platform"))
+    implementation(project(":core_ui"))
 
     implementation(project(":bebas_api"))
     implementation(project(":bebas_config"))
