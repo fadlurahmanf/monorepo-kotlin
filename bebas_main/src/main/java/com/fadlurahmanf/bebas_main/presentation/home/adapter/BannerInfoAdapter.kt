@@ -14,19 +14,18 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
+import com.fadlurahmanf.bebas_api.data.dto.home.HomePageBannerInfoResponse
 import com.fadlurahmanf.bebas_main.R
-import com.fadlurahmanf.core_ui.glide.GlideUrlCachedKey
 
-class PromoAdapter : RecyclerView.Adapter<PromoAdapter.ViewHolder>() {
+class BannerInfoAdapter : RecyclerView.Adapter<BannerInfoAdapter.ViewHolder>() {
     private lateinit var context: Context
 
-    private val promos: ArrayList<ItemPromoResponse> = arrayListOf()
+    private val bannerInfos: ArrayList<HomePageBannerInfoResponse> = arrayListOf()
 
-    fun setList(promos: List<ItemPromoResponse>) {
-        this.promos.clear()
-        this.promos.addAll(promos)
-        notifyItemRangeInserted(0, promos.size)
+    fun setList(bannerInfos: List<HomePageBannerInfoResponse>) {
+        this.bannerInfos.clear()
+        this.bannerInfos.addAll(bannerInfos)
+        notifyItemRangeInserted(0, bannerInfos.size)
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -43,14 +42,14 @@ class PromoAdapter : RecyclerView.Adapter<PromoAdapter.ViewHolder>() {
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = promos.size
+    override fun getItemCount(): Int = bannerInfos.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val promo = promos[position]
+        val bannerInfo = bannerInfos[position]
 
         holder.imagePromo.setPadding(150)
         Glide.with(holder.imagePromo)
-            .load(GlideUrlCachedKey(promo.imageOriginal ?: "", "${promo.id}_thumbnail"))
+            .load(bannerInfo.thumbnailImage ?: "")
             .placeholder(ContextCompat.getDrawable(context, R.drawable.il_bebas_shimmer))
             .error(ContextCompat.getDrawable(context, R.drawable.il_bebas_shimmer))
             .addListener(object : RequestListener<Drawable> {

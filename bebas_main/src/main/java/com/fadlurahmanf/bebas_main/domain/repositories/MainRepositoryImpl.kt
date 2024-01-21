@@ -8,6 +8,7 @@ import com.fadlurahmanf.bebas_api.data.datasources.InboxRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
 import com.fadlurahmanf.bebas_api.data.dto.cif.EStatementResponse
+import com.fadlurahmanf.bebas_api.data.dto.home.HomePageBannerInfoResponse
 import com.fadlurahmanf.bebas_api.data.dto.loyalty.CifBebasPoinResponse
 import com.fadlurahmanf.bebas_api.data.dto.notification.NotificationResponse
 import com.fadlurahmanf.bebas_api.data.dto.notification.UnreadNotificationCountResponse
@@ -160,6 +161,15 @@ class MainRepositoryImpl @Inject constructor(
 
     fun getHomePagePromo(): Observable<List<ItemPromoResponse>> {
         return cmsRemoteDatasource.getHomepagePromo().map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+            it.data!!
+        }
+    }
+
+    fun getHomePageBannerInfoPromo(): Observable<List<HomePageBannerInfoResponse>> {
+        return cmsRemoteDatasource.getHomepageBannerInfo().map {
             if (it.data == null) {
                 throw BebasException.generalRC("DATA_MISSING")
             }

@@ -2,6 +2,7 @@ package com.fadlurahmanf.bebas_main.presentation.home.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.fadlurahmanf.bebas_api.data.dto.home.HomePageBannerInfoResponse
 import com.fadlurahmanf.bebas_api.data.dto.loyalty.CifBebasPoinResponse
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
@@ -99,6 +100,28 @@ class HomeFragmentViewModel @Inject constructor(
                                    },
                                    {
                                        _promosState.value =
+                                           NetworkState.FAILED(BebasException.fromThrowable(it))
+                                   },
+                                   {}
+                               ))
+    }
+
+    private val _bannerInfoState = MutableLiveData<NetworkState<List<HomePageBannerInfoResponse>>>()
+    val bannerInfoState: LiveData<NetworkState<List<HomePageBannerInfoResponse>>> = _bannerInfoState
+
+    fun getHomePageBannerInfo() {
+        _bannerInfoState.value = NetworkState.LOADING
+        baseDisposable.add(mainRepositoryImpl.getHomePageBannerInfoPromo()
+                               .subscribeOn(Schedulers.io())
+                               .observeOn(AndroidSchedulers.mainThread())
+                               .subscribe(
+                                   {
+                                       _bannerInfoState.value = NetworkState.SUCCESS(
+                                           it
+                                       )
+                                   },
+                                   {
+                                       _bannerInfoState.value =
                                            NetworkState.FAILED(BebasException.fromThrowable(it))
                                    },
                                    {}

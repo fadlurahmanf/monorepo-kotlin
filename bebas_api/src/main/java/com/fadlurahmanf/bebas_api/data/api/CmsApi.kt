@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_api.data.api
 
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
+import com.fadlurahmanf.bebas_api.data.dto.home.HomePageBannerInfoResponse
 import com.fadlurahmanf.bebas_api.data.dto.home.ProductTransactionMenuResponse
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryPulsaDataRequest
@@ -25,4 +26,7 @@ interface CmsApi {
     fun inquiryPulsaData(
         @Body request: InquiryPulsaDataRequest
     ): Observable<BaseResponse<InquiryPulsaDataResponse>>
+
+    @GET("homepage/banner/info")
+    fun getBannerInfo(): Observable<BaseResponse<List<HomePageBannerInfoResponse>>>
 }

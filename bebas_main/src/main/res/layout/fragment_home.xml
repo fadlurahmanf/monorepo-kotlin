@@ -108,6 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
+                    android:visibility="visible"
                     android:orientation="vertical"
                     android:paddingHorizontal="20dp">
 
@@ -145,13 +146,86 @@
                         android:fontFamily="@font/lexend_deca_regular"
                         android:text="Beragam promo yang bikin harimu makin asik " />
 
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/shimmer_promo"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/background_white_radius"
+                        android:visibility="visible"
+                        app:shimmer_base_color="@color/grey"
+                        app:shimmer_colored="true" />
+
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/vp_promo"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:layout_marginTop="15dp"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="20dp" />
+                        android:paddingHorizontal="20dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_banner_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/Font.Text14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lexend_deca_bold"
+                            android:text="Info Menarik" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            style="@style/Font.Text14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lexend_deca_regular"
+                            android:text="Lihat Semua"
+                            android:textColor="@color/red" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/Font.Text14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:fontFamily="@font/lexend_deca_regular"
+                        android:text="Beragam info dari bank MAS" />
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/shimmer_banner_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/background_white_radius"
+                        android:visibility="visible"
+                        app:shimmer_base_color="@color/grey"
+                        app:shimmer_colored="true" />
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/vp_banner_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="20dp"
+                        android:visibility="gone" />
                 </LinearLayout>
 
             </LinearLayout>

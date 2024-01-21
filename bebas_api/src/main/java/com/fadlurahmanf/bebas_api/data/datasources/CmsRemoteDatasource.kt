@@ -17,6 +17,8 @@ class CmsRemoteDatasource @Inject constructor(
     fun getBankList() = networkService().getBankList()
     fun getHomepagePromo() = networkService().getHomePagePromo()
 
+    fun getHomepageBannerInfo() = networkService().getBannerInfo()
+
     fun inquiryPulsaData(request: InquiryPulsaDataRequest) =
         networkService().inquiryPulsaData(request)
 }

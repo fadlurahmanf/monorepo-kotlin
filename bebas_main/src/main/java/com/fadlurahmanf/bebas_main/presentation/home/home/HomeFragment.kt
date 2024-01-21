@@ -12,6 +12,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.fadlurahmanf.bebas_api.data.dto.home.HomePageBannerInfoResponse
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_main.R
@@ -21,6 +22,7 @@ import com.fadlurahmanf.bebas_main.data.dto.model.home.ProductTransactionMenuMod
 import com.fadlurahmanf.bebas_main.databinding.FragmentHomeBinding
 import com.fadlurahmanf.bebas_main.presentation.BaseMainFragment
 import com.fadlurahmanf.bebas_main.presentation.home.adapter.BankAccountAdapter
+import com.fadlurahmanf.bebas_main.presentation.home.adapter.BannerInfoAdapter
 import com.fadlurahmanf.bebas_main.presentation.home.adapter.ProductTransactionMenuAdapter
 import com.fadlurahmanf.bebas_main.presentation.home.adapter.PromoAdapter
 import com.fadlurahmanf.bebas_main.presentation.notification.NotificationActivity
@@ -42,6 +44,9 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
 
     lateinit var promoAdapter: PromoAdapter
     private var promos: ArrayList<ItemPromoResponse> = arrayListOf()
+
+    lateinit var bannerInfoAdapter: BannerInfoAdapter
+    private var bannerInfos: ArrayList<HomePageBannerInfoResponse> = arrayListOf()
 
     lateinit var bankAccountAdapter: BankAccountAdapter
     private var bankAccounts: ArrayList<HomeBankAccountModel> = arrayListOf()
@@ -68,15 +73,16 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
                     promos.addAll(it.data)
                     promoAdapter.setList(promos)
 
-                    binding.llPromo.visibility = View.VISIBLE
+                    binding.shimmerPromo.visibility = View.GONE
+                    binding.vpPromo.visibility =  View.VISIBLE
                 }
 
                 is NetworkState.FAILED -> {
-                    binding.llPromo.visibility = View.GONE
+                    binding.shimmerPromo.visibility = View.VISIBLE
                 }
 
                 is NetworkState.LOADING -> {
-                    binding.llPromo.visibility = View.GONE
+                    binding.shimmerPromo.visibility = View.VISIBLE
                 }
 
                 else -> {
@@ -158,6 +164,30 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
                 }
             }
         }
+
+        viewModel.bannerInfoState.observe(this) {
+            when (it) {
+                is NetworkState.FAILED -> {
+                    binding.shimmerBannerInfo.visibility = View.VISIBLE
+                }
+
+                is NetworkState.LOADING -> {
+                    binding.shimmerBannerInfo.visibility = View.GONE
+                }
+
+                is NetworkState.SUCCESS -> {
+                    bannerInfos.clear()
+                    bannerInfos.addAll(it.data)
+                    bannerInfoAdapter.setList(bannerInfos)
+
+                    binding.shimmerBannerInfo.visibility = View.GONE
+                    binding.vpBannerInfo.visibility =  View.VISIBLE
+                }
+
+                else -> {
+                }
+            }
+        }
     }
 
     override fun onBebasViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -204,9 +234,17 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
         binding.vpPromo.clipChildren = false
         binding.vpPromo.offscreenPageLimit = 3
 
+        bannerInfoAdapter = BannerInfoAdapter()
+        bannerInfoAdapter.setList(bannerInfos)
+        binding.vpBannerInfo.adapter = bannerInfoAdapter
+        binding.vpBannerInfo.clipToPadding = false
+        binding.vpBannerInfo.clipChildren = false
+        binding.vpBannerInfo.offscreenPageLimit = 3
+
         viewModel.getMenus()
         viewModel.getBankAccounts()
         viewModel.getPromos()
+        viewModel.getHomePageBannerInfo()
         viewModel.getBebasPoin()
     }
 
