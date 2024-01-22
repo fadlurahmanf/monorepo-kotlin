@@ -3,6 +3,10 @@
 
     <application>
         <activity
+            android:name=".presentation.program.ProgramListActivity"
+            android:exported="false"
+            android:theme="@style/BaseBebas" />
+        <activity
             android:name=".presentation.history.HistoryLoyaltyActivity"
             android:exported="false"
             android:theme="@style/BaseBebas" />

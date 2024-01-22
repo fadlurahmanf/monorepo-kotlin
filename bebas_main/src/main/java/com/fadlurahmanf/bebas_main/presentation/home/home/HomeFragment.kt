@@ -74,7 +74,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
                     promoAdapter.setList(promos)
 
                     binding.shimmerPromo.visibility = View.GONE
-                    binding.vpPromo.visibility =  View.VISIBLE
+                    binding.vpPromo.visibility = View.VISIBLE
                 }
 
                 is NetworkState.FAILED -> {
@@ -181,7 +181,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
                     bannerInfoAdapter.setList(bannerInfos)
 
                     binding.shimmerBannerInfo.visibility = View.GONE
-                    binding.vpBannerInfo.visibility =  View.VISIBLE
+                    binding.vpBannerInfo.visibility = View.VISIBLE
                 }
 
                 else -> {
@@ -195,6 +195,14 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding>(FragmentHomeBinding::
             val intent = Intent(
                 requireContext(),
                 NotificationActivity::class.java
+            )
+            startActivity(intent)
+        }
+
+        binding.tvAllProgram.setOnClickListener {
+            val intent = Intent(
+                requireContext(),
+                Class.forName("com.fadlurahmanf.bebas_loyalty.presentation.program.ProgramListActivity")
             )
             startActivity(intent)
         }

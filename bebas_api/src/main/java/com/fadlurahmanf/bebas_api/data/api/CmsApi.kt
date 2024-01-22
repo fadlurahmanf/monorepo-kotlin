@@ -3,6 +3,7 @@ package com.fadlurahmanf.bebas_api.data.api
 import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.home.HomePageBannerInfoResponse
 import com.fadlurahmanf.bebas_api.data.dto.home.ProductTransactionMenuResponse
+import com.fadlurahmanf.bebas_api.data.dto.loyalty.ProgramCategoryResponse
 import com.fadlurahmanf.bebas_api.data.dto.promo.ItemPromoResponse
 import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryPulsaDataRequest
 import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryPulsaDataResponse
@@ -29,4 +30,7 @@ interface CmsApi {
 
     @GET("homepage/banner/info")
     fun getBannerInfo(): Observable<BaseResponse<List<HomePageBannerInfoResponse>>>
+
+    @GET("banner/promo/category")
+    fun getProgramCategory(): Observable<BaseResponse<List<ProgramCategoryResponse>>>
 }
