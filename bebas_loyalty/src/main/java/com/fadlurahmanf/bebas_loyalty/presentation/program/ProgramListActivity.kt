@@ -1,6 +1,7 @@
 package com.fadlurahmanf.bebas_loyalty.presentation.program
 
 import android.os.Bundle
+import android.view.View
 import com.fadlurahmanf.bebas_api.network_state.NetworkState
 import com.fadlurahmanf.bebas_loyalty.data.dto.ProgramCategoryModel
 import com.fadlurahmanf.bebas_loyalty.databinding.ActivityProgramListBinding
@@ -31,11 +32,13 @@ class ProgramListActivity :
         viewModel.programCategoryState.observe(this) {
             when (it) {
                 is NetworkState.FAILED -> {
-
+                    binding.llProgramListShimmer.visibility = View.VISIBLE
+                    binding.rvProgramCategory.visibility = View.GONE
                 }
 
                 is NetworkState.LOADING -> {
-
+                    binding.llProgramListShimmer.visibility = View.VISIBLE
+                    binding.rvProgramCategory.visibility = View.GONE
                 }
 
                 is NetworkState.SUCCESS -> {
@@ -46,6 +49,9 @@ class ProgramListActivity :
                         val firstCategory = programCategories.first()
                         adapter.selectCategory(firstCategory.id)
                     }
+
+                    binding.llProgramListShimmer.visibility = View.GONE
+                    binding.rvProgramCategory.visibility = View.VISIBLE
                 }
 
                 else -> {
