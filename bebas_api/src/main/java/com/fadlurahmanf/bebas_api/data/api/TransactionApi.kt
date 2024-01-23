@@ -16,6 +16,8 @@ import com.fadlurahmanf.bebas_api.data.dto.transaction.posting.PostingFundTransf
 import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryBankMasRequest
 import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryBankResponse
 import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryOtherBankRequest
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryTvCableRequest
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryTvCableResponse
 import com.google.gson.JsonObject
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -96,4 +98,9 @@ interface TransactionApi {
 
     @GET("pln/prepaid-denom")
     fun getDenomPrePaidPLN(): Observable<BaseResponse<List<PLNDenomResponse>>>
+
+    @POST("tv/inquiry")
+    fun inquiryTvCable(
+        @Body body: InquiryTvCableRequest
+    ): Observable<BaseResponse<InquiryTvCableResponse>>
 }

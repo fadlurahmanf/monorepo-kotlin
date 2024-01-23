@@ -12,6 +12,7 @@ data class LatestTransactionModel(
     val additionalTransferData: LatestTransactionResponse? = null,
     val additionalPLNPrePaid: LatestTransactionResponse? = null,
     val additionalPLNPostPaid: LatestTransactionPostPaidResponse? = null,
+    val additionalTvCable: LatestTransactionPostPaidResponse? = null,
     val additionalTelkomIndihome: LatestTransactionPostPaidResponse? = null,
     val additionalPulsaPrePaid: LatestTransactionPulsaPrePaidResponse? = null,
 )

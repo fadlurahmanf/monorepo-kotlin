@@ -5,6 +5,7 @@ import com.fadlurahmanf.bebas_api.data.api.TransactionApi
 import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryTelkomIndihomeRequest
 import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryBankMasRequest
 import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryOtherBankRequest
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryTvCableRequest
 import com.fadlurahmanf.bebas_api.domain.network.TransactionNetwork
 import com.google.gson.JsonObject
 import javax.inject.Inject
@@ -59,4 +60,7 @@ class TransactionRemoteDatasource @Inject constructor(
 
     fun getDenomPlnPrePaid() =
         networkService().getDenomPrePaidPLN()
+
+    fun inquiryTvCable(request: InquiryTvCableRequest) =
+        networkService().inquiryTvCable(request)
 }

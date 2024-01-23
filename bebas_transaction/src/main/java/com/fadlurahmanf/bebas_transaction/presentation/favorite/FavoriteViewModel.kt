@@ -54,6 +54,10 @@ class FavoriteViewModel @Inject constructor(
             FavoriteFlow.TRANSACTION_MENU_TOPUP_EWALLET -> {
                 favoriteRepositoryImpl.getLatestTransactionPLNPostPaid()
             }
+
+            FavoriteFlow.TRANSACTION_MENU_TV_CABLE -> {
+                favoriteRepositoryImpl.getLatestTransactionTVCable()
+            }
         }
 
         baseDisposable.add(observable
@@ -98,6 +102,10 @@ class FavoriteViewModel @Inject constructor(
             }
 
             FavoriteFlow.TRANSACTION_MENU_TOPUP_EWALLET -> {
+                favoriteRepositoryImpl.getFavoriteTopUpEWallet()
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_TV_CABLE -> {
                 favoriteRepositoryImpl.getFavoriteTopUpEWallet()
             }
         }
@@ -177,6 +185,13 @@ class FavoriteViewModel @Inject constructor(
                     customerId = inquiryRequestModel.customerId,
                     providerName = inquiryRequestModel.providerName,
                     billingCategory = inquiryRequestModel.billingCategory,
+                )
+            }
+
+            is InquiryRequestModel.InquiryTvCable -> {
+                transactionRepositoryImpl.inquiryTvCableReturnModel(
+                    customerId = inquiryRequestModel.customerId,
+                    providerName = inquiryRequestModel.providerName
                 )
             }
         }

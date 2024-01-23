@@ -13,5 +13,6 @@
     <string name="telkom_or_indihome">Telkom/Indihome</string>
     <string name="learn_now">Pelajari Sekarang</string>
     <string name="electricity_bill">Tagihan Listrik</string>
+    <string name="tv_cable">TV Kabel</string>
     <string name="ewallet">E-Wallet</string>
 </resources>

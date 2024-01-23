@@ -117,6 +117,13 @@ class FavoriteListActivity :
                 binding.tvBtnNewReceiver.text = "Nomor Ponsel Baru"
                 binding.ivButtonNewReceiver.setImageResource(R.drawable.round_phonelink_ring_24)
             }
+
+            FavoriteFlow.TRANSACTION_MENU_TV_CABLE -> {
+                latestAdapter = LatestAdapter(LatestAdapterFlow.TOPUP_EWALLET)
+                binding.toolbar.title = "Nomor Pelanggan Favorit"
+                binding.tvBtnNewReceiver.text = "Nomor Pelanggan Baru"
+                binding.ivButtonNewReceiver.setImageResource(R.drawable.round_person_add_24)
+            }
         }
 
         latestAdapter.setCallback(this)
@@ -398,6 +405,10 @@ class FavoriteListActivity :
                 val intent = Intent(this, SelectEWalletActivity::class.java)
                 startActivity(intent)
             }
+
+            FavoriteFlow.TRANSACTION_MENU_TV_CABLE -> {
+
+            }
         }
     }
 
@@ -572,6 +583,11 @@ class FavoriteListActivity :
             FavoriteFlow.TRANSACTION_MENU_TOPUP_EWALLET -> {
 
             }
+
+            FavoriteFlow.TRANSACTION_MENU_TV_CABLE -> {
+                val intent = Intent(this, PaymentDetailActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
@@ -689,6 +705,10 @@ class FavoriteListActivity :
             FavoriteFlow.TRANSACTION_MENU_TOPUP_EWALLET -> {
 
             }
+
+            FavoriteFlow.TRANSACTION_MENU_TV_CABLE -> {
+
+            }
         }
     }
 
@@ -758,13 +778,24 @@ class FavoriteListActivity :
                         providerName = latest.additionalPLNPostPaid?.providerName ?: "-",
                         billingCategory = latest.additionalPLNPostPaid?.billingCategory ?: "-"
                     ),
-                    isFromFavorite = true,
+                    isFromLatest = true,
                     latestModel = latest,
                 )
             }
 
             FavoriteFlow.TRANSACTION_MENU_TOPUP_EWALLET -> {
 
+            }
+
+            FavoriteFlow.TRANSACTION_MENU_TV_CABLE -> {
+                viewModel.inquiry(
+                    InquiryRequestModel.InquiryTvCable(
+                        customerId = latest.accountNumber,
+                        providerName = latest.additionalTvCable?.providerName ?: "-",
+                    ),
+                    isFromLatest = true,
+                    latestModel = latest,
+                )
             }
         }
     }

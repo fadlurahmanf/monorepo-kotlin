@@ -8,6 +8,7 @@ import com.fadlurahmanf.bebas_api.data.datasources.OrderRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.PaymentRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.datasources.TransactionRemoteDatasource
 import com.fadlurahmanf.bebas_api.data.dto.bank_account.BankAccountResponse
+import com.fadlurahmanf.bebas_api.data.dto.general.BaseResponse
 import com.fadlurahmanf.bebas_api.data.dto.transaction.OrderPaymentSchemaRequest
 import com.fadlurahmanf.bebas_api.data.dto.transaction.OrderPaymentSchemaResponse
 import com.fadlurahmanf.bebas_api.data.dto.transaction.PaymentSourceConfigRequest
@@ -33,6 +34,8 @@ import com.fadlurahmanf.bebas_api.data.dto.transaction.checkout.CheckoutGenerate
 import com.fadlurahmanf.bebas_api.data.dto.transaction.checkout.CheckoutTransactionDataRequest
 import com.fadlurahmanf.bebas_api.data.dto.transaction.checkout.CheckoutTransactionPostingRequest
 import com.fadlurahmanf.bebas_api.data.dto.others.ItemBankResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryTvCableRequest
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryTvCableResponse
 import com.fadlurahmanf.bebas_api.data.dto.transaction.posting.PostingRequest
 import com.fadlurahmanf.bebas_shared.data.exception.BebasException
 import com.fadlurahmanf.bebas_shared.data.exception.OrderException
@@ -383,6 +386,40 @@ class TransactionRepositoryImpl @Inject constructor(
         }
     }
 
+    fun inquiryTvCable(
+        customerId: String,
+        providerName: String,
+    ): Observable<InquiryTvCableResponse> {
+        return getMainBankAccount().flatMap {
+            val request = InquiryTvCableRequest(
+                fromAccount = it.accountNumber ?: "-",
+                accountId = customerId,
+                providerName = providerName
+            )
+            transactionRemoteDatasource.inquiryTvCable(request).map { resp ->
+                if (resp.data == null) {
+                    throw BebasException.generalRC("IQ_00")
+                }
+                resp.data!!
+            }
+        }
+    }
+
+    fun inquiryTvCableReturnModel(
+        customerId: String,
+        providerName: String,
+    ): Observable<InquiryResultModel> {
+        return inquiryTvCable(
+            customerId = customerId,
+            providerName = providerName
+        ).map { resp ->
+            InquiryResultModel(
+                inquiryTvCable = resp
+            )
+        }
+    }
+
+
     private fun inquiryPLNPostPaidCheckoutFlow(
         customerId: String,
         providerName: String,
@@ -538,7 +575,8 @@ class TransactionRepositoryImpl @Inject constructor(
             var mainPaymentSource: PaymentSourceConfigResponse.Source? = null
             var loyaltyPaymentSource: PaymentSourceConfigResponse.Source? = null
 
-            val paymentSourcesGroupAvailable: ArrayList<PaymentSourceConfigResponse> = arrayListOf()
+            val paymentSourcesGroupAvailable: ArrayList<PaymentSourceConfigResponse> =
+                arrayListOf()
             val paymentSourcesAvailable: ArrayList<PaymentSourceConfigResponse.Source> =
                 arrayListOf()
 
@@ -653,7 +691,10 @@ class TransactionRepositoryImpl @Inject constructor(
             customerNumber = customerId,
             paymentSourceSchema = schemas
         )
-        return orderRemoteDatasource.reorderTransactionSchema(orderId = orderId, request = request)
+        return orderRemoteDatasource.reorderTransactionSchema(
+            orderId = orderId,
+            request = request
+        )
             .map {
                 if (it.data == null) {
                     throw BebasException.generalRC("OTS_00")

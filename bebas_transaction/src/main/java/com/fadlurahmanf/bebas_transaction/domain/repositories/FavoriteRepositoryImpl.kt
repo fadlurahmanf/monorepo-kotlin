@@ -67,6 +67,24 @@ class FavoriteRepositoryImpl @Inject constructor(
         }
     }
 
+    fun getLatestTransactionTVCable(): Observable<List<LatestTransactionModel>> {
+        return cifRemoteDatasource.getLatestTransactionTVCable().map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+
+            val latest = it.data!!
+            latest.map { latestResp ->
+                LatestTransactionModel(
+                    label = latestResp.customerName ?: "-",
+                    subLabel = latestResp.billPaymentNumber ?: "-",
+                    accountNumber = latestResp.billPaymentNumber ?: "-",
+                    additionalTvCable = latestResp
+                )
+            }.toList()
+        }
+    }
+
     fun getLatestTransactionPulsaPrePaid(): Observable<List<LatestTransactionModel>> {
         return cifRemoteDatasource.getLatestTransactionPulsaPrePaid().map {
             if (it.data == null) {

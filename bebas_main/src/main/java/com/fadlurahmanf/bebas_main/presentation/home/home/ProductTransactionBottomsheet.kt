@@ -117,6 +117,14 @@ class ProductTransactionBottomsheet :
                 } ?: othersMenu
             ),
             SubProductTransactionMenuModel(
+                subProductMenuId = "TV_CABLE",
+                subProductMenuLabel = R.string.tv_cable,
+                subProductImageMenu = R.drawable.ic_subproduct_tvkabel,
+                productTransactionMenu = productTransactionMenu.firstOrNull {
+                    it.productMenuId == "PAYMENT"
+                } ?: othersMenu
+            ),
+            SubProductTransactionMenuModel(
                 subProductMenuId = "TOPUP_EWALLET",
                 subProductMenuLabel = R.string.ewallet,
                 subProductImageMenu = R.drawable.ic_subproduct_topupewallet,
@@ -256,6 +264,18 @@ class ProductTransactionBottomsheet :
                 intent.putExtra(
                     FavoriteArgumentConstant.FAVORITE_FLOW,
                     FavoriteFlow.TRANSACTION_MENU_TOPUP_EWALLET.name
+                )
+                startActivity(intent)
+            }
+
+            "TV_CABLE" -> {
+                val intent = Intent(
+                    requireContext(),
+                    Class.forName("com.fadlurahmanf.bebas_transaction.presentation.favorite.FavoriteListActivity")
+                )
+                intent.putExtra(
+                    FavoriteArgumentConstant.FAVORITE_FLOW,
+                    FavoriteFlow.TRANSACTION_MENU_TV_CABLE.name
                 )
                 startActivity(intent)
             }
