@@ -5,4 +5,5 @@ enum class PaymentDetailFlow {
     TELKOM_INDIHOME,
     PLN_PREPAID_CHECKOUT,
     PLN_POSTPAID_CHECKOUT,
+    TV_CABLE,
 }

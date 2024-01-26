@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryCheckoutFlowResponse
 import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryPulsaDataResponse
 import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryTelkomIndihomeResponse
+import com.fadlurahmanf.bebas_api.data.dto.transaction.inquiry.InquiryTvCableResponse
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -15,6 +16,7 @@ data class PaymentDetailArgument(
     var additionalPulsaData: AdditionalPulsaDataArgument? = null,
     var additionalTelkomIndihome: AdditionalTelkomIndihome? = null,
     var additionalPLNPrePaidCheckout: AdditionalPLNPrePaidCheckout? = null,
+    var additionalTvCable: AdditionalTvCable? = null,
     var additionalPLNPostPaidCheckout: AdditionalPLNPostPaidCheckout? = null,
 ) : Parcelable {
     @Parcelize
@@ -42,5 +44,11 @@ data class PaymentDetailArgument(
     data class AdditionalPLNPostPaidCheckout(
         var clientName: String,
         var inquiry: InquiryCheckoutFlowResponse,
+    ) : Parcelable
+
+    @Parcelize
+    data class AdditionalTvCable(
+        var periode: String,
+        var inquiry: InquiryTvCableResponse,
     ) : Parcelable
 }

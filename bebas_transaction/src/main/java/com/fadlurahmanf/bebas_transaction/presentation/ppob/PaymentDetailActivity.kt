@@ -264,6 +264,10 @@ class PaymentDetailActivity :
             PaymentDetailFlow.PLN_PREPAID_CHECKOUT -> {
 
             }
+
+            PaymentDetailFlow.TV_CABLE -> {
+
+            }
         }
 
         transactionConfirmationBottomsheet?.arguments = bundle
@@ -367,6 +371,10 @@ class PaymentDetailActivity :
             PaymentDetailFlow.PLN_PREPAID_CHECKOUT -> {
 
             }
+
+            PaymentDetailFlow.TV_CABLE -> {
+
+            }
         }
     }
 
@@ -386,6 +394,10 @@ class PaymentDetailActivity :
 
             PaymentDetailFlow.PLN_PREPAID_CHECKOUT -> {
                 binding.toolbar.title = "Pembelian Token Listrik"
+            }
+
+            PaymentDetailFlow.TV_CABLE -> {
+
             }
         }
     }
@@ -436,6 +448,10 @@ class PaymentDetailActivity :
                 Glide.with(binding.layoutIdentityPpob.ivPpobLogo)
                     .load(R.drawable.il_logo_pln)
                     .into(binding.layoutIdentityPpob.ivPpobLogo)
+            }
+
+            PaymentDetailFlow.TV_CABLE -> {
+
             }
         }
     }
@@ -553,6 +569,10 @@ class PaymentDetailActivity :
                         )
                     )
                 }
+            }
+
+            PaymentDetailFlow.TV_CABLE -> {
+
             }
         }
         startActivity(intent)

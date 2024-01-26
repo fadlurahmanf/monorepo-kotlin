@@ -62,5 +62,7 @@ class CifRemoteDatasource @Inject constructor(
         type = "Telepon/Internet"
     )
 
+    fun getLatestTransactionEWallet() = networkService().getLatestEWalletTransaction()
+
     fun getCifBebasPoin() = networkService().getCifBebasPoin()
 }

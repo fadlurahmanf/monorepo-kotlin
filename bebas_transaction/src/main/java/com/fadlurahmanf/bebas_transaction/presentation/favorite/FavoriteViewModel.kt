@@ -52,7 +52,7 @@ class FavoriteViewModel @Inject constructor(
             }
 
             FavoriteFlow.TRANSACTION_MENU_TOPUP_EWALLET -> {
-                favoriteRepositoryImpl.getLatestTransactionPLNPostPaid()
+                favoriteRepositoryImpl.getLatestTransactionEWallet()
             }
 
             FavoriteFlow.TRANSACTION_MENU_TV_CABLE -> {

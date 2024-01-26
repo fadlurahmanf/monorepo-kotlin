@@ -5,6 +5,7 @@ import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoritePLNResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoritePulsaPrePaidResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoriteTelkomIndihomeResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoriteTransferResponse
+import com.fadlurahmanf.bebas_api.data.dto.favorite.LatestTransactionEWalletResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.LatestTransactionResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.LatestTransactionPostPaidResponse
 import com.fadlurahmanf.bebas_api.data.dto.favorite.LatestTransactionPulsaPrePaidResponse
@@ -25,12 +26,12 @@ interface CifApi {
 
     @POST("statement/period")
     fun getEStatements(
-        @Body request:JsonObject
+        @Body request: JsonObject
     ): Observable<BaseResponse<EStatementResponse>>
 
     @POST("statement/download")
     fun downloadEStatement(
-        @Body request:JsonObject
+        @Body request: JsonObject
     ): Call<ResponseBody>
 
     @GET("favorite")
@@ -75,6 +76,9 @@ interface CifApi {
     fun getLatestPostPaidTransaction(
         @Query("type") type: String
     ): Observable<BaseResponse<List<LatestTransactionPostPaidResponse>>>
+
+    @GET("transaction-history/topup-ewallet/last-three-transactions")
+    fun getLatestEWalletTransaction(): Observable<BaseResponse<List<LatestTransactionEWalletResponse>>>
 
     @GET("customer-info/points")
     fun getCifBebasPoin(): Observable<BaseResponse<CifBebasPoinResponse>>

@@ -121,6 +121,24 @@ class FavoriteRepositoryImpl @Inject constructor(
         }
     }
 
+    fun getLatestTransactionEWallet(): Observable<List<LatestTransactionModel>> {
+        return cifRemoteDatasource.getLatestTransactionEWallet().map {
+            if (it.data == null) {
+                throw BebasException.generalRC("DATA_MISSING")
+            }
+
+            val latest = it.data!!
+            latest.map { latestResp ->
+                LatestTransactionModel(
+                    label = latestResp.providerName?.uppercase() ?: "-",
+                    subLabel = latestResp.ewalletAccountNumber ?: "-",
+                    accountNumber = latestResp.ewalletAccountNumber ?: "-",
+                    additionalEWallet = latestResp
+                )
+            }.toList()
+        }
+    }
+
     fun getFavoriteTransfer(): Observable<List<FavoriteContactModel>> {
         return cifRemoteDatasource.getFavoriteTransfer().map {
             if (it.data == null) {

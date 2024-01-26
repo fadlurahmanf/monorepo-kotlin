@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fadlurahmanf.bebas_transaction.R
@@ -75,6 +76,33 @@ class LatestAdapter(private val flow: LatestAdapterFlow) :
 
                 holder.latestLogo.visibility = View.VISIBLE
                 holder.initialAvatar.visibility = View.GONE
+            }
+
+            LatestAdapterFlow.TOPUP_EWALLET -> {
+                if (latest.additionalEWallet?.providerName?.equals(
+                        "GOPAY",
+                        ignoreCase = true
+                    ) == true
+                ) {
+                    Glide.with(holder.latestLogo)
+                        .load(ContextCompat.getDrawable(context, R.drawable.il_logo_gopay))
+                        .into(holder.latestLogo)
+                    holder.latestLogo.visibility = View.VISIBLE
+                    holder.initialAvatar.visibility = View.GONE
+                } else if (latest.additionalEWallet?.providerName?.equals(
+                        "OVO",
+                        ignoreCase = true
+                    ) == true
+                ) {
+                    Glide.with(holder.latestLogo)
+                        .load(ContextCompat.getDrawable(context, R.drawable.il_logo_ovo))
+                        .into(holder.latestLogo)
+                    holder.latestLogo.visibility = View.VISIBLE
+                    holder.initialAvatar.visibility = View.GONE
+                } else {
+                    holder.latestLogo.visibility = View.GONE
+                    holder.initialAvatar.visibility = View.VISIBLE
+                }
             }
 
             else -> {

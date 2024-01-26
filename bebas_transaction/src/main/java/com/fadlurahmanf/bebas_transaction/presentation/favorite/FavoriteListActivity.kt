@@ -568,7 +568,7 @@ class FavoriteListActivity :
                             isFavoriteEnabled = true,
                             labelIdentity = inquiryResult.inquiryPLNPostPaidCheckout?.clientName
                                 ?: "-",
-                            subLabelIdentity = "PLN • ${inquiryResult.inquiryPLNPostPaidCheckout?.clientNumber ?: "-"}",
+                            subLabelIdentity = "${latestModel?.additionalTvCable?.providerName ?: "-"} • ${inquiryResult.inquiryPLNPostPaidCheckout?.clientNumber ?: "-"}",
                             additionalPLNPostPaidCheckout = PaymentDetailArgument.AdditionalPLNPostPaidCheckout(
                                 clientName = inquiryResult.inquiryPLNPostPaidCheckout?.clientName
                                     ?: "-",
@@ -586,6 +586,26 @@ class FavoriteListActivity :
 
             FavoriteFlow.TRANSACTION_MENU_TV_CABLE -> {
                 val intent = Intent(this, PaymentDetailActivity::class.java)
+                intent.apply {
+                    putExtra(
+                        PaymentDetailActivity.FLOW,
+                        PaymentDetailFlow.TV_CABLE.name
+                    )
+                    putExtra(
+                        PaymentDetailActivity.ARGUMENT, PaymentDetailArgument(
+                            isFavorite = fromFavorite,
+                            isFavoriteEnabled = true,
+                            labelIdentity = inquiryResult.inquiryTvCable?.customerName
+                                ?: "-",
+                            subLabelIdentity = "${latestModel?.additionalTvCable?.providerName ?: "-"} • ${inquiryResult.inquiryTvCable?.customerNumber ?: "-"}",
+                            additionalTvCable = PaymentDetailArgument.AdditionalTvCable(
+                                periode = inquiryResult.inquiryTvCable?.periode
+                                    ?: "-",
+                                inquiry = inquiryResult.inquiryTvCable!!
+                            )
+                        )
+                    )
+                }
                 startActivity(intent)
             }
         }
