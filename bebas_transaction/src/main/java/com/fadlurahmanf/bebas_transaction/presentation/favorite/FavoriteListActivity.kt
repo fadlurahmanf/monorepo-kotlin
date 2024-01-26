@@ -491,7 +491,7 @@ class FavoriteListActivity :
                             isFavorite = fromFavorite,
                             accountName = favoriteModel?.additionalTransferData?.aliasName
                                 ?: latestModel?.additionalTransferData?.accountName ?: "-",
-                            accountNumber = favoriteModel?.accountNumber
+                            accountNumber = favoriteModel?.identifierNumber
                                 ?: latestModel?.accountNumber
                                 ?: "-",
                             realAccountName = inquiryResult.additionalTransfer?.inquiryBank?.destinationAccountName
@@ -658,7 +658,7 @@ class FavoriteListActivity :
                 if (favorite.additionalTransferData?.sknId == "5480300" || favorite.additionalTransferData?.rtgsId == "BMSEIDJA") {
                     viewModel.inquiry(
                         InquiryRequestModel.InquiryBankMas(
-                            destinationAccountNumber = favorite.accountNumber
+                            destinationAccountNumber = favorite.identifierNumber
                         ),
                         isFromFavorite = true,
                         favoriteModel = favorite,
@@ -680,9 +680,9 @@ class FavoriteListActivity :
                             isFavorite = false,
                             isFavoriteEnabled = false,
                             labelIdentity = "PLN",
-                            subLabelIdentity = favorite.accountNumber,
+                            subLabelIdentity = favorite.identifierNumber,
                             additionalPLNPrePaidCheckout = PaymentDetailArgument.AdditionalPLNPrePaidCheckout(
-                                clientNumber = favorite.accountNumber
+                                clientNumber = favorite.identifierNumber
                             )
                         )
                     )
@@ -693,7 +693,7 @@ class FavoriteListActivity :
             FavoriteFlow.TRANSACTION_MENU_PULSA_DATA -> {
                 viewModel.inquiry(
                     InquiryRequestModel.InquiryPulsaData(
-                        phoneNumber = favorite.accountNumber
+                        phoneNumber = favorite.identifierNumber
                     ),
                     isFromFavorite = true,
                     favoriteModel = favorite,
@@ -703,7 +703,7 @@ class FavoriteListActivity :
             FavoriteFlow.TRANSACTION_MENU_TELKOM_INDIHOME -> {
                 viewModel.inquiry(
                     InquiryRequestModel.InquiryTelkomIndihome(
-                        customerId = favorite.accountNumber
+                        customerId = favorite.identifierNumber
                     ),
                     isFromFavorite = true,
                     favoriteModel = favorite,
@@ -713,7 +713,7 @@ class FavoriteListActivity :
             FavoriteFlow.TRANSACTION_MENU_PLN_POSTPAID_CHECKOUT -> {
                 viewModel.inquiry(
                     InquiryRequestModel.InquiryPLNPostPaid(
-                        customerId = favorite.accountNumber,
+                        customerId = favorite.identifierNumber,
                         providerName = favorite.additionalPlnPostPaidData?.providerName ?: "-",
                         billingCategory = favorite.additionalPlnPostPaidData?.categoryName ?: "-"
                     ),

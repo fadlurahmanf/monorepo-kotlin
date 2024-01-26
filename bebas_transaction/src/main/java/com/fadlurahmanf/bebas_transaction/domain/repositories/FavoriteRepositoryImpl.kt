@@ -149,9 +149,9 @@ class FavoriteRepositoryImpl @Inject constructor(
             favorites.map { favResp ->
                 FavoriteContactModel(
                     id = favResp.id ?: "-",
-                    nameInFavoriteContact = favResp.aliasName ?: "-",
-                    labelTypeOfFavorite = favResp.bankName ?: "-",
-                    accountNumber = favResp.bankAccountNumber ?: "-",
+                    favoriteLabel = favResp.aliasName ?: "-",
+                    favoriteSubLabel = "${favResp.bankName ?: "-"} • ${favResp.bankAccountNumber ?: "-"}",
+                    identifierNumber = favResp.bankAccountNumber ?: "-",
                     isPinned = favResp.isPinned ?: false,
                     additionalTransferData = favResp
                 )
@@ -169,9 +169,9 @@ class FavoriteRepositoryImpl @Inject constructor(
             favorites.map { favResp ->
                 FavoriteContactModel(
                     id = favResp.id ?: "-",
-                    nameInFavoriteContact = favResp.aliasName ?: "-",
-                    labelTypeOfFavorite = "PLN",
-                    accountNumber = favResp.accountNumber ?: "-",
+                    favoriteLabel = favResp.aliasName ?: "-",
+                    favoriteSubLabel = "PLN • ${favResp.accountNumber ?: "-"}",
+                    identifierNumber = favResp.accountNumber ?: "-",
                     isPinned = favResp.isPinned ?: false,
                     additionalPlnPrePaidData = favResp
                 )
@@ -189,9 +189,9 @@ class FavoriteRepositoryImpl @Inject constructor(
             favorites.map { favResp ->
                 FavoriteContactModel(
                     id = favResp.id ?: "-",
-                    nameInFavoriteContact = favResp.aliasName ?: "-",
-                    labelTypeOfFavorite = "PLN",
-                    accountNumber = favResp.accountNumber ?: "-",
+                    favoriteLabel = favResp.aliasName ?: "-",
+                    favoriteSubLabel = "PLN • ${favResp.accountNumber ?: "-"}",
+                    identifierNumber = favResp.accountNumber ?: "-",
                     isPinned = favResp.isPinned ?: false,
                     additionalPlnPostPaidData = favResp
                 )
@@ -209,9 +209,9 @@ class FavoriteRepositoryImpl @Inject constructor(
             favorites.map { favResp ->
                 FavoriteContactModel(
                     id = favResp.id ?: "-",
-                    nameInFavoriteContact = favResp.aliasName ?: "-",
-                    labelTypeOfFavorite = favResp.aliasName ?: "-",
-                    accountNumber = favResp.accountNumber ?: "-",
+                    favoriteLabel = favResp.aliasName ?: "-",
+                    favoriteSubLabel = "${favResp.providerName ?: "-"} • ${favResp.accountNumber ?: "-"}",
+                    identifierNumber = favResp.accountNumber ?: "-",
                     isPinned = favResp.isPinned ?: false,
                     additionalPulsaPrePaidData = favResp
                 )
@@ -229,9 +229,9 @@ class FavoriteRepositoryImpl @Inject constructor(
             favorites.map { favResp ->
                 FavoriteContactModel(
                     id = favResp.id ?: "-",
-                    nameInFavoriteContact = favResp.aliasName ?: "-",
-                    labelTypeOfFavorite = favResp.aliasName ?: "-",
-                    accountNumber = favResp.accountNumber ?: "-",
+                    favoriteLabel = favResp.aliasName ?: "-",
+                    favoriteSubLabel = "TELKOM • ${favResp.accountNumber ?: "-"}",
+                    identifierNumber = favResp.accountNumber ?: "-",
                     isPinned = favResp.isPinned ?: false,
                     additionalTelkomIndihome = favResp
                 )
@@ -249,9 +249,9 @@ class FavoriteRepositoryImpl @Inject constructor(
             favorites.map { favResp ->
                 FavoriteContactModel(
                     id = favResp.id ?: "-",
-                    nameInFavoriteContact = favResp.aliasName ?: "-",
-                    labelTypeOfFavorite = favResp.aliasName ?: "-",
-                    accountNumber = favResp.accountNumber ?: "-",
+                    favoriteLabel = favResp.aliasName ?: "-",
+                    favoriteSubLabel = "${favResp.providerName?.uppercase() ?: "-"} • ${favResp.accountNumber ?: "-"}",
+                    identifierNumber = favResp.accountNumber ?: "-",
                     isPinned = favResp.isPinned ?: false,
                     additionalTelkomIndihome = favResp
                 )

@@ -71,13 +71,13 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val favorite = favorites[position]
 
-        holder.favoriteName.text = favorite.nameInFavoriteContact
-        if (favorite.nameInFavoriteContact.isNotEmpty()) {
+        holder.favoriteName.text = favorite.favoriteLabel
+        if (favorite.favoriteLabel.isNotEmpty()) {
             holder.initialAvatar.text =
-                BebasTransactionHelper.getInitial(favorite.nameInFavoriteContact)
+                BebasTransactionHelper.getInitial(favorite.favoriteLabel)
         }
 
-        holder.subFavoriteLavel.text = "${favorite.labelTypeOfFavorite} • ${favorite.accountNumber}"
+        holder.subFavoriteLavel.text = favorite.favoriteSubLabel
 
         if (favorite.isPinned) {
             holder.pin.setImageDrawable(

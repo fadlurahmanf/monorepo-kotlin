@@ -7,9 +7,10 @@ import com.fadlurahmanf.bebas_api.data.dto.favorite.FavoriteTransferResponse
 
 data class FavoriteContactModel(
     var id: String,
-    var nameInFavoriteContact: String,
-    var labelTypeOfFavorite: String,
-    var accountNumber: String,
+    /** OR ALIAS NAME */
+    var favoriteLabel: String,
+    var favoriteSubLabel: String,
+    var identifierNumber: String,
     var isPinned: Boolean = false,
 
     var additionalTransferData: FavoriteTransferResponse? = null,
