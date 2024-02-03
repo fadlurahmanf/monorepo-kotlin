@@ -3,6 +3,8 @@ package com.fadlurahmanf.bebas_main.presentation.notification
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import com.fadlurahmanf.bebas_main.data.dto.model.notification.NotificationModel
 import com.fadlurahmanf.bebas_main.databinding.FragmentNotificationTransactionBinding
@@ -36,6 +38,7 @@ class NotificationTransactionFragment : BaseMainFragment<FragmentNotificationTra
     }
 
     private lateinit var adapter: NotificationPagingAdapter
+    private var previousLoadState: LoadState? = null
 
     override fun onBebasViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.notificationState.observe(this) {
@@ -46,6 +49,38 @@ class NotificationTransactionFragment : BaseMainFragment<FragmentNotificationTra
         adapter.setCallBack(this)
         adapter.addLoadStateListener {
             Log.d("BebasLogger", "LOAD STATE: ${it}")
+
+            val refresh = it.refresh
+            val append = it.append
+            if (refresh is LoadState.Loading) {
+                binding.llShimmer.visibility = View.VISIBLE
+                binding.rv.visibility = View.GONE
+                binding.llAppendNotificationShimmer.visibility = View.GONE
+                binding.ivEndOfPage.visibility = View.GONE
+            } else if (append is LoadState.Loading) {
+                binding.llShimmer.visibility = View.GONE
+                binding.rv.visibility = View.VISIBLE
+                binding.llAppendNotificationShimmer.visibility = View.VISIBLE
+                binding.ivEndOfPage.visibility = View.GONE
+            } else if (refresh is LoadState.NotLoading) {
+                binding.llShimmer.visibility = View.GONE
+                binding.rv.visibility = View.VISIBLE
+                binding.llAppendNotificationShimmer.visibility = View.GONE
+                binding.ivEndOfPage.visibility = View.GONE
+            } else if (append is LoadState.NotLoading) {
+                Log.d("BebasLogger", "TES TES END OF PAGE 1")
+                binding.llShimmer.visibility = View.GONE
+                binding.rv.visibility = View.VISIBLE
+                binding.llAppendNotificationShimmer.visibility = View.GONE
+                if (append.endOfPaginationReached) {
+                    binding.ivEndOfPage.visibility = View.VISIBLE
+                    Log.d("BebasLogger", "TES TES END OF PAGE 2")
+                } else {
+                    binding.ivEndOfPage.visibility = View.GONE
+                }
+            }
+
+
         }
         adapter.setCallBack(this)
         binding.rv.adapter = adapter
