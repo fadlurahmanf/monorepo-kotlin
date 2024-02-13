@@ -146,6 +146,17 @@ class TransactionConfirmationBottomsheet :
                     )
                 }
 
+                TransactionConfirmationFlow.TV_CABLE -> {
+//                    callback?.onButtonTransactionConfirmationClicked(
+//                        result = TransactionConfirmationResult(
+//                            selectedAccountNumber = viewModel.selectedPaymentSource?.accountNumber
+//                                ?: "-",
+//                            selectedAccountName = viewModel.selectedPaymentSource?.accountName
+//                                ?: "-"
+//                        )
+//                    )
+                }
+
                 TransactionConfirmationFlow.PULSA -> {
                     callback?.onButtonTransactionConfirmationClicked(
                         result = TransactionConfirmationResult(
@@ -175,6 +186,16 @@ class TransactionConfirmationBottomsheet :
                 binding.itemDestinationAccount.initialAvatar.visibility = View.GONE
                 Glide.with(binding.itemDestinationAccount.ivLogo).load(R.drawable.il_telkom_logo)
                     .into(binding.itemDestinationAccount.ivLogo)
+
+                binding.itemDestinationAccount.tvLabel.text = argument.destinationLabel
+                binding.itemDestinationAccount.tvSubLabel.text = argument.destinationSubLabel
+            }
+
+            TransactionConfirmationFlow.TV_CABLE -> {
+                binding.itemDestinationAccount.ivLogo.visibility = View.VISIBLE
+                binding.itemDestinationAccount.initialAvatar.visibility = View.GONE
+//                Glide.with(binding.itemDestinationAccount.ivLogo).load(R.drawable.il_telkom_logo)
+//                    .into(binding.itemDestinationAccount.ivLogo)
 
                 binding.itemDestinationAccount.tvLabel.text = argument.destinationLabel
                 binding.itemDestinationAccount.tvSubLabel.text = argument.destinationSubLabel

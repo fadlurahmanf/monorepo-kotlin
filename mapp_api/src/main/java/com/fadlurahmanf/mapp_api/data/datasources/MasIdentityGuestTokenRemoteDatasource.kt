@@ -16,8 +16,8 @@ class MasIdentityGuestTokenRemoteDatasource @Inject constructor(
     override fun getApi(): Class<MasIdentityGuestTokenApi> = MasIdentityGuestTokenApi::class.java
 
     fun login(request: LoginRequest) =
-        networkService(30).login(request)
+        networkService().login(request)
 
     fun refreshToken(request: RefreshUserTokenRequest) =
-        networkService(30).refreshUserToken(request)
+        networkService().refreshUserToken(request)
 }

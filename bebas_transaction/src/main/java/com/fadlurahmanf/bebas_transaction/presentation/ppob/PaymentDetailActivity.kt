@@ -98,6 +98,10 @@ class PaymentDetailActivity :
                     showTransactionConfirmationBottomsheet()
                 }
 
+                PaymentDetailFlow.TV_CABLE -> {
+                    showTransactionConfirmationBottomsheet()
+                }
+
                 PaymentDetailFlow.PLN_PREPAID_CHECKOUT -> {
                     viewModel.inquiryPLNPrePaid(
                         argument.additionalPLNPrePaidCheckout?.clientNumber ?: "-",
@@ -266,7 +270,41 @@ class PaymentDetailActivity :
             }
 
             PaymentDetailFlow.TV_CABLE -> {
-
+                val inquiry = argument.additionalTvCable?.inquiry
+                bundle.apply {
+                    putString(
+                        TransactionConfirmationBottomsheet.FLOW,
+                        TransactionConfirmationFlow.TV_CABLE.name
+                    )
+                    putParcelable(
+                        TransactionConfirmationBottomsheet.ADDITIONAL_ARG,
+                        TransactionConfirmationArgument(
+                            destinationLabel = inquiry?.customerName ?: "-",
+                            destinationSubLabel = argument.subLabelIdentity,
+                            defaultPaymentSource = defaultPaymentSourceModel,
+                            feeDetail = TransactionConfirmationArgument.FeeDetail(
+                                total = (inquiry?.amountTransaction
+                                    ?: -1.0) + (inquiry?.amountTransactionFee ?: -1.0),
+                                details = arrayListOf(
+                                    TransactionConfirmationArgument.FeeDetail.Detail(
+                                        label = "Tagihan",
+                                        value = inquiry?.amountTransaction ?: -1.0,
+                                    ),
+                                    TransactionConfirmationArgument.FeeDetail.Detail(
+                                        label = "Biaya Admin",
+                                        value = inquiry?.amountTransactionFee ?: -1.0,
+                                    ),
+                                )
+                            ),
+                            details = arrayListOf<TransactionConfirmationArgument.Detail>(
+                                TransactionConfirmationArgument.Detail(
+                                    label = "Periode",
+                                    value = inquiry?.periode ?: "-"
+                                )
+                            )
+                        )
+                    )
+                }
             }
         }
 
@@ -373,7 +411,21 @@ class PaymentDetailActivity :
             }
 
             PaymentDetailFlow.TV_CABLE -> {
-
+                binding.layoutDetailPpobTvCable.tvPeriodeValue.text =
+                    argument.additionalTvCable?.inquiry?.periode ?: "-"
+                binding.layoutDetailPpobTvCable.tvAdminFee.text =
+                    argument.additionalTvCable?.inquiry?.amountTransactionFee?.toRupiahFormat(
+                        useSymbol = true
+                    ) ?: "-"
+                binding.layoutDetailPpobTvCable.tvTagihan.text =
+                    argument.additionalTvCable?.inquiry?.amountTransaction?.toRupiahFormat(useSymbol = true)
+                        ?: "-"
+                binding.layoutDetailPpobTvCable.tvTotalBayar.text =
+                    ((argument.additionalTvCable?.inquiry?.amountTransaction
+                        ?: -1.0) + (argument.additionalTvCable?.inquiry?.amountTransactionFee
+                        ?: -1.0))?.toRupiahFormat(useSymbol = true) ?: "-"
+                binding.llDetailPpobTvCable.visibility = View.VISIBLE
+                binding.llBottomLayout.visibility = View.VISIBLE
             }
         }
     }
@@ -397,7 +449,7 @@ class PaymentDetailActivity :
             }
 
             PaymentDetailFlow.TV_CABLE -> {
-
+                binding.toolbar.title = "Pembayaran TV Kabel"
             }
         }
     }
@@ -561,9 +613,12 @@ class PaymentDetailActivity :
                             additionalPlnPrePaidCheckout = PinVerificationArgument.PLNPrePaidCheckout(
                                 dataRequest = CheckoutTransactionDataRequest(
                                     orderId = result.additionalPLNPrePaidCheckout?.orderId ?: "-",
-                                    paymentConfigGroupId = result.additionalPLNPrePaidCheckout?.configGroupId ?: "-",
-                                    paymentTypeCode = result.additionalPLNPrePaidCheckout?.paymentTypeCode ?: "-",
-                                    paymentSourceSchema = result.additionalPLNPrePaidCheckout?.paymentSourceSchema ?: listOf()
+                                    paymentConfigGroupId = result.additionalPLNPrePaidCheckout?.configGroupId
+                                        ?: "-",
+                                    paymentTypeCode = result.additionalPLNPrePaidCheckout?.paymentTypeCode
+                                        ?: "-",
+                                    paymentSourceSchema = result.additionalPLNPrePaidCheckout?.paymentSourceSchema
+                                        ?: listOf()
                                 )
                             )
                         )

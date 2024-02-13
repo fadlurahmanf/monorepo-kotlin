@@ -71,6 +71,21 @@
                     android:layout_marginTop="20dp" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/ll_detail_ppob_tv_cable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <include
+                    android:id="@+id/layout_detail_ppob_tv_cable"
+                    layout="@layout/layout_detail_ppob_tv_cable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp" />
+            </LinearLayout>
+
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
