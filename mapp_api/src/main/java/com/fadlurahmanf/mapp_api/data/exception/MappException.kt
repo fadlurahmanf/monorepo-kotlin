@@ -3,7 +3,10 @@ package com.fadlurahmanf.mapp_api.data.exception
 import android.content.Context
 import androidx.annotation.StringRes
 import com.fadlurahmanf.mapp_api.R
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import java.io.IOException
+import java.lang.Exception
 
 class MappException(
     var httpStatusCode: Int? = null,
@@ -16,9 +19,34 @@ class MappException(
     override var message: String? = null,
     var defaultMessage: String? = null,
     var additionalData: HashMap<String, Any>? = null,
-    @StringRes var idRawButtonText: Int? = R.string.socket_exception_desc,
+    @StringRes var idRawButtonText: Int? = R.string.ok,
     var buttonText: String? = null,
 ) : IOException(rawMessage) {
+
+    companion object {
+
+        fun generalRC(rc: String): MappException {
+            return MappException(
+                rawMessage = "RC_$rc"
+            )
+        }
+
+        fun fromThrowable(throwable: Throwable): MappException {
+            return if (throwable is MappException) {
+                throwable
+            } else {
+                MappException(rawMessage = throwable.message)
+            }
+        }
+
+        fun fromException(exception: Exception): MappException {
+            return if (exception is MappException) {
+                exception
+            } else {
+                MappException(rawMessage = exception.message)
+            }
+        }
+    }
 
     fun toProperTitle(context: Context): String {
         return getTitle(context, idRawTitle, rawTitle, title)
@@ -114,6 +142,13 @@ class MappException(
             if (identifierUppercase != 0) {
                 return context.getString(identifierUppercase)
             }
+
+            if (r.contains("RC_")){
+                val rc = r.split("RC_").last()
+                return context.getString(R.string.general_exception_desc, rc)
+            }
+
+            return context.getString(R.string.general_exception_desc, r)
         }
 
         default?.let {
@@ -121,5 +156,21 @@ class MappException(
         }
 
         return "-"
+    }
+
+    fun toJson(): String? {
+        val json = JsonObject()
+        json.addProperty("httpStatusCode", httpStatusCode)
+        json.addProperty("statusCode", statusCode)
+        json.addProperty("idRawTitle", idRawTitle)
+        json.addProperty("rawTitle", rawTitle)
+        json.addProperty("title", title)
+        json.addProperty("idRawMessage", idRawMessage)
+        json.addProperty("rawMessage", rawMessage)
+        json.addProperty("message", message)
+        json.addProperty("defaultMessage", defaultMessage)
+        json.addProperty("idRawButtonText", idRawButtonText)
+        json.addProperty("buttonText", buttonText)
+        return Gson().toJson(json)
     }
 }

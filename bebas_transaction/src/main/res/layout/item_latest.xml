@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="100dp"
+    android:layout_height="120dp"
+    android:layout_marginVertical="10dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/initialAvatar"
+        style="@style/Font.InitialLatest"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/background_initial_latest"
+        android:gravity="center"
+        android:text="LF"
+        android:textAllCaps="true" />
+
+    <ImageView
+        android:id="@+id/iv_latest_logo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/background_circle_bebas_logo"
+        android:gravity="center"
+        android:padding="10dp"
+        android:src="@drawable/il_logo_pln"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_latest_name"
+        style="@style/Font.LatestName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:ellipsize="middle"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="Favorite Name"
+        android:textAlignment="center" />
+
+
+    <TextView
+        android:id="@+id/tv_latest_label"
+        style="@style/Font.LatestLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:ellipsize="middle"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="Bank MAS" />
+</LinearLayout>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Okay</string>
+    <string name="oops">Oops...</string>
+    <string name="oops_error_occured">Oops... an error occured</string>
+    <string name="socket_exception_desc">Look like you don\'t have any connection</string>
+</resources>

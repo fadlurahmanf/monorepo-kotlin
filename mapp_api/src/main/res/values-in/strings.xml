@@ -4,5 +4,6 @@
     <string name="hello_world">Halo DUnia</string>
     <string name="oops">Ups...</string>
     <string name="ok">Oke</string>
+    <string name="general_exception_desc">Kami tidak dapat memproses permintaan kamu (%1$s)</string>
     <string name="socket_exception_desc">Sepertinya kamu tidak mempunyai jaringan internet.</string>
 </resources>

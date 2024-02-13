@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+/bebas/key.properties
+/bebas/*.jks

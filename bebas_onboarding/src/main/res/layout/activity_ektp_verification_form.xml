@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.form_user.EktpVerificationFormActivity">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapseToolbarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@color/white"
+                app:collapsedTitleTextAppearance="@style/Font.AppBarTitle"
+                app:contentScrim="@color/white"
+                app:expandedTitleMarginBottom="15dp"
+                app:expandedTitleMarginStart="20dp"
+                app:expandedTitleTextAppearance="@style/Font.HeaderTitle"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:toolbarId="@id/toolbar">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:title="Verifikasi Data E-KTP">
+
+                    <com.fadlurahmanf.bebas_ui.button.BebasBackButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp" />
+
+                </androidx.appcompat.widget.Toolbar>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingBottom="20dp">
+
+                <TextView
+                    android:id="@+id/tv_subtitle_header"
+                    style="@style/Font.HeaderSubTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pastikan bahwa datamu sudah sesuai" />
+
+                <com.fadlurahmanf.bebas_ui.edittext.BebasMaskingEdittext
+                    android:id="@+id/et_nik"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:imeOptions="actionNext"
+                    android:inputType="text|phone"
+                    app:hint="NIK"
+                    app:label="NIK"
+                    app:maxLengthIncludingMaskingChar="19" />
+
+                <com.fadlurahmanf.bebas_ui.edittext.BebasEdittext
+                    android:id="@+id/et_fullname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textAllCaps="true"
+                    app:hint="Nama Lengkap"
+                    app:label="Nama Lengkap" />
+
+                <com.fadlurahmanf.bebas_ui.edittext.BebasEdittext
+                    android:id="@+id/et_birthplace"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textAllCaps="true"
+                    app:hint="Tempat Lahir"
+                    app:label="Tempat Lahir" />
+
+                <com.fadlurahmanf.bebas_ui.edittext.BebasPickerEdittext
+                    android:id="@+id/dd_birthdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:drawableEnd="@drawable/round_calendar_today_24"
+                    app:hint="Tanggal Lahir"
+                    app:label="Tanggal Lahir" />
+
+                <com.fadlurahmanf.bebas_ui.edittext.BebasPickerEdittext
+                    android:id="@+id/dd_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:hint="Jenis Kelamin"
+                    app:label="Jenis Kelamin" />
+
+                <com.fadlurahmanf.bebas_ui.edittext.BebasPickerEdittext
+                    android:id="@+id/dd_province"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:hint="Provinsi"
+                    app:label="Provinsi" />
+
+                <com.fadlurahmanf.bebas_ui.edittext.BebasPickerEdittext
+                    android:id="@+id/dd_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:hint="Kota/Kabupaten"
+                    app:label="Kota/Kabupaten" />
+
+                <com.fadlurahmanf.bebas_ui.edittext.BebasPickerEdittext
+                    android:id="@+id/dd_subdistrict"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:hint="Kecamatan"
+                    app:label="Kecamatan" />
+
+                <com.fadlurahmanf.bebas_ui.edittext.BebasPickerEdittext
+                    android:id="@+id/dd_ward"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:hint="Kelurahan"
+                    app:label="Kelurahan" />
+
+                <com.fadlurahmanf.bebas_ui.edittext.BebasEdittext
+                    android:id="@+id/et_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textAllCaps="true"
+                    app:hint="Alamat Lengkap"
+                    app:label="Alamat Lengkap" />
+
+                <com.fadlurahmanf.bebas_ui.edittext.BebasMaskingEdittext
+                    android:id="@+id/et_rt_rw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:textAllCaps="true"
+                    app:formatType="rtrw"
+                    app:hint="RT/RW"
+                    app:label="RT/RW" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.fadlurahmanf.bebas_ui.button.BebasRoundedButton
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:text="@string/next" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

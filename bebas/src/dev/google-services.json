@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "708492980249",
+    "project_id": "bebas-retail-dev",
+    "storage_bucket": "bebas-retail-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708492980249:android:99cc5ab5b97455d300fa88",
+        "android_client_info": {
+          "package_name": "com.fadlurahmanf.bebas.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "708492980249-tv28atmqq7dibvvg0ol8g7i2k0f22bnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdN5R36hb1k4mNhcB5W08fkz0Wde3Gnd4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "708492980249-tv28atmqq7dibvvg0ol8g7i2k0f22bnd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="text" format="string" />
+    <attr name="hint" format="string" />
+    <attr name="label" format="string" />
+
+    <declare-styleable name="BebasRoundedButton">
+        <attr name="text" />
+        <attr name="active" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="BebasOutlinedButton">
+        <attr name="text" />
+        <attr name="android:drawableStart" />
+    </declare-styleable>
+
+    <declare-styleable name="BebasEdittext">
+        <attr name="hint" />
+        <attr name="label" />
+        <attr name="android:imeOptions" />
+        <attr name="android:inputType" />
+        <attr name="android:drawableStart" />
+        <attr name="android:textAllCaps" />
+    </declare-styleable>
+
+    <declare-styleable name="BebasMaskingEdittext">
+        <attr name="hint" />
+        <attr name="label" />
+        <attr name="android:imeOptions" />
+        <attr name="android:inputType" />
+        <attr name="android:drawableStart" />
+        <attr name="android:textAllCaps" />
+        <attr name="maxLengthIncludingMaskingChar" format="integer" />
+        <attr name="formatType" format="enum">
+            <enum name="phoneOrNik" value="0" />
+            <enum name="rtrw" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="BebasPickerEdittext">
+        <attr name="hint" />
+        <attr name="label" />
+        <attr name="android:drawableStart" />
+        <attr name="android:drawableEnd" />
+    </declare-styleable>
+
+    <declare-styleable name="BebasBackButton">
+        <attr name="color" />
+    </declare-styleable>
+
+    <declare-styleable name="BebasPinKeyboard">
+        <attr name="isForgotPasswordVisible" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="BebasPinBox" />
+</resources>

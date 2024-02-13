@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@drawable/background_favorite"
+    android:orientation="horizontal"
+    android:layout_marginTop="10dp"
+    android:padding="10dp">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:src="@drawable/il_logo_bebas_grey"
+        android:padding="8dp"
+        android:gravity="center"
+        android:textAllCaps="true" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:layout_width="80dp"
+            android:layout_height="17dp"
+            android:background="@color/white"
+            app:shimmer_base_color="@color/grey"
+            app:shimmer_colored="true" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:layout_width="185dp"
+            android:layout_height="17dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            app:shimmer_base_color="@color/grey"
+            app:shimmer_colored="true" />
+    </LinearLayout>
+
+</LinearLayout>

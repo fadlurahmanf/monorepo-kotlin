@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Oke</string>
+    <string name="oops">Ups...</string>
+    <string name="oops_error_occured">Ups... Sedang gangguan</string>
+    <string name="socket_exception_desc">Sepertinya kamu tidak mempunyai jaringan internet.</string>
+</resources>

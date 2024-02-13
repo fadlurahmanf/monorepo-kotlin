@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_general_message_form_empty">%s tidak boleh kosong</string>
+    <string name="invalid_phone_number_length_message">Panjang Nomor Ponsel maksimal 13 digit</string>
+    <string name="invalid_phone_number_format">Format nomor ponsel tidak sesuai</string>
+    <string name="invalid_email_format">Format Email tidak sesuai</string>
+    <string name="oops">Ups...</string>
+    <string name="socket_exception_desc">Sepertinya kamu tidak mempunyai jaringan internet.</string>
+    <string name="general_exception_desc">Saat ini kami tidak dapat memproses permintaan kamu. Silakan coba lagi di lain waktu (%1$s)</string>
+    <string name="general_exception_desc_wo_param">Saat ini kami tidak dapat memproses permintaan kamu. Silakan coba lagi di lain waktu</string>
+    <string name="ok">Oke</string>
+    <string name="empty_search_picker_bottomsheet">Ups... %s yang anda cari tidak ditemukan</string>
+    <string name="error_message_length_nik">Minimal karakter NIK adalah 16 digit.</string>
+    <string name="error_message_length_full_name">Minimal karakter Nama Lengkap adalah 3 digit</string>
+    <string name="error_minimum_17_years">Minimal 17 tahun</string>
+    <string name="bill_already_paid">Tagihan sudah lunas</string>
+    <string name="bill_already_paid_desc">Hore! Tagihan kamu sudah terbayar</string>
+</resources>

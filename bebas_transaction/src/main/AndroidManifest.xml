@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <activity
+            android:name=".presentation.others.SelectEWalletActivity"
+            android:exported="false"
+            android:theme="@style/BaseBebas" />
+        <activity
+            android:name=".presentation.invoice.ScreenshotInvoiceTransactionActivity"
+            android:exported="false"
+            android:theme="@style/BaseBebas" />
+        <activity
+            android:name=".presentation.ppob.PaymentDetailActivity"
+            android:exported="false"
+            android:theme="@style/BaseBebas" />
+        <activity
+            android:name=".presentation.invoice.InvoiceTransactionActivity"
+            android:exported="false"
+            android:theme="@style/BaseBebas" />
+        <activity
+            android:name=".presentation.pin.PinVerificationActivity"
+            android:exported="false"
+            android:theme="@style/BaseBebas" />
+        <activity
+            android:name=".presentation.others.BankListActivity"
+            android:exported="false"
+            android:theme="@style/BaseBebas" />
+        <activity
+            android:name=".presentation.transfer.TransferDetailActivity"
+            android:exported="false"
+            android:theme="@style/BaseBebas" />
+        <activity
+            android:name=".presentation.favorite.FavoriteListActivity"
+            android:exported="false"
+            android:theme="@style/BaseBebas" />
+    </application>
+
+</manifest>

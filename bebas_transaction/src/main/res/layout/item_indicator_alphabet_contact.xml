@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_alphabet_indicator"
+        style="@style/Font.Text14"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/border_grey"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="5dp"
+        android:text="B"
+        android:textColor="@color/black" />
+</LinearLayout>

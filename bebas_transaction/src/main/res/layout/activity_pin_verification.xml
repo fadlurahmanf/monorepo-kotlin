@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".presentation.pin.PinVerificationActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingTop="20sp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.fadlurahmanf.bebas_ui.button.BebasBackButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            style="@style/Font.HeaderTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Verifikasi PIN" />
+
+        <TextView
+            style="@style/Font.HeaderSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Masukkan PIN Bebas kamu" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.fadlurahmanf.bebas_ui.pin.BebasPinBox
+        android:id="@+id/bebas_pin_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_error_pin"
+        style="@style/Font.Text14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="error_pin"
+        android:textColor="@color/red"
+        android:visibility="gone" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.fadlurahmanf.bebas_ui.pin.BebasPinKeyboard
+        android:id="@+id/iv_pin_keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:isForgotPasswordVisible="false" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="60dp" />
+
+</LinearLayout>

@@ -1,0 +1,117 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('bebas/key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+android {
+    namespace 'com.fadlurahmanf.bebas'
+    compileSdk 34
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    defaultConfig {
+        applicationId "com.fadlurahmanf.bebas"
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "0.0.1"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            if(keystoreProperties['release.keystore'] != null) {
+                storeFile file(keystoreProperties['release.keystore'])
+            }
+            keyAlias keystoreProperties['release.keystore.alias']
+            keyPassword keystoreProperties['release.keystore.keyPassword']
+            storePassword keystoreProperties['release.keystore.storePassword']
+        }
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+        debug {
+            debuggable true
+        }
+    }
+
+    flavorDimensions "app"
+    productFlavors {
+        retail {
+            applicationId "id.co.bebas.retail.dev"
+            dimension "app"
+        }
+
+        dev {
+            applicationIdSuffix ".dev"
+            dimension "app"
+        }
+        staging {
+            applicationIdSuffix ".staging"
+            dimension "app"
+        }
+        production {
+            dimension "app"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_19
+        targetCompatibility JavaVersion.VERSION_19
+    }
+    kotlinOptions {
+        jvmTarget = '19'
+    }
+}
+
+kotlin {
+    jvmToolchain(19)
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+
+    implementation(project(":core_crypto"))
+    implementation(project(":core_logger"))
+    implementation(project(":core_mlkit"))
+    implementation(project(":core_network"))
+    implementation(project(":core_platform"))
+    implementation(project(":core_ui"))
+
+    implementation(project(":bebas_api"))
+    implementation(project(":bebas_config"))
+    implementation(project(":bebas_fcm"))
+    implementation(project(":bebas_loyalty"))
+    implementation(project(":bebas_main"))
+    implementation(project(":bebas_onboarding"))
+    implementation(project(":bebas_shared"))
+    implementation(project(":bebas_transaction"))
+    implementation(project(":bebas_ui"))
+}

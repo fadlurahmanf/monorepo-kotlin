@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_top_corner_bottomsheet"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="20dp">
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/background_close_button"
+        android:padding="5dp"
+        android:src="@drawable/baseline_close_24" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end"
+            android:background="@drawable/background_close_button"
+            android:padding="5dp"
+            android:src="@drawable/ic_subproduct_pulsadata" />
+
+        <TextView
+            android:id="@+id/tv_title_bottomsheet"
+            style="@style/Font.Text16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/lexend_deca_bold"
+            android:text="Pulsa &amp; Data" />
+    </LinearLayout>
+
+    <com.fadlurahmanf.bebas_ui.edittext.BebasEdittext
+        android:id="@+id/et_phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:imeOptions="actionSearch"
+        android:inputType="text|phone"
+        app:hint="Nomor Ponsel"
+        app:label="Masukkan Nama/Nomor Ponsel" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/l_layout_item_add_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include
+                android:id="@+id/item_ad_contact"
+                layout="@layout/item_add_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_main_contacts_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/ll_shimmer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/item_contact_shimmer" />
+
+                <include layout="@layout/item_contact_shimmer" />
+
+                <include layout="@layout/item_contact_shimmer" />
+
+                <include layout="@layout/item_contact_shimmer" />
+
+                <include layout="@layout/item_contact_shimmer" />
+
+                <include layout="@layout/item_contact_shimmer" />
+
+                <include layout="@layout/item_contact_shimmer" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_contact"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_contact" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_alphabet"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_alphabet_scroll" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_alphabet_selected"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/backgorund_selected_alphabet"
+            android:fontFamily="@font/lexend_deca_bold"
+            android:gravity="center"
+            android:text="A"
+            android:textSize="40sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

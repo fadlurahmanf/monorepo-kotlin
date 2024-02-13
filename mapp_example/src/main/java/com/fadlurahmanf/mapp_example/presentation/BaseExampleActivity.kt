@@ -2,9 +2,10 @@ package com.fadlurahmanf.mapp_example.presentation
 
 import androidx.viewbinding.ViewBinding
 import com.fadlurahmanf.mapp_config.helper.di.CoreInjectHelper
+import com.fadlurahmanf.mapp_config.presentation.MappApplication
 import com.fadlurahmanf.mapp_example.DaggerMappExampleComponent
-import com.fadlurahmanf.mapp_ui.presentation.activity.BaseMappActivity
 import com.fadlurahmanf.mapp_example.MappExampleComponent
+import com.fadlurahmanf.mapp_ui.presentation.activity.BaseMappActivity
 import com.fadlurahmanf.mapp_ui.presentation.activity.MappInflateActivity
 
 abstract class BaseExampleActivity<VB : ViewBinding>(
@@ -14,6 +15,7 @@ abstract class BaseExampleActivity<VB : ViewBinding>(
     override fun initComponent() {
         component = DaggerMappExampleComponent.factory()
             .create(
+                applicationContext,
                 CoreInjectHelper.provideCoreCryptoComponent(applicationContext),
                 CoreInjectHelper.provideCorePlatformComponent(applicationContext),
                 CoreInjectHelper.provideMappConfigComponent(applicationContext),
@@ -22,5 +24,6 @@ abstract class BaseExampleActivity<VB : ViewBinding>(
             )
     }
 
+    fun logConsole() = (applicationContext as MappApplication).logConsole
 }
 

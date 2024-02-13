@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Font">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Font.AppBarTitle">
+        <item name="android:fontFamily">@font/lexend_deca_bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Font.HeaderTitle">
+        <item name="android:fontFamily">@font/lexend_deca_bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Font.HeaderSubTitle">
+        <item name="android:fontFamily">@font/lexend_deca_regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Font.Otp">
+        <item name="android:fontFamily">@font/lexend_deca_bold</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Font.TncText">
+        <item name="android:fontFamily">@font/lexend_deca_regular</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Font.Text8">
+        <item name="android:fontFamily">@font/lexend_deca_regular</item>
+        <item name="android:textSize">8sp</item>
+    </style>
+
+    <style name="Font.Text12">
+        <item name="android:fontFamily">@font/lexend_deca_regular</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Font.Text14">
+        <item name="android:fontFamily">@font/lexend_deca_regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Font.Text16">
+        <item name="android:fontFamily">@font/lexend_deca_regular</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Font.EdittextV2Hint" parent="Widget.AppCompat.EditText">
+        <item name="android:fontFamily">@font/lexend_deca_semi_bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/light_grey</item>
+    </style>
+
+    <style name="Font.EdittextV2" parent="Widget.AppCompat.EditText">
+        <item name="android:fontFamily">@font/lexend_deca_semi_bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/light_grey</item>
+    </style>
+</resources>

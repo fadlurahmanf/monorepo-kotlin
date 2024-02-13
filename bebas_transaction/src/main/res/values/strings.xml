@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Okay</string>
+    <string name="input_nominal_transfer">Input Nominal Transfer</string>
+    <string name="minimum_transfer_nominal_is">The minimum transfer amount is %1s</string>
+</resources>

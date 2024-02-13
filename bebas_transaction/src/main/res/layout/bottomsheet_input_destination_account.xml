@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_top_corner_bottomsheet"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    android:paddingBottom="30dp">
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/background_close_button"
+        android:padding="5dp"
+        android:src="@drawable/baseline_close_24" />
+
+    <TextView
+        android:id="@+id/tv_title_bottomsheet"
+        style="@style/Font.Text16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/lexend_deca_bold"
+        android:paddingHorizontal="10dp"
+        android:text="Masukkan Rekening Tujuan" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/iv_new_receiver_logo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/background_circle_white_with_border_light_grey"
+            android:gravity="center"
+            android:padding="8dp"
+            android:src="@drawable/il_logo_bebas_grey"
+            android:textAllCaps="true" />
+
+        <TextView
+            android:id="@+id/tv_new_receiver_label"
+            style="@style/Font.Text16"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/lexend_deca_bold"
+            android:text="New Receiver Logo" />
+    </LinearLayout>
+
+    <com.fadlurahmanf.bebas_ui.edittext.BebasEdittext
+        android:id="@+id/et_destination_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:inputType="text|number"
+        app:hint="Cth: 1234567890"
+        app:label="Nomor rekening" />
+
+    <com.fadlurahmanf.bebas_ui.button.BebasRoundedButton
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="20dp"
+        app:text="Lanjut" />
+</LinearLayout>

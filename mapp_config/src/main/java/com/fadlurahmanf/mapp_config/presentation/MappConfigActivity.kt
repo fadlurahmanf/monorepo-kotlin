@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.fadlurahmanf.mapp_config.R
 import com.fadlurahmanf.mapp_shared.MappShared
-import java.lang.Exception
 
 class MappConfigActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,13 +16,14 @@ class MappConfigActivity : AppCompatActivity() {
         MappShared.flavor = flavor ?: "dev"
         when (flavor) {
             "dev" -> {
-                MappShared.masGuestBaseUrl = "https://merchant.bankmas.my.id/"
+                MappShared.merchantGuestBaseUrl = "https://merchant.bankmas.my.id/"
+                MappShared.retailGuestBaseUrl = "https://api.bankmas.my.id/"
             }
         }
 
         val intent = Intent(
-                this,
-        Class.forName("com.fadlurahmanf.mapp_splash.presentation.SplashActivity")
+            this,
+            Class.forName("com.fadlurahmanf.mapp_splash.presentation.SplashActivity")
         )
         startActivity(intent)
     }

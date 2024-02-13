@@ -55,7 +55,6 @@ class FaceDetectorActivity :
     }
 
     override fun analyze() {
-        Log.d("MappLogger", "MASUK ANALYZE")
         val cameraProvider = cameraProviderFuture().get()
         val preview = Preview.Builder().build().apply {
             setSurfaceProvider(binding.cameraView.surfaceProvider)
@@ -83,7 +82,6 @@ class FaceDetectorActivity :
     }
 
     override fun setup() {
-        Log.d("MappLogger", "MASUK SETUP")
         cameraExecutor = Executors.newSingleThreadExecutor()
         initCameraListener()
     }
