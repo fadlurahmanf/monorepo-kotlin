@@ -3,8 +3,6 @@ package com.fadlurahmanf.mapp_config.presentation
 import android.app.Application
 import com.fadlurahmanf.core_crypto.CoreCryptoComponent
 import com.fadlurahmanf.core_crypto.DaggerCoreCryptoComponent
-import com.fadlurahmanf.core_logger.domain.datasources.LoggerLocalDatasource
-import com.fadlurahmanf.core_logger.presentation.LogConsole
 import com.fadlurahmanf.core_platform.CorePlatformComponent
 import com.fadlurahmanf.core_platform.DaggerCorePlatformComponent
 import com.fadlurahmanf.mapp_config.DaggerMappConfigComponent
@@ -14,6 +12,10 @@ import com.fadlurahmanf.mapp_fcm.DaggerMappFcmComponent
 import com.fadlurahmanf.mapp_fcm.MappFcmComponent
 import com.fadlurahmanf.mapp_firebase_database.DaggerMappFirebaseDatabaseComponent
 import com.fadlurahmanf.mapp_firebase_database.MappFirebaseDatabaseComponent
+import com.fadlurahmanf.mapp_logger.domain.MappLoggerRepository
+import com.fadlurahmanf.mapp_logger.domain.datasources.MappLogBetterStackRemoteDatasource
+import com.fadlurahmanf.mapp_logger.domain.datasources.MappLoggerLocalDatasource
+import com.fadlurahmanf.mapp_logger.presentation.MappLogConsole
 
 class MappApplication : Application(), IMappComponentProvider {
     private lateinit var coreCryptoComponent: CoreCryptoComponent
@@ -21,19 +23,25 @@ class MappApplication : Application(), IMappComponentProvider {
     private lateinit var mappConfigComponent: MappConfigComponent
     private lateinit var mappFcmComponent: MappFcmComponent
     private lateinit var mappFirebaseDatabaseComponent: MappFirebaseDatabaseComponent
-    lateinit var logConsole: LogConsole
+    lateinit var logConsole: MappLogConsole
 
     override fun onCreate() {
         super.onCreate()
         initLogConsole()
     }
 
-    private fun initLogConsole(): LogConsole {
+    private fun initLogConsole(): MappLogConsole {
         return if (this::logConsole.isInitialized) {
             logConsole
         } else {
-            val loggerLocalDatasource = LoggerLocalDatasource(applicationContext)
-            logConsole = LogConsole(loggerLocalDatasource)
+            val mappLoggerLocalDatasource = MappLoggerLocalDatasource(applicationContext)
+            val mappLogBetterStackRemoteDatasource =
+                MappLogBetterStackRemoteDatasource(applicationContext)
+            val mappLoggerRepository = MappLoggerRepository(
+                mappLoggerLocalDatasource = mappLoggerLocalDatasource,
+                mappLogBetterStackRemoteDatasource = mappLogBetterStackRemoteDatasource
+            )
+            logConsole = MappLogConsole(mappLoggerRepository = mappLoggerRepository)
             logConsole
         }
     }

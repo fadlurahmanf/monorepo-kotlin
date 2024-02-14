@@ -3,8 +3,9 @@ package com.fadlurahmanf.core_logger.domain.datasources
 import android.content.Context
 import com.fadlurahmanf.core_logger.data.entity.LoggerEntity
 import com.fadlurahmanf.core_logger.domain.common.LoggerDatabase
+import javax.inject.Inject
 
-class LoggerLocalDatasource(
+open class LoggerLocalDatasource @Inject constructor(
     context: Context
 ) {
     private var dao = LoggerDatabase.getDatabase(context).loggerDao()

@@ -8,7 +8,6 @@ import com.fadlurahmanf.core_network.domain.interceptor.CustomLoggingInterceptor
 
 abstract class CoreBaseNetworkProvider(var context: Context, var tagCustomLogging:String = "CoreNetworkLogger") {
 
-
     fun bodyLoggingInterceptor(): CustomLoggingInterceptor {
         return CustomLoggingInterceptor(tagCustomLogging).setLevel(CustomLoggingInterceptor.Level.BODY)
     }

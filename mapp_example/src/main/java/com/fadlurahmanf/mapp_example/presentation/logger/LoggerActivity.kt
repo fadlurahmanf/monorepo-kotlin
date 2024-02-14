@@ -4,6 +4,8 @@ import android.content.Intent
 import com.chuckerteam.chucker.api.Chucker
 import com.fadlurahmanf.mapp_example.databinding.ActivityLoggerBinding
 import com.fadlurahmanf.mapp_example.presentation.BaseExampleActivity
+import com.fadlurahmanf.mapp_shared.extension.formatDate5
+import java.util.Calendar
 import kotlin.random.Random
 
 class LoggerActivity : BaseExampleActivity<ActivityLoggerBinding>(ActivityLoggerBinding::inflate) {
@@ -36,6 +38,10 @@ class LoggerActivity : BaseExampleActivity<ActivityLoggerBinding>(ActivityLogger
 
         binding.btnLogInfo.onClicked {
             logConsole().i("MappLogger", "RANDOM INFO (${Random.nextInt()})")
+        }
+
+        binding.btnLogBetterstack.onClicked {
+            logConsole().logRemotely("LoggerActivity LogBetterStack Log Remotely ${Calendar.getInstance().time.formatDate5()}")
         }
 
     }

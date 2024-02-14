@@ -103,6 +103,7 @@ dependencies {
     implementation(project(":mapp_example"))
     implementation(project(":mapp_fcm"))
     implementation(project(":mapp_firebase_database"))
+    implementation(project(":mapp_logger"))
     implementation(project(":mapp_notification"))
     implementation(project(":mapp_shared"))
     implementation(project(":mapp_splash"))

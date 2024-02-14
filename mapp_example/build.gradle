@@ -80,7 +80,6 @@ dependencies {
     implementation "com.github.chuckerteam.chucker:library:3.5.2"
 
     implementation(project(":core_crypto"))
-    implementation(project(":core_logger"))
     implementation(project(":core_network"))
     implementation(project(":core_platform"))
     implementation(project(":core_vplayer"))
@@ -90,6 +89,7 @@ dependencies {
     implementation(project(":mapp_config"))
     implementation(project(":mapp_fcm"))
     implementation(project(":mapp_firebase_database"))
+    implementation(project(":mapp_logger"))
     implementation(project(":mapp_mlkit"))
     implementation(project(":mapp_notification"))
     implementation(project(":mapp_shared"))

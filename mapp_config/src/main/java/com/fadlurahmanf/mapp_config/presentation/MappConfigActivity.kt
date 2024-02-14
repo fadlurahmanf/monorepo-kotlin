@@ -18,6 +18,7 @@ class MappConfigActivity : AppCompatActivity() {
             "dev" -> {
                 MappShared.merchantGuestBaseUrl = "https://merchant.bankmas.my.id/"
                 MappShared.retailGuestBaseUrl = "https://api.bankmas.my.id/"
+                MappShared.logBetterStackToken = "FsoXqqmCKGoxppSwMP8PAMEo"
             }
         }
 
